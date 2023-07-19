@@ -1,14 +1,14 @@
 ---
-title: TestPost
-date: 2023-07-18 19:00:00 +/-TTTT
-categories: [포트폴리오, 토이버스 프로젝트]
-tags: [포트폴리오, 프로젝트]     # TAG names should always be lowercase
+title: C# LINQ 퍼포먼스 관련
+date: 2023-07-19 11:06:00 +/-TTTT
+categories: [C#, C# Study]
+tags: [Csharp, LINQ]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
 ---
 
-# H1
+# LINQ 퍼포먼스 관련
 ## H2
 ### H3
 #### H4
