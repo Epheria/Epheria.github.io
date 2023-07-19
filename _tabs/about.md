@@ -15,7 +15,3 @@ order: 4
   > * #### 개인 프로젝트 포트폴리오 영상    
   > > TheQuesting Video : <https://youtu.be/UDvV4Y-eBLQ>   
   > > ProjectAlive Video : <https://youtu.be/51yy0uizN1Q>   
-
-<center>
-[![Hits](https://hits.sh/Epheria.github.io.svg?view=today-total&style=for-the-badge&label=%EB%B0%A9%EB%AC%B8%EC%9E%90%EC%88%98&logo=unity)](https://hits.sh/Epheria.github.io/)
-</center>
