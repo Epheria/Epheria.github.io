@@ -58,6 +58,16 @@
       {% endif %}
     {% endunless %}
 
+    <a href="https://hits.sh/Epheria.github.io/">
+      <style>
+        .hits {
+          width: auto; height: auto;
+          max-width: 200px;
+          max-height: 120px;
+        }
+      </style>
+      <img alt="Hits" src="https://hits.sh/Epheria.github.io.svg?view=today-total&style=for-the-badge"/></a>
+
     {% for entry in site.data.contact %}
       {% case entry.type %}
         {% when 'github', 'twitter' %}
@@ -98,15 +108,6 @@
         </a>
       {% endif %}
     {% endfor %}
-    <a href="https://hits.sh/Epheria.github.io/">
-      <style>
-        .hits {
-          width: auto; height: auto;
-          max-width: 200px;
-          max-height: 120px;
-        }
-      </style>
-      <img alt="Hits" src="https://hits.sh/Epheria.github.io.svg?view=today-total&style=for-the-badge"/></a>
   </div>
   <!-- .sidebar-bottom -->
 </div>
