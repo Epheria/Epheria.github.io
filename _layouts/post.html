@@ -12,7 +12,6 @@ tail_includes:
 {% include lang.html %}
 
 <h1 data-toc-skip>{{ page.title }}</h1>
-<a href="https://hits.sh/Epheria.github.io/"><img alt="Hits" src="https://hits.sh/Epheria.github.io.svg?view=today-total&style=flat-square&label=%EB%B0%A9%EB%AC%B8%EC%9E%90%EC%88%98&logo=unity"/></a>
 <div class="post-meta text-muted">
     <!-- published date -->
     <span>
@@ -27,6 +26,8 @@ tail_includes:
       {% include datetime.html date=page.last_modified_at tooltip=true lang=lang %}
     </span>
     {% endif %}
+    
+    <a href="https://hits.sh/Epheria.github.io/"><img alt="Hits" src="https://hits.sh/Epheria.github.io.svg?view=today-total&style=flat-square&label=%EB%B0%A9%EB%AC%B8%EC%9E%90%EC%88%98&logo=unity"/></a>
 
   {% if page.image %}
     {% capture src %}src="{{ page.image.path | default: page.image }}"{% endcapture %}
