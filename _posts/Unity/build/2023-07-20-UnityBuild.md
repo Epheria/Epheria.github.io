@@ -55,6 +55,8 @@ toc_sticky: true
 <br>
 <br>
 
+---
+
 ## 2. cs0246: The type or namespace name could not be found (are you missing a using directive or an assembly reference?) cs0246: 형식 또는 네임스페이스 이름을 찾을 수 없습니다. using 지시문 또는 어셈블리 참조가 있는지 확인하세요.
 
 <br>
