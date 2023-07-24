@@ -18,11 +18,11 @@ toc_sticky: true
 - Cinemachine 카메라의 Damping 알고리즘 때문에 캐릭터나 비행선이 빠르게 움직이면 Jittering 현상이 발생
 
 ## 캐릭터의 Rigidbody 세팅
-<img src="/assets/img/post/unity/cine01.png" width="1080px" height="720px" title="256" alt="cine1">
-<img src="/assets/img/post/unity/cine02.png" width="1080px" height="720px" title="256" alt="cine2">
+<img src="/assets/img/post/unity/cine01.png" width="512px" height="512px" title="256" alt="cine1">
+<img src="/assets/img/post/unity/cine02.png" width="512px" height="512px" title="256" alt="cine2">
 
 ## Cinemachine Brain (Main Camera)
-<img src="/assets/img/post/unity/cine03.png" width="1080px" height="720px" title="256" alt="cine3">
+<img src="/assets/img/post/unity/cine03.png" width="512px" height="512px" title="256" alt="cine3">
 
 ## 원인 파악
 - Rigidbody의 Interpolate는 물리기반 이동 캐릭터의 CCD 연산을 담당하는데   
