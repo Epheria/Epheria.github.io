@@ -1,0 +1,216 @@
+---
+title: Unity Google Sheet 연동하기
+date: 2023-07-26 18:47:00 +/-TTTT
+categories: [Unity, GoogleSheet]
+tags: [Unity, GoogleSheet, DataTable]     # TAG names should always be lowercase
+
+toc: true
+toc_sticky: true
+---
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
+
+<br>
+<br>
+
+## Google Sheet Sync 코드
+
+<br>
+<br>
+
+#### 1. DataSheet 연동 코드
+
+######  UnityWebRequest를 이용해서 GoogleSheet의 gid 를 통해 csv 파일로 저장을 할 수 있다.
+
+``` csharp
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Networking;
+using Cysharp.Threading.Tasks;
+
+namespace DataSheets
+{
+    [Serializable]
+    public struct Sheet
+    {
+        public string Name;
+        public long Id;
+    }	
+    
+    /// <summary>
+    /// Downloads spritesheets from Google Spreadsheet and saves them to Resources.
+    /// </summary>
+    [ExecuteInEditMode]
+    public class GoogleSheetSync : MonoBehaviour
+    {
+        /// <summary>
+        /// Table id on Google Spreadsheet.
+        /// Let's say your table has the following url https://docs.google.com/spreadsheets/d/1RvKY3VE_y5FPhEECCa5dv4F7REJ7rBtGzQg0Z_B_DE4/edit#gid=331980525
+        /// So your table id will be "1RvKY3VE_y5FPhEECCa5dv4F7REJ7rBtGzQg9Z_B_DE4" and sheet id will be "331980525" (gid parameter)
+        /// </summary>
+        public string TableId;
+        
+        /// <summary>
+        /// Table sheet contains sheet name and id. First sheet has always zero id. Sheet name is used when saving.
+        /// </summary>
+        public Sheet[] Sheets;
+        
+        /// <summary>
+        /// Folder to save spreadsheets. Must be inside Resources folder.
+        /// </summary>
+        public UnityEngine.Object outPutFolder;
+        
+        private const string UrlPattern = "https://docs.google.com/spreadsheets/d/{0}/export?format=csv&gid={1}";
+
+#if UNITY_EDITOR
+
+        public void DataSync()
+        {
+            SyncSheetData().Forget();
+        }
+        
+        public async UniTaskVoid SyncSheetData()
+        {
+            string folder = UnityEditor.AssetDatabase.GetAssetPath(outPutFolder);
+            
+            Debug.Log("<size=15><color=yellow>Sync started, please wait for confirmation message...</color></size>");
+            
+            var dict = new Dictionary<string, UnityWebRequest>();
+            
+            if(String.IsNullOrEmpty(TableId))
+            {
+                Debug.LogError("Table ID is Empty !!");
+                return;
+            }			
+            
+            try
+            {
+                Debug.Log("<size=15><color=yellow> Set Sheet URL Info....</color></size>");
+                
+                foreach (var sheet in Sheets)
+                {
+                    var url = string.Format(UrlPattern, TableId, sheet.Id);
+                    
+                    Debug.Log($"Downloading: {url}...");
+                    
+                    dict.Add(url, UnityWebRequest.Get(url));
+                }
+                
+                if (dict.Count < 1)
+                {
+                    Debug.LogError("Sheet Count Zero !!");
+                    return;
+                }
+                
+                Debug.Log("<size=15><color=yellow> Request Sheet Data.... </color></size>");
+                
+                foreach (var entry in dict)
+                {
+                    var url = entry.Key;
+                    var request = entry.Value;
+                    
+                    if (!request.isDone)
+                    {
+                        await request.SendWebRequest();
+                    }
+                    
+                    if (request.error == null)
+                    {
+                        var sheet = Sheets.Single(i => url == string.Format(UrlPattern, TableId, i.Id));
+                        var path = System.IO.Path.Combine(folder, sheet.Name + ".csv");
+                        
+                        System.IO.File.WriteAllBytes(path, request.downloadHandler.data);
+                        
+                        Debug.LogFormat("Sheet {0} downloaded to {1}", sheet.Id, path);
+                    }
+                    else
+                    {
+                        Debug.LogError("request.error:" + request.error);
+                        
+                        throw new Exception(request.error);						
+                        }
+                }
+                
+                UnityEditor.AssetDatabase.Refresh();
+                
+                Debug.Log("<size=15><color=green>Successfully Synced!</color></size>");
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
+#endif
+    }
+}
+```
+
+
+
+- 빌드 후 특정 애니메이션, 프리팹 등이 없어지거나 에러가 발생
+
+## 원인
+- Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
+
+## 해결 방법
+- Strip Engine Code 는 빌드시 빌드 사이즈를 줄이기 위한 기능
+* [참조 링크](https://takoyaking.hatenablog.com/entry/strip_engine_code_unity)
+
+하지만 위 링크를 보면 Strip Engine Code를 끄는게 제일 간편하지만
+
+빌드 사이즈에 있어 용량 이슈가 발생했고
+
+##### 따라서 최선의 해결 방법은 link.xml 파일에 빌드에 필요한 클래스들을 추가해주는 것
+
+<br>
+ <span style="color:red">다만, 주의 할 점</span>
+
+- link.xml 에 기술해도 빌드에 포함시켜주지 않는 것도 있다고 함
+- 또한, Net 런타임을 사용하는 경우 레거시 스크립팅 런타임보다 크기가 큰 .NET 클래스 라이브러리 API가 함께 제공 되기 때문에 코드 크기가 더 큰 경우도 많다.   
+이러한 코드 크기 증가를 완화하기 위해서는 Strip Engine Code를 활성화 해야함. (특히, 안쓰는 더미 코드들도 싹 빼주기 때문에 필수적으로 사용해야한다.)
+* [참조링크](https://docs.unity3d.com/kr/current/Manual/dotnetProfileLimitations.html)
+
+<br>
+
+##### 내가 겪은 이슈는 애니메이션 동기화가 제대로 이루어지지 않았기 때문에, link.xml 에 AnimatorController와 Animator 컴포넌트를 추가했다.
+
+<img src="/assets/img/post/unity/unitybuild01.png" width="1920px" height="1080px" title="256" alt="build1">
+
+크래시가 났을 때 해당 ID 값을 같이 뿌려준다. (ex. ID 238 같이)
+이 ID는 YAML Class ID Reference에 명시된 클래스들의 ID 이다.
+
+따라서, 발생한 에러의 ID를 대조하려면 다음 링크를 참조하면 되겠다.
+* [참조 링크 ClassIDReference](https://docs.unity3d.com/Manual/ClassIDReference.html)
+
+<br>
+<br>
+
+-------
+
+## 2. cs0246: The type or namespace name could not be found (are you missing a using directive or an assembly reference?) cs0246: 형식 또는 네임스페이스 이름을 찾을 수 없습니다. using 지시문 또는 어셈블리 참조가 있는지 확인하세요.
+
+<br>
+
+## 주요현상
+1. 클래스 작성 시 네임스페이스 문제..
+2. using UnityEditor 사용 할 경우 -> UnityEditor 클래스는 빌드에 포함 X
+3. using xxxx 코드에 적어놓고 사용하지 않을 경우
+
+-> 빌드 시 에러 발생 후 빌드가 강제 종료됨
+
+## 원인
+* 기본적으로 Class 가 선언이 되어 있지 않거나 using 으로 임포트가 되지 않아서 발생하는 에러
+
+##### 빌드 시 환경
+- 작성한 코드에는 오탈자가 없음
+- 에디터에서 정상적으로 실행이 가능
+- 잘 실행될 뿐만 아니라 기능적 오류도 발생하지 않았음
+- 하지만 빌드를 하려고 하면 에러가 발생하며 빌드가 실패함
+
+## 해결 방법
+1. UnityEditor 전처리 해버리기
+2. 안쓰는 using namespace 지우기
