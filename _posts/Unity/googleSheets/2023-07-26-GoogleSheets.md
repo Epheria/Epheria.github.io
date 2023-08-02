@@ -20,6 +20,8 @@ toc_sticky: true
 #### 1. DataSheet 연동 코드
 
 ######  UnityWebRequest를 이용해서 GoogleSheet의 gid 를 통해 csv 파일로 저장을 할 수 있다.
+######  * UnityEditor를 사용해서 Tool 처럼 만들어서 쓰시면 됩니다.   
+추가적으로 설명하자면 Sheets[] 배열에 시트의 gid들을 넣어서 한꺼번에 csv 파일로 받아오는 형태
 
 ``` csharp
 
@@ -149,68 +151,69 @@ namespace DataSheets
 }
 ```
 
-
-
-- 빌드 후 특정 애니메이션, 프리팹 등이 없어지거나 에러가 발생
-
-## 원인
-- Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
-
-## 해결 방법
-- Strip Engine Code 는 빌드시 빌드 사이즈를 줄이기 위한 기능
-* [참조 링크](https://takoyaking.hatenablog.com/entry/strip_engine_code_unity)
-
-하지만 위 링크를 보면 Strip Engine Code를 끄는게 제일 간편하지만
-
-빌드 사이즈에 있어 용량 이슈가 발생했고
-
-##### 따라서 최선의 해결 방법은 link.xml 파일에 빌드에 필요한 클래스들을 추가해주는 것
-
 <br>
- <span style="color:red">다만, 주의 할 점</span>
-
-- link.xml 에 기술해도 빌드에 포함시켜주지 않는 것도 있다고 함
-- 또한, Net 런타임을 사용하는 경우 레거시 스크립팅 런타임보다 크기가 큰 .NET 클래스 라이브러리 API가 함께 제공 되기 때문에 코드 크기가 더 큰 경우도 많다.   
-이러한 코드 크기 증가를 완화하기 위해서는 Strip Engine Code를 활성화 해야함. (특히, 안쓰는 더미 코드들도 싹 빼주기 때문에 필수적으로 사용해야한다.)
-* [참조링크](https://docs.unity3d.com/kr/current/Manual/dotnetProfileLimitations.html)
-
 <br>
 
-##### 내가 겪은 이슈는 애니메이션 동기화가 제대로 이루어지지 않았기 때문에, link.xml 에 AnimatorController와 Animator 컴포넌트를 추가했다.
+#### 2. DataSheet Editor 코드
+``` csharp
+    /// <summary>
+    /// SpreadSheetSync 커스텀 Editor UI
+    /// </summary>
+    [CustomEditor(typeof(GoogleSheetSync))]
+    public class GoogleSheetSyncEditor : Editor
+    {        
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
 
-<img src="/assets/img/post/unity/unitybuild01.png" width="1920px" height="1080px" title="256" alt="build1">
+            GUIStyle style = new GUIStyle(GUI.skin.button);
+            style.normal.textColor = Color.green;
+            style.fontSize = 20;
 
-크래시가 났을 때 해당 ID 값을 같이 뿌려준다. (ex. ID 238 같이)
-이 ID는 YAML Class ID Reference에 명시된 클래스들의 ID 이다.
+            var component = (GoogleSheetSync)target;          
 
-따라서, 발생한 에러의 ID를 대조하려면 다음 링크를 참조하면 되겠다.
-* [참조 링크 ClassIDReference](https://docs.unity3d.com/Manual/ClassIDReference.html)
+            if (GUILayout.Button("Get Data Sync", style))
+            {
+                component.DataSync();
+            }
+        }
+    }
+```
 
 <br>
 <br>
 
--------
-
-## 2. cs0246: The type or namespace name could not be found (are you missing a using directive or an assembly reference?) cs0246: 형식 또는 네임스페이스 이름을 찾을 수 없습니다. using 지시문 또는 어셈블리 참조가 있는지 확인하세요.
+#### 3. Table ID 및 Sheet gid 찾는 방법
+###### 상단 툴바에 커스텀해서 추가해서 사용하셔도 됩니다. 주로 회사에서는 테이블 갱신을 텀을 길게 두면서 갱신하므로 귀찮아서 Scene 에 박아넣고 프리팹으로 사용하고있었습니다...ㅎㅎ   
+대충 설명 드리자면, 인스펙터창의 Google Sheet Sync 컴포넌트에서 본인의 계정으로 만든 Google Spread Sheet 의 Table ID를 입력하고   
+Sheets 배열에 각 Sheet들의 이름과 gid를 입력하면됩니다.
+<img src="/assets/img/post/unity/googleSheet01.png" width="1920px" height="1080px" title="256" alt="sheet01">
 
 <br>
 
-## 주요현상
-1. 클래스 작성 시 네임스페이스 문제..
-2. using UnityEditor 사용 할 경우 -> UnityEditor 클래스는 빌드에 포함 X
-3. using xxxx 코드에 적어놓고 사용하지 않을 경우
+###### Table ID는 url 링크에서 아래 사진처럼 드래그한 영역을 의미합니다.
+<img src="/assets/img/post/unity/googleSheet02.png" width="1920px" height="1080px" title="256" alt="sheet02">
 
--> 빌드 시 에러 발생 후 빌드가 강제 종료됨
+<br>
 
-## 원인
-* 기본적으로 Class 가 선언이 되어 있지 않거나 using 으로 임포트가 되지 않아서 발생하는 에러
+###### Sheet[] 배열에 들어갈 Sheet 정보들을 입력해줘야합니다. Sheet ID는 gid를 입력, name은 하단 툴바의 Sheet 이름을 입력
 
-##### 빌드 시 환경
-- 작성한 코드에는 오탈자가 없음
-- 에디터에서 정상적으로 실행이 가능
-- 잘 실행될 뿐만 아니라 기능적 오류도 발생하지 않았음
-- 하지만 빌드를 하려고 하면 에러가 발생하며 빌드가 실패함
+###### - ID
+<img src="/assets/img/post/unity/googleSheet03.png" width="1920px" height="1080px" title="256" alt="sheet03">
 
-## 해결 방법
-1. UnityEditor 전처리 해버리기
-2. 안쓰는 using namespace 지우기
+###### - Name
+<img src="/assets/img/post/unity/googleSheet04.png" width="1920px" height="1080px" title="256" alt="sheet04">
+
+<br>
+<br>
+
+#### 4. 데이터 가져오기
+###### 로드하고자 하는 테이블들을 다 입력했으면  "<span style="color:cyan">Get Data Sync</span>"버튼을 눌러줍니다.   
+주의할 점은 스프레드 시트에 삭제된 테이블이 있으면 컴포넌트에도 반영을 해줘야 에러가 발생하지 않습니다.   
+또한 Sheets의 변경점들이 생기면 그대로 유지하고 추가적인 시트만 추가해주는게 좋습니다.   
+수정된 씬이나 프리팹은 SVN이나 협업툴로 동기화 해주는게 편함..
+<img src="/assets/img/post/unity/googleSheet05.png" width="512px" height="512px" title="128" alt="sheet05">
+
+###### 최종적으로 스프레드 시트에 있던 테이블을 csv 파일로 가져오기에 성공했습니다.   
+다만 csv 파일은 너무 Raw Data 이기 때문에 따로 binary 파일로 파싱하여 보안처리를 해주는게 좋습니다.   
+> (binary로 파싱해도 사실 뚫으려하면 다 뚫리는게 현실.. 그래도 아무에게나 다 뚫리는것을 방지 or 귀찮게 하기 위해 최소한의 안전장치는 해두자라는 마인드..)
