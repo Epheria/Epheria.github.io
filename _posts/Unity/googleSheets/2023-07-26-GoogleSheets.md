@@ -222,6 +222,6 @@ Sheets 배열에 각 Sheet들의 이름과 gid를 입력하면됩니다.
 <br>
 
 #### 5. 스프레드 시트의 공유 설정은 꼭 "링크가 있는 모든 사용자"로 설정해줘야 합니다.. 안그러면 엑세스 거부되거나 오류가 발생합니다.
-<img src="/assets/img/post/unity/googleSheet06.png" width="1920px" height="1280px" title="256" alt="sheet06">
+<img src="/assets/img/post/unity/googleSheet06.png" width="512px" height="512px" title="256" alt="sheet06">
 > 이게 보안상 정말 단점이긴 한데.. 편하게 쓰려면 어쩔 수 없다..   
 개발단계 or 업데이트 할 때만 공개 설정해두고 테이블을 로컬 작업환경에 받아오고 나서는 다시 제한한다거나 하는 조치를 취하면 되지싶네요
