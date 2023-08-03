@@ -10,18 +10,6 @@ toc_sticky: true
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
 
--------
-
-## 목차
-
-- [fastlane 설정 방법](#fastlane-설정-방법)
-- [프로젝트 전반](#Unity-Build-Pipeline-설정-방법)
-- [내가 담당 했던 것들](#Jenkins-설정-방법)
-
-------
-
-<br>
-
 ## 1. fastlane 설정 방법
 
 <br>
