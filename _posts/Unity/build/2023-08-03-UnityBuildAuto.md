@@ -14,10 +14,9 @@ toc_sticky: true
 
 ## 목차
 
-- [fastlane 설정 방법](#1.-fastlane-설정-방법)
-- [프로젝트 전반](#2.-Unity-Build-Pipeline-설정-방법)
-- [내가 담당 했던 것들](#3.-Jenkins-설정-방법)
-- [Toyverse 개요](#toyverse-개요)
+- [fastlane 설정 방법](#fastlane-설정-방법)
+- [프로젝트 전반](#Unity-Build-Pipeline-설정-방법)
+- [내가 담당 했던 것들](#Jenkins-설정-방법)
 
 ------
 
