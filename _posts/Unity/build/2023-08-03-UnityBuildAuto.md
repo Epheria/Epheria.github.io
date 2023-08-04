@@ -67,15 +67,15 @@ toc_sticky: true
 
 4. fastlane 초기화
    - Xcode 프로젝트가 설치된 경로를 가리킨 후 "fastlane init" 입력
-       <img src="/assets/img/post/unity/buildAuto02.png" width="1920px" height="1080px" title="256" alt="build1"><center>fastlane init 실행 결과물</center>
+       <img src="/assets/img/post/unity/buildAuto02.png" width="1920px" height="1080px" title="256" alt="build1">
     - ```continue by pressing enter``` 를 계속 입력하다보면 Apple ID와 비밀번호를 입력하는 부분이 나온다. (이부분은 AppFile에서 수정가능)
 
 <br>
 
 #### fastlane 파일 구성
    - 모든 인증을 완료하면 지정한 경로에 "Gemfile", "Gemfile.lock", "fastlane/AppFile", "fastlane/FastFile" 파일들이 생성됩니다. 또한 추후에 설명할 플러그인을 설치하면 PluginFile 이 생성됩니다.
-    <img src="/assets/img/post/unity/buildAuto03.png" width="1920px" height="1080px" title="256" alt="build1"><center>빌드한 Xcode 폴더 내부(fastlane설치되어있는곳)</center>   
-    <img src="/assets/img/post/unity/buildAuto04.png" width="1920px" height="1080px" title="256" alt="build1"><center>fastlane 폴더 내부</center>
+    <img src="/assets/img/post/unity/buildAuto03.png" width="1920px" height="1080px" title="256" alt="build1">
+    <img src="/assets/img/post/unity/buildAuto04.png" width="1920px" height="1080px" title="256" alt="build1">
     
 <br>
 
@@ -83,7 +83,7 @@ toc_sticky: true
    - ```"#"```주석처리를 지운 뒤   
    app_identifier 를 입력해줍니다.  ```ex) com.companyname.projectname```   
    apple_id 또한 입력해줍니다.      ```ex) xxxx@coconev.co.jp```
-    <img src="/assets/img/post/unity/buildAuto05.png" width="1920px" height="1080px" title="256" alt="build1"><center>AppFile</center>   
+    <img src="/assets/img/post/unity/buildAuto05.png" width="1920px" height="1080px" title="256" alt="build1">
 
 <br>
 
@@ -98,12 +98,11 @@ Slack 봇  [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-p
 
 - "sudo fastlane add_plugin xxx"  입력 후 설치가 완료되면 아래 사진 처럼 Pluginfile이 생성됩니다.
    
-<img src="/assets/img/post/unity/buildAuto06.png" width="500px" height="500px" title="256" alt="build1"><center>Plugin File</center>   
+<img src="/assets/img/post/unity/buildAuto06.png" width="500px" height="500px" title="256" alt="build1">
 
 <br>
 
-<img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1"><center>Plugin 설치시 보이는 Terminal 화면</center>   
-
+<img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1">
 
 ## 원인
 - Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
