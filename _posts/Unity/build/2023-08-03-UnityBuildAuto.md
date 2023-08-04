@@ -10,13 +10,102 @@ toc_sticky: true
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
 
+---
+
+## 목차
+- [1. fastlane 설정 방법](#1-fastlane-설정-방법)
+- [2. Unity Build Pipeline 설정 방법](#2-unity-build-pipeline-설정-방법)
+- [3. Jenkins 설정 방법](#3-jenkins-설정-방법)
+
+---
+
+## 서론
+> 회사에서 프로젝트의 iOS, AOS 빌드에 대한 전반적인 부분을 맡게 되었고 초반엔 Jenkins 만을 사용하여 Unity Build Pipeline을 통해 AOS 빌드 자동화 - AppCenter 업로드 - Slack Notification 까지는 성공했지만, iOS 빌드 자동화를 진행하면서 Certificates, Provisioning Signing, BitCode on/off, Auto Signing 등 Xcode 세팅에 대한 자동화에 애를 먹게 되었다.   
+하지만 회사에 개발 CTO 님이 fastlane 이라는 자동화 툴에 대해 소개를 해주셨고, Jenkins Pipeline에 비해 훨씬 편하다는 것을 느끼게 되었다. 필요한 플러그인들을 선택적으로 terminal을 통해 설치가 가능했고 Fastfile을 수정하여 커스텀하게 lane을 구성해서 다양한 빌드환경에 대응이 가능했다. fastlane과 Jenkins 그리고 Unity Build Pipeline에 대한 전반적인 세팅 방법과 연동하는 방법에 대해 기록했다.
+
+<br>
+
+## 준비물 및 참고
+1. Mac OS
+2. Terminal 을 통해 HomeBrew와 Bundler가 설치되어야 함.
+3. Xcode 및 Unity 설치
+
+<br>
+<br>
+
 ## 1. fastlane 설정 방법
 
-<br>
+#### fastlane 설치
+1. HomeBrew로 fastlane 설치
+   - Terminal을 켜고 "brew install fastlane"을 입력
+   - 권한이 없을 경우 "sudo brew install fastlane" 입력
+
 <br>
 
-## 주요 현상
-- 빌드 후 특정 애니메이션, 프리팹 등이 없어지거나 에러가 발생
+2. bundler 설치
+   - 위의 경로에 그대로 "gem install bundler" 입력
+   - gem 이 없다고 뜨면 gem을 설치해줘야 함.
+
+<br>
+
+<img src="/assets/img/post/unity/buildAuto01.png" width="1920px" height="1080px" title="256" alt="build1">
+
+<br>
+
+3. 이후 fastlane을 설치할 폴더를 지정해준다.
+   - cd 입력할 경로를 Terminal에 우선 입력해준다.
+   ``` terminal
+   //"cd 경로"
+   cd /Users/..../GitLab/YourProject
+   ```
+
+   - 주의할 점은 fastlane은 Xcode의 커맨드 라인 툴을 이용하기 때문에 유니티를 사용할 경우 유니티 프로젝트 ios로 빌드한 폴더에 fastlane을 설치 해줘야 한다.
+   - (다른방법이 있을수도 있음) 또한 실제로 빌드용으로 사용하는 Xcode 폴더와 fastlane으로 사용하는 Xcode 폴더를 구분해서 사용해야한다.   
+   프로젝트 빌드를 매번 해야하므로.. 프로젝트 빌드를 하게 되면 Replace 로 빌드를 하게 될 것이고 그렇게 되면 분리 해놓지 않으면 FastFile이 날라가버린다..
+
+<br>
+
+4. fastlane 초기화
+   - Xcode 프로젝트가 설치된 경로를 가리킨 후 "fastlane init" 입력
+       <img src="/assets/img/post/unity/buildAuto02.png" width="1920px" height="1080px" title="256" alt="build1"><center>fastlane init 실행 결과물</center>
+    - ```continue by pressing enter``` 를 계속 입력하다보면 Apple ID와 비밀번호를 입력하는 부분이 나온다. (이부분은 AppFile에서 수정가능)
+
+<br>
+
+#### fastlane 파일 구성
+   - 모든 인증을 완료하면 지정한 경로에 "Gemfile", "Gemfile.lock", "fastlane/AppFile", "fastlane/FastFile" 파일들이 생성됩니다. 또한 추후에 설명할 플러그인을 설치하면 PluginFile 이 생성됩니다.
+    <img src="/assets/img/post/unity/buildAuto03.png" width="1920px" height="1080px" title="256" alt="build1"><center>빌드한 Xcode 폴더 내부(fastlane설치되어있는곳)</center>   
+    <img src="/assets/img/post/unity/buildAuto04.png" width="1920px" height="1080px" title="256" alt="build1"><center>fastlane 폴더 내부</center>
+    
+<br>
+
+#### AppFile 설정
+   - ```"#"```주석처리를 지운 뒤   
+   app_identifier 를 입력해줍니다.  ```ex) com.companyname.projectname```   
+   apple_id 또한 입력해줍니다.      ```ex) xxxx@coconev.co.jp```
+    <img src="/assets/img/post/unity/buildAuto05.png" width="1920px" height="1080px" title="256" alt="build1"><center>AppFile</center>   
+
+<br>
+
+#### Plugin 설치
+
+| 종류 | 링크 |
+| ------------ | ------------- |
+| Unity 빌드 | [fastlane-plugin-unity](https://github.com/safu9/fastlane-plugin-unity)  |
+| AppCenter 업로드 | [fastlane-plugin-appcenter](https://github.com/microsoft/fastlane-plugin-appcenter)  |
+| Slack 봇 | [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-plugin-slack_bot)  |
+
+   <br>
+   <br>
+
+-  "sudo fastlane add_plugin xxx"  입력 후 설치가 완료되면 아래 사진 처럼 Pluginfile이 생성됩니다.
+   
+   <img src="/assets/img/post/unity/buildAuto06.png" width="500px" height="500px" title="256" alt="build1"><center>Plugin File</center>   
+
+   <br>
+
+   <img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1"><center>Plugin 설치시 보이는 Terminal 화면</center>   
+
 
 ## 원인
 - Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
