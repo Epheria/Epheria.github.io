@@ -48,6 +48,7 @@ toc_sticky: true
 
 <br>
 
+
 <img src="/assets/img/post/unity/buildAuto01.png" width="1920px" height="1080px" title="256" alt="build1">
 
 <br>
@@ -106,7 +107,117 @@ toc_sticky: true
 
 <img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1">
 
-## 원인
+<br>
+
+#### FastFile 설정
+- fastlane 의 최종관문 **FastFile**이다.   
+Jenkins 를 이용해서 빌드 머신에 설치된 Unity 프로젝트와 fastlane을 가지고 원격 빌드 및 배포를 할 수 있다.   
+Jenkins 의 *Executes Shell* 을 통해 fastlane init -> Addressable Build -> Unity Project Build -> AppCenter Upload 까지 가능하다.
+
+> fastlane의 자세한 문서는 이쪽으로 ==> [ fastlane doc](https://docs.fastlane.tools/)   
+FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용하여 편집하였다.
+
+<br>
+
+1. platform
+   - platform 이란 말그대로 iOS, Android 플랫폼을 의미한다. 주로 수동으로 빌드하면 Terminal, CI/CD로 빌드하면 Execute Shell 을 통해 빌드를 하므로 누가봐도 파악하기 쉬운 이름으로 만들어주자.
+   ```ruby
+   platform :android do
+   platform :ios do
+   ```
+
+2. desc
+   - desc는 말그대로 description 주석이다. 물론 fastlane log에도 출력이 된다.
+   ```ruby
+   platform: android do
+      desc "Build AOS"
+   end
+   ```
+
+3. lane
+   - fastlane 이름에서도 알 수 있듯이 우린 이 lane 안에서 어떤 플러그인을 가지고 작업을 할 것인지 작성해줘야한다.   
+   또한 여러개의 lane으로 나누어서 다양한 빌드 세팅과 빌드 환경을 구축할 수 있다.
+   ```ruby
+   platform :android do
+      desc "Build AOS"
+      lane :aos_build do
+      end
+   end
+   ```
+
+4. lane - plugin   
+위에서 설명한 Plugin을 설치를 했다면, 다음과 같이 작성하면 된다.
+
+   - **unity** 플러그인
+
+   ```ruby
+   # unity plugin
+   unity(
+   build_target: "Android",
+   execute_method: "ProjectBuilder.BuildAndroid", # Unity Build Pipeline으로 사용될 static 함수
+   unity_path: "Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity" # Unity 버젼이 설치된 경로 입력
+   project_path: "/Users/Admin/.jenkins/workspace/android_fastlane" # Unity Project 경로 입력
+   )
+   ```
+<br>
+
+   - **upload_appcenter** 플러그인 
+
+   ```ruby
+   # appcenter_upload
+   appcenter_upload(
+      api_token: "82acdkgd92391kdfajdkfj", # 본인의 appcenter - settings - API Token 을 입력
+      owner_name: "coconefk_dev", # appcenter 관리자 이름 입력 (All apps - Owner 정보 나와있음)
+      app_name: "toyverse_alpha_android", # 앱 이름 (유니티 이름 x 앱센터 상의 이름)
+      file: "/Users/Build/toyverse_apk/toyverse.aab", # 최종 결과물의 경로 입력  .apk / .aab 확장자 명까지 같이 입력
+      destinations: "*", # 모든 그룹에 배포. 넣은 이유는 상단 링크 참조
+      destination_type: "group", # 그룹전용 의미. "shop" 은 구글 플레이 스토어 or 앱스토어 전용
+      notify_testers: false, # settings 쪽에 email 알림 기능을 의미
+      mandatory_update: true # 문서 참조 바람
+   )
+   ```
+   <br>
+
+   - **Android 최종본**
+
+   ```ruby
+   platform :android do
+     desc "Build AOS"
+     lane :aos_build do
+       unity(
+         build_target: "Android",
+         execute_method: "ProjectBuilder.BuildAndroid",
+         unity_path: "Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity",
+         project_path: "/Users/Admin/.jenkins/workspace/android_fastlane"
+       )
+    end
+    
+    desc "Upload AppCenter"
+    lane :upload_appcenter do
+       appcenter_upload(
+         api_token: "82acdkgd92391kdfajdkfj",
+         owner_name: "coconefk_dev",
+         app_name: "toyverse_alpha_android",
+         file: "/Users/Build/toyverse_apk/toyverse.aab",
+         destinations: "*",
+         destination_type: "group",
+         notify_testers: false,
+         mandatory_update: true
+       )
+    end
+
+    desc "Build Addressable"
+    lane :addressable do
+       unity(
+         build_target: "Android",
+         execute_method: "ProjectBuilder.BuildAddressable",
+         unity_path: "Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity",
+         project_path: "/Users/Admin/.jenkins/workspace/android_fastlane"
+       )
+    end
+   end
+   ```
+
 - Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
 
 ## 해결 방법
