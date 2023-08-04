@@ -89,9 +89,11 @@ toc_sticky: true
 
 #### Plugin 설치
 
-Unity 빌드  [fastlane-plugin-unity](https://github.com/safu9/fastlane-plugin-unity)  
-AppCenter 업로드  [fastlane-plugin-appcenter](https://github.com/microsoft/fastlane-plugin-appcenter)  
-Slack 봇  [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-plugin-slack_bot)  
+| 종류 | 링크 |
+| ------------ | ------------- |
+| Unity 빌드 | [fastlane-plugin-unity](https://github.com/safu9/fastlane-plugin-unity)  |
+| AppCenter 업로드 | [fastlane-plugin-appcenter](https://github.com/microsoft/fastlane-plugin-appcenter)  |
+| Slack 봇 | [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-plugin-slack_bot)  |
 
 <br>
 <br>
