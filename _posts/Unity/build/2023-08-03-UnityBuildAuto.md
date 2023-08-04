@@ -2,7 +2,7 @@
 title: Unity 빌드 자동화 - fastlane, build pipeline, Jenkins
 date: 2023-08-03 11:35:00 +/-TTTT
 categories: [Unity, Build]
-tags: [Unity, Build, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
+tags: [Unity, Build, 자동화, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
@@ -89,22 +89,20 @@ toc_sticky: true
 
 #### Plugin 설치
 
-| 종류 | 링크 |
-| ------------ | ------------- |
-| Unity 빌드 | [fastlane-plugin-unity](https://github.com/safu9/fastlane-plugin-unity)  |
-| AppCenter 업로드 | [fastlane-plugin-appcenter](https://github.com/microsoft/fastlane-plugin-appcenter)  |
-| Slack 봇 | [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-plugin-slack_bot)  |
+Unity 빌드  [fastlane-plugin-unity](https://github.com/safu9/fastlane-plugin-unity)  
+AppCenter 업로드  [fastlane-plugin-appcenter](https://github.com/microsoft/fastlane-plugin-appcenter)  
+Slack 봇  [fastlane-plugin-slack_bot](https://github.com/crazymanish/fastlane-plugin-slack_bot)  
 
-   <br>
-   <br>
+<br>
+<br>
 
--  "sudo fastlane add_plugin xxx"  입력 후 설치가 완료되면 아래 사진 처럼 Pluginfile이 생성됩니다.
+- "sudo fastlane add_plugin xxx"  입력 후 설치가 완료되면 아래 사진 처럼 Pluginfile이 생성됩니다.
    
-   <img src="/assets/img/post/unity/buildAuto06.png" width="500px" height="500px" title="256" alt="build1"><center>Plugin File</center>   
+<img src="/assets/img/post/unity/buildAuto06.png" width="500px" height="500px" title="256" alt="build1"><center>Plugin File</center>   
 
-   <br>
+<br>
 
-   <img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1"><center>Plugin 설치시 보이는 Terminal 화면</center>   
+<img src="/assets/img/post/unity/buildAuto07.png" width="1920px" height="1080px" title="256" alt="build1"><center>Plugin 설치시 보이는 Terminal 화면</center>   
 
 
 ## 원인
