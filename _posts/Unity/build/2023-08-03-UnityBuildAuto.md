@@ -2,7 +2,7 @@
 title: Unity 빌드 자동화 - fastlane, build pipeline, Jenkins
 date: 2023-08-03 11:35:00 +/-TTTT
 categories: [Unity, Build]
-tags: [Unity, Build, BuildPipeline, 빌드 자동화, fastlane, Jenkins]     # TAG names should always be lowercase
+tags: [Unity, Build, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
