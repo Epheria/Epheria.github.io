@@ -217,8 +217,38 @@ FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용�
     end
    end
    ```
+   <br>
 
-- Addressable(Asset Bundle)를 사용하고 있으면, 수동으로 포함하지 않으면 안되는 클래스가 있기 때문에 발생
+   - **iOS 빌드**
+
+   ```ruby
+   # build ios 유니티 프로젝트 빌드
+   desc "Build Unity Project iOS"
+   lane :unity_ios do
+    unity(
+      build_target: "iOS",
+      execute_method: "ProjectBuilder.BuildIOS",
+      unity_path: "Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity",
+      project_path: "/Users/Admin/.jenkins/workspace/android_fastlane"
+    )
+   ```
+   <br>
+
+   - **Xcode 빌드**
+   
+   ```ruby
+   desc "Xcode build GYM"
+   lane :build_ios_gym do
+    clear_derived_data
+    gym(
+      scheme: "Unity-iPhone",
+      export_method: "enterprise",
+      clean: true,
+      output_directory: "/Users/coconevbusan/Build/toyverse_ipa"
+    )
+   ```
+   - Xcode 빌드는 build_app 등 여러가지 명령이 있지만, gym 을 사용하는게 제일 간단하고 신경써줘야할 것들이 없었다.   
+   특히 Auto Signing과 BitCode, 라이브러리 버젼 이슈를 일일히 설정해줘야했는데 gym을 통해 상당수 그런 작업들이 줄어들게 되었다.
 
 ## 해결 방법
 - Strip Engine Code 는 빌드시 빌드 사이즈를 줄이기 위한 기능
