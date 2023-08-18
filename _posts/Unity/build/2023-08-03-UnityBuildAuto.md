@@ -60,9 +60,10 @@ toc_sticky: true
    cd /Users/..../GitLab/YourProject
    ```
 
-   - 주의할 점은 fastlane은 Xcode의 커맨드 라인 툴을 이용하기 때문에 유니티를 사용할 경우 유니티 프로젝트 ios로 빌드한 폴더에 fastlane을 설치 해줘야 한다.
-   - (다른방법이 있을수도 있음) 또한 실제로 빌드용으로 사용하는 Xcode 폴더와 fastlane으로 사용하는 Xcode 폴더를 구분해서 사용해야한다.   
-   프로젝트 빌드를 매번 해야하므로.. 프로젝트 빌드를 하게 되면 Replace 로 빌드를 하게 될 것이고 그렇게 되면 분리 해놓지 않으면 FastFile이 날라가버린다..
+   - ~~주의할 점은 fastlane은 Xcode의 커맨드 라인 툴을 이용하기 때문에 유니티를 사용할 경우 유니티 프로젝트 ios로 빌드한 폴더에 fastlane을 설치 해줘야 한다.~~
+   - ~~(다른방법이 있을수도 있음) 또한 실제로 빌드용으로 사용하는 Xcode 폴더와 fastlane으로 사용하는 Xcode 폴더를 구분해서 사용해야한다.   
+   프로젝트 빌드를 매번 해야하므로.. 프로젝트 빌드를 하게 되면 Replace 로 빌드를 하게 될 것이고 그렇게 되면 분리 해놓지 않으면 FastFile이 날라가버린다..~~
+   - 결국 소스트리같은 SVN 툴로 관리를 하기 때문에 프로젝트 내부에 fastlane 을 설치하고 develop 브랜치나 master 브랜치에 merge 해주면 된다.
 
 <br>
 
@@ -249,6 +250,26 @@ FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용�
    ```
    - Xcode 빌드는 build_app 등 여러가지 명령이 있지만, gym 을 사용하는게 제일 간단하고 신경써줘야할 것들이 없었다.   
    특히 Auto Signing과 BitCode, 라이브러리 버젼 이슈를 일일히 설정해줘야했는데 gym을 통해 상당수 그런 작업들이 줄어들게 되었다.
+   - GymFile 예시   
+   Gym 을 사용하기 위해서는 GymFile을 세팅해줘야 한다. scheme와 enterprise 인지 development인지 설정, 프로비져닝 프로필 설정, ipa 저장 위치 설정, 이름 설정 등을 할 수 있다. 뭔가 FastFile에서 프로비져닝 프로필 설정하는 함수를 쓰면 잘 안됬어서 GymFile에 설정하고 Gym을 실행시키면 ipa 빌드까지 문제없이 잘 됨.
+   ``` ruby
+   scheme("Unity-iPhone")
+   
+   clean(true)
+   export_method("enterprise")
+   export_options({
+      provisioningProfiles:{
+            "com.coconev.toyverse.enterprise" => "toyverse_inhouse"
+         }
+      })
+   output_directory("/Users/coconevbusan/Build/toyverse_ipa")
+   output_name("toyverse_ios")
+   ```
+
+ <br>
+
+ 
+
 
 ## 해결 방법
 - Strip Engine Code 는 빌드시 빌드 사이즈를 줄이기 위한 기능
