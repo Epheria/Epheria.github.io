@@ -64,6 +64,7 @@ toc_sticky: true
    - ~~(다른방법이 있을수도 있음) 또한 실제로 빌드용으로 사용하는 Xcode 폴더와 fastlane으로 사용하는 Xcode 폴더를 구분해서 사용해야한다.   
    프로젝트 빌드를 매번 해야하므로.. 프로젝트 빌드를 하게 되면 Replace 로 빌드를 하게 될 것이고 그렇게 되면 분리 해놓지 않으면 FastFile이 날라가버린다..~~
    - 결국 소스트리같은 SVN 툴로 관리를 하기 때문에 프로젝트 내부에 fastlane 을 설치하고 develop 브랜치나 master 브랜치에 merge 해주면 된다.
+   - 단, 빌드머신이 mac OS 를 사용하고 있다!!(mac-mini 사용중) 윈도우는 fastlane이 안됨..
 
 <br>
 
@@ -252,6 +253,7 @@ FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용�
    특히 Auto Signing과 BitCode, 라이브러리 버젼 이슈를 일일히 설정해줘야했는데 gym을 통해 상당수 그런 작업들이 줄어들게 되었다.
    - GymFile 예시   
    Gym 을 사용하기 위해서는 GymFile을 세팅해줘야 한다. scheme와 enterprise 인지 development인지 설정, 프로비져닝 프로필 설정, ipa 저장 위치 설정, 이름 설정 등을 할 수 있다. 뭔가 FastFile에서 프로비져닝 프로필 설정하는 함수를 쓰면 잘 안됬어서 GymFile에 설정하고 Gym을 실행시키면 ipa 빌드까지 문제없이 잘 됨.
+
    ``` ruby
    scheme("Unity-iPhone")
    
@@ -266,9 +268,21 @@ FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용�
    output_name("toyverse_ios")
    ```
 
- <br>
-
+   - Unity 에서 Xcode Auto Signing 및 Provisioning Profile 세팅
+      - #1. Player Settings - Other Settings 하위에 Identification에 아래와 같이 설정 해준다.
+   <img src="/assets/img/post/unity/unityauto01.png" width="1920px" height="1080px" title="256" alt="build1">
+      - #2. Preferences - External Tools 하위에 Xcode Default Settings를 아래와 같이 설정 해준다. (mac OS에서는 settings 로 타고들어가야함)
+   <img src="/assets/img/post/unity/unityauto02.png" width="1920px" height="1080px" title="256" alt="build1">
+      - Applde Developer 에서 받을 각종 Certificates와 Provisioning Profile은 다운 받고 프로젝트에서 관리를 해주면 편하다. 특히 Android의 Keystore도 포함시켜서..
+   <img src="/assets/img/post/unity/unityauto03.png" width="1920px" height="1080px" title="256" alt="build1">
  
+ <br>
+ <br>
+ 
+## 2. Unity Build Pipeline 설정 방법
+<br>
+
+#### Unity Build Pipeline 의 개념과 batchmode
 
 
 ## 해결 방법
@@ -305,9 +319,6 @@ FastFile은 ruby 언어로 되어 있기 때문에 Visual Studio Code를 사용�
 <br>
 
 -------
-
-## 2. Unity Build Pipeline 설정 방법
-<br>
 
 ## 주요현상
 1. 클래스 작성 시 네임스페이스 문제..
