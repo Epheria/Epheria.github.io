@@ -1,6 +1,6 @@
 ---
 title: Unity 빌드 자동화 - build pipeline & addressable
-date: 2023-08-03 11:35:00 +/-TTTT
+date: 2023-08-28 11:35:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, 자동화, Addressable, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
 
