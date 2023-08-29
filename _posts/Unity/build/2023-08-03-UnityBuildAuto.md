@@ -13,10 +13,9 @@ toc_sticky: true
 ---
 
 ## 목차
-- [1. fastlane 설정 방법](#1-fastlane-설정-방법)
-- [2. Unity Build Pipeline 설정 방법](#2-unity-build-pipeline-설정-방법)
-- [3. Jenkins 설정 방법](#3-jenkins-설정-방법)
-
+- [1. fastlane 설치 방법](#fastlane-설치)
+- [2. Plugin 설치 방법](#plugin-설치)
+- [3. FastFile 설정 방법](#fastfile-설정)
 ---
 
 ## 서론
