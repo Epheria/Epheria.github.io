@@ -121,11 +121,11 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:66:in `report_error'
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:396:in `handle_exception'
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:337:in `rescue in run'
-#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:324:in `run'
+
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:52:in `run'
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/bin/pod:55:in `<top (required)>'
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `load'
-#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `<main>'
+
 #/opt/homebrew/Cellar/ruby/3.2.2_1/lib/ruby/3.2.0/unicode_normalize/normalize.rb:141:in `normalize': Unicode Normalization not #appropriate for ASCII-8BIT (Encoding::CompatibilityError)
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `unicode_normalize'
 #	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `installation_root'
