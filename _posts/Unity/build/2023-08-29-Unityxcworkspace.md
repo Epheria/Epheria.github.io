@@ -103,3 +103,139 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 - 아래는 Jenkins 로 pod install을 실행 했을 때 발생한 에러
 
 <br>
+
+## 해결 방법
+- cocoapods 최신 버전 및 ruby gem 최신 버전을 설치하고 Xcode 프로젝트가 있는 폴더에 pod install 을 하면 Pod 폴더와 xcworkspace 파일이 잘 생성되는것을 확인했다.
+- 이것을 기반으로 Jenkins 에서 mac terminal 에 접근하여 pod install 을 호출하여 해결했다. 
+> fastlane 에도 cocoapods 라는 명령어가 있으니 fastlane으로 해결하고 싶다면 이부분 참조  
+[fastlane cocoapods](https://docs.fastlane.tools/actions/cocoapods/)
+
+- 아래는 Jenkins Shell Script로 Xcode 가 설치된 폴더로 이동 -> pod install 실행 -> 유니티 프로젝트 폴더로 복귀하는 코드이다.
+
+```
+# Jenkins Shell Script 
+
+echo ------------------------------------- Pod Install
+cd /Users/coconevbusan/Xcode
+/opt/homebrew/bin/pod install
+cd /Users/coconevbusan/.jenkins/workspace/ios_fastlane
+
+```
+
+- 이렇게 하면 잘 될줄 알았지만.. 위에서 언급한 에러가 발생했었다.
+
+- 우선 Jenkins 가 뱉은 에러를 파악해보자. terminal 의 locale을 살펴봐야한다.
+
+```
+# locale 입력
+coconevbusan@coconevbusanui-Macmini bin % locale
+LANG="ko_KR.UTF-8"
+LC_COLLATE="ko_KR.UTF-8"
+LC_CTYPE="ko_KR.UTF-8"
+LC_MESSAGES="ko_KR.UTF-8"
+LC_MONETARY="ko_KR.UTF-8"
+LC_NUMERIC="ko_KR.UTF-8"
+LC_TIME="ko_KR.UTF-8"
+LC_ALL=
+```
+
+- 전부 한국어로 되어 있었다..
+- 영어로 바꿔서 확인 해보자.
+
+```
+# LC_ALL 을 en 으로 바꾸자
+coconevbusan@coconevbusanui-Macmini bin % export LC_ALL=en_US.UTF-8
+coconevbusan@coconevbusanui-Macmini bin % locale
+LANG="ko_KR.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+
+# LANG 도 바꿔야한다.
+coconevbusan@coconevbusanui-Macmini bin % export LANG=en_US.UTF-8
+coconevbusan@coconevbusanui-Macmini bin % locale
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+```
+
+- 위 처럼 해도 Jenkins 로 빌드하면 똑같은 에러가 그대로 발생했다.. mac mini 세팅을 바꿔도 안된다고?!
+- Jenkins 의 환경설정과 mac-mini의 환경설정이 다르다는 것을 깨닫게 되었다.
+- 따라서 Jenkins 의 Shell script에 다음과 같은 부분을 추가해줘야한다.
+
+```
+# Init 하기 전에 환경변수 세팅할 때 추가해줘도 됨.
+locale
+export LANG=en_US.UTF-8
+locale
+```
+
+- 아래는 Jenkins 출력된 로그 
+
+```
+# locale 체크
++ locale
+LANG=""
+LC_COLLATE="C"
+LC_CTYPE="C"
+LC_MESSAGES="C"
+LC_MONETARY="C"
+LC_NUMERIC="C"
+LC_TIME="C"
+LC_ALL=
+
+# 변환
++ export LANG=en_US.UTF-8
++ LANG=en_US.UTF-8
+
+#locale 체크
++ locale
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL=
+
+# pod install 이 정상적으로 실행되는 모습이다.
++ echo ------------------------------------- Pod Install
+------------------------------------- Pod Install
++ cd /Users/coconevbusan/Xcode
++ /opt/homebrew/bin/pod install
+Analyzing dependencies
+Downloading dependencies
+Installing Firebase (10.1.0)
+Installing FirebaseAnalytics (10.1.0)
+Installing FirebaseAuth (10.1.0)
+Installing FirebaseCore (10.1.0)
+Installing FirebaseCoreInternal (10.12.0)
+Installing FirebaseInstallations (10.12.0)
+Installing FirebaseMessaging (10.1.0)
+Installing GTMSessionFetcher (2.3.0)
+Installing GoogleAppMeasurement (10.1.0)
+Installing GoogleDataTransport (9.2.3)
+Installing GoogleUtilities (7.11.4)
+Installing PromisesObjC (2.3.1)
+Installing nanopb (2.30909.0)
+Generating Pods project
+Integrating client project
+
+[!] Please close any current Xcode sessions and use `Unity-iPhone.xcworkspace` for this project from now on.
+Pod installation complete! There are 4 dependencies from the Podfile and 13 total pods installed.
++ cd /Users/coconevbusan/.jenkins/workspace/ios_fastlane
+Finished: SUCCESS
+```
+
+- xcworkspace 파일과 함께 Pod 폴더가 정상적으로 설치되는 것을 확인할 수 있다..!!
+- Jenkins 와 mac에서 세팅한 환경설정이 다를줄은 진짜 꿈에도 생각못했다.. 하
