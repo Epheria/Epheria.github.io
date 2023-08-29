@@ -60,3 +60,36 @@ coconevbusan@coconevbusanui-Macmini Xcode % gem --version
 ```
 
 <br>
+
+2. **cocoapods 버젼 및 ruby gem 최신 버전 업데이트**
+- cocoapods 버전과 ruby gem 버전을 체크하여 최신 버전으로 업데이트 해준다.
+
+```
+# cocoapods 삭제 및 설치 (brew uninstall cocoapods)
+# sudo 는 자꾸 권한 이슈가 발생해서 homebrew 를 사용했다.
+# 삭제
+coconevbusan@coconevbusanui-Macmini bin % brew uninstall cocoapods
+Warning: Treating cocoapods as a formula. For the cask, use homebrew/cask/cocoapods
+Warning: Calling the `appcast` stanza is deprecated! Use the `livecheck` stanza instead.
+Please report this issue to the adoptopenjdk/openjdk tap (not Homebrew/brew or Homebrew/homebrew-core), or even better, submit a PR to fix it:
+  /opt/homebrew/Library/Taps/adoptopenjdk/homebrew-openjdk/Casks/adoptopenjdk11.rb:9
+
+Uninstalling /opt/homebrew/Cellar/cocoapods/1.12.1... (13,430 files, 27.8MB)
+coconevbusan@coconevbusanui-Macmini bin % brew unstall cocoapods -v 1.10.1
+
+#설치
+coconevbusan@coconevbusanui-Macmini bin % brew install cocoapods
+Warning: Treating cocoapods as a formula. For the cask, use homebrew/cask/cocoapods
+==> Fetching cocoapods
+==> Downloading https://ghcr.io/v2/homebrew/core/cocoapods/manifests/1.12.1
+Already downloaded: /Users/coconevbusan/Library/Caches/Homebrew/downloads/092af1d0eed5d8e2252554a1d84826de8e271bcb598c43452362a690991fa2bd--cocoapods-1.12.1.bottle_manifest.json
+==> Downloading https://ghcr.io/v2/homebrew/core/cocoapods/blobs/sha256:6f1fca1cb0df79912e10743a80522e666fe605a1eaa2aac1094c501608fb7ee4
+Already downloaded: /Users/coconevbusan/Library/Caches/Homebrew/downloads/abfa7f252c7ffcc49894abb0d1afe0e47accb0b563df95a47f8f04ad93f8f681--cocoapods--1.12.1.arm64_ventura.bottle.tar.gz
+==> Pouring cocoapods--1.12.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/cocoapods/1.12.1: 13,430 files, 27.8MB
+==> Running `brew cleanup cocoapods`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+```
+
+<br>
