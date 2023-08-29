@@ -14,8 +14,8 @@ toc_sticky: true
 
 ## 목차
 - [1. Unity Build Pipeline 에 대해](#서론)
-- [2. AOS 빌드](#서론)
-- [3. iOS 빌드](#서론)
+- [2. AOS 빌드](#1-aos-빌드)
+- [3. iOS 빌드](#2-ios-빌드)
 
 ---
 
