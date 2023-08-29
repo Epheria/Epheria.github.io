@@ -93,3 +93,53 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 ```
 
 <br>
+
+3. **cocoapods 다운그레이드가 정답?**
+- 구글링을 해보면 cocoapods 버전이 1.10.xx 가 되어야 한다는 말이 있는데 내가 해결한 방법과는 조금 달랐다.
+- 대답은 NO! 1.10 버전으로 다운그레이드를 할 필요가 없다. 저 에러는 terminal 의 인코딩쪽 locale쪽 이슈인거같다.
+- 하단 해결 방법에서 자세히 설명하겠다.
+> [Unity iOS Resolver 에서 xcworkspace 가 생성되지 않는 이슈](https://phillip5094.github.io/ios/unity/Unity-iOS-Resolver%EC%97%90%EC%84%9C-xcworkspace-%EC%83%9D%EC%84%B1%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9D%B4%EC%8A%88/)
+
+- 아래는 Jenkins 로 pod install을 실행 했을 때 발생한 에러
+
+```
+#+ echo ------------------------------------- Pod Install
+#------------------------------------- Pod Install
+#+ cd /Users/coconevbusan/Xcode
+#+ /opt/homebrew/bin/pod install
+#    [33mWARNING: CocoaPods requires your terminal to be using UTF-8 encoding.
+#    Consider adding the following to ~/.profile:
+#
+#    export LANG=en_US.UTF-8
+#    [0m
+#/opt/homebrew/Cellar/ruby/3.2.2_1/lib/ruby/3.2.0/unicode_normalize/normalize.rb:141:in `normalize': Unicode Normalization not #appropriate for ASCII-8BIT (Encoding::CompatibilityError)
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `unicode_normalize'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `installation_root'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:226:in `podfile_path'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/user_interface/error_report.rb:105:in #`markdown_podfile'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/user_interface/error_report.rb:30:in `report'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:66:in `report_error'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:396:in `handle_exception'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:337:in `rescue in run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:324:in `run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:52:in `run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/bin/pod:55:in `<top (required)>'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `load'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `<main>'
+#/opt/homebrew/Cellar/ruby/3.2.2_1/lib/ruby/3.2.0/unicode_normalize/normalize.rb:141:in `normalize': Unicode Normalization not #appropriate for ASCII-8BIT (Encoding::CompatibilityError)
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `unicode_normalize'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:166:in `installation_root'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:226:in `podfile_path'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/config.rb:205:in `podfile'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:160:in `verify_podfile_exists!'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command/install.rb:46:in `run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/claide-1.1.0/lib/claide/command.rb:334:in `run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/lib/cocoapods/command.rb:52:in `run'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/gems/cocoapods-1.12.1/bin/pod:55:in `<top (required)>'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `load'
+#	from /opt/homebrew/Cellar/cocoapods/1.12.1/libexec/bin/pod:25:in `<main>'
+#Build step 'Execute shell' marked build as failure
+#Finished: FAILURE
+```
+
+<br>
