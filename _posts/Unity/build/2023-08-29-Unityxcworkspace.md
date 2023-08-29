@@ -35,3 +35,28 @@ Assets - External Dependency Manager - iOS Resolver - Settings
 
 - Unity iOS Resolver 세팅이 잘못됬을 가능성
 - mac-mini 에 설치된 cocoapods 의 버전과 ruby gems 버전 충돌 가능성
+
+1. **cocoapods 버젼 충돌 가능성 체크**
+- terminal 에 cocoapods가 설치된 bin 폴더로 이동하고 pod --version을 입력한다.
+- 아래는 terminal 로그의 일부입니다.
+
+```
+# cocoapods bin 폴더 경로 확인 방법 (which something)
+coconevbusan@coconevbusanui-Macmini Xcode % which pod
+/opt/homebrew/bin/pod
+
+
+# bin 폴더로 이동 (cd path)
+coconevbusan@coconevbusanui-Macmini Xcode % cd /opt/homebrew/bin
+
+
+# cocoapdos 버젼 체크 (pod --version)
+coconevbusan@coconevbusanui-Macmini bin % pod --version
+1.12.1
+
+# gem 버전 체크
+coconevbusan@coconevbusanui-Macmini Xcode % gem --version
+3.4.19
+```
+
+<br>
