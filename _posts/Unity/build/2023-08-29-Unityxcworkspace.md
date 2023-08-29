@@ -102,15 +102,6 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 
 - 아래는 Jenkins 로 pod install을 실행 했을 때 발생한 에러
 
-<br>
-
-## 해결 방법
-- cocoapods 최신 버전 및 ruby gem 최신 버전을 설치하고 Xcode 프로젝트가 있는 폴더에 pod install 을 하면 Pod 폴더와 xcworkspace 파일이 잘 생성되는것을 확인했다.
-- 이것을 기반으로 Jenkins 에서 mac terminal 에 접근하여 pod install 을 호출하여 해결했다. 
-> fastlane 에도 cocoapods 라는 명령어가 있으니 fastlane으로 해결하고 싶다면 이부분 참조  
-[fastlane cocoapods](https://docs.fastlane.tools/actions/cocoapods/)
-
-- 아래는 Jenkins Shell Script로 Xcode 가 설치된 폴더로 이동 -> pod install 실행 -> 유니티 프로젝트 폴더로 복귀하는 코드이다.
 ```
 #+ echo ------------------------------------- Pod Install
 #------------------------------------- Pod Install
@@ -151,6 +142,15 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 #Finished: FAILURE
 ```
 
+<br>
+
+## 해결 방법
+- cocoapods 최신 버전 및 ruby gem 최신 버전을 설치하고 Xcode 프로젝트가 있는 폴더에 pod install 을 하면 Pod 폴더와 xcworkspace 파일이 잘 생성되는것을 확인했다.
+- 이것을 기반으로 Jenkins 에서 mac terminal 에 접근하여 pod install 을 호출하여 해결했다. 
+> fastlane 에도 cocoapods 라는 명령어가 있으니 fastlane으로 해결하고 싶다면 이부분 참조  
+[fastlane cocoapods](https://docs.fastlane.tools/actions/cocoapods/)
+
+- 아래는 Jenkins Shell Script로 Xcode 가 설치된 폴더로 이동 -> pod install 실행 -> 유니티 프로젝트 폴더로 복귀하는 코드이다.
 
 ```
 # Jenkins Shell Script 
