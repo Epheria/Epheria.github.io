@@ -25,11 +25,12 @@ toc_sticky: true
 
 ## 주요 현상 및 분석
 
-<figure class="thrid">
-  <a href="link"><img src="/assets/img/post/unity/work.gif" width="140px"></a>
-  <a href="link"><img src="/assets/img/post/unity/dummy.png" width="240px"></a>
-  <a href="link"><img src="/assets/img/post/unity/notwork.gif" width="140px"></a>
-  <figcaption>좌측 사진은 정상적으로 빌드가 이루어졌을 때, 우측 사진은 어드레서블 빌드가 정상적으로 이루어지지 않았을 때</figcaption>
-</figure>
+![Desktop View](/assets/img/post/unity/notwork.gif){: .normal }
+- 위의 사진은 어드레서블 빌드가 정상적으로 이루어지지 않을 때의 모습이다.
+
+<br>
+
+
+
 
 ## 해결 방법
