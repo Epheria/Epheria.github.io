@@ -16,6 +16,7 @@ toc_sticky: true
 - [1. Unity Build Pipeline 에 대해](#서론)
 - [2. AOS 빌드](#1-aos-빌드)
 - [3. iOS 빌드](#2-ios-빌드)
+- [4. Addressable 빌드](#3-addressable-빌드)
 
 ---
 
@@ -137,7 +138,7 @@ private static string[] FindEnabledEditorScenes()
 - PBXProject 클래스와 ProjectCapabilityManager 와 같은 클래스를 생성하여 필요한 후처리를 진행해준다.   
 - 특히 ENABLE_BITCODE 세팅, Entitlements 생성 및 적용, .framework 적용, Capability 자동화 등을 적용하기 위해 삽질했던 것을 생각하면 아직도 속이 쓰리다..
 
-#### aos execute method 전체 코드
+#### ios execute method 전체 코드
 
 ```csharp
 public static void BuildIOS()
@@ -200,3 +201,157 @@ class PBR : IPostprocessBuildWithReport
 
 ## 참조 링크
 [Entitlement 두 가지 세팅 방법](https://forum.unity.com/threads/how-to-add-entitlement-entry.1146173/)
+
+<br>
+
+#### 3. Addressable 빌드
+- Addressable 빌드 역시 Unity 프로젝트를 fastlane 으로 빌드하는 방식과 똑같이 사용한다. 
+
+```ruby
+  desc "Build Addressable"
+  lane :addrressable do
+    unity(
+      build_target: "iOS",
+      execute_method: "ProjectBuilder.BuildAddressable_IOS",
+      unity_path: "/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity",
+      project_path: "/Users/coconevbusan/.jenkins/workspace/ios_fastlane"
+    )
+  end
+```
+- unity plugin을 사용하며 ProjectBuilder 클래스의 BuildAddressable_AOS / IOS static 함수를 백그라운드로 실행한다.
+
+- Addressable 빌드를 하기 전 Addressable Profile 에 대해 확인해보자.
+- Addressable Profile 은 모바일 개발 환경에서는 크게 3가지로 분류된다.
+- Default (빌드에 Including), Remote_aos (android 용 Remote), Remote_ios (ios 용 Remote)
+
+![Desktop View](/assets/img/post/unity/pipeline01.png){: .normal }
+
+<br>
+
+![Desktop View](/assets/img/post/unity/pipeline02.png){: .normal }
+
+- Manage Profile 로 들어가면 Profile을 추가하거나 Variable 변수를 추가할 수 있다.
+- 이 변수가 참 중요한데 BuildPath, LoadPath url 을 조합할 때 
+
+```
+# []
+```
+- 이 대괄호를 사용하면 무조건 최우선적으로 저 대괄호 내부의 변수를 판단하고 Variable로 추가한 변수들을 조합한다.
+- 자 이제 이 프로필들의 이름들을 어드레서블 빌드 스크립트에서 사용해야한다.
+
+#### Addressable 빌드 전체 코드
+
+[Addressable Build Script 참조 링크](https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/BuildPlayerContent.html)
+
+```csharp
+#region Build Addressable
+    public static string build_script = "Assets/AddressableAssetsData/DataBuilders/BuildScriptPackedMode.asset";
+    public static string profile_aos_name = "Remote_aos"; // Addressable Groups 에 있는 3가지 프로필 네임들을 세팅해줘야한다.
+    public static string profile_ios_name = "Remote_ios"; // 빠른 빌드 및 테스트가 필요하다면 Default 를 사용해야 할 것이며
+    public static string profile_default = "Default";     // 패치 시스템을 체크하고 싶다면 Remote를 써야하기 때문이다.
+    public static void BuildAddressable_AOS()
+    {
+        Debug.Log("Addressable Build Started haha");
+        AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+
+        settings.activeProfileId = settings.profileSettings.GetProfileId(profile_default);
+
+        IDataBuilder builder = AssetDatabase.LoadAssetAtPath<ScriptableObject>(build_script) as IDataBuilder;
+        Debug.Log("Addressable Load AssetPath haha");
+
+        int index = settings.ActivePlayerDataBuilderIndex = settings.DataBuilders.IndexOf((ScriptableObject)builder);
+        Debug.Log($"Addressable index number : {index}");
+
+        if (index > 0)
+        {
+            settings.ActivePlayerDataBuilderIndex = index;
+        }
+        else if (AddressableAssetSettingsDefaultObject.Settings.AddDataBuilder(builder))
+        {
+            settings.ActivePlayerDataBuilderIndex = AddressableAssetSettingsDefaultObject.Settings.DataBuilders.Count - 1;
+        }
+        else
+        {
+            Debug.LogWarning($"{builder} could not be found");
+        }
+
+        Debug.Log($"Addressable Build Content Started!! hh");
+        AddressableAssetSettings.BuildPlayerContent(out AddressablesPlayerBuildResult result);
+
+        bool success = string.IsNullOrEmpty(result.Error);
+
+        if (!success)
+        {
+            Debug.LogError("Addressable build error encountered : " + result.Error);
+        }
+        else
+        {
+            Debug.Log("Addressable Build Success!!!");
+        }
+    }
+
+    public static void BuildAddressable_IOS()
+    {
+        Debug.Log("Addressable Build Started haha");
+        AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+
+        settings.activeProfileId = settings.profileSettings.GetProfileId(profile_default);
+
+        IDataBuilder builder = AssetDatabase.LoadAssetAtPath<ScriptableObject>(build_script) as IDataBuilder;
+        Debug.Log("Addressable Load AssetPath haha");
+
+        int index = settings.ActivePlayerDataBuilderIndex = settings.DataBuilders.IndexOf((ScriptableObject)builder);
+        Debug.Log($"Addressable index number : {index}");
+
+        if (index > 0)
+        {
+            settings.ActivePlayerDataBuilderIndex = index;
+        }
+        else if (AddressableAssetSettingsDefaultObject.Settings.AddDataBuilder(builder))
+        {
+            settings.ActivePlayerDataBuilderIndex = AddressableAssetSettingsDefaultObject.Settings.DataBuilders.Count - 1;
+        }
+        else
+        {
+            Debug.LogWarning($"{builder} could not be found");
+        }
+
+        Debug.Log($"Addressable Build Content Started!! hh");
+        AddressableAssetSettings.BuildPlayerContent(out AddressablesPlayerBuildResult result);
+
+        bool success = string.IsNullOrEmpty(result.Error);
+
+        if (!success)
+        {
+            Debug.LogError("Addressable build error encountered : " + result.Error);
+        }
+        else
+        {
+            Debug.Log("Addressable Build Success!!!");
+        }
+    }
+```
+
+<br>
+
+- 주의!!
+
+```csharp
+   settings.activeProfileId = settings.profileSettings.GetProfileId(profile_default);
+```
+
+- 어드레서블 빌드 스크립트에서 GetProfileId를 가져올 때 사용하는 프로필 네임과 어드레서블 그룹에 설정된 프로필이 같은지 꼭! 체크하고
+- 프로필이 Default 면 fastest, 프로필이 Remote 면 Using Exists 로 설정해야한다!!
+
+![Desktop View](/assets/img/post/unity/pipeline03.png){: .normal }
+![Desktop View](/assets/img/post/unity/pipeline04.png){: .normal }
+
+<br>
+
+- Remote로 설정하고 빌드를 했다면, 프로필에서 설정한 BuildPath ( 여기서는 프로젝트 하위의 ServerData 폴더 내부 ) 에 정상적으로 카탈로그 json 과 hash 파일 그리고 어드레서블 번들 파일들이 생성이될 것이다.
+
+- ServerData 하위에 생성된 Android, iOS 어드레서블 번들 및 카탈로그 폴더
+![Desktop View](/assets/img/post/unity/pipeline05.png){: .normal }
+
+- 생성된 번들 파일들과 카탈로그 파일들을 확인할 수 있다. 이것들을 이제 LoadPath를 설정하고 AWS S3에 올리면 패치 시스템이 구현할 수 있다.
+![Desktop View](/assets/img/post/unity/pipeline06.png){: .normal }
