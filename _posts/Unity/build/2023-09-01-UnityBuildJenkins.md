@@ -1,6 +1,6 @@
 ---
 title: Unity 빌드 자동화 - Jenkins
-date: 2023-09-01 15:59:00 +/-TTTT
+date: 2023-09-01 12:59:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, Jenkins, 자동화]     # TAG names should always be lowercase
 
@@ -12,3 +12,4 @@ toc_sticky: true
 
 ---
 
+## 왜 안됨
