@@ -11,6 +11,10 @@ toc_sticky: true
 
 ---
 ## 목차
+- [1. Localization 설치](#1-localization-설치)
+- [2. Localization 환경 설정](#2-localization-환경-설정)
+- [3. Google Sheets 연동하기](#3-google-sheets-연동하기)
+- [4. UGUI 에서 사용방법](#4-localization을-ugui-에서-사용하는-방법)
 
 ---
 
@@ -229,8 +233,32 @@ Push 와 Pull 이 꼬일 수도 있기에 Google Spread Sheets 상에서 수정�
 <br>
 <br>
 
-### Component 로 활용 하는 방법
+### Component로 활용 하는 방법
 
 - 컴포넌트에 Localize String Event 를 추가해준다.
 
 ![Desktop View](/assets/img/post/unity/localization30.png){: : width="400" .normal }
+
+<br>
+
+- String Reference 를 클릭하면 추가하고자 하는 테이블의 Key 값을 검색하고 할당할 수 있다.
+- 등록하면 자동으로 Table Collection 까지 할당 된다.
+- 또한 각 로컬 테이블에서 각 언어로 바뀌면 어떤 방식으로 할당될지도 간략하게 표시되고
+- Update String 에 어느 TMP text 를 지정해서 업데이트 해줄지도 할당된다.
+
+![Desktop View](/assets/img/post/unity/localization31.png){: : width="400" .normal }
+
+![Desktop View](/assets/img/post/unity/localization32.png){: : width="400" .normal }
+
+<br>
+
+- 추가적으로 font 와 font material 도 바꾸고 싶다면
+- Add Component 혹은 Localize Extension을 사용하여 등록하면 된다.
+- 인게임 설정 혹은 에디터상에서 언어변경을 해주면 해당 UGUI의 텍스트는 자동으로 바뀐다..
+
+![Desktop View](/assets/img/post/unity/localization33.png){: : width="400" .normal }
+
+<br>
+<br>
+
+### Script로 활용 하는 방법
