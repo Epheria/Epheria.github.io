@@ -15,6 +15,7 @@ toc_sticky: true
 - [2. Localization 환경 설정](#2-localization-환경-설정)
 - [3. Google Sheets 연동하기](#3-google-sheets-연동하기)
 - [4. UGUI 에서 사용방법](#4-localization을-ugui-에서-사용하는-방법)
+- [5. Asset Table 설정 방법](#5-asset-table-설정-방법)
 
 ---
 
@@ -225,9 +226,66 @@ Push 와 Pull 이 꼬일 수도 있기에 Google Spread Sheets 상에서 수정�
 3. 이외에 font material, font 등을 수정하고 싶으면 다음과 같은 클래스를 만들어 컴포넌트로 등록해주자.
 
 ```csharp
+using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+
+namespace Base
+{
+    [AddComponentMenu("Localization/Asset/" + nameof(LocalizedTmpFontEvent))]
+    public class LocalizedTmpFontEvent : LocalizedAssetEvent<TMP_FontAsset, LocalizedTmpFont, UnityEventTmpFont> {}
+
+    [Serializable]
+    public class UnityEventTmpFont : UnityEvent<TMP_FontAsset> {}
+}
 ```
 
 ```csharp
+using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using Cysharp.Threading.Tasks;
+
+namespace Base
+{
+    [AddComponentMenu("Localization/Asset/" + nameof(LocalizedTmpFontMaterialEvent))]
+    public class LocalizedTmpFontMaterialEvent : LocalizedAssetEvent<Material, LocalizedMaterial, UnityEventTmpFontMaterial>
+    {
+        private TextMeshProUGUI _targetText;
+
+        private void Start()
+        {
+            _targetText = GetComponent<TextMeshProUGUI>();
+        }
+
+        protected override async void UpdateAsset(Material localizedAsset)
+        {
+            if (_targetText == null)
+            {
+                _targetText = GetComponent<TextMeshProUGUI>();
+            }
+
+            if (_targetText != null)
+            {
+                await UniTask.WaitUntil(() => localizedAsset);
+                _targetText.fontMaterial = localizedAsset;    
+            }
+            else
+            {
+                Debug.LogError("[ LocalizedTmpFontMaterialEvent / UpdateAsset ] TextMeshPro is null");
+            }
+        }
+    }
+
+    [Serializable]
+    public class UnityEventTmpFontMaterial : UnityEvent<Material> {}
+}
 ```
 
 <br>
@@ -262,3 +320,140 @@ Push 와 Pull 이 꼬일 수도 있기에 Google Spread Sheets 상에서 수정�
 <br>
 
 ### Script로 활용 하는 방법
+
+- 만약 UGUI 가 동적으로 생성된다면 Compnent에서 직접 할당하지 않고 스크립트로 호출해서 처리가 가능하다.
+- 아래 사진 처럼 Update String 을 할당해주면 된다. 동적으로도 가능
+
+![Desktop View](/assets/img/post/unity/localization34.png){: : width="400" .normal }
+
+<br>
+
+#### Script 예시
+
+![Desktop View](/assets/img/post/unity/localization35.png){: : width="400" .normal }
+
+![Desktop View](/assets/img/post/unity/localization36.png){: : width="600" .normal }
+
+<br>
+
+- LocalizeStringEvent 컴포넌트를 GetComponent 해서 SetEntry(key) 메소드를 사용해주면 된다.
+- Table Collection 에 등록된 key 값을 찾아 현재 설정된 locale code 에 알맞게 UGUI TMP text 에 할당해주면된다.
+
+<br>
+<br>
+
+#### 추가적으로 동적으로 텍스트의 내부 데이터 수정하는 방법
+
+- balance, username 등 내부 데이터가 동적으로 바뀌는 경우 다음과 같이 
+- 키값에 Smart 체크 후 Argument 명을 {} 안에 넣어주고 소스코드에서 arg 값을 SetEntry 이전에 넣어주면 된다.
+
+<br>
+
+![Desktop View](/assets/img/post/unity/localization37.png){: : width="600" .normal }
+
+![Desktop View](/assets/img/post/unity/localization38.png){: : width="600" .normal }
+
+- CommonModal 에서의 사용 예시
+
+<details>
+<summary>예시코드</summary>
+<div markdown="1">
+
+```csharp
+using System;
+using System.Collections;
+using TMPro;
+using UniRx;
+using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.UI;
+
+public struct CommonModalContents
+{
+	public readonly string _titleTextKey;
+	public readonly string _contentsTextKey;
+	public readonly string _buttonTextKey;
+	public readonly Action _buttonAction;
+	public LocalizeArgBase _arg;
+
+	public CommonModalContents(string contentsTextKey_, string buttonTextKey_, Action buttonAction_, string titleTextKey_ = "타이틀")
+	{
+		_titleTextKey = titleTextKey_;
+		_contentsTextKey = contentsTextKey_;
+		_buttonTextKey = buttonTextKey_;
+		_buttonAction = buttonAction_;
+		_arg = new LocalizeArgBase();
+
+	}
+
+	public CommonModalContents(string contentsTextKey_, LocalizeArgBase arg_, string buttonTextKey_, Action buttonAction_, string titleTextKey_ = "타이틀")
+	{
+		_titleTextKey = titleTextKey_;
+		_contentsTextKey = contentsTextKey_;
+		_buttonTextKey = buttonTextKey_;
+		_buttonAction = buttonAction_;
+		_arg = arg_;
+	}
+
+}
+[Serializable]
+public class LocalizeArgBase { };
+public class LocalizeArg_PurchaseBalance : LocalizeArgBase
+{
+	public int balance;
+}
+
+
+public class CommonModal : UIPopup
+{
+	[SerializeField] private CanvasGroup _canvasGroup;
+	[SerializeField] protected TextMeshProUGUI _titleText;
+	[SerializeField] protected LocalizeStringEvent _titleTextLocalize;
+	[SerializeField] protected TextMeshProUGUI _contentsText;
+	[SerializeField] protected LocalizeStringEvent _contentTextLocalize;
+	[SerializeField] private LocalizeStringEvent _buttonTextLocalize;
+	[SerializeField] private Button _button;
+	[SerializeField] private VerticalLayoutGroup _verticalLayoutGroup;
+
+	private void Awake()
+	{
+		_contentTextLocalize.OnUpdateString.AsObservable().TakeUntilDestroy(this.gameObject).Select(value => value).Subscribe(value =>
+		{
+			_contentsText.text = _contentsText.text.Replace("\\n", "\n");
+			Observable.FromCoroutine(RefreshCoroutine).TakeUntilDestroy(this.gameObject).Subscribe(_ => { }, () => { _canvasGroup.alpha = 1.0f; });
+		});
+	}
+
+	public void SetCommonModal(CommonModalContents contents_)
+	{
+        // 어떤 팝업창인지 구분하기 위해 임시로 설정
+        _titleText.text = contents_._titleTextKey;
+        //_titleTextLocalize.SetEntry(contents_._titleTextKey);
+		_contentTextLocalize.StringReference.Arguments = new[] { contents_._arg };
+		_contentTextLocalize.SetEntry(contents_._contentsTextKey);
+		_contentTextLocalize.RefreshString();
+		_buttonTextLocalize.SetEntry(contents_._buttonTextKey);
+		AdditionalFunction.SetSafeButtonActionOnlyOneCall(_button, contents_._buttonAction, this.gameObject);
+	}
+
+	private IEnumerator RefreshCoroutine()
+	{
+		Canvas.ForceUpdateCanvases();
+		_verticalLayoutGroup.enabled = false;
+		yield return null;
+		_verticalLayoutGroup.enabled = true;
+	}
+}
+```
+</div>
+</details>
+
+<br>
+<br>
+
+## 5. Asset Table 설정 방법
+
+- New Table Collection 에서 String Table과 별개로 Asset Table이 존재한다.
+- Asset Table은 각종 Font와 Font Matrial을 locale code에 알맞게 변경해주는 Table 이다.
+
+![Desktop View](/assets/img/post/unity/localization39.png){: : width="600" .normal }
