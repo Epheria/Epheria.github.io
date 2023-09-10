@@ -16,6 +16,7 @@ toc_sticky: true
 - [3. Google Sheets 연동하기](#3-google-sheets-연동하기)
 - [4. UGUI 에서 사용방법](#4-localization을-ugui-에서-사용하는-방법)
 - [5. Asset Table 설정 방법](#5-asset-table-설정-방법)
+- [6. Localization 텍스트 커스터마이징 방법](#6-로컬라이제이션-커스터마이징-방법)
 
 ---
 
@@ -456,4 +457,47 @@ public class CommonModal : UIPopup
 - New Table Collection 에서 String Table과 별개로 Asset Table이 존재한다.
 - Asset Table은 각종 Font와 Font Matrial을 locale code에 알맞게 변경해주는 Table 이다.
 
-![Desktop View](/assets/img/post/unity/localization39.png){: : width="600" .normal }
+![Desktop View](/assets/img/post/unity/localization39.png){: : width="400" .normal }
+
+<br>
+
+#### 폰트 Asset Table
+
+![Desktop View](/assets/img/post/unity/localization40.png){: : width="600" .normal }
+
+<br>
+
+- 폰트는 예시로 NotoSans 라고 정하고 NotoSans 폰트의 바리에이션들을 Key 값으로 등록해준다.
+- 여기서는 Regular, Bold 등 이후 생성한 폰트들을 설정한 locale table 에 등록해준다.
+- 이렇게 되면 설정에서 언어를 변경하면 kr, jp, en 등 알맞게 폰트가 변경된다.
+
+<br>
+<br>
+
+#### 폰트 머테리얼 Asset Table
+![Desktop View](/assets/img/post/unity/localization41.png){: : width="800" .normal }
+
+<br>
+<br>
+
+## 6. 로컬라이제이션 커스터마이징 방법
+- 개발하던 도중 로컬라이제이션과 관련하여 여러가지 이슈가 발생했다. 
+- 첫째로, 각 나라 언어에 따라 글자 수가 많이 차이가 나는 점 이로 인해 줄바꿈이 어쩔 수 없이 들어가게 될 경우 text의 사이즈를 줄여야할 경우가 발생
+- 둘째로, UI 에 맞춰서 폰트의 색상이나 볼드체 여부 등에 대한 커스터마이징이 필요한 경우가 발생했었다.
+
+> 첫번째의 경우 각 나라 언어에 맞게 폰트를 달리하여 바꿔도 되지만, 나라별로 폰트를 다르게 설정하면 폰트의 용량이 부담이 된다는 점이 존재하기에 보통 하나의 폰트로 통일해서 사용
+
+- 따라서 해결 방법으로는 바로 "Rich Text"를 사용하는 것이다.
+- 로컬라이즈 테이블에 rich text 형식으로 커스터마이징을 추가하면 간단하게 해결 되는 문제였다.
+- 하지만 TMP 자체가 성능 오버헤드를 발생시키고 많은 드로우콜을 발생시키기 때문에.. 간단한 텍스트 UI 에만 사용하는 것을 추천한다. (딱 글꼴, 크기, 색상 변경 용동로만..)
+
+<br>
+
+- 유니티 Rich Text 관련 명령어 등 도큐먼트
+> [Unity Rich Text Documentation](https://docs.unity3d.com/kr/560/Manual/StyledText.html)
+
+<br>
+
+- 사용 예시
+
+![Desktop View](/assets/img/post/unity/localization42.png){: : width="400" .normal }
