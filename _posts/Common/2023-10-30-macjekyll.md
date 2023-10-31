@@ -92,12 +92,18 @@ rbenv global 3.2.2
 
 > 하지만 곧바로 bundler, jekyll gem 을 설치하려고 하면 다음과 같은 에러가 발생한다.
 
+```
+Gem::FilePermissionError: You don't have write permissions for the /usr/local/bin directory.
+
+ERROR:  While executing gem ... (Gem::FilePermissionError)
+    You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory.
+```
 
 [관련 에러 github 토론 링크]("https://github.com/search?q=repo%3Arubygems%2Frubygems+You+don%27t+have+write+permissions+for+the+%2Fusr%2Fbin+directory.&type=Issues")
 
 <br>
 
-#### 4. Gem FilePermissionError 에러 해결 방법
+#### 4. `Gem::FilePermissionError` 에러 해결 방법
 
 * zshrc 에 rbenv의 내용을 반영해줘야 한다고 한다.. vim 에디터를 실행하여 zshrc를 수정해주자.
 
