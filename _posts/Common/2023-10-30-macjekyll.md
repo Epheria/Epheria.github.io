@@ -68,7 +68,7 @@ rbenv install -l
 
 <br>
 
-2023-10-30 기준 3.2.2 가 가장 최신 버전임.
+> 2023-10-30 기준 3.2.2 가 가장 최신 버전임.
 
 ![Desktop View](/assets/img/post/common/macSetting01.png){: : width="600" .normal }
 
