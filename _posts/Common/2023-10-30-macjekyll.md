@@ -53,3 +53,7 @@ rbenv versions
 ```
 
 <br>
+
+`*` 로 표시된 것이 현재 선택된 버전을 의미
+
+![Desktop View](/assets/img/post/common/macSetting00.png){: : width="600" .normal }
