@@ -97,7 +97,7 @@ rbenv global 3.2.2
 
 <br>
 
-#### 4. Gem::FilePermissionError 에러 해결 방법
+#### 4. Gem FilePermissionError 에러 해결 방법
 
 * zshrc 에 rbenv의 내용을 반영해줘야 한다고 한다.. vim 에디터를 실행하여 zshrc를 수정해주자.
 
