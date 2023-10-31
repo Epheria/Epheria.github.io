@@ -24,11 +24,13 @@ home brew 설치 -> 루비 설치 -> 루비 버전관리용인 rbenv 설치 -> b
 터미널을 열어주자.
 
 #### 1. homebrew 설치
+
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 brew 업데이트
+
 ```
 brew update
 ```
