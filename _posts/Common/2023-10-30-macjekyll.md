@@ -99,8 +99,6 @@ ERROR:  While executing gem ... (Gem::FilePermissionError)
     You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory.
 ```
 
-[관련 에러 github 토론 링크]("https://github.com/search?q=repo%3Arubygems%2Frubygems+You+don%27t+have+write+permissions+for+the+%2Fusr%2Fbin+directory.&type=Issues")
-
 <br>
 
 #### 4. `Gem::FilePermissionError` 에러 해결 방법
