@@ -1,5 +1,5 @@
 ---
-title: UI 프레임워크에 대한 고찰
+title: UI 프레임워크에 대한 고찰 (수정중)
 date: 2023-11-07 23:07:00 +/-TTTT
 categories: [Portfolio, Toyverse]
 tags: [Portfolio, UI, FrameWork, Toyverse]     # TAG names should always be lowercase
