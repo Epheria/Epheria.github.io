@@ -1,7 +1,7 @@
 ---
 title: Unity 어드레서블 최적화 방법
 date: 2023-11-15 11:12:00 +/-TTTT
-categories: [Tool, Mac]
+categories: [Unity, Optimization]
 tags: [Addressable, Optimization, Unity]     # TAG names should always be lowercase
 
 toc: true
