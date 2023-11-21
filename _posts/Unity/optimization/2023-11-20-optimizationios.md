@@ -434,94 +434,117 @@ toc_sticky: true
 ## **네이티브 프로파일러 사용하기 : Xcode Instruments**
 
 - [Xcode Instruments 사용 방법](https://epheria.github.io/posts/instruments/)
-- 또는 Xcode 에서 Instruments 를 켜도 됨.
+- **또는 Xcode 에서 Instruments 를 켜도 됨.**
+
+![Desktop View](/assets/img/post/unity/profilerios35.png){: : width="600" .normal }
+
+- **Xcode - Build Settings 내부에서 디버그 심볼을 반드시 포함해줘야한다.**
+
+![Desktop View](/assets/img/post/unity/profilerios36.png){: : width="400" .normal }
+
+- **Xcode - Open Developer Tools 선택**
+
+![Desktop View](/assets/img/post/unity/profilerios37.png){: : width="600" .normal }
+
+- **Instruments 템플릿 중에서 Allocation 선택**
+
+<br>
+
+#### **VM 트래커**
+
+![Desktop View](/assets/img/post/unity/profilerios38.png){: : width="600" .normal }
+
+![Desktop View](/assets/img/post/unity/profilerios39.png){: : width="600" .normal }
+
+- **앱의 모든 VM 할당을 살펴 볼 수 있다.**
+
+![Desktop View](/assets/img/post/unity/profilerios40.png){: : width="800" .normal }
+
+- **Binaries/Code (클린 메모리) : _LINKEDIT, _TEXT. _DATA, _DATA_CONST**
+- **"GPU" : 유니티 GPU 처리를 의미한다. IOKit, IOSurface, IOAccelerate**
+- **App Allocations : 유니티 CPU 처리를 의미한다. Malloc_* , VM_ALLOCATE**
+- **Performance tool data**
+
+![Desktop View](/assets/img/post/unity/profilerios41.png){: : width="800" .normal }
+
+![Desktop View](/assets/img/post/unity/profilerios42.png){: : width="800" .normal }
+
+- **IOSurface 그래픽스 할당의 상주 메모리 비율이 100%이다. -> 물리 메모리에 100% 할당**
+- **이 물리 메모리를 넘어서면 앱이 터짐**
+
+
+![Desktop View](/assets/img/post/unity/profilerios43.png){: : width="800" .normal }
+
+- **0x10da50000 오브젝트는 어디에 있을까?**
+
+![Desktop View](/assets/img/post/unity/profilerios44.png){: : width="800" .normal }
+
+![Desktop View](/assets/img/post/unity/profilerios45.png){: : width="800" .normal }
+
+- **IL2CPP VM의 제네릭 메타 데이터 테이블 초기화 과정의 할당임을 확인할 수 있다.**
+
+<br>
+
+#### **콜스택 검색**
+
+![Desktop View](/assets/img/post/unity/profilerios46.png){: : width="800" .normal }
+
+- **하단의 검색창에서 검색 가능!**
+
+<br>
+
+![Desktop View](/assets/img/post/unity/profilerios47.png){: : width="800" .normal }
+
+- **dirty size 가상 메모리 할당 내에서 dirty 인 애들 - 상주메모리에서 빼기 힘든애들**
+- **swapped   스왑된 애들**
+- **resident 상주 메모리**
+
+![Desktop View](/assets/img/post/unity/profilerios48.png){: : width="800" .normal }
+
+<br>
+
+![Desktop View](/assets/img/post/unity/profilerios49.png){: : width="800" .normal }
+
+<br>
+
+![Desktop View](/assets/img/post/unity/profilerios50.png){: : width="800" .normal }
+
+<br>
+
+![Desktop View](/assets/img/post/unity/profilerios51.png){: : width="800" .normal }
+
+- Allocations 에서 상주 메모리 비율도 볼 수 있음
+
+<br>
+
+- **추가 정보**
+- Memory Graph : 네이티브 메모리 스냅샷 도구
+- WWDC 2022 - Profile and optimize your game's memory
+
+- **앱이 꺼지는 이유 파악 : 메모리 때문인지?**
+
+- 앱이 안꺼지는 동안 메모리 프로파일러 스냅샷 찍어서  -  메모리를 과하게 쓰고있는지 파악
+
+- ios xcode debugger 붙인 상태에서 게임플레이 -> 크래시 -> 크래시 잡을 수 있음
+
+- 크래시가 메모리 때문인지? 에러 때문인지 파악가능
+
+- **메모리 문제라면?**
+
+- 메모리 프로파일러를 보면서 - Unity Objects, SUmmaries 탭에서 total commiteed 영역에서 가장 큰 메모리를 쓰는 영역을 순서대로 정리 후 파악
+
+- **레이아웃에 대한 처리**
+- 순환 레이아웃 문제 때문에
+- dirty 여부 판단 - 프레임 마지막에 레이아웃을 갱신
+- 항상 매프레임의 마지막으로 밀린다?  레이아웃을 강제로 갱신시키는 api 가 있을까?
+
+- **기타 정보**
+- 모바일 - Unified memory
+- 윈도우 - VRAM
+- 텍스쳐 read/write 설정 - cpu 메모리에도 올라감
 
 
 
-xcode instruments
-
-xcode - build settings 내부
-디버그 심볼을 반드시 포함해줘야함
-
-resident 상주 메모리
-dirty size 가상 메모리 할당 내에서 dirty 인 애들 - 상주메모리에서 빼기 힘든애들
-swapped   스왑된 애들
 
 
-클린메모리 binaries / code   
-
-"GPU" - 유니티 GPU 처리
-app allocations - 유니티 CPU 처리
-
-
-IOSurface 상주메모리 비율이 100% -> 물리 메모리에 100% 할당
-물리 메모리를 넘어서면 앱이 터짐
-
-allocation 에서 상주 메모리 비율도 볼 수 있음
-
-Memory Graph : 네이티브 메모리 스냅샷 도구
-
-
-
-
-1. 앱이 꺼지는 이유 파악 ^ 메모리 때문인지?
-
-안꺼지는 동안 메모리 프로파일러 스냅샷 찍어서  -  메로리 과하게 쓰고있는지 파악
-
-ios xcode debugger 붙인 상태에서 게임플레이 -> 크래시 -> 크래시 잡을 수 있음
-
-크래시가 메모리 때문인지? 에러 때문인지 파악가능
-
-2. 메모리 문제라면?
-
-메모리 프로파일러를 보면서 - Unity Objects, SUmmaries 탭에서 
-total commiteed 영역에서 가장 큰 메모리를 쓰는 영역을 순서대로 정리 후 파악
-
-
-
-레이아웃에 대한 처리는   순환 레이아웃 문제 때문에
-
-dirty 여부 판단 - 프레임 마지막에 레이아웃을 갱신
-
-항상 매프레임의 마지막으로 밀린다?  레이아웃을 강제로 갱신시키는 api 가 있을까?
-
-
-
-
-모바일 - Unified memory
-윈도우 - VRAM
-
-텍스쳐 read/write 설정 - cpu 메모리에도 올라감
-
-
-
-
-
-
-
-
-유니티 넷코드
-
-데디케이트 서버 호스팅 서비스
-
-핑 -> ICMP 프로토콜
-클라 - 서버 전송 응답속도
-
-핑이 있으면 라우팅이 있다.
-
-ROUTING    HOP 들을 거쳐서 데이터센터에 연결을 위해 네트워크 연결을 위한 경로를 찾아내는 것
-
-Tick Rate 클라 서버간 주고 받는 업데이트 빈도
-
-
-네트워크 모델들
-
-데디케이트 서버 - 서버에서 클라를 판단, 플레이어가 서버 연결하는데 시간이 걸림, 비용 높다
-
-클라이언트 호스트 - 클라1이 호스팅, 방장이 나가면 끝
-
-p2p peer to peer - 격투게임
-
-
-Lag Compensation 핑 차이가 나면 서버가 지연 보상을 해줘야한다.
 
