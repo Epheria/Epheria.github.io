@@ -12,9 +12,9 @@ toc_sticky: true
 <br>
 <br>
 
-## iOS 메모리 구조
+## **iOS 메모리 구조**
 
-#### 물리 메모리 (RAM)
+#### **물리 메모리** (RAM)
 
 ![Desktop View](/assets/img/post/unity/profilerios01.png){: : width="500" .normal }
 
@@ -26,7 +26,7 @@ toc_sticky: true
 
 <br>
 
-#### 가상 메모리 (VM - Virtual Memory)
+#### **가상 메모리** (VM - Virtual Memory)
 - 앱은 물리 메모리를 직접 사용하지 않는다.
 - 할당은 VM에서 이루어진다.
 
@@ -61,7 +61,7 @@ toc_sticky: true
 <br>
 <br>
 
-#### VM의 이점
+#### **VM의 이점**
 
 ![Desktop View](/assets/img/post/unity/profilerios06.png){: : width="500" .normal }
 
@@ -73,7 +73,7 @@ toc_sticky: true
 <br>
 <br>
 
-#### 메모리 풋프린트 (Memory Footprint)
+#### **메모리 풋프린트** (Memory Footprint)
 
 - 메모리 풋프린트란 앱이 실질적으로 차지하는 크기를 의미
 > 상주 메모리 비율이 높은 할당 영역들의 합산
@@ -104,7 +104,7 @@ toc_sticky: true
 - Dirty 와 Dirty Compressed 는 메모리 풋프린트이고 상주 메모리 비율이 높다.
 - Clean은 상주 메모리 비율이 낮다.
 
-#### 정리
+#### **정리**
 
 - 현재 쓰고 있는 전체 물리 메모리양(상주 메모리)이 메모리 풋프린트가 아닌 이유?
 > Clean 의 상주 메모리는 언제든지 해제가 가능하기 때문   
@@ -122,7 +122,7 @@ toc_sticky: true
 
 <br>
 
-#### iOS의 메모리 제한
+#### **iOS의 메모리 제한**
 
 ![Desktop View](/assets/img/post/unity/profilerios09.png){: : width="1600" .normal }
 
@@ -146,7 +146,7 @@ toc_sticky: true
 <br>
 <br>
 
-#### 유니티에서는 무엇이 메모리 풋프린트를 남기는가?
+#### **유니티에서는 무엇이 메모리 풋프린트를 남기는가?**
 
 ![Desktop View](/assets/img/post/unity/profilerios12.png){: : width="1600" .normal }
 
@@ -180,9 +180,9 @@ toc_sticky: true
 <br>
 <br>
 
-#### 유니티 메모리 구조
+#### **유니티 메모리 구조**
 
-#### 네이티브와 관리되는 스크립트
+#### **네이티브와 관리되는 스크립트**
 
 - 유니티는 .NET 가상 머신을 쓰는 C++ 엔진이다.
 - 두 개의 레이어 존재
@@ -192,7 +192,7 @@ toc_sticky: true
 
 <br>
 
-#### 게임 오브젝트의 바인딩에 대해
+#### **게임 오브젝트의 바인딩에 대해**
 
 ![Desktop View](/assets/img/post/unity/profilerios13.png){: : width="400" .normal }
 
@@ -201,7 +201,7 @@ toc_sticky: true
 
 <br>
 
-#### 메모리 영역
+#### **메모리 영역**
 
 - **관리되는 메모리**(Managed Memory) : 자동으로 관리되는 영역
 - **네이티브 메모리**(Native Memory) : 엔진의 C++ 레이어에서 사용하는 영역
@@ -216,7 +216,7 @@ toc_sticky: true
 
 <br>
 
-#### 관리되는 메모리
+#### **관리되는 메모리**
 
 - 스크립팅 백엔드 가상머신(VM)에 의해 할당/제어 되는 곳
 - 관리되는 힙 : 모든 C# 할당 - 동적 할당들
@@ -227,7 +227,7 @@ toc_sticky: true
 
 <br>
 
-#### 관리되는 메모리 : 실제 동작 방식
+#### **관리되는 메모리 : 실제 동작 방식**
 
 ![Desktop View](/assets/img/post/unity/profilerios15.png){: : width="600" .normal }
 
@@ -269,77 +269,172 @@ toc_sticky: true
 <br>
 <br>
 
-#### 유니티 메모리 프로파일러 분석
+#### **유니티 메모리 프로파일러 분석**
 
+![Desktop View](/assets/img/post/unity/profilerios20.png){: : width="1600" .normal }
 
+<br>
 
-유니티 메모리 프로파일러 1.1v
+#### **Summaries 탭**
 
+![Desktop View](/assets/img/post/unity/profilerios21.png){: : width="600" .normal }
 
-allocated memory distribution
+- Memory Usage On Devices : 실기기 메모리 사용량
+- Allocated Memory Distribution : VM 할당 분포
+- Managed Heap Utilization : 힙 활용도
+- Top Unity Objects : 메모리 많이 쓰는 유니티 오브젝트
 
-native C++ 네이티브 코드
-graphics metal에의해 gpu 할당 메모리
-managed C#
-executalbe mapped  clean 메모리들  바이너리, dll
-untracked  symbol을 모를때, 카테고리가 모호할 때 -> 카테고리는 완벽하지 않음. ex 오디오 클립?
+<br>
 
-유니티가 카테고리화를 못한 내용들이 들어감. 예  플러그인의 할당, 안드로이드 플러그인으로 로그인 만들때?
+- **Memory Usage On Devices**
 
-UnTrakced가 크다고 문제가 있는건 아니다.
+![Desktop View](/assets/img/post/unity/profilerios22.png){: : width="400" .normal }
 
-ex   MALLOC_NANO   Allocated Size 500mb  resdient size  3,3mb
-즉 미리 확보한 힙공간은 500mb 여도 실제 사용량은 3.3mb 밖에 되지 않는 경우가 있기 때문에 크다고 최적화가 필요한건 아니다.
+- Total Resident : 상주 메모리
+- Total Allocated : 할당량
 
+<br>
 
+- **Allocated Memory Distribution**
 
+![Desktop View](/assets/img/post/unity/profilerios23.png){: : width="400" .normal }
 
-Managed Heap Utilization -> 우리가 직접 제어하기는 힘든 영역
+- 카테고리 별 VM 할당량 분포
+- **Native** : Natice C++, 네이티브 코드
+- **Graphics** : metal에 의해 GPU 할당 메모리
+- **Managed** : C#
+- **Executable & Mapped** : Clean 메모리들, 바이너리, dll
+- **Untracked** : symbol을 모를 때, 카테고리가 모호할 때 -> 카테고리 기능은 완벽하지않다. ex. 오디오 클립
 
+- **카테고리는 완벽하지 않다!**
+> 종류가 애매한 경우   
+> 분류할 수 없는 경우   
+> 버전에 따라 분류 기조가 다른 경우
+- Unknown, Others, Untracked 는 유니티가 모르거나 카테고리로 분류할 수 없는 할당을 의미한다.
+> ex. 플러그인의 할당(안드로이드 플러그인으로 로그인 기능 만들때 라던가..), 유니티 앱에서 발생한 할당
 
-virutal machine  - 제네릭, 타입 메타 데이터, 리플렉션   -> 런타임 동안 계속 커지는 경향이 있다.
+![Desktop View](/assets/img/post/unity/profilerios25.png){: : width="400" .normal }
 
-줄이는 방법 - 리플렉션 안쓰기, 코드 스트립, 2022 부터 제네릭 쉐어링 적용됨
+- 상주 메모리 비율도 보여준다.
 
-엔진 코드 스트립 - 유니티 엔진 모듈 내에서 앱 빌드 시 ㅅ쓰이지 않는 코드 찾아서 스트립
-매니지드 코드 스트립 레벨 
+![Desktop View](/assets/img/post/unity/profilerios27.png){: : width="400" .normal }
 
-둘 다 사용
+- Untracked 가 크다고 문제가 있다! 라고는 볼 수 없다.
+- ex. MALLOC_NANO
+> **미리 확보한 힙공간을 의미한다.**
+> 할당 크기 : 502.1 MB
+> 상주 메모리 : 3.3 MB
 
-리플렉션을 사용하면 터질 수 있음 -> link.xml 에서 사용하도록 명시할 수도 있음
+<br>
+<br>
 
+-**Managed Heap Utilization**
 
+![Desktop View](/assets/img/post/unity/profilerios28.png){: : width="400" .normal }
 
+- 힙의 활용도를 보여줌
+> 우리가 직접 제어하기는 힘든 영역이다.
+- Virtrual Machine
+- Empty Heap Space
+- Objects
 
-empty heap szie 가 크면 메모리 파편화가 심하다고 볼 수 있음. -> 동적할당 과정에서 CPU오버헤드가 발생, 불필요하게 점유한 메모리가 크다
+<br>
 
-빈블록 형성은 알고리즘이 있음.
+- **Virtual Machine**
+   - VM 머신, 스크립팅 그 자체를 위한 할당
+   - 제네릭, 타입 메타 데이터, 리플렉션
+   - **런타임 동안 계속 커지는 경향이 있다.**
+   - **줄이는 방법**
+   > 1. **코드 스트립**   
+   ```
+   - 엔진 코드 스트립 - 유니티 엔진 모듈 내에서 앱 빌드 시 쓰이지 않는 코드를 찾아서 스트립
+   - Managed Code Strip Level
+   둘 다 사용하자, 리플렉션을 사용하면 에러가 터질 수 있으니 link.xml 에서 특정 클래스는 사용하도록 명시할 수 있다.
+   ```
+   > 2. **리플렉션 안쓰기**   
+   > 3. **제네릭 쉐어링(유니티 2022 이상)**
 
-엑세스 속도가 빠른 빈블록 찾아서 할당 -> 느린 빈블록 찾아서 할당 -> 이래도 없다? GC 트리거 -> Incremental GC 쓰면  GC Collection과 동시에 힙을 확장
-안쓰면 GC Collection이후에도 공간이 여전히 없다라면 힙 확장 
+- **Empty Heap Space**
+- 빈 힙공간
+- 새 할당이 들어갈 수 있다.
+- 다음 GC때 수집될 버려진 오브젝트가 있을 수도 있다.
+- PM에서 언맵된 페이지는 제외
+- Empty Heap Size 가 크면 메모리 파편화가 심하다고 볼 수 있다. -> 동적할당 과정에서 CPU 오버헤드가 발생, 불필요하게 점유한 메모리가 크다는 의미
 
-Incremental GC 설정을 권장함.
+- 구 버전   
 
-gc call with alloc symbol 로 표기됨
+   ![Desktop View](/assets/img/post/unity/profilerios29.png){: : width="400" .normal }
 
+   ![Desktop View](/assets/img/post/unity/profilerios30.png){: : width="400" .normal }
 
+- 구버전 에서는 Active, Fragmented 두 종류로 분리되어있음
+- Active Empty Heap Space : 연속 힙 메모리 블록에서 빈 공간(우선순위 높음)
+- Fragmented Empty Heap Space : 파편화된 힙 메모리 블록에서 빈 공간
+- Fragmentation 에 대해 사용자가 직접 할 수있는건 없다.
 
+<br>
 
-Unity Objects 탭
+- **GC 실행 구조**
+- 빈블록 형성은 알고리즘이 있음.
+1. 새 할당 발생
+2. 우선 연속 힙 공간의 빈공간(=Active Empty Heap Space)에서 할당 시도 (빠름)
+3. 그 다음에는 전체 빈 블록 목록, 이외에 힙의 남은 공간을 스캔해서 할당 시도 (느림)
+4. 그래도 공간이 없으면 GC Collection 트리거
+- Incremental GC 를 사용한다면 GC Collection 과 동시에 힙을 확장한다.
+> **gc_call_with_alloc 이라는 symbol 로 표기된다.**
+- Incremental GC 를 사용하지 않는다면 GC Collection 이후에도 공간이 여전히 없다면 힙을 확장한다.
+> gc_expand_hp_inner
 
-Native Size, Managed Size, Graphics Size 세 가지 메모리 할당률로 보여줌
-c++           c#    
+- **Incremental GC 설정을 권장함.**
 
+<br>
 
+#### **Unity Objects 탭**
 
-Memory Map - 숨겨진 기능
+![Desktop View](/assets/img/post/unity/profilerios31.png){: : width="800" .normal }
 
-구체적인 객체 이름이 안보임. 어떤 프레임워크나 바이너리가 점유했는지 파악이 가능
+- 유니티 오브젝트들의 할당량을 보여준다.
+- Native Size(C++), Managed Size(C#), Graphics Size 세 가지 메모리 할당률로 보여준다.
+- 상주 메모리 비율도 보여준다.
 
+<br>
 
-스냅샷 이기 때문에 콜 스택을 파악하기 힘듦
+#### **All of Memory 탭**
 
-언제 왜 이런 할당이 발생했는가? 네이티브 프로파일러로 파악 가능
+![Desktop View](/assets/img/post/unity/profilerios32.png){: : width="800" .normal }
+
+- VM 전체 할당 객체들을 보여준다.
+- Untracked, Reserved 포함
+
+<br>
+
+#### **Memory Map**
+
+![Desktop View](/assets/img/post/unity/profilerios33.png){: : width="800" .normal }
+
+- 숨겨진 기능
+- 페이지별 메모리 맵
+- 어떤 주차게 해당 페이지를 점유했는지 파악 가능
+> Device + IOACCELERATOR : GPU를 위한 할당   
+> Native Allocation : 유니티 네이티브 코드에서 할당
+- 구체적인 객체 이름이 안보임. 어떤 프레임워크나 바이너리가 점유했는지 파악이 가능
+
+<br>
+
+![Desktop View](/assets/img/post/unity/profilerios34.png){: : width="800" .normal }
+
+- 512 * 512 텍스쳐의 할당량이 2.7 MB ?
+- 네이티브 1.3MB + 그래픽스 1.3 MB ?
+- 언제, 왜 이런 할당이 일어나는지 궁금한 경우 -> iOS 네이티브 프로파일러로 파악이 가능하다.
+- 메모리 프로파일러는 스냅샷 이기 때문에 콜 스택을 파악하기 힘듦
+
+<br>
+<br>
+
+## **네이티브 프로파일러 사용하기 : Xcode Instruments**
+
+- [Xcode Instruments 사용 방법](https://epheria.github.io/posts/instruments/)
+- 또는 Xcode 에서 Instruments 를 켜도 됨.
 
 
 
