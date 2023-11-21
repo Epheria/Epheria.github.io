@@ -355,22 +355,22 @@ toc_sticky: true
    > 3. **제네릭 쉐어링(유니티 2022 이상)**
 
 - **Empty Heap Space**
-- 빈 힙공간
-- 새 할당이 들어갈 수 있다.
-- 다음 GC때 수집될 버려진 오브젝트가 있을 수도 있다.
-- PM에서 언맵된 페이지는 제외
-- Empty Heap Size 가 크면 메모리 파편화가 심하다고 볼 수 있다. -> 동적할당 과정에서 CPU 오버헤드가 발생, 불필요하게 점유한 메모리가 크다는 의미
+   - 빈 힙공간
+   - 새 할당이 들어갈 수 있다.
+   - 다음 GC때 수집될 버려진 오브젝트가 있을 수도 있다.
+   - PM에서 언맵된 페이지는 제외
+   - Empty Heap Size 가 크면 메모리 파편화가 심하다고 볼 수 있다. -> 동적할당 과정에서 CPU 오버헤드가 발생, 불필요하게 점유한 메모리가 크다는 의미
 
-- 구 버전   
+   - 구 버전   
 
-   ![Desktop View](/assets/img/post/unity/profilerios29.png){: : width="400" .normal }
+      ![Desktop View](/assets/img/post/unity/profilerios29.png){: : width="400" .normal }
 
-   ![Desktop View](/assets/img/post/unity/profilerios30.png){: : width="400" .normal }
+      ![Desktop View](/assets/img/post/unity/profilerios30.png){: : width="400" .normal }
 
-- 구버전 에서는 Active, Fragmented 두 종류로 분리되어있음
-- Active Empty Heap Space : 연속 힙 메모리 블록에서 빈 공간(우선순위 높음)
-- Fragmented Empty Heap Space : 파편화된 힙 메모리 블록에서 빈 공간
-- Fragmentation 에 대해 사용자가 직접 할 수있는건 없다.
+      - 구버전 에서는 Active, Fragmented 두 종류로 분리되어있음
+      - Active Empty Heap Space : 연속 힙 메모리 블록에서 빈 공간(우선순위 높음)
+      - Fragmented Empty Heap Space : 파편화된 힙 메모리 블록에서 빈 공간
+      - Fragmentation 에 대해 사용자가 직접 할 수있는건 없다.
 
 <br>
 
