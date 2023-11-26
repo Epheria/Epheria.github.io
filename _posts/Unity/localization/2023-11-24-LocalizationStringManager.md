@@ -24,7 +24,7 @@ toc_sticky: true
 
 <br>
 
-#### Unity Localize Table
+#### Unity Localize Table : Smart 옵션
 
 - 우선 코드를 보기에 앞서 유니티 로컬라이제이션 테이블과 실제로 구글 스프레드 시트의 테이블을 짚고 넘어가자.
 
