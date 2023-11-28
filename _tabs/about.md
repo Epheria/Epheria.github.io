@@ -11,7 +11,8 @@ order: 4
   E-mail : <tpguq1104@naver.com>   
   > * #### 회사 프로젝트   
   > > Toyverse UML : <>   
-  > > Toyverse App : <>
+  > > Toyverse AOS : <https://play.google.com/store/apps/details?id=com.coconeus.toyverse>
+  > > Toyverse iOS : <>
   > * #### 개인 프로젝트    
   > > TheQuesting Video : <https://youtu.be/UDvV4Y-eBLQ>   
   > > ProjectAlive Video : <https://youtu.be/51yy0uizN1Q>   
