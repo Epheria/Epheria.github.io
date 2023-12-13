@@ -353,5 +353,6 @@ class PBR : IPostprocessBuildWithReport
 - ServerData 하위에 생성된 Android, iOS 어드레서블 번들 및 카탈로그 폴더
 ![Desktop View](/assets/img/post/unity/pipeline05.png){: .normal }
 
-- 생성된 번들 파일들과 카탈로그 파일들을 확인할 수 있다. 이것들을 이제 LoadPath를 설정하고 AWS S3에 올리면 패치 시스템이 구현할 수 있다.
+- 생성된 번들 파일들과 카탈로그 파일들을 확인할 수 있다. 이것들을 이제 LoadPath를 설정하고 AWS S3에 올리면 패치 시스템을 구현할 수 있다.
+
 ![Desktop View](/assets/img/post/unity/pipeline06.png){: .normal }
