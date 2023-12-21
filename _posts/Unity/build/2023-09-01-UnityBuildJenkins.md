@@ -131,6 +131,8 @@ Real 은 본방, 스토어에 올라가는 브랜치로 설정.
 - 프로젝트 빌드를 위해 shell script 를 실행한다. 백그라운드로 돌아가는 터미널 느낌..
 - 명령어가 터미널에서 사용할 수 있는 명령어들이다.
 
+   ![Desktop View](/assets/img/post/unity/jenkins015.png){: : width="700" .normal }
+
 <br>
 
 #### iOS 빌드 스크립트
