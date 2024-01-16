@@ -7,6 +7,8 @@ tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
 toc: true
 toc_sticky: true
 math: true
+use_math: true
+mermaid: true
 
 ---
 
@@ -277,7 +279,7 @@ $$
 
 <br>
 
-- 하지만 여기서 모순점이 발생한다. $ 0 = 7 $ 은 모순이므로 이 linear system 은 no solution이 된다.
+- 하지만 여기서 모순점이 발생한다. $ 0 = 7 $ 은 모순이므로 이 linear system 은 inconsistent 하므로 no solution 이다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra2_14.png){: : width="500" .normal }
 
@@ -297,6 +299,18 @@ $$
 - 이를 정리하자면 다음과 같다.
 - lineqr equation 이 consistent 하면 augmented matrix에서 b가 pivot position이 아니다.
 - 즉, b를 제외하고 0인 행렬이 있으면 안된다.
+- 반대로, 0 & \cdots & 0 & b 인 row 가 있으면 -> no solution 이다.
 
 - linear system 이 consistent 하면, (i) free variable 이 없다면 exactly one solution (trivial solution) 이다.
 - (ii) 1개 이상의 free variable 이 있다면 infinitely many solution (nontrivial solution) 이다.
+- 즉, 해가 1개 -> free variable 이 존재하지 않고 해가 무수히 많다면 -> at least one free variable 이 존재한다.
+
+<br>
+<br>
+
+## 예제 더 풀어보기
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra2_15.png){: : width="500" .normal }
+
+- a. 는 $ x_3 $ 가 free variable 이므로 consistent, many solutions 이다.
+- b. 는 첫번째 column 이 전부 0 이므로 $ x_1 $ 이 free variable 이 되므로 consistent, many solutions 이다.
