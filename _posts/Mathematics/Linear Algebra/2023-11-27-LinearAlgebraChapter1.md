@@ -1,5 +1,5 @@
 ---
-title: 1.1 Systems of Linear Equations
+title: Linear Algebra - 1.1 Systems of Linear Equations
 date: 2023-11-27 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
@@ -17,18 +17,17 @@ mermaid: true
 ---
 
 > **용어 정리**   
-> * 선형 방정식 - linear equation   
-> * 선형 방정식 계 - system of linear equation   
-> * 해의 집합 - solution set   
+> * linear equation (선형 방정식)   
+> * system of linear equation (선형 방정식 계)   
+> * solution set (해의 집합)   
 > * consistent - exactly one solution, infinitely many solutions   
 > * inconsistent - no solution   
-> * 행령 표기법 - matrix notation   
-> * 소거법 - elimination   
-> * 행 연산 - row operation (replacement, interchange, scaling)   
-> * 상등 - equivalent   
-> * 행 상등 - row equivalent   
+> * matrix notation (행령 표기법)   
+> * elimination (소거법)   
+> * row operation (행 연산) - replacement, interchange, scaling   
+> * equivalent (상등)   
+> * row equivalent (행 상등)   
 {: .prompt-info}
-
 
 <br>
 
