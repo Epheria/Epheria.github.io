@@ -1,6 +1,6 @@
 ---
 title: Linear Algebra - 1.7 Introduction to Linear Transformation
-date: 2024-1-12 12:42:00 +/-TTTT
+date: 2024-1-14 12:42:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
 
