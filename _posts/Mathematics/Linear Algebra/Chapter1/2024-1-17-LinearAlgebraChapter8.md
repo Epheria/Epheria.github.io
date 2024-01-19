@@ -189,9 +189,9 @@ $$ T(\mathbf{u} - \mathbf{v}) = T(\mathbf{u}) - T(\mathbf{v}) = 0  $$
 
 > ***<span style="color:#179CFF">Theorem12. </span>***    
 > Let $ \, T : \mathbb{R}^{n} \rightarrow \mathbb{R}^{m} $ be a linear transformation, and let $A$ be the standard matrix for $T$. Then:   
->    
-> a.  $T$ maps $\mathbb{R}^{n}$ onto $\mathbb{R}^{m}$ if and only if the columns of $A$ span $\mathbb{R}^{m}$;
-> b.  $T$ is one-to-one if and only if the columns of $A$ are linearly independent.
+>     
+> a.  $T$ maps $\mathbb{R}^{n}$ onto $\mathbb{R}^{m}$ if and only if the columns of $A$ span $\mathbb{R}^{m}$;   
+> b.  $T$ is one-to-one if and only if the columns of $A$ are linearly independent.   
 {: .prompt-tip}
 
 - $ \, T : \mathbb{R}^{n} \rightarrow \mathbb{R}^{m} $ 이 linear transformation 이면 $A$ 는 $T$ 에 대한 standard matrix 이다.

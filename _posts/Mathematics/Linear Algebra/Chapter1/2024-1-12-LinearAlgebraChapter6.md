@@ -109,20 +109,20 @@ mermaid: true
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_07.png){: : width="600" .normal }
 
-   - a. 는 scalar multiplation 형태로 표현이 가능하므로 linearly dependent 하다.
-   - b. 는 scalar multiplation 으로 표현을 못하므로 linearly independent 하다.
+   - a. 는 scalar multiplication 형태로 표현이 가능하므로 linearly dependent 하다.
+   - b. 는 scalar multiplication 으로 표현을 못하므로 linearly independent 하다.
 
 <br>
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_05.png){: : width="400" .normal }
 
-- **두 vector의 집합에서 하나의 vector 가 다른 vector 의 scalar multiplation 형태로 표현되면 linearly dependent 하다.**
+- **두 vector의 집합에서 하나의 vector 가 다른 vector 의 scalar multiplication 형태로 표현되면 linearly dependent 하다.**
 
 <br>
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_06.png){: : width="400" .normal }
 
-- **두 vector의 집합에서 하나의 vector 가 다른 vector 의 scalar multiplation 형태로 표현되지 않는다면 linearly independent 하다.**
+- **두 vector의 집합에서 하나의 vector 가 다른 vector 의 scalar multiplication 형태로 표현되지 않는다면 linearly independent 하다.**
 
 <br>
 <br>
@@ -138,7 +138,7 @@ mermaid: true
 <br>
 
 - $c_1v_1 + \dots + c_pv_p = 0$ 에서 두 개 이상의 vector가 linearly dependent라고 가정해보자.
-- linearly dependent 하므로 하나의 벡터는 다른 벡터의 scalar multiplation 형태로 표현이 가능하다. 따라서 하나의 벡터는 다른 벡터의 linear combination 으로 표현될 수 있다.
+- linearly dependent 하므로 하나의 벡터는 다른 벡터의 scalar multiplication 형태로 표현이 가능하다. 따라서 하나의 벡터는 다른 벡터의 linear combination 으로 표현될 수 있다.
 - $v_1 = (-c_2 / c_1)v_2 + \dots + (-c_p / c_1)v_p$
 - $-v_1 + c_2v_2 + \dots + c_pv_p = 0$ 에서 $c_2v_2 + \dots + c_pv_p = 0$ 이여도 $v_1$은 nonzero이다. $\because$ **linearly dependent**
 
@@ -196,4 +196,4 @@ $$ 1v_1 + 0v_2 + \dots + 0v_p = \mathbf{0} $$
 
 - a. linearly dependent하다. theorem 8 의 $ n < p $
 - b. linearly dependent하다. 0 벡터가 존재하므로..
-- c. linearly independent하다. scalar multiplation으로 표현되지 않고, $ n > p $ 이기 때문
+- c. linearly independent하다. scalar multiplication 표현되지 않고, $ n > p $ 이기 때문
