@@ -31,6 +31,14 @@ mermaid: true
 
 <br>
 
+## 선형대수 (Linear Algebra) 는 선형 방정식(Linear Equation)을 풀기 위한 방법론이다.
+
+- 다음과 같은 lineqr equation 이 있다고 하자, $2x + 3y = 0$
+- 여기서 우측의 해 $0$ 을 만족시키는 $x$ 와 $y$ 를 찾아내는 것이다.
+- 방정식과 미지수가 하나씩 있으면 solution 을 구하는게 매우 쉽지만
+- 방정식 1개에 미지수2개 의 경우 해를 만족시키는 x와 y를 방정식 1개로 찾기는 어렵다.
+- 여기서 같은 차원의 방정식이 여러개 있다면? 우리는 두 방정식의 관계를 이용해 해를 찾아낼 수 있다. 이것이 선형대수를 공부하는 목적이다.
+
 ## 선형 방정식 - linear equation
 
 $ x_1,...,x_n$ 변수로 이루어진 선형 방정식은 다음과 같이 쓸 수 있다.
@@ -70,6 +78,109 @@ $$ a_1x_1 + a_2x_2 + \dots + a_nx_n = b $$
      
    ![Desktop View](/assets/img/post/mathematics/linearalgebra1_01.png){: : width="300" .normal }
 
+- 위 두 개의 식을 행렬로 표시하면 다음과 같다.
+
+$ \begin{bmatrix} 1 & -2 \\\ -1 & 3 \end{bmatrix} \begin{bmatrix} x \\\ y \end{bmatrix} =  \begin{bmatrix} -1 \\\ 3 \end{bmatrix}  $
+
+$ A\mathbf{x} = \mathbf{b} $
+
+- 왼쪽부터 순서대로, Coefficient Matrix - 계수행렬(A), unknown vector - 미지수 벡터(x), 우변 벡터(b) 이다.
+
+<br>
+
+- **<span style="color:#179CFF"> Row Picture </span>**
+- Row picture 란 Row 방향의 방정식을 하나씩 보는 것이다. 예를 들어, 위 식에서 $ x_1 - 2x_2 = -1 $ 의 하나의 방정식을 놓고 봤을 때, 이 방정식이 공간상에서 어떻게 표현되는지, 무엇을 의미하는지를 아는 것이다.
+- 선형대수에서 이러한 row 방향의 하나의 방정식은 좌표 공간상에서 직선으로 표현된다. 위 방정식들을 $y=x$ 꼴로 정리해서 풀어보면
+
+$ x_2 = {1 \over 2}x_1 + {1 \over 2} $   
+$ x_2 = {1 \over 3}x_1 + 1 $
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra1_09.png){: : width="400" .normal }
+> matplotlib 로 작성했다.
+
+- 해당 그래프를 보면 (3,2)에서 교점이 존재하는데, 이것이 linear system 의 해이다.
+
+
+<details>
+<summary>matplotlib로 작성한 코드</summary>
+<div markdown="1">
+
+``` python
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x1 = np.array(range(1, 6)) # system value 의 범위를 의미
+x2 = np.array(range(1, 6))
+x3 = np.array(range(1, 6))
+
+plt.plot(x1, 1/2 * x1 + 1/2, color='tomato', label="$x_1 - 2x_2 = -1$") # y = x 꼴로 간단히 표현가능
+plt.plot(x2, x2 ** 2, color='royalblue', label="$-x_1 + 3x_2 = 3$")
+plt.xlabel("X-Axis")
+plt.ylabel("Y-Axis")
+plt.legend()
+plt.title('Line Plot')
+plt.grid(True)
+
+plt.text(3, 2, "      Intersection")
+
+plt.show()
+```
+
+</div>
+</details>
+
+<br>
+
+- **<span style="color:#179CFF"> Column Picture </span>**
+
+$ \mathbf{x_1} \begin{bmatrix} 1 \\\ -1 \end{bmatrix} + \mathbf{x_2} \begin{bmatrix} -2 \\\ 3 \end{bmatrix} = \begin{bmatrix} -1 \\\ 3 \end{bmatrix}  $ - 위 방정식을 column 식으로 표현
+
+$ a_1\mathbf{x_1} + a_2\mathbf{x_2} = b $ - 일반화 한 것
+
+<br>
+
+$$ a_1\mathbf{x_1} + a_2\mathbf{x_2} + \dots + a_n\mathbf{x_n} = b $$
+
+- 우리는 위와 같은 형태를 linear combination (선형 결합)이라고 부르며, 이러한 형태의 연산은 선형대수에서 가장 근본적이며 핵심적인 연산이다.
+- 여기서는 column 의 선형 결합이라 할 수 있음.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra1_10.png){: : width="400" .normal }
+
+<details>
+<summary>matplotlib로 작성한 코드</summary>
+<div markdown="1">
+
+``` python
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([1, -1]) # 벡터로도 array 표현이 가능
+y = np.array([-2, 3])
+lc = 3*x + 2*y # 선형 결합
+
+plt.clf()
+
+plt.arrow(0, 0, x[0], x[1], head_width=0.1, head_length=0.2, color="red", label="$x_1 = [1, -1]$") # 벡터는 arrow 로 표현
+plt.arrow(0, 0, y[0], y[1], head_width=0.1, head_length=0.2, color="blue", label="$x_2 = [-2, 3]$")
+plt.arrow(0, 0, lc[0], lc[1], head_width=0.1, head_length=0.2, color="green", label="$b = [-1,3]$")
+
+plt.xlabel("$x_1$-axis")
+plt.ylabel("$x_2$-axis")
+
+plt.legend()
+plt.grid(True)
+plt.title('Line Plot')
+plt.show()
+
+```
+
+</div>
+</details>
+
+- 결국 Row Picture 든 Column Picture 든 똑같은 시스템 A를 보는 것이므로 해는 같다.
+- 문제를 직선이나 평면 방정식으로 볼것인지, 벡터들의 선형결합으로 볼것인지의 차이일 뿐이다.
 
 <br>
 <br>
