@@ -346,6 +346,49 @@ $$
 - u와 v는 다른 벡터라는 조건에서 Span{u,v}로 표현이 가능하다.
 
 <br>
+
+- **Row Picture**와 **Column Picture**으로 분리해서 살펴보기
+
+$$
+\begin{aligned}
+2\mathbf{x} - \mathbf{y} \quad \quad  = 0 \\
+-\mathbf{x} + 2\mathbf{y} - \mathbf{z} = -1 \\
+\quad  -3\mathbf{y} + 4\mathbf{z} = 4   
+\end{aligned}
+$$
+
+- 위 와 같은 3개의 방정식이 주어졌을때 Row Picture, Column Picture 두 가지 방법으로 행렬을 이해해보자.
+- 우선 다음과 같이 Ax=b 형태의 Matrix Form을 만들어주자.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra3_15.png){: : width="400" .normal }
+
+- **Row Picture**
+- x,y,z 에 대해 평면 방정식을 공간상에 나타내보면 다음 그림과 같다.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra3_16.png){: : width="400" .normal }
+
+- 3가지 평면은 딱 한 점에서 만나게 되고, 그것이 바로 이 시스템의 solution 이다.
+
+<br>
+
+- **Column Picture**
+- 위 Matrix 를 3차원 벡터의 linear combination 형태로 나타내면 다음과 같다.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra3_17.png){: : width="400" .normal }
+
+- 좌변이 나타내는 linear combination 이 어떤 우변의 벡터를 만들어내는것인지를 알아내야한다. x,y,z 에 어떤 값을 설정해야 우변이 만들어지는가와 같다.
+- 위 선형결합을 그림으로 나타내면 다음과 같다.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra3_18.png){: : width="400" .normal }
+
+- 좌변의 선형결합으로 공간상의 모든 벡터(혹은 점)을 만들어낼 수 있는가를 생각해야한다.
+- 여기서 더 나아가 살펴볼 점은 $v_3 = v_1 + v_2$ 를 의미하며 이것은 시스템 A에서 어떠 한 column 벡터가 나머지 두 벡터의 선형결합으로 이루어진 경우이고 이는 공간상에서 $v_3$ 는 $v_1, v_2$ 가 이루는 평면 위에 놓여져 있단 것이다.
+
+   ![Desktop View](/assets/img/post/mathematics/linearalgebra3_19.png){: : width="400" .normal }
+
+- 이 경우 시스템 A는 어떤 선형조합을 해도 노란 평면을 벗어날 수 없다.
+
+<br>
 <br>
 
 ## b가 Span{$ a_1, a_2 $}에 존재하는지 확인하기
