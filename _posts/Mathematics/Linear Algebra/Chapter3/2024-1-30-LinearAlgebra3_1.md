@@ -88,7 +88,7 @@ $$ A_{32} = \begin{bmatrix} \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phan
 
 <br>
 
-- **예제**
+#### **determinant 예제**
 - 다음과 같이 A 행렬이 주어졌을 때 determinant를 구하라.
 
 $$ A = \begin{bmatrix} \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}2 & \phantom{-}4 & -1 \\\ \phantom{-}0 & -2 & \phantom{-}0 \end{bmatrix} $$
@@ -116,3 +116,92 @@ $$ det A = \vert A \vert = 1 \begin{vmatrix} \phantom{-}4 & -1 \\\ -2 & \phantom
 
 ## Cofactor - 여인수
 
+-  **<span style="color:#179CFF">cofactor 를 이용해서 determinant를 여러가지 형태로 표현할 수 있다.</span>**
+
+> $A = [a_{ij}] , $ the $(i, j)$-cofactor of $A$ is the number $C_{ij}$ given    
+>   
+> $C_{ij} = (-1)^{i + j} \, det A_{ij}$     
+>    
+> $det A = a_{11}C_{11} + a_{12}C_{12} + \dots + a_{1n}C_{1n}$
+{: .prompt-info}
+
+- 이를  **<span style="color:#179CFF">cofactor expansion (여인수 전개)</span>** 라고 한다.
+
+- cofactor 의 부호는 이 식으로 결정되며 $(-1)^{i + j}$ 다음과 같은 규칙을 지닌다.
+
+$$ \begin{bmatrix} + & - & + & \dots \\\ - & + & - & \dots \\\ + & - & + & \dots \\\ \vdots & \vdots & \vdots & \ddots  \end{bmatrix}  $$
+
+<br>
+
+> ***<span style="color:#179CFF">Theorem1. </span>***    
+>   
+> The determinant of an $n \times n$ matrix $A$ can be computed by a cofactor expansion across any row or down any column. The expansion across the $i$ th row using the cofactors in [here](#determinant-예제) is    
+>    
+> $ det A = a_{i1}C_{i1} + a_{i2}C_{i2} + \dots + a_{in}C_{in}$    
+>    
+> The cofactor expansion down the $j$ th column is    
+>    
+> $ det A = a_{1j}C_{1j} + a_{2j}C_{2j} + \dots + a_{nj}C_{nj}$    
+{: .prompt-tip}
+
+- cofactor expansion 을 이용하면 **<span style="color:#179CFF">임의의 row, column 을 선택하여 determinant 를 표현할 수 있다. </span>** -> 어떤 cofactor 를 이용하더라도 결과는 동일하다.
+- cofactor expansion 을 하기 위해서 **<span style="color:#179CFF">zero entry 가 많은 row, column 을 기준으로 설정하면 계산이 단순해진다. </span>**
+
+<br>
+
+#### cofactor 예제
+
+- A 가 주어졌을 때, det A 를 cofactor expansion 을 사용해서 구하라.
+
+$ A =  \begin{bmatrix} \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}2 & \phantom{-}4 & -1 \\\ \phantom{-}0 & -2 & \phantom{-}0  \end{bmatrix} $
+
+$ det A = a_{31}C_{31} + a_{32}C_{32} + a_{33}C_{33} $
+
+$ = (-1)^{3+1} \, a_{31} \, det A_{31} + (-1)^{3+2} \, a_{32} \, det A_{32} + (-1)^{3+2} \, a_{32} \, det A_{32} + (-1)^{3+3} \, a_{33} \, det A_{33} $
+
+$ = 0 \begin{vmatrix} \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}4 & -1 \end{vmatrix} - (-2)  \begin{vmatrix} \phantom{-}1 & \phantom{-}0 \\\ \phantom{-}2 & -1 \end{vmatrix} + 0  \begin{vmatrix} 1 & 5 \\\ 2 & 4 \end{vmatrix} $
+
+$ = 0 + 2(-1) + 0 = -2 $
+
+<br>
+
+- A 행렬의 determinant 를 구해라 
+- 0이 많이 구성되어 있는 matrix 는 다음과 같이 cofactor expansion 을 사용할 수 있다.
+
+$ A = \begin{bmatrix} \phantom{-}3 & -7 & \phantom{-}8 & \phantom{-}9 & -6 \\\ \phantom{-}0 & \phantom{-}2 & -5 & \phantom{-}7 & 3 \\\ \phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}0 & \phantom{-}0 & \phantom{-}2 & \phantom{-}4 & -1 \\\ \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & -2 & \phantom{-}0 \end{bmatrix} $
+
+- first column $A_{11}$ 에 0이 제일 많으므로 이를 기준으로 cofactor expansion 을 사용한다.
+
+$ det A = 3 \cdot \begin{vmatrix} \phantom{-}2 & -5 & \phantom{-}7 & \phantom{-}3 \\\ \phantom{-}0 & \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}0 & \phantom{-}2 & \phantom{-}4 & -1 \\\ \phantom{-}0 & \phantom{-}0 & -2 & \phantom{-}0 \end{vmatrix} + 0 \cdot C_{21} + 0 \cdot C_{31} + 0 \cdot C_{41} + 0 \cdot C_{51} $
+
+- 또 다시 first column 이 0이 제일 많으므로 이를 이용한다.
+
+$ det A = 3 \cdot 2 \cdot \begin{vmatrix} \phantom{-}1 & \phantom{-}5 & \phantom{-}0 \\\ \phantom{-}2 & \phantom{-}4 & -1 \\\ \phantom{-}0 & -2 & \phantom{-}0 \end{vmatrix} $
+
+$ det A = 3 \cdot 2 \cdot (-2) = -12 $
+
+- 이 처럼 0 이 많은 row 나 column을 이용하면 아무리 복잡한 행렬이더라도 cofactor expansion 으로 손으로 풀 수 있다.
+
+<br>
+<br>
+
+> ***<span style="color:#179CFF">Theorem2. </span>***    
+>   
+> If $A$ is triangular matrix, then det $A$ is the product of the entries on the main diagonal of $A$ .
+{: .prompt-tip}
+
+-  **<span style="color:#179CFF"> $A$ 가 triangular matrix (삼각행렬, upper or lower) 이면 det $A$ 는 $A$ 의 diagonal term 을 곱한 것이다. </span>** 
+
+$ \begin{pmatrix} a_{11} & 0 & 0 \\\ a_{21} & a_{22} & 0 \\\ a_{31} & a_{32} & a_{33} \end{pmatrix} $ : Lower triangular matrix
+
+<br>
+
+$ \begin{pmatrix} a_{11} & a_{12} & a_{13} \\\ 0 & a_{22} & a_{23} \\\ 0 & 0 & a_{33} \end{pmatrix} $ : Upper triangular matrix
+
+<br>
+<br>
+
+![Desktop View](/assets/img/post/mathematics/linearalgebra3_1_02.png){: : width="600" .normal }
+
+- cofactor expansion 을 이용하여 determinant 를 구하는 것은 매우 복잡한 계산을 해야한다. $n!$ 만큼의 연산이 소요된다.
+- 따라서 determinant 를 구하기 위해 cofactor expansion 을 사용하여 계산하는 것은 매우 무모한짓이다.
