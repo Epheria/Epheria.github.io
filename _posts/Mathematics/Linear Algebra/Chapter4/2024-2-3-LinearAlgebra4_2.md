@@ -1,6 +1,6 @@
 ---
 title: Linear Algebra - 4.2 The Characteristic Equation
-date: 2024-2-2 10:00:00 +/-TTTT
+date: 2024-2-3 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
 
