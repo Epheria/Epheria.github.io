@@ -16,10 +16,6 @@ mermaid: true
 
 ---
 
-> **용어 정리**   
-> * Diagonalization - 대각화
-{: .prompt-info}
-
 <br>
 
 ## The matrix of Linear Transformation - 선형 변환의 행렬
