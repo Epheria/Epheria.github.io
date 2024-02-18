@@ -25,6 +25,7 @@ mermaid: true
 
 <br>
 
+
 ## Inner Producjt - 내적
 
 - orthogonality 를 알아보기 전에 우선 Inner Product(내적) 을 살펴보자.
