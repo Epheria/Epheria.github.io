@@ -211,29 +211,29 @@ $$ \mathbf{u} \cdot \mathbf{v} = 0 $$
 
 <br>
 
-> Let $\mathbf{W}$ be a plane through the origin in $\mathbb{R}^3$    
-> Let $\mathbf{L}$ be the line throguh the origin and perpendicular to $\mathbf{W}$    
+> Let $W$ be a plane through the origin in $\mathbb{R}^3$    
+> Let $L$ be the line throguh the origin and perpendicular to $W$    
 >    
 > $$ \mathbf{z} \cdot \mathbf{w} = 0 $$    
 >     
-> - If a vector $\mathbf{z}$ is orthogonal to every vector in a subspace $\mathbf{W}$ of $\mathbb{R}^n$     
-> - then, $\mathbf{z}$ is said to be orthogonal to $\mathbf{W}$    
-> - The set of all vectors $\mathbf{z}$ that are orthogonal to $\mathbf{W}$ is called the orthogonal complement of $\mathbf{W}$ and denoted by $\mathbf{W}^{\perp}$ .    
+> - If a vector $\mathbf{z}$ is orthogonal to every vector in a subspace $W$ of $\mathbb{R}^n$     
+> - then, $\mathbf{z}$ is said to be orthogonal to $W$    
+> - The set of all vectors $\mathbf{z}$ that are orthogonal to $W$ is called the orthogonal complement of $W$ and denoted by $W^{\perp}$ .    
 {: .prompt-info}
 
 <br>
 
-- $\mathbb{R}^3$ 공간에서 평면 $\mathbf{W}$ 가 원점을 통과하고 원점을 통과하는 직선 $\mathbf{L}$ 이 $\mathbf{W}$ 와 직각이 되면 $\mathbf{L}$ 에 있는 모든 벡터는 $\mathbf{w}$ 와 직교한다. 
-- 이는 $\mathbf{L}$ 에 있는 임의의 벡터 $\mathbf{z}$ 와 평면 $\mathbf{W}$ 의 임의의 벡터 $\mathbf{w}$ 의 내적은 0이 된다는 것을 뜻한다.
+- $\mathbb{R}^3$ 공간에서 평면 $W$ 가 원점을 통과하고 원점을 통과하는 직선 $L$ 이 $W$ 와 직각이 되면 $L$ 에 있는 모든 벡터는 $\mathbf{w}$ 와 직교한다. 
+- 이는 $L$ 에 있는 임의의 벡터 $\mathbf{z}$ 와 평면 $W$ 의 임의의 벡터 $\mathbf{w}$ 의 내적은 0이 된다는 것을 뜻한다.
 
-- 이처럼 $\mathbf{z}$ 가 $\mathbf{W}$ 에 존재하는 모든 벡터와 직교하면 $\mathbf{z}$ 는 $\mathbf{W}$ 에 직교한다고 말할 수 있다.
-- $\mathbf{z}$ 가 $\mathbf{W}$ 에 직교하는 것을 $\mathbf{W}$ 의 **<span style="color:#179CFF"> 직교 여공간(Orthogonal Complements) </span>** 또는 수직(perpendicular) 라고 부르며 다음과 같이 표기한다.
+- 이처럼 $\mathbf{z}$ 가 $W$ 에 존재하는 모든 벡터와 직교하면 $\mathbf{z}$ 는 $W$ 에 직교한다고 말할 수 있다.
+- $\mathbf{z}$ 가 $W$ 에 직교하는 것을 $W$ 의 **<span style="color:#179CFF"> 직교 여공간(Orthogonal Complements) </span>** 또는 수직(perpendicular) 라고 부르며 다음과 같이 표기한다.
 
-$$ \mathbf{W}^{\perp} $$
+$$ W^{\perp} $$
 
-- 위 그림(Figure 7) 에서 $\mathbf{W}$ 와 $\mathbf{L}$ 은 직교하므로 다음과 같이 표기할 수 있다.
+- 위 그림(Figure 7) 에서 $W$ 와 $L$ 은 직교하므로 다음과 같이 표기할 수 있다.
 
-$$ \mathbf{L} = \mathbf{W}^{\perp} \quad \mbox{and} \quad \mathbf{W} = \mathbf{L}^{\perp} $$
+$$ L = W^{\perp} \quad \mbox{and} \quad W = L^{\perp} $$
 
 - 추가적으로 0 벡터는 모든 벡터와의 내적이 0이므로 모든 벡터에 직교한다.
 
@@ -279,7 +279,7 @@ $$ \mathbf{w} \cdot \mathbf{y} = (c_1\mathbf{u} + c_2\mathbf{v}) \cdot \mathbf{y
 
 > ***Example 3***     
 >    
-> Let $\mathbf{W} = \mbox{Span}$ { $v_1 , \dots, v_p$ }. Show that if $\mathbf{x}$ is orthogonal to each $\mathbf{v}_j$ , then $\mathbf{x}$ is orthogonal to every vector in $\mathbf{W}$ .
+> Let $W = \mbox{Span}$ { $v_1 , \dots, v_p$ }. Show that if $\mathbf{x}$ is orthogonal to each $\mathbf{v}_j$ , then $\mathbf{x}$ is orthogonal to every vector in $\mathbf{W}$ .
 {: .prompt-warning}
 
 - 벡터 $\mathbf{x}$ 가 임의의 벡터 $\mathbf{v}_j$ 에 직교하므로 다음과 같이 나타낼 수 있다.
@@ -300,11 +300,11 @@ $$ \mathbf{w} \cdot \mathbf{x} = c_1\mathbf{v}_1 \cdot \mathbf{x} + \dots + c_p\
 
 > ***Example 4***     
 >    
-> Let $\mathbf{W}$ be a subspace of $\mathbb{R}^n$ , and let $\mathbf{W}^{\perp}$ be the set of all vectors orthogonal to $\mathbf{W}$ .    
-> Show that $\mathbf{W}^{\perp}$ is a subspace of $\mathbb{R}^n$ .
+> Let $W$ be a subspace of $\mathbb{R}^n$ , and let $W^{\perp}$ be the set of all vectors orthogonal to $W$ .    
+> Show that $W^{\perp}$ is a subspace of $\mathbb{R}^n$ .
 {: .prompt-warning}
 
-- $\mathbf{W}$ 가 $\mathbb{R}^n$ 의 subspace 이면 $\mathbf{W}^{\perp}$ 도 $\mathbb{R}^n$ subspace 인지 증명해보자.
+- $W$ 가 $\mathbb{R}^n$ 의 subspace 이면 $W^{\perp}$ 도 $\mathbb{R}^n$ subspace 인지 증명해보자.
 - 우선, 복습차원에서 subspace 를 만족하는 3가지 조건을 살펴보자
 
 1. zero vector 가 subspace 에 포함되어야 한다.
@@ -313,25 +313,25 @@ $$ \mathbf{w} \cdot \mathbf{x} = c_1\mathbf{v}_1 \cdot \mathbf{x} + \dots + c_p\
 
 - 다음과 같이 가정해보자
 
-$$ \mathbf{u} \; \mbox{in} \; \mathbf{W} \quad \quad \mathbf{z} \; \mbox{in} \; \mathbf{W}^{\perp} $$ 
+$$ \mathbf{u} \; \mbox{in} \; W \quad \quad \mathbf{z} \; \mbox{in} \; W^{\perp} $$ 
 
 - scalar multiplication 이 orthogonal 한지 살펴보자
 
 $$ \mathbf{u} \cdot c\mathbf{z} = c\mathbf{u} \cdot \mathbf{z} = 0 $$
 
-- 따라서 $c\mathbf{z} \; \mbox{in} \; \mathbf{W}^{\perp} $ 를 만족한다.
+- 따라서 $c\mathbf{z} \; \mbox{in} \; W^{\perp} $ 를 만족한다.
 
 <br>
 
-- $\mathbf{z}_1 \; \mbox{and} \; \mathbf{z}_2 \; \mbox{in} \; \mathbf{W}^{\perp} $ 일 때 orthogonal 한지 살펴보자
+- $\mathbf{z}_1 \; \mbox{and} \; \mathbf{z}_2 \; \mbox{in} \; W^{\perp} $ 일 때 orthogonal 한지 살펴보자
 
 $$ \mathbf{u} \cdot (\mathbf{z}_1 + \mathbf{z}_2) = \mathbf{u} \cdot \mathbf{z}_1 + \mathbf{u} \cdot \mathbf{z}_2 = 0 $$
 
-- 따라서 $\mathbf{z}_1 + \mathbf{z}_2$ 역시  in $\mathbf{W}^{\perp}$ 임을 만족한다.
+- 따라서 $\mathbf{z}_1 + \mathbf{z}_2$ 역시  in $W^{\perp}$ 임을 만족한다.
 
 <br>
 
-- 마지막으로 0 벡터는 모든 벡터에 orthogonal 하므로 $\mathbf{0} \; \mbox{in} \; \mathbf{W}^{\perp}$ 임을 만족하므로
+- 마지막으로 0 벡터는 모든 벡터에 orthogonal 하므로 $\mathbf{0} \; \mbox{in} \; W^{\perp}$ 임을 만족하므로
 - 세 가지 조건 모두를 충족하므로 W가 subspace 이면 W perpendicular 또한 subspace 이다.
 
 <br>
