@@ -2,7 +2,7 @@
 title: Linear Algebra - 3.3 Cramer's Rule, Volume, And Linear Transformations
 date: 2024-2-1 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Cramer's Rule, An Inverse Formula, Determinatns as area or volume]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
