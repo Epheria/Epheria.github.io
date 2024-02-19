@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.1 Systems of Linear Equations
 date: 2023-11-27 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, consistent, inconsistent, equivalent, row equivalent, linear equation, row operation]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

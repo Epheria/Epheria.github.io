@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.3 Characterizations of Invertible Matrices of 
 date: 2024-1-19 18:15:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Invertible Matrix, Characterizations of invertible matrices]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.6 Subspaces of $\mathbb{R}^n$
 date: 2024-1-23 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Subspace, column space, null space, basis of subspace]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

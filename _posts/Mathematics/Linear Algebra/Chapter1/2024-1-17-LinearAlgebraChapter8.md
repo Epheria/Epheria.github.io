@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.8 The Matrix of a Linear Transformation
 date: 2024-1-17 12:42:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, linear transformation]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

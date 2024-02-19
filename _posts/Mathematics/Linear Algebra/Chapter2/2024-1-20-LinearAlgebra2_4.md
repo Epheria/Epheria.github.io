@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.4 Partitioned Matrices
 date: 2024-1-20 13:32:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, partitioned matrix, block matrix]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.1 Matrix Operations
 date: 2024-1-18 11:29:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Matrix Notations, Matrix Operations]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.7 Dimension and Rank
 date: 2024-1-29 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Dimension, Rank, coordinate vector]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

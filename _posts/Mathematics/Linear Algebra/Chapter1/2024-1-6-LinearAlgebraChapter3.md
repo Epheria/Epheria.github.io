@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.3 Vector Equations
 date: 2024-1-6 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, span, vector equation, linear combination]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

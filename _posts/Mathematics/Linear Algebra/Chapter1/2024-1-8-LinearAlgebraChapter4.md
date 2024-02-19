@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.4 The Matrix Equation Ax=b
 date: 2024-1-8 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, matrix equation]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

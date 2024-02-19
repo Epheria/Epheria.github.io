@@ -2,7 +2,7 @@
 title: Linear Algebra - 3.2 Properties of Determinants
 date: 2024-1-31 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, properties of determinant, Determinant Properties Table]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
@@ -153,7 +153,7 @@ $ (\mbox{det} A)(\mbox{det} B) = 9 \cdot 5 = 45 = \mbox{det} AB $
 <br>
 <br>
 
-## Determinatn Properties Table
+## Determinant Properties Table
 
 - 위 에서 살펴본 Properties 이외에도 추가적인 Determinant 의 Properties 들을 알아보자.
 

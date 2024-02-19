@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.6 Linear Independence and Linear Dependence
 date: 2024-1-12 12:42:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, linear independence, linearly independent, linearly dependent]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

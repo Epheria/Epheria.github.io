@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.5 Solution Sets of Linear Algebra
 date: 2024-1-10 15:20:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, homogeneous, nonhomogeneous, trivial solution, nontrivial solution]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

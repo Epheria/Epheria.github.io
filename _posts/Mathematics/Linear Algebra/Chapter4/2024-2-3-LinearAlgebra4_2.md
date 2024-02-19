@@ -2,7 +2,7 @@
 title: Linear Algebra - 4.2 The Characteristic Equation
 date: 2024-2-3 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, characteristic equation, similarity, QR algorithm]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

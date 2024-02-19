@@ -2,7 +2,7 @@
 title: Linear Algebra - 1.2 Row Reduction and Echelon Forms
 date: 2023-11-29 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, row reduction, echelon form, free variable, general solution, leading entry]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

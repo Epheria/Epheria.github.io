@@ -2,7 +2,7 @@
 title: Linear Algebra - 4.4 Eigenvectors And Linear Transformations
 date: 2024-2-9 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, eigenvectors, basis-beta, diagonal matrix representation]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
@@ -98,7 +98,7 @@ $$ [T(\mathbf{x})]_{\beta} = [T]_{\beta} [\mathbf{x}]_{\beta} $$
 
 $$ T(a_0 + a_1t + a_2t^2) = a_1 + 2a_2t $$
 
-- **(1)** $\beta$ basis 가 ${1, t, t^2}$ 일 때, B-matrix for $T$ 를 찾고 **(2)** $[T(\mathbf{\mathbf{p}})]_{\beta} = [T]_{\beta} [\mathbf{p}]_{\beta} $ 를 증명하는 문제이다.
+- **(1)** $\beta$ basis 가 ${1, t, t^2}$ 일 때, B-matrix for $T$ 를 찾고 **(2)** $$ [T(\mathbf{p})]_{\beta} = [T]_{\beta} [\mathbf{p}]_{\beta} $$ 를 증명하는 문제이다.
 
 <br>
 

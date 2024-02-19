@@ -2,7 +2,7 @@
 title: Linear Algebra - 3.1 Introduction to Determinants
 date: 2024-1-30 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, Determinant, Cofactor]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

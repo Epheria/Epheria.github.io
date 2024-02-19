@@ -2,7 +2,7 @@
 title: Linear Algebra - 2.5 Matrix Factorizations, LU Decomposition
 date: 2024-1-22 10:17:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, LU Decomposition, General Case]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

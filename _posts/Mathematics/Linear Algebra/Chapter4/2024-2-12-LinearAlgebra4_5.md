@@ -2,7 +2,7 @@
 title: Linear Algebra - 4.5 Complex Eigenvalues
 date: 2024-2-12 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [Mathematics,  Linear Algebra, conjugate, conjugate complex numbers, complex eigenvalue]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
