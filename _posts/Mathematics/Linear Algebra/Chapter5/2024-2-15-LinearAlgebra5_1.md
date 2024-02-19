@@ -2,7 +2,7 @@
 title: Linear Algebra - 5.1 Inner Product And Orthogonality
 date: 2024-2-15 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
-tags: [Mathematics,  Linear Algebra]     # TAG names should always be lowercase
+tags: [mathematics, linear algebra, perpendicular, orthogonality, orthogonal complements]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true
