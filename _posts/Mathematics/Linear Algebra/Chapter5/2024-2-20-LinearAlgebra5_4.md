@@ -164,7 +164,7 @@ $$ \mathbf{u}_1 = {\mathbf{v}_1 \over \lVert \mathbf{v}_1 \rVert} = \begin{bmatr
 > If $A$ is an $m \times n$ matrix with linearly independent columns, then $A$ can be factored as $\; A = QR \;$ , where $Q$ is an $m \times n$ matrix whose columns form an orthonormal basis for Col $A$ and $R$ is an $n \times n$ upper triangular invertible matrix with positive entries on its diagonal.
 {: .prompt-info}
 
-- column 이 linearly independent 한 $m \tiems n$ 크기의 행렬 $A$ 는 $A = QR$ 로 분해될 수 있다.
+- column 이 linearly independent 한 $m \times n$ 크기의 행렬 $A$ 는 $A = QR$ 로 분해될 수 있다.
 
 - 여기서 $Q$ 는 column 이 Col $A$ 에 대한 orthonormal basis 로 이루어진 $m \times n$ 크기의 행렬이고, $R$ 은 $n \times n$ 크기의 모든 diagonal entries 가 양수를 가진 upper triangular invertible matrix 이다.
 
