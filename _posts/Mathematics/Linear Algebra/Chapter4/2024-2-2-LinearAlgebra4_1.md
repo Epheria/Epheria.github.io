@@ -26,7 +26,7 @@ mermaid: true
 
 ## Eigenvalue 와 Eigenvector 의 기본 아이디어
 
-- $ A = \begin{bmatrix} 3 & -2 \\\ 1 & 0 \end{bmatrix} \quad , \quad \mathbf{u} = \begin{bmatrix} -1 \\\\ phantom{-}1 \end{bmatrix} \quad , \mbox{and} \; \mathbf{v} = \begin{bmatrix} 2 \\\ 1 \end{bmatrix}$
+- $ A = \begin{bmatrix} 3 & -2 \\\ 1 & 0 \end{bmatrix} \quad , \quad \mathbf{u} = \begin{bmatrix} -1 \\\\ \phantom{-}1 \end{bmatrix} \quad , \mbox{and} \; \mathbf{v} = \begin{bmatrix} 2 \\\ 1 \end{bmatrix}$
 
 <br>
 
@@ -118,7 +118,7 @@ $$ x_2 \begin{bmatrix} 1 \\\ 1 \end{bmatrix} $$
 
 $$  A = \begin{bmatrix} \phantom{-}4 & -1 & \phantom{-}6 \\\ \phantom{-}2 & \phantom{-}1 & \phantom{-}6 \\\ \phantom{-}2 & -1 & \phantom{-}8 \end{bmatrix} $$
 
-$$ A - 2I = \begin{bmatrix} \phantom{-}4 & -1 & \phantom{-}6 \\\ \phantom{-}2 & \phantom{-}1 & \phantom{-}6 \\\ \phantom{-}2 & -1 & \phantom{-}8 \end{bmatrix} - \begin{bmatrix}2 & 0 & 0 \\\ 0 & 2 & 0 \\\ 0 & 0 & 2 \end{bmatrix} = \begin{bmatrix} \phantom{-}2 & -1 & \phantom{-}6 \\\ \phantom{-}2 & -1 & \phantom{-}6 \\\ \phantom{-}2 & -1 \phantom{-}6 \end{bmatrix} $$
+$$ A - 2I = \begin{bmatrix} \phantom{-}4 & -1 & \phantom{-}6 \\\ \phantom{-}2 & \phantom{-}1 & \phantom{-}6 \\\ \phantom{-}2 & -1 & \phantom{-}8 \end{bmatrix} - \begin{bmatrix}2 & 0 & 0 \\\ 0 & 2 & 0 \\\ 0 & 0 & 2 \end{bmatrix} = \begin{bmatrix} \phantom{-}2 & -1 & \phantom{-}6 \\\ \phantom{-}2 & -1 & \phantom{-}6 \\\ \phantom{-}2 & -1 &\phantom{-}6 \end{bmatrix} $$
 
 $$ (A - 2I)\mathbf{x} = \mathbf{0} $$
 
