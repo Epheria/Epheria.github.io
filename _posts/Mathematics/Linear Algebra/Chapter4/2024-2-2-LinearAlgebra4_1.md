@@ -175,7 +175,7 @@ $$ (A - \lambda I)\mathbf{x} = \mathbf{0} $$
 
 - (2) A 가 lower triangular matrix 인 경우
 - $A$ 와 $A^T$ 가 동일한 eigen value 를 갖고 있다는 것을 증명하면 된다.
-- $\lambda I$ 가 diagonal term 만 존재하므로 다음의 식이 성립한다. (항등행렬이란 소리)
+- $\lambda I$ 가 diagonal term 만 존재하므로 다음의 식이 성립한다. (항등행렬이란 뜻)
 
 $$ (A - \lambda I)^T = A^T - (\lambda I)^T $$
 
