@@ -237,6 +237,83 @@ $$ A = \begin{bmatrix} \phantom{-}5 & -8 & \phantom{-}1 \\\ \phantom{-}0 & \phan
 
 <br>
 
+> ***Example 5.***     
+> 위 내용을 예제로 확인해보자.      
+>       
+> $$ A = \begin{bmatrix} 5 & 0 & 0 & 0 \\\ 0 & 5 & 0 & 0 \\\ 1 & 4 & -3 & 0 \\\ -1 & -2 & 0 & -3 \end{bmatrix} $$
+{: .prompt-warning}
+
+- $A$ 행렬은 lower triangular matrix 이므로 diagonal term 들이 eigenvalue 이다.
+- 따라서 5와 -3이 각 2번씩 중첩되므로, $\lambda = 5$ , multiplicity = 2 이고 $\lambda = -3$ , multiplicity = 2 이다.
+- $(A - \lambda I) = 0$ 의 general solution과 eigenvector 를 찾아보자.
+
+<br>
+
+- 1. basis for $\lambda = 5$
+
+$$ A - 5I = \begin{bmatrix} 5 & 0 & 0 & 0 \\\ 0 & 5 & 0 & 0 \\\ 1 & 4 & -3 & 0 \\\ -1 & -2 & 0 & -3 \end{bmatrix} - \begin{bmatrix} 5 & 0 & 0 & 0 \\\ 0 & 5 & 0 & 0 \\\ 0 & 0 & 5 & 0 \\\ 0 & 0 & 0 & 5 \end{bmatrix} = \begin{bmatrix} 0 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 \\\ 1 & 4 & -8 & 0 \\\ -1 & -2 & 0 & -8 \end{bmatrix} $$
+
+- 결과값을 augmented matrix 로 조합 후 row reduction 을 해보자.
+
+$$ \begin{bmatrix} 0 & 0 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 0 \\\ 1 & 4 & -8 & 0 & 0 \\\ -1 & -2 & 0 & -8 & 0 \end{bmatrix}  $$
+
+$$ \begin{bmatrix} 1 & 4 & -8 & 0 & 0 \\\ -1 & -2 & 0 & -8 & 0 \\\ 0 & 0 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 0 \end{bmatrix} $$
+
+- row reduction 을 완료한 행렬을 general solution 으로 나타내보자, 여기서 $x_3, x_4$ 는 free variable 이다.
+
+$$ 2x_2 - 8x_3 - 8x_4 = 0  $$
+
+$$ x_2 = 4x_3 + 4x_4 $$
+
+<br>
+
+$$ x_1 + 4x_2 - 8x_3 = 0 $$
+
+$$ x_1 = -4x_2 - 8x_3 = -16x_3 -16x_4 + 8x_3 = -8x_3 - 16x_4 $$
+
+- 위 내용을 general solution 으로 나타내면
+
+$$ \begin{bmatrix} -8x_3 - 16x_4 \\\ 4x_3 + 4x_4 \\\ x_3 \\\ x_4 \end{bmatrix} $$
+
+- $x_3, x_4$ 벡터로 분리해서 나타내면
+
+$$ \mathbf{v}_1 = \begin{bmatrix} -8 \\\ 4 \\\ 1 \\\ 0 \end{bmatrix} \; \mbox{and} \quad \mathbf{v}_2 = \begin{bmatrix} -16 \\\ 4 \\\ 0 \\\ 1 \end{bmatrix} $$
+
+- eigenvector 가 2개이므로 eigenspace 의 dimension = 2 이다.
+
+<br>
+
+- 2. basis for $\lambda = -3$
+
+$$ A + 3I = \begin{bmatrix} 5 & 0 & 0 & 0 \\\ 0 & 5 & 0 & 0 \\\ 1 & 4 & -3 & 0 \\\ -1 & -2 & 0 & -3 \end{bmatrix} + \begin{bmatrix} 3 & 0 & 0 & 0 \\\ 0 & 3 & 0 & 0 \\\ 0 & 0 & 3 & 0 \\\ 0 & 0 & 0 & 3 \end{bmatrix} = \begin{bmatrix} 8 & 0 & 0 & 0 \\\ 0 & 8 & 0 & 0 \\\ 1 & 4 & 0 & 0 \\\ -1 & -2 & 0 & 0 \end{bmatrix} $$
+
+- 마찬가지로 결과값을 augmented matrix 로 조합 후 row reduction 을 해보자.
+
+$$ \begin{bmatrix} 8 & 0 & 0 & 0 & 0 \\\ 0 & 8 & 0 & 0 & 0 \\\ 1 & 4 & 0 & 0 & 0 \\\ -1 & -2 & 0 & 0 & 0 \end{bmatrix} $$
+
+$$ \begin{bmatrix} 1 & 0 & 0 & 0 & 0 \\\ 0 & 1 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 0 \\\ 0 & 0 & 0 & 0 & 0 \end{bmatrix} $$
+
+- $x_3, x_4$ 는 free variable 이고 $x_1 = 0 , x_2 = 0$ 이므로 바로 general solution 으로 나타내면
+
+$$ \begin{bmatrix} 0 \\\ 0 \\\ x_3 \\\ x_4 \end{bmatrix} $$
+
+- $x_3, x_4$ 벡터로 분리해서 나타내면
+
+$$ \mathbf{v}_3 = \begin{bmatrix} 0 \\\ 0 \\\ 1 \\\ 0 \end{bmatrix} \; \mbox{and} \quad \mathbf{v}_4 = \begin{bmatrix} 0 \\\ 0 \\\ 0 \\\ 1 \end{bmatrix} $$
+
+- eigenvector 가 2개 이므로 마찬가지로 eigenspace 의 dimension = 2 이다.
+
+<br>
+
+- 결과적으로 $P, D$ 를 다음과 같이 나타낼 수 있다.
+
+$$ P = \begin{bmatrix} -8 & -16 & 0 & 0 \\\ 4 & 4 & 0 & 0 \\\ 1 & 0 & 1 & 0 \\\ 0 & 1 & 0 & 1 \end{bmatrix} \; , \; D = \begin{bmatrix} 5 & 0 & 0 & 0 \\\ 0 & 5 & 0 & 0 \\\ 0 & 0 & -3 & 0 \\\ 0 & 0 & 0 & -3 \end{bmatrix} $$
+
+
+- 참고로 행렬의 column 의 순서를 바꿔줘도 괜찮다. eigenvalue 들의 multiplicity 가 각각 2 이므로 5,5 와 -3,-3 을 묶어서 $P,D$ 행렬의 column 의 순서들을 바꿔줘도 결과값은 동일하다.
+
+<br>
+
 - **예시 문제**
 - 다음 질문들이 trur false 인지 판단하시오.
 
