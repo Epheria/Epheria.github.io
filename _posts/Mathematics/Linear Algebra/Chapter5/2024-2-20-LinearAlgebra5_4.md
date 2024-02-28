@@ -169,9 +169,9 @@ $$ \mathbf{u}_1 = {\mathbf{v}_1 \over \lVert \mathbf{v}_1 \rVert} = \begin{bmatr
 - 여기서 $Q$ 는 column 이 Col $A$ 에 대한 orthonormal basis 로 이루어진 $m \times n$ 크기의 행렬이고, $R$ 은 $n \times n$ 크기의 모든 diagonal entries 가 양수를 가진 upper triangular invertible matrix 이다.
 
 - **증명**
-- $A 의 column 이 Col $A$ 에 대한 기저 {$\mathbf{x}_1 , \dots , \mathbf{x}_n$} 으로 구성되어 있다.
+- $A$ 의 column 이 Col $A$ 에 대한 기저 {$\mathbf{x}_1 , \dots , \mathbf{x}_n$} 으로 구성되어 있다.
 - $W = $ Col $A$ 에 대한 orthogonal basis {$\mathbf{u}_1 , \dots , \mathbf{u}_n$} 를 구하기 위해서 그람슈미트 과정을 사용한다.
-- 그러면 $Q$ 를 구할 수 있다.
+- 이후 그람 슈미트 과정으로 구한 orthogonal basis 를 orthonormal basis 로 변형시키면 $Q$ 를 구할 수 있다.
 
 $$ Q = [\mathbf{u}_1 \quad \mathbf{u}_2 \quad \dots \quad \mathbf{u}_n] $$
 

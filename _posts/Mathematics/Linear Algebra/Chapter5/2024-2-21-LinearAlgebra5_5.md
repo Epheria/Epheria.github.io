@@ -133,12 +133,14 @@ $$ \lVert \mathbf{b} - A\widehat{\mathbf{x}} \rVert $$
 
 $$ A^TA = \begin{bmatrix} 4 & 0 & 1 \\\ 0 & 2 & 1 \end{bmatrix} \begin{bmatrix} 4 & 0 \\\ 0 & 2 \\\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 17 & 1 \\\ 1 & 5 \end{bmatrix} $$
 
-$$ A^T\mathbf{b} = \begin{bmatrix} 4 & 0 & 1 \\\ 0 & 2 & 1 \end{bmatrix} \mathbf{b} = \begin{bmatrix} 2 \\\ 0 \\\ 11 \end{bmatrix} = \begin{bmatrix} 19 \\\ 11 \end{bmatrix} $$
+$$ A^T\mathbf{b} = \begin{bmatrix} 4 & 0 & 1 \\\ 0 & 2 & 1 \end{bmatrix} \begin{bmatrix} 2 \\\ 0 \\\ 11 \end{bmatrix} = \begin{bmatrix} 19 \\\ 11 \end{bmatrix} $$
 
 - (1) augmented matrix 로 만들고 row reduction 으로 least-squares solution 구하기
 - $A^TA$ 와 $A^T\mathbf{b}$ 두 개를 augmented matrix 로 만들어주고 row reduction 을 하면 다음과 같다.
 
-$$ \begin{bmatrix} 17 & 1 & 19 \\\ 1 & 5 & 11 \end{bmatrix} \sim \begin{bmatrix} 1 & 0 & 1 \\\ 0 & 1 & 2 \end{bmatrix} $$
+$$ \begin{bmatrix} 17 & 1 & 19 \\\ 1 & 5 & 11 \end{bmatrix} \sim \begin{bmatrix} 1 & 5 & 11 \\\ 0 & -84 & -168 \end{bmatrix} \sim \begin{bmatrix} 1 & 0 & 1 \\\ 0 & 1 & 2 \end{bmatrix} $$
+
+- augmented matrix 의 제일 우측 column은 general solution 이므로 $ x_1 = 1 \quad x_2 = 2 $ 가 되므로..
 
 $$ \widehat{\mathbf{x}} = \begin{bmatrix} 1 \\\ 2 \end{bmatrix} $$
 
