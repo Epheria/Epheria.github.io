@@ -17,9 +17,9 @@ mermaid: true
 ---
 
 > **용어 정리** 
-> * Least-Squares Problems - 최소자승법
-> * normal equation - 정규 방정식
-> * Least-Squares Error - 최소자승 에러
+> * Least-Squares Problems - 최소자승법     
+> * normal equation - 정규 방정식     
+> * Least-Squares Error - 최소자승 에러     
 {: .prompt-info}
 
 <br>
