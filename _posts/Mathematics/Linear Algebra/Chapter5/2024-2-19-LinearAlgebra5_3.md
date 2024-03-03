@@ -17,7 +17,7 @@ mermaid: true
 ---
 
 > **용어 정리** 
-> * The best approximation therorem - 최고 근사 이론
+> * The best approximation therorem - 최고 근사 정리
 {: .prompt-info}
 
 <br>
