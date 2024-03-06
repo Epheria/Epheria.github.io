@@ -191,7 +191,7 @@ $$ 3y_1^2 - 7y_2^2 = 3(6/\sqrt{5})^2 - 7(-2/\sqrt{5})^2 = 16 $$
 > Let $A$ be an $n \times n$ symmetric matrix. Then there is an orthogonal change of variable, $\; \mathbf{x} = P\mathbf{y} \;$ , that transforms the quadratic form $\; \mathbf{x}^TA\mathbf{x}\;$ into a quadratic form $\; \mathbf{y}^TD\mathbf{y}\;$  with no cross-product term.
 {: .prompt-tip}
 
-- 위 예제에서 본 것을 이론화한 것이다.
+- 위 예제에서 본 것을 정리한 것이다.
 - $A$ 행렬이 $n \times n$ 인 symmetric matrix 라고 가정하면 quadratic form 인 $Q(\mathbf{x}) = \mathbf{x}^TA\mathbf{x}$ 에서 $\mathbf{x} = P\mathbf{y}$ 를 대입하여 $\mathbf{y}^TD\mathbf{y}$ 로 변경하면 cross-product term 이 사라진다.
 
 - $A$ 행렬의 eigenvector 로 이루어진 $P$ 행렬을 quadratic form 의 **principal axes** 라고 부른다.
