@@ -121,7 +121,7 @@ $$ \mathbf{x} = y_1 \mathbf{b}_1 + y_2 \mathbf{b}_2 + \dots + y_n \mathbf{b}_n $
 
 $$ \mathbf{x}^T A \mathbf{x} = (P\mathbf{y})^T A (P\mathbf{y}) = \mathbf{y}^TP^TAP\mathbf{y} = \mathbf{y}^T(P^TAP)\mathbf{y} $$
 
-- $P^TAP$ 는 대각화 이론에 의해 $D$ 가 된다. 따라서 최종적으로 다음과 같이 변경된다.
+- $P^TAP$ 는 대각화 정리에 의해 $D$ 가 된다. 따라서 최종적으로 다음과 같이 변경된다.
 
 > $$ \mathbf{y}^TD\mathbf{y} $$
 {: .prompt-tip}

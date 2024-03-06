@@ -89,8 +89,10 @@ Execution failed for task ':launcher:mergeDexRelease'.
 **[Gradle Build Fialed 오류 대응 블로그](https://devparklibrary.tistory.com/20)**
 
 - 오류 대응 블로그 역시 옛날 버전이라 세팅 환경이 많이 다르다.
-- ProjectSettings - Android - Publishing Settings - Minify - Release 옵션에 체크박스가 존재한다. 해당 체크박스를 활성화 해주면 된다.
+- ~~ProjectSettings - Android - Publishing Settings - Minify - Release 옵션에 체크박스가 존재한다. 해당 체크박스를 활성화 해주면 된다.~~
 - 다만 주의할 점은 Strip Engine Code 와 같이 특정 바이너리 파일을 제외하고 빌드를 할 수있다고 경고를 해준다.. 그것이 어떤 문제를 야기할지 아무도 알 수 없는 노릇..
+
+- **2024.3.6 추가 : Java Code 바이너리 파일을 삭제 or 불포함이라고 적혀있는데, 실제로 그랬다.. adjust 가 빌드에 포함이 되지 않아 해당 옵션을 다시 바활성화 해야한다.**
 
 ![Desktop View](/assets/img/post/unity/unityaosbuilderror_03.png){: : width="400" .normal }
 
