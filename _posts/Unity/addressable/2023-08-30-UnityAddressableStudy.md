@@ -36,3 +36,15 @@ toc_sticky: true
 - 어드레서블 빌드의 결과물
 - settings.json, catalog.json -> 정보리스트 파일, 번들의 목록
 - 1. settings.json 파일을 최우선으로 읽고 내부에 있는 고유 Path들을 읽어들여서 카탈로그를 읽어들임
+
+
+
+## Addressable Download Progress
+
+- max webrequest concurrent count = 5 가 적당하다.
+- 어드레서블 기본 동시 요청 수는 3으로 설정되어 있다. 모바일에서 5개 이상의 동시 다운로드가 전체 다운로드 속도에 부정적인 영향을 미침. 데스크톱도 2-3개면 충분
+- 원인은 다운로드가 너무 많으면 대역폭 공유로 인해 각 개별 다운로드 속도가 느려진다고 한다. 또한 실패한 UnityWebRequest 는 처음부터 다시 다운로드를 진행해야 한다 (0%) 부터.. 
+- 동시에 완료된 다운로드가 많은 경우 번들을 캐싱하면 많은 메모리가 소모된다. 데이터를 캐시로 압축하고 다시 압축하는 작업을 포함해서..
+
+https://forum.unity.com/threads/extremely-slow-download-via-addressables-downloaddependenciesasync-and-unity-cloud-content-delivery.1133434/
+
