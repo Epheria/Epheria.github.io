@@ -108,28 +108,5 @@
   {% endunless %}
 
   {% include metadata-hook.html %}
-  
-  <!DOCTYPE html>
-<!-- KaTeX requires the use of the HTML5 doctype. Without it, KaTeX may not render properly -->
-<html lang="en">
-  <head>
-    <!-- Please ensure the stylesheet's version matches with the KaTeX version in your package-lock -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@{version_number}/dist/katex.min.css"
-      integrity="sha384-{hash}"
-      crossorigin="anonymous"
-    />
-  </head>
-
-  <body>
-    <script type="module">
-      import mermaid from './mermaid.esm.mjs';
-      mermaid.initialize({
-        legacyMathML: true,
-      });
-    </script>
-  </body>
-</html>
 
 </head>
