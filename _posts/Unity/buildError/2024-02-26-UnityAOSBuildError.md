@@ -1,7 +1,7 @@
 ---
 title: Unity AOS 빌드 에러 해결 - com.android.builder.dexing.DexArchiveMergerException Error while merging dex archives
 date: 2024-02-26 12:59:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화, Android, DexArchiveMergerException, multiDexEnabled, mergeDexRelease, gradle build failed , Minify]     # TAG names should always be lowercase
 
 toc: true

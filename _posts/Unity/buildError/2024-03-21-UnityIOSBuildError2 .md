@@ -1,7 +1,7 @@
 ---
 title: Unity iOS TestFlight 업로드 에러 해결 - Asset validation failed (90206) Invalid Bundle. The bundle at .../Frameworks/UnityFramework.framework contains disallowed file 'Frameworks'.
 date: 2024-03-21 12:59:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화, iOS, BeeBuildPostProcessor, Microphone Usage Description]     # TAG names should always be lowercase
 
 toc: true

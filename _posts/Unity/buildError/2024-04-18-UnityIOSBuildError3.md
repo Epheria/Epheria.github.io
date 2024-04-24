@@ -1,7 +1,7 @@
 ---
 title: Unity Addressable 에러 - RuntimeData is null, Invalid path in TextDataProvider
 date: 2024-04-18 12:59:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, Addressable, error]     # TAG names should always be lowercase
 
 toc: true

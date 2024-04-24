@@ -1,8 +1,8 @@
 ---
 title: Unity - xcworkspace 생성 되지 않는 이슈 해결
 date: 2023-08-29 14:38:00 +/-TTTT
-categories: [Unity, Build]
-tags: [Unity, Build, xcworkspace, iOS]     # TAG names should always be lowercase
+categories: [Unity, Build Error]
+tags: [Unity, Build, xcworkspace, iOS, pod install]     # TAG names should always be lowercase
 
 toc: true
 toc_sticky: true

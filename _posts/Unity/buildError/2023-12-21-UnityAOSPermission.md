@@ -1,7 +1,7 @@
 ---
 title: Unity AOS Permission 이 안빠지는 이슈 해결 방법
 date: 2023-12-21 12:59:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화]     # TAG names should always be lowercase
 
 toc: true

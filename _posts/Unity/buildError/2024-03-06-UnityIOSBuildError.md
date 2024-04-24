@@ -1,7 +1,7 @@
 ---
 title: Unity iOS 빌드 에러 해결 - BeeBuildPostprocessor, Microphone Usage Description is empty, Build failing with "command failed to write the following output file"
 date: 2024-03-06 12:59:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화, iOS, BeeBuildPostProcessor, Microphone Usage Description]     # TAG names should always be lowercase
 
 toc: true

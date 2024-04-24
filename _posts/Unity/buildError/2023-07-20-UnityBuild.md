@@ -1,7 +1,7 @@
 ---
 title: Unity Build 이슈 해결 모음 - ID 238, Strip Engine Code, cs0246
 date: 2023-07-20 15:15:00 +/-TTTT
-categories: [Unity, Build]
+categories: [Unity, Build Error]
 tags: [Unity, Build, Error ID 238, StripEngineCode, cs0246]     # TAG names should always be lowercase
 
 toc: true
