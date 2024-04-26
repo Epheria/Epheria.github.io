@@ -41,6 +41,20 @@ flowchart TD
 
 <br>
 
+```mermaid
+---
+title: Unity iOS 빌드에서 .ipa 배포까지 간단한 플로우차트
+---
+flowchart TD
+    A[유니티 프로젝트 개발] --> B[ 유니티 프로젝트 iOS 빌드 ]
+    B --> C[xcworkspace - Xcode 프로젝트 생성]
+    C --> D[Xcode 프로젝트 빌드]
+    D -->|Test Flight| E[Tester 들에 한정하여 .ipa 배포]
+    D -->|App Center| F[Dev,Alpha 용 .ipa 배포]
+```
+
+<br>
+
 #### 1. 유니티 프로젝트 iOS 빌드
 
 - 유니티 프로젝트의 Build Settings 에서 플랫폼을 "iOS" 로 선택해준다.
