@@ -27,20 +27,6 @@ mermaid: true
 
 <br>
 
-<div class="mermaid"> 
----
-title: Unity iOS 빌드에서 .ipa 배포까지 간단한 플로우차트
----
-flowchart TD
-    A[유니티 프로젝트 개발] --> B[ 유니티 프로젝트 iOS 빌드 ]
-    B --> C[xcworkspace - Xcode 프로젝트 생성]
-    C --> D[Xcode 프로젝트 빌드]
-    D -->|Test Flight| E[Tester 들에 한정하여 .ipa 배포]
-    D -->|App Center| F[Dev,Alpha 용 .ipa 배포]
-</div>
-
-<br>
-
 ```mermaid
 ---
 title: Unity iOS 빌드에서 .ipa 배포까지 간단한 플로우차트
@@ -168,27 +154,140 @@ flowchart TD
 
 - Unity 런타임과 Objective-C 를 통합하는 코드가 들어가 있다. 
 
+<br>
+
 #### 3. Data 폴더
 
 - 애플리케이션의 직렬화된 에셋과 .NET 어셈블리(.dll, .dat 파일)가 Code Stripping 설정에 따라 전체 코드 또는 메타데이터로 보관한다. 
 - [자세한 설명은 유니티 공식 문서 참조](https://docs.unity3d.com/kr/2023.2/Manual/StructureOfXcodeProject.html)
 
+<br>
+
 #### 4. Libraries 폴더
 
 - IL2CPP 용 libli2cpp.a 파일이 들어가있다.
 
+<br>
+
 #### 5. Info.plist 파일
 
-- Information Property List Files 
+> ![Desktop View](/assets/img/post/unity/iosbuildxcode15.png){: : width="1000" .normal }     
+
+- Info.plist 란 Information Property List 의 줄임말로 아이폰 애플리케이션의 기본 정보가 담긴 설정파일이다.
+- Bundle Identifier, 앱 소프트웨어 정보를 XML 파일 형태로 저장.
+- ATT 팝업 문구 처리도 Info.plist 파일을 통해 처리한다.
+- 또한, Remote Notification 과 같은 백그라운드 설정도 여기서 세팅가능하다.
+- Info.plist 의 설정,내용 변경은 뒤에 PostProcessBuild Script 에서 확인할 수 있다.
+
+<br>
+
 
 <br>
 <br>
 
 ## iOS 빌드 후처리 스크립트 - xcode 설정 자동화
 
+<br>
+
+- 유니티 프로젝트 빌드 -> Xcode 프로젝트 생성 -> 빌드 후처리 스크립트를 통해 Xcode 프로젝트 설정들에 대한 자동화가 가능하다.
+- [유니티 빌드 파이프라인에 관한 설명](https://epheria.github.io/posts/UnityBuildAutobuildpipeline/) 에서 확인할 수 있듯이, Xcode 프로젝트에서 다양한 설정들을 수동으로 설정하는 것은 크나큰 한계가 존재한다. 따라서 프로젝트를 원활히 빌드하기 위해서는 유니티 PostProcessBuild 스크립트를 활용하여 자동화를 적용할 필요성이 있다.
+
+<br>
+
+#### PostProcessBuild 사용법
+
+- 빌드 관련 스크립트는 무조건 프로젝트 내 Editor 폴더 하위에 위치시켜야 한다.
+> ![Desktop View](/assets/img/post/unity/iosbuildxcode16.png){: : width="1000" .normal }     
+
+<br>
+
+- 프로젝트 빌드는 위의 유니티 빌드 파이프라인 링크를 참조바람.
+- 프로젝트 PostProcessBuild 를 사용하기 위해서는 PostProcessBuild Attribute 만을 사용하거나 CallBack 용 Interface 를 상속받아 사용하는 방법 두 가지가 있다.
+- 빌드 프로세스가 완전히 끝나고 확실하게 콜백을 받아와서 처리하려면 IPostprocessBuildWithReport 인터페이스를 상속시키는 방법을 권장한다.
+- 이쪽에서는 프로세스를 확립하기 위해 인터페이스 방법에 대해 설명하겠다.
+
+<br>
+
+- IPostprocessBuildWithReport 인터페이스를 상속받아 클래스를 만들어 주자.
+
+```csharp
+
+#if UNITY_IPHONE 
+// iOS 전용 전처리는 필수
+
+class PBR : IPostprocessBuildWithReport // 빌드 후처리 인터페이스
+{
+    public void OnPostprocessBuild(BuildReport report)
+    {
+        if (report.summary.platform == BuildTarget.iOS)
+        {
+            
+        }
+    }
+}
+
+#endif
+
+```
+
+<br>
+
+- batchmode 로 유니티 프로젝트를 빌드하는 함수 내부에 넣어줘야한다.
+
+```csharp
+
+   public static void BuildIos(int addsBuildNum, string xcodePath)
+    {
+        string[] args = System.Environment.GetCommandLineArgs();
+        int buildNum = 0;
+        foreach (string a in args)
+        {
+            if (a.StartsWith("build_num"))
+            {
+                var arr = a.Split(":");
+                if (arr.Length == 2)
+                {
+                    int.TryParse(arr[1], out buildNum);
+                }
+            }
+        }
+        buildNum += addsBuildNum;
+        
+        System.IO.File.WriteAllText(ZString.Concat(Application.streamingAssetsPath, "/BuildNum.txt"), buildNum.ToString());
+
+        PlayerSettings.SplashScreen.showUnityLogo = false;
+        
+        var test = System.IO.File.ReadAllText(ZString.Concat(Application.streamingAssetsPath, "/BuildNum.txt"));
+        Debug.Log($"revised build num text is : {test}");
+
+        PlayerSettings.iOS.buildNumber = buildNum.ToString();
+        
+        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+        buildPlayerOptions.scenes = FindEnabledEditorScenes();
+        buildPlayerOptions.locationPathName = xcodePath;
+        buildPlayerOptions.target = BuildTarget.iOS;
+
+        var report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+
+        if (report.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded) Debug.Log("Build Success");
+        if (report.summary.result == UnityEditor.Build.Reporting.BuildResult.Failed) Debug.Log("Build Failed");
+
+        // batchmode 로 진행되는 유니티 프로젝트 빌드가 완전히 종료된 후
+        // PostProcessBuild 가 진행된다.
+#if UNITY_IPHONE
+        PBR pbr = new PBR();
+        pbr.OnPostprocessBuild(report);
+#endif
+    }
+```
+
+<br>
+
 
 
 #### PBXProject 란 무엇인가
+
+#### PlistDocument
 
 ## Provisioning Profile 및 Certificate 설정
 
