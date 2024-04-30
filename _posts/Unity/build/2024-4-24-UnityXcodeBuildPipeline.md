@@ -232,7 +232,7 @@ class PBR : IPostprocessBuildWithReport // 빌드 후처리 인터페이스
 
 <br>
 
-- batchmode 로 유니티 프로젝트를 빌드하는 함수 내부에 넣어줘야한다.
+- batchmode 로 유니티 프로젝트를 빌드하는 함수(여기서는 BuildIos) 내부에서 빌드 파이프라인이 완료 되고 실행시켜주면 된다.
 
 ```csharp
 
@@ -283,11 +283,109 @@ class PBR : IPostprocessBuildWithReport // 빌드 후처리 인터페이스
 
 <br>
 
-
+- 이제 OnPostprocessBuild 함수 내부에서 PBXproject 를 통해 Xcode 프로젝트 파일 재작성에 대한 후처리에 대해 알아보자.
 
 #### PBXProject 란 무엇인가
 
-#### PlistDocument
+- Unity 빌드 파이프라인 단계에서 생성한 Xcode 프로젝트 파일의 내용을 다시 쓰려면 [PBXProject](https://docs.unity3d.com/2023.2/Documentation/ScriptReference/iOS.Xcode.PBXProject.html) 라는 Xcode 전용 API 를 사용해야한다.
+
+- 먼저 xcode project path 를 지역변수에 담고 PBXProject 를 동적할당해주자.
+- 이후 이 PBXProject 에서 각종 Xcode 설정들을 처리할 수 있다.
+- 특히 GetUnityMainTargetGuid 를 통해 Unity-iPhone 메인 타겟을 가져올 것인지, UnityFramework 타겟을 가져올 것인지 정할 수도 있다.
+> ![Desktop View](/assets/img/post/unity/iosbuildxcode17.png){: : width="300" .normal }     
+
+```csharp
+    var frameTargetGuid = project.GetUnityFrameworkTargetGuid();
+    var mainTargetGuid = project.GetUnityMainTargetGuid();
+```
+
+- 모든 설정이 끝나면 WriteToFile 을 꼭 까먹지말고 마지막에 작성해줘야한다.
+
+<br>
+
+- 전체 예시 코드
+
+```csharp
+ public void OnPostprocessBuild(BuildReport report)
+    {
+        if (report.summary.platform == BuildTarget.iOS)
+        {
+            Debug.Log("OnPostProceeBuild");
+            string projectPath = report.summary.outputPath + "/Unity-iPhone.xcodeproj/project.pbxproj";
+            var entitlementFilePath = "Entitlements.entitlements";
+            var project = new PBXProject();
+
+            project.ReadFromFile(projectPath);
+            
+            var manager = new ProjectCapabilityManager(projectPath, entitlementFilePath, null, project.GetUnityMainTargetGuid());
+            manager.AddPushNotifications(true);
+            manager.AddAssociatedDomains(new string[] { "applinks:nkmb.adj.st" });// Universal-Link대응/Universal-Link対応.
+            manager.WriteToFile();
+
+            var mainTargetGuid = project.GetUnityMainTargetGuid();
+            project.SetBuildProperty(mainTargetGuid, "ENABLE_BITCODE", "NO");
+            
+            // Enterprise 에서만 임시로 추가해놓은 코드입니다.
+            // Sign In With Apple Framework는 Enterprise에서 활성화가 되지 않기 때문에 Xcode 빌드에러 발생
+            
+            // Supported Destinations 에 아이패드 지원을 제외하는 코드
+            // 1 은 아이폰을 의미.
+            //project.SetBuildProperty(mainTargetGuid, "TARGETED_DEVICE_FAMILY", "1"); // 1 corresponds to iPhone
+
+            project.RemoveFrameworkFromProject(mainTargetGuid, "SIGN_IN_WITH_APPLE");
+            project.SetBuildProperty(mainTargetGuid, "CODE_SIGN_ENTITLEMENTS", entitlementFilePath);
+
+            foreach (var targetGuid in new[] { mainTargetGuid, project.GetUnityFrameworkTargetGuid() })
+            {
+                project.SetBuildProperty(targetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "No");
+
+                project.SetBuildProperty(targetGuid, "LD_RUNPATH_SEARCH_PATHS", "$(inherited) /usr/lib/swift @executable_path/Frameworks");
+                //project.AddBuildProperty(targetGuid, "LD_RUNPATH_SEARCH_PATHS", "/usr/lib/swift");
+            }
+            
+            // test
+            //project.RemoveFrameworkFromProject(mainTargetGuid, "UnityFramework.framework");
+            project.SetBuildProperty(mainTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "No");
+            project.WriteToFile(projectPath);
+        }
+    }
+```
+
+<br>
+
+- frameworkTarget 사용 예시 : AppTrackingTransparency(ATT), AdSupport 쪽 추가
+- [유니티 ATT 규정 관련](https://docs.unity.com/ads/ko-kr/manual/ATTCompliance), [애플 ATT](https://developer.apple.com/documentation/apptrackingtransparency#Overview)
+- adjust 로 사용자 행동을 추적을 하는 경우 팝업 경고 문구를 무조건 추가해줘야한다.
+- 팝업 문구 관련 추가는 하단의 Info.plist 쪽에서 설명하겠다.
+
+```csharp
+    var frameworkTargetGuid = project.GetUnityFrameworkTargetGuid();
+    project.AddFrameworkToProject(frameworkTargetGuid, "AppTrackingTransparency.framework", true);
+    project.AddFrameworkToProject(frameworkTargetGuid, "AdSupport.framework", true);
+```
+
+<br>
+
+#### Entitlement
+
+- 임의로 entitlementFilePath 를 지정하여 Xcode 프로젝트에 Entitlements.entitlements 라는 파일을 하나 만들어주고
+- ProjectCapabilityManager 를 생성하여 Push-Notification, Universal-Link 등과 같은 처리를 해줄 수 있다.
+
+```csharp
+    var manager = new ProjectCapabilityManager(projectPath, entitlementFilePath, null, project.GetUnityMainTargetGuid());
+        manager.AddPushNotifications(true);
+        manager.AddAssociatedDomains(new string[] { "applinks:nkmb.adj.st" });// Universal-Link대응/Universal-Link対応.
+        manager.WriteToFile();
+```
+
+<br>
+
+#### PlistDocument - Info.plist 작성
+
+- 위에서 언급한 ATT 팝업 문구와 Localize, 앱이 백그라운드로 전환 될 때 푸시 알림을 주는 Remote-Notification 등을 설정할 수 있다.
+
+```csharp
+```
 
 ## Provisioning Profile 및 Certificate 설정
 
