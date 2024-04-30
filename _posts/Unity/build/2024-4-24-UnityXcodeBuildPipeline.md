@@ -16,9 +16,9 @@ mermaid: true
 ---
 
 ## 목차
-> 
->
->
+> [Unity iOS 빌드 프로세스에 대해](#unity-ios-빌드-프로세스)      
+> [Xcode 프로젝트 구조에 대해(xcworkspace)](#xcode-프로젝트-xcworkspace-구조에-대해)      
+> [Unity iOS 빌드 후처리 스크립트 및 Xcode 설정 자동화](#ios-빌드-후처리-스크립트---xcode-설정-자동화)      
 
 <br>
 <br>
@@ -382,11 +382,56 @@ class PBR : IPostprocessBuildWithReport // 빌드 후처리 인터페이스
 
 #### PlistDocument - Info.plist 작성
 
-- 위에서 언급한 ATT 팝업 문구와 Localize, 앱이 백그라운드로 전환 될 때 푸시 알림을 주는 Remote-Notification 등을 설정할 수 있다.
+- 위에서 언급한 ATT 팝업 문구와 Localize, 파이어베이스로 앱이 백그라운드로 전환 될 때 푸시 알림을 주는 Remote-Notification 등을 설정할 수 있다.
+- Info.plist 파일을 수정하기 위해서는 PBXProject 와 같이 [PlistDocument API](https://docs.unity3d.com/ScriptReference/iOS.Xcode.PlistDocument.html)를 사용하면된다.
+- ATT 팝업 문구 locale 의 경우 유니티 프로젝트 폴더 내부에 만들어두면 된다.
+> ![Desktop View](/assets/img/post/unity/iosbuildxcode18.png){: : width="200" .normal } ![Desktop View](/assets/img/post/unity/iosbuildxcode19.png){: : width="500" .normal }        
 
 ```csharp
+ string infoPlistPath = pathToBuiltProject + "/Info.plist";
+            PlistDocument plistDoc = new PlistDocument();
+            plistDoc.ReadFromFile(infoPlistPath);
+            if (plistDoc.root != null)
+            {
+                plistDoc.root.SetBoolean("ITSAppUsesNonExemptEncryption", false);
+            
+                
+                var locale = new string[] { "en", "ja" };
+                var mainTargetGuid = project.GetUnityMainTargetGuid();
+                var array = plistDoc.root.CreateArray("CFBundleLocalizations");
+                foreach (var localization in locale)
+                {
+                    array.AddString(localization);
+                } 
+                
+                plistDoc.root.SetString("NSUserTrackingUsageDescription", "Please allow permission to provide service and personalized marketing. It will be used only for the purpose of providing personalized advertising based on Apple’s policy.");
+                
+                plistDoc.WriteToFile(projectPath);
+                
+                for (int i = 0; i < locale.Length; i++)
+                {
+                    var guid = project.AddFolderReference(Application.dataPath + string.Format("/Editor/iOS/Localization/{0}.lproj", locale[i]), string.Format("{0}.lproj", locale[i]), PBXSourceTree.Source);
+                    project.AddFileToBuild(mainTargetGuid, guid);
+                }
+
+                // Firebase利用のためBackgound mode設定が必要
+                PlistElementArray backgroundModes;
+                if (plistDoc.root.values.ContainsKey("UIBackgroundModes"))
+                {
+                    backgroundModes = plistDoc.root["UIBackgroundModes"].AsArray();
+                }
+                else
+                {
+                    backgroundModes = plistDoc.root.CreateArray("UIBackgroundModes");
+                }
+                backgroundModes.AddString("remote-notification");
+                plistDoc.WriteToFile(infoPlistPath);
+            }
+            else
+            {
+                Debug.LogError("ERROR: Can't open " + infoPlistPath);
+            }
 ```
 
-## Provisioning Profile 및 Certificate 설정
-
-
+<br>
+<br>
