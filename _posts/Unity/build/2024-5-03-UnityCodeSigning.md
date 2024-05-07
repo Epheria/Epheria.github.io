@@ -124,6 +124,9 @@ _Apple Developer Program_
 
 - 생성된 Certificate 를 다운로드 받은 뒤 **더블 클릭** 해주면 KeyChain 에 자동으로 등록된다.
 
+![Desktop View](/assets/img/post/unity/ioscodesigning12.png){: : width="800" .normal }
+
+
 ![Desktop View](/assets/img/post/unity/ioscodesigning13.png){: : width="800" .normal }
 
 - 위의 과정까지 완료하면 애플에서 인증을 한 개발자가 된 것이다.
