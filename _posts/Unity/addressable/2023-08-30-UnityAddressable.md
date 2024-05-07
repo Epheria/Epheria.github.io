@@ -1,7 +1,7 @@
 ---
 title: Unity Addressable 빌드 에러 해결 - Animator 실행이 되지 않는 이슈
 date: 2023-08-30 21:38:00 +/-TTTT
-categories: [Unity, Addressable]
+categories: [Unity, Build]
 tags: [Unity, Addressable, Build, iOS, AOS]     # TAG names should always be lowercase
 
 toc: true
