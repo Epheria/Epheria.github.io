@@ -474,7 +474,7 @@ Addressables.InstantiateAsync("KeyValue")
 ---
 title: 어드레서블 초기화 워크 플로우 (어드레서블 시스템에서 번들 파일들 까지의 접근)
 ---
-flowchart LR
+flowchart TD
     A[어드레서블 빌드] -->|settings.json,\n catalog.json,\n 각종 bundle 파일 생성| B[Addressables.InitializeAsync \n 시스템 초기화]
     B --> C[settings.json 파일 읽음]
     C -->|내부의 internal ID 를 참조하여 \n catalog.json 찾음| D[catalog.json 번들 파일 리스트 읽음]
@@ -515,7 +515,7 @@ _catalog.json 을 json viewer 를 통해 하이아라키로 확인한 모습_
 ---
 title: 어드레서블 초기화 워크 플로우 (Resource Location Mapping)
 ---
-flowchart LR
+flowchart TD
     A[catalog.json 읽음] -->|Bundle 정보 \n Addressable Key 값| B[Resource Locator 에서 Asset Key 값 판독]
     B --> C[Resource Locator 를 통해 Asset 을 \n IResourceLocation 으로 변환]
     C --> D[Resource Provider 를 사용하여 Load]
