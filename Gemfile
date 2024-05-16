@@ -28,5 +28,3 @@ if RUBY_PLATFORM =~ /linux-musl/
 end
 
 gem 'jekyll-sitemap'
-
-gem 'jekyll-jupyter-notebook'
