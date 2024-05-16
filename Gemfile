@@ -29,4 +29,4 @@ end
 
 gem 'jekyll-sitemap'
 
-github: "Floppy/html-proofer"
+github "Floppy/html-proofer"
