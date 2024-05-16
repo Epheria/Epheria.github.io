@@ -29,4 +29,4 @@ end
 
 gem 'jekyll-sitemap'
 
-gem "jekyll-jupyter-notebook"
+gem 'jekyll-jupyter-notebook'
