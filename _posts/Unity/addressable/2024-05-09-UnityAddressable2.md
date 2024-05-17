@@ -17,12 +17,12 @@ mermaid: true
 
 ## 목차
 
-> [Remote Catalog 에 대해](#remote-catalog-에-대해)
-> [Addressable Profile 설정 및 관리 방법](#addressable-profile-설정-및-관리)
-> [Addressable Label 설정 및 관리 방법](#addresssable-label-설정-및-관리-방법)
-> [Addressable Bundling Strategy](#addressable-bundle-mode-와-어드레서블-번들링-전략에-대해)
-> [Addressable 다운로드 워크플로](#addressable-다운로드-워크-플로우)
-> [Addressable 업데이트 워크플로](#addressable-업데이트-워크-플로우)
+> [Remote Catalog 에 대해](#remote-catalog-에-대해)     
+> [Addressable Profile 설정 및 관리 방법](#addressable-profile-설정-및-관리)      
+> [Addressable Label 설정 및 관리 방법](#addresssable-label-설정-및-관리-방법)        
+> [Addressable Bundling Strategy](#addressable-bundle-mode-와-어드레서블-번들링-전략에-대해)       
+> [Addressable 다운로드 워크플로](#addressable-다운로드-워크-플로우)        
+> [Addressable 업데이트 워크플로](#addressable-업데이트-워크-플로우)       
 
 ---
 
