@@ -10,9 +10,13 @@ order: 4
 > Github : <https://github.com/Epheria>   
   E-mail : <tpguq1104@naver.com>   
   > * #### 회사 프로젝트   
-  > > Toyverse UML : <>   
+  > > Toyverse URL : <https://toyverse.me/>   
   > > Toyverse AOS : <https://play.google.com/store/apps/details?id=com.coconeus.toyverse>   
   > > Toyverse iOS : <https://apps.apple.com/jp/app/toyverse-%E3%83%88%E3%82%A4%E3%83%90%E3%83%BC%E3%82%B9/id6450451742>   
   > * #### 개인 프로젝트    
   > > TheQuesting Video : <https://youtu.be/UDvV4Y-eBLQ>   
   > > ProjectAlive Video : <https://youtu.be/51yy0uizN1Q>   
+
+<br>
+
+> ML/DL Study Book : <https://epheria.github.io/study-notes/intro.html>
