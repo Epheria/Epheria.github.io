@@ -5,6 +5,7 @@
   
 - type: jupyter-book
   icon: "fa-solid fa-book"
+  url: 'https://epheria.github.io/study-notes/intro.html'
 
 - type: twitter
   icon: "fab fa-twitter"
