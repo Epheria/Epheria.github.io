@@ -2,6 +2,9 @@
 
 - type: github
   icon: "fab fa-github"
+  
+- type: jupyter-book
+  icon: "fa-solid fa-book"
 
 - type: twitter
   icon: "fab fa-twitter"
