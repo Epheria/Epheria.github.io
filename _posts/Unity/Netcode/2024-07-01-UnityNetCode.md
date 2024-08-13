@@ -39,7 +39,11 @@ mermaid: true
 
 <br>
 
-### NetworkManager
+---
+
+<br>
+
+## NetworkManager
 
 <br>
 
@@ -110,7 +114,12 @@ else
 <br>
 <br>
 
+---
+
+<br>
+
 ### NetworkObject
+
 
 <br>
 
@@ -320,11 +329,15 @@ public override void OnDestroy()
 <br>
 <br>
 
-- **NetworkTransform**
+---
 
 <br>
 
-> **동기화 작업의 개요**     
+## NetworkTransform
+
+<br>
+
+> **NetworkTransform의 동기화 작업 개요**     
 >      
 >   a. 동기화할 Transform Axis 를 결정한다.     
 >   
@@ -342,11 +355,28 @@ public override void OnDestroy()
 - **컴포넌트 구성**
 
 - 보통 NetworkObject, NetworkBehaviour 컴포넌트를 부착한 하이어라키상에 같이 부착해준다.
-- Owner Network Transform 은 소유권 권한 이슈 때문에 NetworkTransform 을 상속받아 만든 클래스이다. (권장)
-- 관련된 자세한 설명은 뒤에서..
+- NetworkTransform 의 동기화는 ***Authoritative Mode (권한 모드)*** 에 따라 나뉘게 된다.
+
+<br>
+
+- **1. NetworkTransform : Server Authoritative Mode (서버 권한 모드 전용)**
+> - 서버에서 이동 로직을 계산하고 연결된 클라이언트들에게 위치 정보를 동기화 시켜준다.
+
+![Desktop View](/assets/img/post/unity/netcode023.png){: : width="700" .normal }    
+
+<br>
+
+- **2. OwnerNetworkTransform : Owner/Client Authoritative Mode (클라이언트 권한 모드 전용)**
+> - Interpolation 기능을 사용할 수 있다.     
+> - 클라이언트 A에서 이동 로직을 계산하고 위치 정보를 서버에 전송해주고, 서버는 연결된 클라이언트들에게 A의 위치정보를 동기화, 중계해주는 역할만 한다.
 
 ![Desktop View](/assets/img/post/unity/netcode007.png){: : width="700" .normal }    
 
+<br>
+
+- 어떤 권한 모드를 사용할 지는 신중하게 결정을 내려야한다. **[권한 모드에 관해 자세한 내용은 이 문서를 확인](https://epheria.github.io/posts/UnityNetCode3/)**하는 것을 추천한다.
+
+<br>
 <br>
 
 - 다음은 위 NetworkTransform 에 인스펙터 내부의 property 들에 대해 알아보자.
@@ -474,5 +504,115 @@ public class OwnerNetworkTransform : NetworkTransform
 <br>
 <br>
 
+---
+
+<br>
+
+## NetworkRigidbody
+
+<br>
+
+- Netcode for GameObjects 에서는 멀티플레이 물리 시뮬레이션 관리를 위해 기본적으로 ***Server-Authoritative physics (서버 권한 기반 물리)*** 방식을 제공한다.
+
+- 이 경우 물리 시뮬레이션은 오직 **"서버"**에서만 실행된다.
+
+- 네트워크 물리를 적용하기 위해서는 NetworkObject 컴포넌트가 있는 프리팹에 Rigidbody 와 함께 NetoworkRigidbody 가 부착되어야 한다.
+
+- 또한 권한 모드에 관해서는 [서버 권한 모드 관련 문서](https://epheria.github.io/posts/UnityNetCode3/)를 참조하는 것을 추천한다.
+
+<br>
+<br>
+
+#### Authoritative Mode 를 Client 로 설정했을 때
+
+NetworkRigidbody 를 부착하면 Server 상에서 연결된 클라이언트들의 Rigidbody 의 isKinematic 이 활성화가 되어버립니다.
+반면 클라이언트 상은 isKinematic 이 비활성화 되어 있습니다. 따라서 클라이언트에서는 물리 기반 이동(Rigidbody.velocity 와 같은)이 가능하고, Client Network Transform 이 주체가 되어 서버에 클라이언트 자신의 Transform 정보를 보내어 다른 연결된 클라이언트들과 동기화 합니다. (이는 클라이언트에 권한이 부여 되었기 때문에 보안상 위험도가 높습니다.)
+하지만 물리 기반 이동은 가능했으나, 서버상에서는 연결된 클라이언트들의 isKinematic 이 활성화가 되었기 때문에 파티게임에 사용해야하는 기본적인 서버-클라이언트 간 Rigidbody 물리 시뮬레이션이 불가능했습니다. (오직 서버에서만 물리 시뮬레이션이 가능하므로)
+즉, 로컬 클라이언트 (본인) 에서의 Rigidbody 물리 시뮬레이션은 가능하지만 다른 클라이언트 혹은 서버에 대한 물리 시뮬레이션(Network Rigidbody)은 불가능했습니다. 즉 다른 클라이언트에 대한 물리적인 간섭이 불가능했습니다.
+
+
+Client Authoritative Mode 는 유저의 인풋 → Transform 이동 계산을 클라이언트에서 처리하기 때문에 즉각적인 반응이 가능하다는 장점이 있지만 본인과 다른 클라 혹은 서버 간 Rigidbody 물리 시뮬레이션이 불가능하여 포기해야했습니다.
+그렇다고 물리 시뮬레이션이 불가능한가?는 아닙니다. 물리 시뮬레이션을 서버에서 직접 수동으로 힘을 추가하거나 이벤트로 구현하면 사용가능합니다만, 흔들림(wobble)이 발생할 가능성이 높습니다.
+
+
+
+따라서, 프로젝트가 어떤 게임 유형인지에 따라 권한 모드를 적절하게 선택하는 것을 권장합니다.
+
+<br>
+
+{% include embed/youtube.html id='10XBoDuyjb4' %}
+_Client Authoritative Mode 물리 처리 영상_
+
+<br>
+
+![Desktop View](/assets/img/post/unity/netcode029.png){: : width="800" .normal }    
+_서버상의 연결된 클라이언트 Rigidbody 의 isKinematic 이 활성화된 모습_
+
+<br>
+
+#### isKinematic 비활성화를 위해 시도해봤던 내용
+
+```csharp
+public class CustomNetworkRigidbody : NetworkRigidbody
+{
+    private Rigidbody m_Rigidbody;
+ 
+    private void Start()
+    {
+        m_Rigidbody = GetComponent<Rigidbody>();
+    }
+     
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+ 
+        if (IsServer)
+        {
+            m_Rigidbody.isKinematic = false;
+        }
+    }
+    public override void OnGainedOwnership()
+    {
+        base.OnGainedOwnership();
+     
+        if (transform.parent != null)
+        {
+            var parentNetworkObject = transform.parent.GetComponent<NetworkObject>();
+             
+            if (parentNetworkObject != null)
+            {
+                m_Rigidbody.isKinematic = false;
+            }
+        }
+ 
+        m_Rigidbody.isKinematic = false;
+    }
+}
+```
+
+<br>
+
+1. OnNetworkSpawn 네트워크 오브젝트 스폰 타이밍에 비활성화 시도 → **실패**
+2. OnGainedOwnership 권한 부여 타이밍에 비활성화 시도 → **실패**
+
+<br>
+
+- isKinematic 활성화 문제는 근본적으로 서버에 물리 시뮬레이션이 위임되었기 때문에 절대 비활성화가 불가능하다는 것을 배울 수 있었다..
+
+<br>
+<br>
+
+#### Authoritative Mode 를 Server로 설정했을 때
+
+`테스트 및 작성중..`
+
+<br>
+<br>
+
+---
+
+<br>
+
 ### NetworkAnimator
 
+`테스트 및 작성중..`
