@@ -609,7 +609,10 @@ public class CustomNetworkRigidbody : NetworkRigidbody
 
 #### Authoritative Mode 를 Server로 설정했을 때
 
-`테스트 및 작성중..`
+<br>
+
+{% include embed/youtube.html id='sPZimrgZqB4' %}
+_Client Authoritative Mode 물리 처리 영상_
 
 <br>
 <br>
