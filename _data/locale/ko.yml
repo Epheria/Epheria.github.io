@@ -1,0 +1,18 @@
+title: "Sehyup"
+tagline: "게임 프로그래머"
+author:
+  name: "Sehyup"
+  email: "tpguq1104@naver.com"
+footer:
+  copyright: "© %{year} %{name}. All rights reserved."
+  powered_by: "Powered by Jekyll and Chirpy theme."
+home:
+  recent_posts: "최근 게시물"
+posts:
+  posts_tag: "태그"
+  posts_category: "카테고리"
+toc:
+  title: "목차"
+pagination:
+  previous_page: "이전 페이지"
+  next_page: "다음 페이지"
