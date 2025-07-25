@@ -313,6 +313,65 @@ namespace Base
 
 - 추가적으로 font 와 font material 도 바꾸고 싶다면
 - Add Component 혹은 Localize Extension을 사용하여 등록하면 된다.
+
+```csharp
+using System;
+using Base;
+using TMPro;
+using UnityEditor;
+using UnityEditor.Events;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Localization.Components;
+
+static class TMProLocalizeExtension
+{
+    [MenuItem("CONTEXT/TextMeshProUGUI/Localize Extension")]
+    static void LocalizeTMProTextWithFontAssets(MenuCommand command)
+    {
+        var target = command.context as TextMeshProUGUI;
+        SetupForLocalizeString(target);
+        SetupForLocalizeTmpFont(target);
+        SetupForLocalizeTmpFontMaterial(target);
+    }
+
+    static void SetupForLocalizeString(TextMeshProUGUI target)
+    {
+        var comp = Undo.AddComponent(target.gameObject, typeof(LocalizeStringEvent)) as LocalizeStringEvent;
+        comp.SetTable("LocalizeTable");
+        var setStringMethod = target.GetType().GetProperty("text").GetSetMethod();
+        var methodDelegate =
+            Delegate.CreateDelegate(typeof(UnityAction<string>), target, setStringMethod) as UnityAction<string>;
+        UnityEventTools.AddPersistentListener(comp.OnUpdateString, methodDelegate);
+        comp.OnUpdateString.SetPersistentListenerState(0, UnityEventCallState.EditorAndRuntime);
+    }
+
+    static void SetupForLocalizeTmpFont(TextMeshProUGUI target)
+    {
+        var comp = Undo.AddComponent(target.gameObject, typeof(LocalizedTmpFontEvent)) as LocalizedTmpFontEvent;
+        var setStringMethod = target.GetType().GetProperty("font").GetSetMethod();
+        var methodDelegate =
+            Delegate.CreateDelegate(typeof(UnityAction<TMP_FontAsset>), target, setStringMethod) as
+                UnityAction<TMP_FontAsset>;
+
+        UnityEventTools.AddPersistentListener(comp.OnUpdateAsset, methodDelegate);
+        comp.OnUpdateAsset.SetPersistentListenerState(0, UnityEventCallState.EditorAndRuntime);
+    }
+    
+    static void SetupForLocalizeTmpFontMaterial(TextMeshProUGUI target)
+    {
+        var comp = Undo.AddComponent(target.gameObject, typeof(LocalizedTmpFontMaterialEvent)) as LocalizedTmpFontMaterialEvent;
+        var setStringMethod = target.GetType().GetProperty("fontMaterial").GetSetMethod();
+        var methodDelegate =
+            Delegate.CreateDelegate(typeof(UnityAction<Material>), target, setStringMethod) as
+                UnityAction<Material>;
+
+        UnityEventTools.AddPersistentListener(comp.OnUpdateAsset, methodDelegate);
+        comp.OnUpdateAsset.SetPersistentListenerState(0, UnityEventCallState.EditorAndRuntime);
+    }
+}
+```
+
 - 인게임 설정 혹은 에디터상에서 언어변경을 해주면 해당 UGUI의 텍스트는 자동으로 바뀐다..
 
 ![Desktop View](/assets/img/post/unity/localization33.png){: : width="400" .normal }
