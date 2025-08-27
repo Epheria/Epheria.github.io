@@ -29,13 +29,18 @@ mermaid: true
 
 ![Desktop View](/assets/img/post/unreal/unrealmac01.png){: : width="500" .normal }    
 
+<br>
+
+![Desktop View](/assets/img/post/unreal/unrealmac02.png){: : width="500" .normal }    
+
+
 - Source Code 로 진입 후 Rider UProject로 설정한다.
 
 <br>
 
 #### 2.Tool 에서 Refresh Rider Uproject Project 를 실행시킨다.
 
-![Desktop View](/assets/img/post/unreal/unrealmac02.png){: : width="500" .normal }    
+![Desktop View](/assets/img/post/unreal/unrealmac04.png){: : width="500" .normal }    
 
 - Rider UProject 는 켜져있어야한다.
 
