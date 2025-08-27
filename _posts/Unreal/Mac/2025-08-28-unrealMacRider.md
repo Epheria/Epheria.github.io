@@ -27,7 +27,7 @@ mermaid: true
 
 - Mac 에서는 Unreal Preference 설정은 맥 상단 툴바에서 확인할 수 있다. **단축키 : Cmd + ,**
 
-![Desktop View](/assets/img/post/unity/unrealmac01.png){: : width="500" .normal }    
+![Desktop View](/assets/img/post/unreal/unrealmac01.png){: : width="500" .normal }    
 
 - Source Code 로 진입 후 Rider UProject로 설정한다.
 
@@ -35,7 +35,7 @@ mermaid: true
 
 #### 2.Tool 에서 Refresh Rider Uproject Project 를 실행시킨다.
 
-![Desktop View](/assets/img/post/unity/unrealmac02.png){: : width="500" .normal }    
+![Desktop View](/assets/img/post/unreal/unrealmac02.png){: : width="500" .normal }    
 
 - Rider UProject 는 켜져있어야한다.
 
@@ -43,7 +43,7 @@ mermaid: true
 
 #### 3.언리얼 프로젝트 하단 툴바를 보면 그리드 모양의 아이콘이 보이는데 요녀석을 클릭하면 라이브 코딩이 실행된다..
 
-![Desktop View](/assets/img/post/unity/unrealmac03.png){: : width="500" .normal }    
+![Desktop View](/assets/img/post/unreal/unrealmac03.png){: : width="500" .normal }    
 
 - 이런데 숨어있었다니.. 단축키 설정하는 방법이 없는지도 찾아봐야겠다..
 
