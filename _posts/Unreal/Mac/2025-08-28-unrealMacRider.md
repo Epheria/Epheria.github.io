@@ -1,7 +1,7 @@
 ---
 title: Unreal Mac OS 에서 Rider 로 라이브 코딩 하는 방법
 date: 2025-08-28 00:25:00 +/-TTTT
-categories: [Unreal, Mac]
+categories: [Unreal, MacOS]
 tags: [Unreal, Mac, Rider]     # TAG names should always be lowercase
 
 toc: true
