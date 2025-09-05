@@ -11,21 +11,162 @@ use_math: true
 mermaid: true
 ---
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
 
 ---
 
 <br>
 
+## 목차
+
+> [빌드 파이프라인 & UHT(Unreal Header Tool)](#1-빌드-파이프라인--uht)      
+> [헤더/CPP 파일 분리 원칙(IWYU), 전방 선언, include 순서, 모듈 매크로](#2-헤더cpp-분리-원칙iwyu-전방-선언-include-순서-모듈-매크로)     
+> [리플렉션 기초 : UCLASS/UPROPERTY/UFUNCTION/generated.h 규칙](#3-리플렉션-기초--uclassupropertyufunction--generatedh-규칙)     
+> [UObject생성,수명,GC - UPROPERTY/TObjectPtr/TweakObjectPtr](#4-uobject-생성-수명-gc---uporpertytobjectptrtweakobjectptr)  
+> [문자열 로깅 - FString, FName, FText, TEXT/TCHAR](#문자열로깅-fstringfnameftext-texttchar-s와-fstring)  
+> [GameInstance와 Subsystem 초기화 흐름과 Super::Init()에 대해](#gameinstance와-subsystem-초기화-흐름과)  
+> [언리얼 C++ 기초 : 포인터, 레퍼런스, 인라인, assertion](#cpp-기초언리얼-관점-포인터레퍼런스인라인빌드-매크로어설션)  
+
+<br>
+
+---
+
+## 1. 빌드 파이프라인 & UHT
+
+- 언리얼은 블루프린트 노출, 직렬화, RPC 등을 C++ 메타데이터로 처리한다. 빌드는 두 단계로 진행된다.
+    
+> 1. UHT(언리얼 헤더 툴)가 `UCLASS/UPROPERTY/UFUNCTION`가 붙은 헤더를 스캔해 메타 데이터를 만들고, `*.generated.h/.cpp`파일을 생성한다.
+> 2. 그다음 일반 C++ 컴파일이 진행된다.     
+{: .prompt-info }
+
+<br>
+
+- 핵심 규칙은 하나. 헤더의 `#include "X.generated.h`는 **항상 마지막**에 둔다. 그래야 UHT가 생성한 선언이 앞선 선언을 바탕으로 정확히 확장된다.
+
+```cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "MyObject.generated.h" // 반드시 마지막
+
+UCLASS()
+class HELLOUNREAL_API UMyObject : public UObject
+{
+    GENREATED_BODY()
+};
+
+```
+
+<br>
+
+---
+
+<br>
+
+## 2. 헤더/CPP 분리 원칙(IWYU), 전방 선언, include 순서, 모듈 매크로
+
+- 헤더는 가볍게, CPP는 무겁게. 이렇게 설계해야 빌드 시간이 안정된다.
+- 헤더에는 `CoreMinimal.h`와 **최소한만 포함**된다.
+- 가능한 한 **전방선언(Forward Declaration)**으로 참조를 해결한다.
+- 실제 구현에서만 필요한 헤더는 **CPP에 포함**한다.
+- CPP의 첫 번째 include는 항상 **자기 헤더**로 둔다. 빠진 의존성을 컴파일 타임에 즉시 드러나게 한다.
+- 다른 모듈에서 사용할 타입/함수에는 `HELLOUNREAL_API` 같은 모듈 내보내기 매크로를 붙인다.
+- 특히 다른 프로젝트의 스크립트를 적용시킬 때 현재 프로젝트의 매크로로 수정할 필요가있다.
+- 해당 스크립트를 추가한 뒤 반드시 Tool 에 있는 **Refresh Rider/VS Uproject Project** 로 갱신 시켜줘야한다!
+
+![Desktop View](/assets/img/post/unreal/unrealmac04.png){: : width="500" .normal }    
+
+```cpp
+// MyFeature.h
+#pragma once
+#include "CoreMinimal.h"
+
+UCLASS()
+class HELLOUNREAL_API AMyFeature : public AActor
+{
+    GENERATED_BODY()
+
+public:
+    AMyFeature();
+    virtual void BeginPlay() override;
+private:
+    UPROPERTY()
+    TObjectPtr<UStaticMeshComponent> Mesh; // 포인터, 레퍼런스는 전방선언으로 충분하다.
+};
 
 
-작성중..
+// MyFeature.cpp
+#include "MyFeature.h"                         // 자기 헤더
+#include "Components/StaticMeshComponent.h"    // 구현에 필요한 헤더
+
+AMyFeature::AMyFeature()
+{
+    Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh));
+    SetRootComponent(Mesh);
+}
+
+```
+- 값 멤버(예: `UStaticMeshComponent Mesh;`)처럼 완전한 정의가 필요한 경우엔 전방 선언만으로는 부족하므로 헤더에 실제 include가 필요하다.
+
+<br>
+
+---
+
+<br>
+
+## 3. 리플렉션 기초 : UCLASS/UPROPERTY/UFUNCTION & generated.h 규칙
+
+
+
+<br>
+
+---
+
+<br>
+
+## 4. UObject 생성, 수명, GC - UPORPERTY/TObjectPtr/TWeakObjectPtr
 
 
 
 
 
-## GOAP 란 무엇인가?
+<br>
+
+---
+
+<br>
+
+## 문자열·로깅: FString/FName/FText, TEXT/TCHAR, `%s`와 `*FString`
+
+
+
+
+
+
+<br>
+
+---
+
+<br>
+
+## GameInstance와 Subsystem: 초기화 흐름과
+
+
+
+
+
+
+
+<br>
+
+---
+
+<br>
+
+## CPP 기초(언리얼 관점): 포인터·레퍼런스·인라인·빌드 매크로·어설션
+
+
+
+
 
 - 목표 지향 행동 계획 (Goal Oriented Action Planning)는 게임 인공지능(AI)에서 에이전트가 자율적으로 행동을 결정하고 게임 환경 내에서 특정 목표를 달성할 수 있도록 하는 기술이다.
 
