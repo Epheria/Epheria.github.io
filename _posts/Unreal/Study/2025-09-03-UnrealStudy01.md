@@ -1,4 +1,5 @@
 ---
+layout: post
 title: 언리얼 C++ 첫걸음 - UHT, UObject, 문자열/로깅, GameInstance, 포인터·레퍼런스·매크로까지 한 번에
 date: 2025-09-03 23:12:00 +/-TTTT
 categories: [Unreal, Study]
