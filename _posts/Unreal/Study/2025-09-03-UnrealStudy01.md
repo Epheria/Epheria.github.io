@@ -16,8 +16,6 @@ mermaid: true
 
 ---
 
-{% include toc.html content=content %}
-
 <br>
 
 ## 목차
