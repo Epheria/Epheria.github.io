@@ -15,10 +15,6 @@ mermaid: true
 
 ---
 
-<br>
-
----
-
 > **주의** : UniRx가 R3로 업데이트 되면서 [R3](https://github.com/Cysharp/R3?tab=readme-ov-file)에서 MessageBroker는 [MessagePipe](https://github.com/Cysharp/MessagePipe)로 변경되었음.
 {: .prompt-warning }
 
