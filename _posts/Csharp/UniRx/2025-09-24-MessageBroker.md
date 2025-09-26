@@ -32,11 +32,15 @@ mermaid: true
 
 <br>
 
-- MessageBroker 의 장점들
-- **느슨한 결합** : 모듈간의 직접 참조가 원천적으로 차단된다. 유지보수와 테스트 비용을 극적으로 낮춘다.
-- **타입 기반의 명확한 계약** : ```Receive<T>()``` 와 ```Publish(T)``` 는 메시지 타입을 통해 명시적인 계약을 형성한다. 컴파일 타임에 통신 규격이 보장되는 것.
-- **중앙 집중화된 통신 흐름** : 메시지 라우팅이 ```MessageBroker.Default``` 를 통해 일어나므로, 시스템의 이벤트 흐름을 추적하고 디버깅하기 용이.
-- **예측 가능한 동기 실행** : 기본적으로 발행과 즉시 구독자 콜백이 동기적으로 실행된다.
+### MessageBroker 의 장점들
+
+> **느슨한 결합** : 모듈간의 직접 참조가 원천적으로 차단된다. 유지보수와 테스트 비용을 극적으로 낮춘다.
+> **타입 기반의 명확한 계약** : ```Receive<T>()``` 와 ```Publish(T)``` 는 메시지 타입을 통해 명시적인 계약을 형성한다. 컴파일 타임에 통신 규격이 보장되는 것.
+> **중앙 집중화된 통신 흐름** : 메시지 라우팅이 ```MessageBroker.Default``` 를 통해 일어나므로, 시스템의 이벤트 흐름을 추적하고 디버깅하기 용이.
+> **예측 가능한 동기 실행** : 기본적으로 발행과 즉시 구독자 콜백이 동기적으로 실행된다.
+{: .prompt-info }
+
+<br>
     
 ---
 
@@ -58,7 +62,7 @@ mermaid: true
 
 - 모든 메시지는 그 자체로 명확한 의도를 가진 DTO(Data Transfer Object)여야 한다.
 
-```Csharp
+```csharp
 
 public enum DebugCommandType
 {
@@ -91,7 +95,7 @@ public sealed class DebugCommandMessage
 
 - Publisher 는 누가 듣고 있는지 신경 쓸 필요가 전혀 없다. 오직 어떤 일이 일어났는지에만 집중하여 메시지를 발행해야한다.
 
-```Csharp
+```csharp
 // 다음 두 가지로 메시지 발행이 가능하다.
 // SRDebugger SROptions 일수도 DebugPanel 같은 개인 클래스 내부일 수도 있음.
 
@@ -125,7 +129,7 @@ public bool InfiniteUlt
 
 - 구독자는 특정 타입의 메시지에만 반응하며, 구독의 생명주기를 반드시 관리해야한다.
 
-```Csharp
+```csharp
 // 예시 코드 : 하나의 게임 씬을 관리하는 매니저 클래스
 public partial class StageManager
 {
@@ -194,7 +198,7 @@ public partial class StageManager
 - MessageBroker는 ```Dictionary<string, object>```를 통해 다양한 타입의 파라미터를 유연하게 전달할 수 있다.
 - 프로덕션 환경에서 치명적인 단점이 존재하긴 하지만 개인적으로는 디버깅 용도로 사용할 경우 충분하다고 생각한다.
 
-```Csharp
+```csharp
 var parameters = new Dictionary<string, object>
 {
     { "trigger", true },                              // bool 값
@@ -216,7 +220,7 @@ MessageBroker.Default.Publish(new DebugCommandMessage(
 - 이벤트마다 전용 DTO를 정의하면 컴파일 타임에 모든 것이 검증되며, 매직 스트링과 런타임 캐스팅이 사라진다. 
 - 좀 더 명확하고 실수없이 프로덕션 환경에 적합하다.
 
-```Csharp
+```csharp
 // 발행: 명확하고 실수가 없다
 MessageBroker.Default.Publish(new SkillAppliedEvent("Fireball_Lv3", 1.5f, new[] {101, 102}));
 
@@ -246,7 +250,7 @@ MessageBroker.Default.Receive<SkillAppliedEvent>()
 
 - Unity의 API(UI, GameObject 등)는 메인 스레드에서만 안전하게 호출할 수 있다. 백그라운드 스레드에서 발행된 메시지를 받아 Unity API를 조작하려면, ```ObservableOnMainThread()``` 를 만드시 사용해야 한다.
 
-```Csharp
+```csharp
 // 네트워크 수신(백그라운드 스레드) -> 결과 처리(메인 스레드)
 MessageBroker.Default.Receive<NetworkResponse>()
     .ObserveOnMainThread() // 이 시점 이후의 모든 콜백은 메인 스레드에서 실행됨을 보장
@@ -260,7 +264,7 @@ MessageBroker.Default.Receive<NetworkResponse>()
 
 - 프레임당 수십 번 호출되는 이벤트는 그대로 브로드캐스트하면 안된다. Rx의 강력한 연산자들로 호출량을 제어해야한다.
 
-```Csharp
+```csharp
 MessageBroker.Default.Receive<PlayerHitEvent>()
     .Buffer(TimeSpan.FromMilliseconds(100)) // 100ms 동안 발생한 이벤트를 리스트로 묶음
     .Where(hits => hits.Count > 0)          // 빈 배치는 무시
@@ -286,7 +290,7 @@ MessageBroker.Default.Receive<PlayerHitEvent>()
 
 - ``AddTo(this)``는 ``MonoBehaviour``에 종속된 구독에 대한 훌륭한 기본값이다. 하지만 객체의 생명주기가 ``GameObject``와 무관하다면, ``CompositeDisposable``을 사용한 명시적 관리가 필수이다.
 
-```Csharp
+```csharp
 public class PlayerService
 {
     // 이 서비스 인스턴스가 살아있는 동안의 모든 구독을 담는 컨테이너
@@ -328,7 +332,7 @@ public class PlayerService
 
 - UI 관련 이벤트는 ``UIMessageBus`` 에서만, 전투 관련 이벤트는 ``CombatMessageBus`` 에서만 흐르도록 스코프를 분리하자.
 
-```Csharp
+```csharp
 // 의존성 주입(DI) 컨테이너 등을 통해 주입되는 모듈 전용 버스
 public sealed class UIMessageBus
 {
