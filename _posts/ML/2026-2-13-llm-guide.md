@@ -609,8 +609,8 @@ VRAM이 부족하면 모델의 일부를 시스템 RAM으로 내리는 **offload
 
 > **📖 더 알아보기**:
 > 
-> - GPU 메모리 계층(HBM → L2 → SRAM → 레지스터)과 VRAM 용량 계산법 → [VRAM 심화 가이드](#)
-> - CUDA Core, Tensor Core, TMEM, NPU의 상세 동작 원리 → [GPU 연산 유닛 심화 가이드](#)
+> - GPU 메모리 계층(HBM → L2 → SRAM → 레지스터)과 VRAM 용량 계산법 → [VRAM 심화 가이드](/posts/vram-deep-dive/)
+> - CUDA Core, Tensor Core, TMEM, NPU의 상세 동작 원리 → [GPU 연산 유닛 심화 가이드](/posts/gpu-compute-deep-dive/)
 
 최근에는 **NPU(Neural Processing Unit)**도 주목받고 있습니다. Apple Silicon의 Neural Engine, 스마트폰의 AI 칩 등이 여기에 해당합니다. NPU는 GPU보다 저전력이지만 성능도 낮습니다. 경량 모델(7B 파라미터 정도)은 NPU로 로컬에서 실행할 수 있지만, Claude 같은 대형 모델은 여전히 데이터센터 GPU가 필요합니다.
 
