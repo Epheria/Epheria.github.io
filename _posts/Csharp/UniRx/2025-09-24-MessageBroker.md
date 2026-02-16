@@ -15,7 +15,7 @@ mermaid: true
 
 ---
 
-> **주의** : UniRx가 R3로 업데이트 되면서 [R3](https://github.com/Cysharp/R3?tab=readme-ov-file)에서 MessageBroker는 [MessagePipe](https://github.com/Cysharp/MessagePipe)로 변경되었음.
+> **주의** : UniRx가 R3로 업데이트 되면서 [R3](https://github.com/Cysharp/R3?tab=readme-ov-file)에서 MessageBroker는 [MessagePipe](https://github.com/Cysharp/MessagePipe)로 변경되었음. 이 문서 하단에 [마이그레이션 가이드](#11-r3messagepipe-마이그레이션)를 포함하고 있음.
 {: .prompt-warning }
 
 ---
@@ -26,7 +26,7 @@ mermaid: true
 
 이것은 소프트웨어 설계에서 오래된 문제이며, 해결책도 잘 알려져 있습니다: **Pub/Sub(발행/구독) 패턴**. 이벤트를 발생시키는 쪽(Publisher)과 이벤트에 반응하는 쪽(Subscriber)을 **중앙 브로커**를 통해 분리하는 것입니다.
 
-UniRx의 `MessageBroker`는 이 패턴의 Unity 구현체입니다. 이 글에서는 MessageBroker의 **내부 동작 원리**부터 **실전 활용 패턴**, **성능 특성**, **메모리 관리**까지 체계적으로 다룹니다.
+UniRx의 `MessageBroker`는 이 패턴의 Unity 구현체입니다. 이 글에서는 MessageBroker의 **소스 코드 수준의 내부 동작 원리**부터 **실전 활용 패턴**, **성능 특성**, **메모리 관리**, 그리고 **R3/MessagePipe로의 마이그레이션**까지 체계적으로 다룹니다.
 
 ---
 
@@ -77,40 +77,88 @@ flowchart TB
 | **중앙 집중 라우팅** | 모든 메시지가 한 곳을 경유 | 이벤트 흐름 추적과 디버깅 용이 |
 | **동기 실행** | 발행 즉시 구독자 콜백이 순차 실행 | 예측 가능한 실행 순서 |
 
-> UniRx는 Unity 이벤트와 비동기를 Reactive Extensions 방식으로 다루는 라이브러리이다. CyberAgent사 소속의 Cysharp라는 깃허브 조직에서 만든 것으로 오픈소스로 공개하여 많은 개발자들에게 도움을 주고있다.
+> UniRx는 Unity 이벤트와 비동기를 Reactive Extensions 방식으로 다루는 라이브러리이다. CyberAgent사 소속의 Cysharp라는 깃허브 조직에서 만든 것으로 오픈소스로 공개하여 많은 개발자들에게 도움을 주고 있다.
 {: .prompt-tip }
 
 ---
 
-### 2. 내부 동작 원리
+### 2. 내부 동작 원리 (소스 코드 분석)
 
-MessageBroker의 내부를 이해하면 성능 특성과 제약을 직감적으로 파악할 수 있습니다.
+MessageBroker의 내부를 이해하면 성능 특성과 제약을 직감적으로 파악할 수 있습니다. [UniRx GitHub 소스](https://github.com/neuecc/UniRx/blob/master/Assets/Plugins/UniRx/Scripts/Notifiers/MessageBroker.cs)를 기반으로 분석합니다.
+
+#### 실제 내부 구조
+
+```csharp
+// UniRx 소스 (간략화)
+public class MessageBroker : IMessageBroker, IDisposable
+{
+    // 핵심: Type → Subject<T> 매핑 (object로 저장)
+    readonly Dictionary<Type, object> notifiers = new Dictionary<Type, object>();
+
+    public void Publish<T>(T message)
+    {
+        object notifier;
+        lock (notifiers)
+        {
+            if (!notifiers.TryGetValue(typeof(T), out notifier)) return;
+        }
+        // Subject<T>로 캐스팅 후 OnNext 호출
+        ((ISubject<T>)notifier).OnNext(message);
+    }
+
+    public IObservable<T> Receive<T>()
+    {
+        object notifier;
+        lock (notifiers)
+        {
+            if (!notifiers.TryGetValue(typeof(T), out notifier))
+            {
+                // 해당 타입의 첫 구독 시 Subject<T>를 lazy 생성
+                ISubject<T> n = new Subject<T>();
+                notifier = n;
+                notifiers.Add(typeof(T), notifier);
+            }
+        }
+        return ((IObservable<T>)notifier).AsObservable();
+    }
+}
+```
+
+핵심 구조는 **`Dictionary<Type, object>`**이며, 각 value는 **`Subject<T>`**입니다. Subject는 Rx에서 `IObservable<T>`이면서 동시에 `IObserver<T>`인 양방향 객체로, 구독자 관리와 메시지 전달을 모두 담당합니다.
 
 ```mermaid
 flowchart TB
-    subgraph Internal["MessageBroker 내부 구조"]
-        direction TB
-        subgraph Registry["타입별 구독자 레지스트리"]
-            R1["Dictionary&lt;Type, List&lt;IObserver&gt;&gt;"]
-            T1["DebugCommandMessage → [Observer1, Observer2]"]
-            T2["NetworkResponse → [Observer3]"]
-            T3["PlayerHitEvent → [Observer4, Observer5, Observer6]"]
+    subgraph Internal["MessageBroker 내부"]
+        subgraph Dict["Dictionary&lt;Type, object&gt;"]
+            K1["typeof(DebugCommandMessage)"] --> V1["Subject&lt;DebugCommandMessage&gt;"]
+            K2["typeof(NetworkResponse)"] --> V2["Subject&lt;NetworkResponse&gt;"]
+            K3["typeof(PlayerHitEvent)"] --> V3["Subject&lt;PlayerHitEvent&gt;"]
         end
     end
 
-    subgraph Publish["Publish(new DebugCommandMessage(...))"]
-        PB["1. typeof(T)로 타입 키 추출<br/>2. 해당 타입의 구독자 리스트 조회<br/>3. 모든 구독자에게 순차 전달"]
+    subgraph Publish["Publish&lt;T&gt;(message)"]
+        P1["1. typeof(T)로 Subject 조회"]
+        P2["2. ((ISubject&lt;T&gt;)notifier).OnNext(message)"]
+        P3["3. Subject 내부에서 모든 구독자에게 순차 전달"]
     end
 
-    subgraph Subscribe["Receive&lt;DebugCommandMessage&gt;()"]
-        SB["1. typeof(T)로 타입 키 추출<br/>2. 해당 타입의 구독자 리스트에 추가<br/>3. IDisposable 반환 (해제용)"]
+    subgraph Receive["Receive&lt;T&gt;()"]
+        R1["1. typeof(T)로 Subject 조회"]
+        R2["2. 없으면 new Subject&lt;T&gt;() 생성"]
+        R3["3. Subject를 IObservable&lt;T&gt;로 반환"]
     end
 
-    Publish --> Registry
-    Subscribe --> Registry
+    Publish --> Dict
+    Receive --> Dict
 ```
 
-핵심은 **`Type`을 Key로 하는 Dictionary**입니다. `Publish<T>()`가 호출되면, `typeof(T)`에 해당하는 구독자 리스트를 찾아 **모든 구독자에게 순차적으로** 메시지를 전달합니다. 이 과정은 동기적으로 실행됩니다.
+#### 중요한 구현 디테일
+
+1. **lock(notifiers)**: Dictionary 접근 시 lock을 사용합니다. 멀티 스레드에서 `Publish`/`Receive`가 동시에 호출되어도 Dictionary 자체는 안전합니다. 단, `OnNext(message)` 호출은 lock 외부에서 수행됩니다.
+
+2. **Lazy 생성**: `Receive<T>()`가 처음 호출될 때 해당 타입의 Subject가 생성됩니다. `Publish<T>()`가 먼저 호출되면 구독자가 없으므로 메시지가 **조용히 버려집니다**.
+
+3. **AsObservable()**: `Receive<T>()`는 Subject를 직접 반환하지 않고 `AsObservable()`로 래핑합니다. 이는 외부에서 Subject를 `ISubject<T>`로 캐스팅하여 `OnNext`를 직접 호출하는 것을 방지하기 위함입니다.
 
 > **💬 잠깐, 이건 알고 가자**
 >
@@ -118,10 +166,10 @@ flowchart TB
 > C#의 `event`는 발행자 클래스에 **직접 참조**가 필요합니다. `player.OnDamaged += HandleDamage`처럼요. MessageBroker는 중앙 브로커를 경유하므로 발행자와 구독자가 **서로의 존재를 전혀 모릅니다**. 이 차이가 결합도를 극적으로 낮춥니다.
 >
 > **Q. MessageBroker와 UnityEvent의 차이는?**
-> `UnityEvent`는 Inspector에서 이벤트를 바인딩할 수 있는 Unity 전용 기능입니다. 디자이너 친화적이지만, 코드에서의 동적 구독/해제가 불편하고 성능도 떨어집니다. MessageBroker는 순수 코드 기반이며, Rx 연산자(Where, Buffer, Throttle 등)를 조합할 수 있어 **프로그래머 생산성**이 훨씬 높습니다.
+> `UnityEvent`는 Inspector에서 이벤트를 바인딩할 수 있는 Unity 전용 기능입니다. 디자이너 친화적이지만, 코드에서의 동적 구독/해제가 불편하고 Reflection 기반이라 성능도 떨어집니다. MessageBroker는 순수 코드 기반이며, Rx 연산자(Where, Buffer, Throttle 등)를 조합할 수 있어 **프로그래머 생산성**이 훨씬 높습니다.
 >
 > **Q. 상속 관계의 메시지는 어떻게 처리되나요?**
-> `Publish<DerivedMessage>(msg)` 를 호출하면, `Receive<DerivedMessage>()`를 구독한 곳에만 전달됩니다. `Receive<BaseMessage>()`에는 전달되지 **않습니다**. MessageBroker는 정확한 타입 매칭(exact type matching)을 사용합니다.
+> `Publish<DerivedMessage>(msg)` 를 호출하면, `Receive<DerivedMessage>()`를 구독한 곳에만 전달됩니다. `Receive<BaseMessage>()`에는 전달되지 **않습니다**. 내부적으로 `typeof(T)`를 Key로 사용하므로 **정확한 타입 매칭(exact type matching)**입니다. 다형적 구독이 필요하면 메시지 인터페이스를 정의하고 별도로 라우팅해야 합니다.
 
 ---
 
@@ -142,7 +190,7 @@ public enum DebugCommandType
 }
 
 // sealed: 상속을 금지하여 메시지 타입의 불변성을 보장
-// readonly struct도 좋은 선택지
+// readonly struct도 좋은 선택지 (하단 "struct와 박싱" 섹션 참고)
 public sealed class DebugCommandMessage
 {
     public DebugCommandType CommandType { get; }
@@ -197,11 +245,12 @@ sequenceDiagram
     participant Audio as AudioManager
 
     Debug->>MB: Publish(KillPlayer)
-    MB->>SM: OnNext(KillPlayer)
+    Note over MB: lock(notifiers) 내에서<br/>Subject&lt;DebugCommand&gt; 조회
+    MB->>SM: Subject.OnNext → Observer1
     SM->>SM: CurrentPlayer.KillPlayer()
-    MB->>UI: OnNext(KillPlayer)
+    MB->>UI: Subject.OnNext → Observer2
     UI->>UI: ShowDeathUI()
-    MB->>Audio: OnNext(KillPlayer)
+    MB->>Audio: Subject.OnNext → Observer3
     Audio->>Audio: PlayDeathSFX()
 
     Note over MB: 동기 순차 실행<br/>SM → UI → Audio 순서
@@ -298,7 +347,7 @@ MessageBroker.Default.Publish(new DebugCommandMessage(
 
 ```csharp
 // 메시지 정의: 명확한 계약
-public readonly struct SkillAppliedEvent
+public sealed class SkillAppliedEvent
 {
     public string SkillID { get; }
     public float DamageMultiplier { get; }
@@ -317,31 +366,49 @@ MessageBroker.Default.Publish(new SkillAppliedEvent("Fireball_Lv3", 1.5f, new[] 
 
 // 구독: 타입 캐스팅 없이 안전하게 파라미터 사용
 MessageBroker.Default.Receive<SkillAppliedEvent>()
-    .Subscribe(evt => CombatSystem.ApplyDamage(evt.SkillID, evt.DamageMultiplier, evt.TargetIDs));
+    .Subscribe(evt => CombatSystem.ApplyDamage(evt.SkillID, evt.DamageMultiplier, evt.TargetIDs))
+    .AddTo(this);
 ```
 
-```mermaid
-flowchart TB
-    subgraph DictWay["Dictionary 방식"]
-        D1["장점: 유연함, 빠른 프로토타이핑"]
-        D2["단점: 매직 스트링, 런타임 캐스팅, 타입 안전성 없음"]
-        D3["용도: 디버그 도구, SRDebugger 연동"]
-    end
+#### struct 메시지와 박싱: 정확한 분석
 
-    subgraph DTOWay["DTO 방식"]
-        T1["장점: 컴파일 타임 검증, 자동완성 지원, 명확한 계약"]
-        T2["단점: 메시지 타입 클래스 수 증가"]
-        T3["용도: 프로덕션 코드, 핵심 게임 로직"]
-    end
+"struct를 메시지로 쓰면 GC 제로"라는 조언을 자주 보지만, MessageBroker에서는 좀 더 정밀한 분석이 필요합니다.
+
+**결론부터**: MessageBroker 자체는 메시지를 박싱하지 않습니다. `Subject<T>.OnNext(T)`는 제네릭 메서드이므로 T가 value type이어도 박싱 없이 전달됩니다. 단, Rx 연산자 체인에서 박싱이 발생할 수 있습니다.
+
+```csharp
+// MessageBroker 내부 흐름 (박싱 분석)
+//
+// 1. Publish<PlayerHitEvent>(hitEvent)
+//    → typeof(PlayerHitEvent)로 Dictionary 조회 (Type은 참조 타입이므로 무관)
+//    → ((ISubject<PlayerHitEvent>)notifier).OnNext(hitEvent)
+//    → OnNext(T) 는 제네릭 → 박싱 없음 ✅
+//
+// 2. 중간 연산자
+//    → .Where(x => ...) → 내부적으로 제네릭 → 박싱 없음 ✅
+//    → .Select(x => (object)x) → 명시적 캐스팅 시 박싱 발생 ❌
+//
+// 3. Subscribe(Action<T>) → 제네릭 → 박싱 없음 ✅
+
+// 따라서 struct 메시지는 다음 조건에서 안전:
+// - 중간 연산자가 제네릭 체인을 유지할 때
+// - object로 캐스팅하는 연산자를 사용하지 않을 때
 ```
 
 > **💬 잠깐, 이건 알고 가자**
 >
-> **Q. readonly struct를 메시지 타입으로 쓰면 뭐가 좋나요?**
-> `readonly struct`는 스택에 할당되므로 **GC 압력이 제로**입니다. 고빈도로 발행되는 메시지(피격 이벤트, 위치 업데이트 등)에 특히 효과적입니다. 다만 `MessageBroker.Default.Publish<T>(T)`에서 T가 value type이면 박싱이 발생할 수 있으므로, 프로파일러로 확인하는 것이 좋습니다.
+> **Q. 그러면 readonly struct를 메시지로 써도 되나요?**
+> **조건부 Yes.** MessageBroker → Subject → Subscribe 경로에서는 박싱이 발생하지 않습니다. 하지만 `sealed class`를 기본으로 사용하고, 프로파일러에서 GC Alloc이 문제가 되는 고빈도 메시지에 한해서만 `readonly struct`를 고려하는 것이 안전합니다.
 >
 > **Q. 메시지 타입이 너무 많아지면 관리가 어려운 건 아닌가요?**
-> 메시지 타입이 늘어나는 것은 **시스템의 이벤트 계약이 명시적으로 드러나는 것**입니다. 오히려 좋은 신호입니다. 네임스페이스로 도메인별 분리(예: `Messages.Combat`, `Messages.UI`, `Messages.Debug`)하면 충분히 관리 가능합니다.
+> 메시지 타입이 늘어나는 것은 **시스템의 이벤트 계약이 명시적으로 드러나는 것**입니다. 오히려 좋은 신호입니다. 네임스페이스로 도메인별 분리하면 충분히 관리 가능합니다:
+> ```
+> Messages/
+> ├── Combat/     ← PlayerHitEvent, EnemyDefeatedEvent, ...
+> ├── UI/         ← ScreenChangedEvent, PopupRequestEvent, ...
+> ├── Debug/      ← DebugCommandMessage, ...
+> └── Network/    ← NetworkResponseEvent, ...
+> ```
 
 ---
 
@@ -366,7 +433,8 @@ sequenceDiagram
     participant S3 as Subscriber 3
 
     Pub->>MB: Publish(event)
-    Note over MB: 동기 순차 실행 시작
+    Note over MB: lock 범위: Dictionary 조회만
+    Note over MB: lock 해제 후 OnNext 호출
     MB->>S1: OnNext(event)
     S1-->>MB: 완료 (10ms)
     MB->>S2: OnNext(event)
@@ -396,19 +464,19 @@ flowchart LR
         N2["Publish(NetworkResponse)"]
     end
 
-    subgraph Main["메인 스레드"]
+    subgraph Main["메인 스레드 (다음 프레임)"]
         M1["ObserveOnMainThread()"]
         M2["UpdateUI()"]
     end
 
     N1 --> N2
-    N2 -->|"스레드 전환"| M1
+    N2 -->|"MainThreadDispatcher<br/>큐에 적재"| M1
     M1 --> M2
 ```
 
 #### 고빈도 이벤트 최적화 : 시스템 과부하 방지
 
-프레임당 수십 번 호출되는 이벤트는 그대로 브로드캐스트하면 안 됩니다. Rx의 강력한 연산자들로 호출량을 제어해야 합니다.
+프레임당 수십 번 호출되는 이벤트는 그대로 브로드캐스트하면 안 됩니다. Rx 연산자로 호출량을 제어해야 합니다.
 
 ```csharp
 // Buffer: 일정 시간 동안의 이벤트를 모아서 한 번에 처리
@@ -422,7 +490,7 @@ MessageBroker.Default.Receive<PlayerHitEvent>()
     })
     .AddTo(this);
 
-// Throttle: 마지막 이벤트로부터 일정 시간 후에 처리
+// ThrottleFirst: 첫 번째 이벤트만 통과시키고 일정 시간 차단
 MessageBroker.Default.Receive<PlayerPositionChanged>()
     .ThrottleFirst(TimeSpan.FromMilliseconds(200)) // 200ms마다 최대 1번만 통과
     .Subscribe(pos => MiniMap.UpdatePlayerPosition(pos))
@@ -435,38 +503,25 @@ MessageBroker.Default.Receive<EnemyHealthChanged>()
     .AddTo(this);
 ```
 
-```mermaid
-flowchart TB
-    subgraph Raw["원본 이벤트 (프레임당 10회)"]
-        R["▪▪▪▪▪▪▪▪▪▪ (100ms 동안 10개)"]
-    end
-
-    subgraph Buffer["Buffer(100ms)"]
-        B["▪▪▪▪▪▪▪▪▪▪ → [10개 리스트] 1번 전달"]
-    end
-
-    subgraph Throttle["ThrottleFirst(200ms)"]
-        T["▪ _ _ _ _ _ _ _ _ _ → 1번 전달 (첫 번째만)"]
-    end
-
-    subgraph Sample["Sample(50ms)"]
-        S["_ _ _ _ ▪ _ _ _ _ ▪ → 2번 전달 (50ms 간격 최신)"]
-    end
-
-    Raw --> Buffer
-    Raw --> Throttle
-    Raw --> Sample
-```
+| 연산자 | 동작 | 적합한 시나리오 |
+| --- | --- | --- |
+| **Buffer** | 일정 시간 동안 이벤트를 **모아서 리스트로** 전달 | 다중 히트 데미지 합산, 배치 로그 전송 |
+| **ThrottleFirst** | 첫 이벤트만 통과, 이후 **일정 시간 차단** | 버튼 연타 방지, 스킬 쿨다운 |
+| **Sample** | 일정 간격으로 **최신 값만** 통과 | 미니맵 위치 갱신, HP바 업데이트 |
 
 > **💬 잠깐, 이건 알고 가자**
 >
-> **Q. Buffer, Throttle, Sample 중 어떤 걸 써야 하나요?**
-> - **Buffer**: 이벤트를 **모아서 합산/일괄 처리**해야 할 때. 예: 다중 히트 데미지를 한 번에 표시
-> - **ThrottleFirst**: **첫 번째 이벤트만 통과**시키고 일정 시간 차단. 예: 버튼 연타 방지
-> - **Sample**: 일정 간격으로 **최신 값만** 가져옴. 예: 미니맵 위치 갱신
->
 > **Q. 구독자 콜백에서 예외가 발생하면 어떻게 되나요?**
-> **해당 구독이 종료됩니다.** 한 구독자의 콜백에서 예외가 발생하면, 그 구독의 `OnError`가 호출되고 구독이 해제됩니다. 다른 구독자에게는 영향이 없습니다. 프로덕션에서는 콜백 내부에서 try-catch로 보호하는 것이 안전합니다.
+> **해당 구독이 종료됩니다.** Subject 내부에서 한 구독자의 `OnNext`에서 예외가 발생하면, 그 구독의 `OnError`가 호출되고 구독이 해제됩니다. **다른 구독자에게는 영향이 없습니다.** 프로덕션에서는 콜백 내부에서 try-catch로 보호하는 것이 안전합니다:
+> ```csharp
+> MessageBroker.Default.Receive<SomeEvent>()
+>     .Subscribe(evt =>
+>     {
+>         try { HandleEvent(evt); }
+>         catch (Exception e) { Debug.LogException(e); }
+>     })
+>     .AddTo(this);
+> ```
 
 ---
 
@@ -492,7 +547,7 @@ public class PlayerService
 
     public void Deactivate()
     {
-        subscriptions.Clear(); // 모든 구독을 한 번에 해제. Dispose()는 재사용 불가.
+        subscriptions.Clear(); // 모든 구독을 한 번에 해제. Dispose()와 달리 재사용 가능.
     }
 }
 ```
@@ -506,7 +561,7 @@ flowchart TB
 
     subgraph Composite["CompositeDisposable - 수동 관리"]
         C1["구독 생성"] --> C2["CompositeDisposable에 추가"]
-        C2 --> C3["Clear() 또는 Dispose() 호출 시 일괄 해제"]
+        C2 --> C3["Clear(): 해제 후 재사용 가능<br/>Dispose(): 해제 후 재사용 불가"]
     end
 
     subgraph Choose["선택 기준"]
@@ -524,6 +579,7 @@ flowchart TB
 | **`OnCompleted` 만 기다리기** | MessageBroker는 `OnCompleted`를 보내지 않음 | 반드시 `Dispose`로 명시적 종료 |
 | **`AddTo` 없는 구독** | GC가 수거하지 못하는 참조 발생 | 모든 `Subscribe`에 `AddTo` 필수 |
 | **씬 전환 시 전역 브로커 구독 잔류** | 이전 씬의 콜백이 계속 호출됨 | 씬 전환 전 일괄 `Dispose` |
+| **`Clear()`와 `Dispose()` 혼동** | `Dispose()` 후 재사용하면 예외 발생 | 재사용이 필요하면 `Clear()` 사용 |
 
 ---
 
@@ -533,10 +589,10 @@ flowchart TB
 
 #### 해결책 : 기능별 브로커 스코프 설정
 
-UI 관련 이벤트는 `UIMessageBus`에서만, 전투 관련 이벤트는 `CombatMessageBus`에서만 흐르도록 스코프를 분리합니다.
+DI 컨테이너([VContainer](https://github.com/hadashiA/VContainer) 권장)를 통해 모듈 전용 브로커를 주입합니다.
 
 ```csharp
-// 의존성 주입(DI) 컨테이너 등을 통해 주입되는 모듈 전용 버스
+// 모듈 전용 메시지 버스 정의
 public sealed class UIMessageBus
 {
     public IMessageBroker Broker { get; } = new MessageBroker();
@@ -547,10 +603,20 @@ public sealed class CombatMessageBus
     public IMessageBroker Broker { get; } = new MessageBroker();
 }
 
+// VContainer 등록 예시
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        builder.Register<UIMessageBus>(Lifetime.Singleton);
+        builder.Register<CombatMessageBus>(Lifetime.Singleton);
+    }
+}
+
 // 사용처 (UI 컴포넌트)
 public class HUDController : MonoBehaviour
 {
-    [Inject] private UIMessageBus uiBus; // DI 컨테이너로부터 주입
+    [Inject] private UIMessageBus uiBus;
 
     void Start()
     {
@@ -578,24 +644,109 @@ public class CombatManager : MonoBehaviour
 flowchart TB
     subgraph Before["AS-IS: 전역 브로커만 사용"]
         BD["MessageBroker.Default"]
-        BUI["UI 이벤트"]
-        BCombat["전투 이벤트"]
-        BDebug["디버그 이벤트"]
-        BUI --> BD
-        BCombat --> BD
-        BDebug --> BD
-        BD --> BAll["모든 구독자가<br/>모든 타입을 볼 수 있음"]
+        BUI["UI 이벤트"] --> BD
+        BCombat["전투 이벤트"] --> BD
+        BDebug["디버그 이벤트"] --> BD
+        BD --> BAll["모든 구독자가<br/>모든 타입에 접근 가능<br/>(의도치 않은 교차 구독 위험)"]
     end
 
     subgraph After["TO-BE: 스코프 분리"]
-        AUI["UIMessageBus"]
-        ACombat["CombatMessageBus"]
-        ADebug["MessageBroker.Default<br/>(디버그 전용)"]
-
-        AUI --> AUI_Sub["UI 구독자만"]
-        ACombat --> ACombat_Sub["전투 구독자만"]
-        ADebug --> ADebug_Sub["디버그 구독자만"]
+        AUI["UIMessageBus<br/>(VContainer Singleton)"] --> AUI_Sub["UI 구독자만"]
+        ACombat["CombatMessageBus<br/>(VContainer Singleton)"] --> ACombat_Sub["전투 구독자만"]
+        ADebug["MessageBroker.Default<br/>(디버그 전용)"] --> ADebug_Sub["디버그 구독자만"]
     end
+```
+
+---
+
+## Part 4: 비동기와 진화
+
+### 10. AsyncMessageBroker
+
+UniRx는 동기 MessageBroker 외에 **비동기 버전인 `AsyncMessageBroker`**도 제공합니다. 구독자가 비동기 작업을 수행해야 할 때 사용합니다.
+
+```csharp
+// 비동기 구독: 구독자가 비동기 작업을 완료한 후 다음 구독자가 실행됨
+AsyncMessageBroker.Default.Subscribe<SaveGameRequest>(async req =>
+{
+    await SaveToCloudAsync(req.Data);
+    Debug.Log("Cloud save completed");
+});
+
+// 비동기 발행: 모든 구독자의 비동기 작업이 완료될 때까지 대기
+await AsyncMessageBroker.Default.PublishAsync(new SaveGameRequest(currentData));
+Debug.Log("All subscribers finished"); // 모든 저장 완료 후 실행
+```
+
+| 특성 | MessageBroker | AsyncMessageBroker |
+| --- | --- | --- |
+| **구독자 실행** | 동기 순차 | 비동기 순차 (await) |
+| **발행 메서드** | `Publish<T>(T)` (void) | `PublishAsync<T>(T)` (Task) |
+| **구독 메서드** | `Receive<T>()` → IObservable | `Subscribe<T>(Func<T, Task>)` → IDisposable |
+| **적합한 시나리오** | 즉시 처리 가능한 이벤트 | 네트워크 요청, 파일 I/O, 씬 로드 |
+
+---
+
+### 11. R3/MessagePipe 마이그레이션
+
+UniRx의 후속인 R3에서는 MessageBroker가 별도 패키지인 **[MessagePipe](https://github.com/Cysharp/MessagePipe)**로 분리되었습니다. 새 프로젝트를 시작하거나 R3로 마이그레이션하는 경우 참고하세요.
+
+#### API 대응 비교
+
+| 기능 | UniRx MessageBroker | MessagePipe |
+| --- | --- | --- |
+| **발행** | `MessageBroker.Default.Publish<T>(msg)` | `publisher.Publish(msg)` |
+| **구독** | `MessageBroker.Default.Receive<T>()` | `subscriber.Subscribe(msg => ...)` |
+| **전역 싱글턴** | `MessageBroker.Default` | 없음 (DI 필수) |
+| **비동기** | `AsyncMessageBroker` | `IAsyncPublisher<T>` / `IAsyncSubscriber<T>` |
+| **DI 통합** | 선택적 | **필수** (VContainer, Zenject 등) |
+| **필터링** | Rx 연산자 (Where, Select...) | MessagePipe 필터 또는 Rx 연산자 |
+| **버퍼링** | Rx 연산자 (Buffer, Throttle...) | `IBufferedPublisher<T>` |
+
+#### 핵심 차이점
+
+1. **전역 싱글턴 제거**: MessagePipe는 `Default` 인스턴스가 없습니다. 반드시 DI 컨테이너를 통해 `IPublisher<T>` / `ISubscriber<T>`를 주입받아야 합니다. 이는 앞서 다룬 "스코프 분리"가 아키텍처 수준에서 강제되는 것입니다.
+
+2. **인터페이스 분리**: Publisher와 Subscriber가 별도 인터페이스로 분리되어, 발행만 하는 클래스에 구독 기능이 노출되지 않습니다 (ISP 원칙).
+
+3. **성능 최적화**: MessagePipe는 UniRx의 Subject 기반이 아닌, 구독자 배열을 직접 관리하여 더 낮은 오버헤드를 달성합니다.
+
+```csharp
+// MessagePipe 사용 예시 (VContainer 기준)
+
+// 1. DI 등록
+public class GameLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        var options = builder.RegisterMessagePipe();
+        builder.RegisterMessageBroker<PlayerHitEvent>(options);
+        builder.RegisterMessageBroker<DebugCommandMessage>(options);
+    }
+}
+
+// 2. 발행
+public class DamageSystem
+{
+    [Inject] private IPublisher<PlayerHitEvent> hitPublisher;
+
+    public void ApplyDamage(float damage)
+    {
+        hitPublisher.Publish(new PlayerHitEvent(damage));
+    }
+}
+
+// 3. 구독
+public class HUDController : MonoBehaviour
+{
+    [Inject] private ISubscriber<PlayerHitEvent> hitSubscriber;
+
+    void Start()
+    {
+        hitSubscriber.Subscribe(evt => UpdateHealthBar(evt.Damage))
+            .AddTo(this); // R3의 AddTo 확장
+    }
+}
 ```
 
 ---
@@ -610,13 +761,17 @@ flowchart TB
 
 [✅] Unity API를 다루는 콜백은 `ObserveOnMainThread()`로 보호되고 있는가?
 
-[✅] 전역 브로커를 남용하지 않고, 기능별 브로커로 스코프를 분리했는가? (대규모 프로젝트 필수)
+[✅] 전역 브로커를 남용하지 않고, 기능별 브로커로 스코프를 분리했는가? (VContainer 권장)
 
 [✅] 고빈도 이벤트는 `Buffer`, `Throttle`, `Sample` 등으로 제어되고 있는가?
 
-[✅] 구독자 콜백 내부에서 예외 처리가 되어 있는가?
+[✅] 구독자 콜백 내부에서 예외 처리(try-catch)가 되어 있는가?
 
 [✅] 씬 전환 시 전역 브로커의 구독이 잔류하지 않는지 확인했는가?
+
+[✅] 비동기 처리가 필요한 구독에는 `AsyncMessageBroker`를 사용하고 있는가?
+
+[✅] 새 프로젝트라면 MessagePipe로의 전환을 고려했는가?
 
 ---
 
@@ -631,7 +786,8 @@ MessageBroker는 강력한 도구이지만, 신중한 결정과 책임이 요구
 | **DTO 기반 메시지** | 매직 스트링과 런타임 캐스팅을 제거하고 컴파일 타임 안전성 확보 |
 | **엄격한 생명주기 관리** | `AddTo` 또는 `CompositeDisposable`로 100% 누수 방지 |
 | **명확한 스레드 모델** | `ObserveOnMainThread()`로 Unity API 접근 보호 |
-| **스코프 분리** | 기능별 브로커로 이벤트 경계 설정 |
+| **스코프 분리** | 기능별 브로커로 이벤트 경계 설정 (VContainer + MessageBus) |
 | **고빈도 이벤트 제어** | Rx 연산자로 시스템 과부하 방지 |
+| **진화 경로 인식** | UniRx → R3/MessagePipe 전환 시 DI 기반 아키텍처 준비 |
 
 이 원칙들을 지킬 때, MessageBroker는 복잡한 Unity 프로젝트를 지탱하는 견고하고 유연한 아키텍처가 됩니다.
