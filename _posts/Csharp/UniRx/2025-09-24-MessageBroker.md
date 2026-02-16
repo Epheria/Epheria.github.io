@@ -244,16 +244,16 @@ sequenceDiagram
     participant UI as UIHandler
     participant Audio as AudioManager
 
-    Debug->>MB: Publish(KillPlayer)
-    Note over MB: lock(notifiers) 내에서<br/>Subject&lt;DebugCommand&gt; 조회
-    MB->>SM: Subject.OnNext → Observer1
-    SM->>SM: CurrentPlayer.KillPlayer()
-    MB->>UI: Subject.OnNext → Observer2
-    UI->>UI: ShowDeathUI()
-    MB->>Audio: Subject.OnNext → Observer3
-    Audio->>Audio: PlayDeathSFX()
+    Debug->>MB: Publish - KillPlayer
+    Note over MB: lock 내에서 Subject 조회
+    MB->>SM: OnNext - Observer1
+    SM->>SM: CurrentPlayer.KillPlayer
+    MB->>UI: OnNext - Observer2
+    UI->>UI: ShowDeathUI
+    MB->>Audio: OnNext - Observer3
+    Audio->>Audio: PlayDeathSFX
 
-    Note over MB: 동기 순차 실행<br/>SM → UI → Audio 순서
+    Note over MB: 동기 순차 실행 SM, UI, Audio 순서
 ```
 
 ### 5. 구독(Subscribe)
