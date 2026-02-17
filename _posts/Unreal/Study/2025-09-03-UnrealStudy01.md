@@ -17,9 +17,9 @@ mermaid: true
 > [빌드 파이프라인 & UHT(Unreal Header Tool)](#1-빌드-파이프라인--uht)
 > [헤더/CPP 파일 분리 원칙(IWYU), 전방 선언, include 순서, 모듈 매크로](#2-헤더cpp-분리-원칙iwyu-전방-선언-include-순서-모듈-매크로)
 > [리플렉션 기초 : UCLASS/UPROPERTY/UFUNCTION/generated.h 규칙](#3-리플렉션-기초--uclassupropertyufunction--generatedh-규칙)
-> [UObject생성,수명,GC - UPROPERTY/TObjectPtr/TweakObjectPtr](#4-uobject-생성-수명-gc---uporpertytobjectptrtweakobjectptr)
+> [UObject생성,수명,GC - UPROPERTY/TObjectPtr/TweakObjectPtr](#4-uobject-생성-수명-gc---upropertytobjectptrtweakobjectptr)
 > [문자열 로깅 - FString, FName, FText, TEXT/TCHAR](#문자열로깅-fstringfnameftext-texttchar-s와-fstring)
-> [GameInstance와 Subsystem 초기화 흐름과 Super::Init()에 대해](#gameinstance와-subsystem-초기화-흐름과)
+> [GameInstance와 Subsystem 초기화 흐름과 Super::Init()에 대해](#gameinstance와-subsystem-초기화-흐름과-super-호출)
 > [언리얼 C++ 기초 : 포인터, 레퍼런스, 인라인, assertion](#cpp-기초언리얼-관점-포인터레퍼런스인라인빌드-매크로어설션)
 
 <br>
