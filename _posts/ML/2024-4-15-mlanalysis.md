@@ -1,21 +1,13 @@
 ---
 title: AI(ML/DL) 조사 보고서
-date: 2024-4-14 10:00:00 +/-TTTT
+date: 2024-04-14 10:00:00 +/-TTTT
 categories: [ML, Supervised Machine Learning]
 tags: [AI, ML, DL, Report]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
-math: true  
-use_math: true
+math: true
 mermaid: true
-
 ---
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
----
-
 
 ## 목차
 

@@ -5,14 +5,8 @@ categories: [Unity, Netcode]
 tags: [Unity, Netcode, Server Authoritative Mode, Client Authoritative Mode, Authoritative Mode]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
-math: true  
-use_math: true
+math: true
 mermaid: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 <br>

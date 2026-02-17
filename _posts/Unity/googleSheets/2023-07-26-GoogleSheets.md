@@ -5,10 +5,7 @@ categories: [Unity, GoogleSheet]
 tags: [Unity, GoogleSheet, DataTable]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 ---
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 ## 목차
 - [1. DataSheet 연동 코드](#1-datasheet-연동-코드)

@@ -5,14 +5,8 @@ categories: [Csharp, UniRx]
 tags: [Unity, Csharp, UniRx, MessageBroker]
 
 toc: true
-toc_sticky: true
 math: true
-use_math: true
 mermaid: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 > **주의** : UniRx가 R3로 업데이트 되면서 [R3](https://github.com/Cysharp/R3?tab=readme-ov-file)에서 MessageBroker는 [MessagePipe](https://github.com/Cysharp/MessagePipe)로 변경되었음. 이 문서 하단에 [마이그레이션 가이드](#11-r3messagepipe-마이그레이션)를 포함하고 있음.

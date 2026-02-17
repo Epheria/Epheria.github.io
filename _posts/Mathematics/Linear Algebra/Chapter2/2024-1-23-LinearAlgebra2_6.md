@@ -1,19 +1,12 @@
 ---
 title: Linear Algebra - 2.6 Subspaces of $\mathbb{R}^n$
-date: 2024-1-23 10:00:00 +/-TTTT
+date: 2024-01-23 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, Subspace, column space, null space, basis of subspace]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 math: true
-use_math: true
 mermaid: true
-
----
-
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
-
 ---
 
 > **용어 정리**   

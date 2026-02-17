@@ -1,14 +1,10 @@
 ---
 title: 렌더 파이프라인 강의
 date: 2023-09-04 18:00:00 +/-TTTT
-categories: [Unity, Localization]
-tags: [Unity, Localization]     # TAG names should always be lowercase
+categories: [ETC, RenderPipeline]
+tags: [RenderPipeline, 게임엔진]
 
 toc: true
-toc_sticky: true
----
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 11/25 토

@@ -5,10 +5,6 @@ categories: [Unity, Animator]
 tags: [Unity, MechanimAnimator, Animator Controller, Animator Override Controller]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 목차

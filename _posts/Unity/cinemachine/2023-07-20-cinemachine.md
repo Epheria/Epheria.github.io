@@ -5,9 +5,7 @@ categories: [Unity, Cinemachine]
 tags: [Unity, Cinemachine, Jittering, Damping 알고리즘, CCD]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 ---
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
 
 <br>
 <br>

@@ -1,19 +1,12 @@
 ---
 title: Linear Algebra - 6.4 SVD, The Singular Value Decomposition
-date: 2024-3-7 10:00:00 +/-TTTT
+date: 2024-03-07 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, SVD, Singular Value Decomposition, singular value]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 math: true
-use_math: true
 mermaid: true
-
----
-
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
-
 ---
 
 > **용어 정리** 

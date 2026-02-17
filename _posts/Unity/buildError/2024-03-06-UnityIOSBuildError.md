@@ -5,11 +5,6 @@ categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화, iOS, BeeBuildPostProcessor, Microphone Usage Description]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 에러 원인 파악

@@ -5,14 +5,8 @@ categories: [Unity, Addressable]
 tags: [Unity, Addressable, Remote Catalog, AWS S3, update work flow]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
-math: true  
-use_math: true
+math: true
 mermaid: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 목차

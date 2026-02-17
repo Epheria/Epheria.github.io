@@ -5,11 +5,6 @@ categories: [Unity, Build]
 tags: [Unity, Build, 자동화, Addressable, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 목차

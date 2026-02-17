@@ -5,11 +5,6 @@ categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, Addressable, error]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 주요 에러 현상 분석

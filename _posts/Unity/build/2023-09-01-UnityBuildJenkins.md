@@ -5,11 +5,6 @@ categories: [Unity, Build]
 tags: [Unity, Build, Jenkins, 자동화]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 젠킨스에 대해

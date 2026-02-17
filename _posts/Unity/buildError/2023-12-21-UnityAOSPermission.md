@@ -5,11 +5,6 @@ categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 - **Unity AOS Permission 이 안빠지는 이슈가 발생했다..**

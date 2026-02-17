@@ -5,10 +5,7 @@ categories: [Unity, Localization]
 tags: [Unity, Localization]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 ---
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 ## 목차
 - [1. Localization 설치](#1-localization-설치)

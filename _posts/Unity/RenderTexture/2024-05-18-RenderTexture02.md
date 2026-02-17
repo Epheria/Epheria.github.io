@@ -5,10 +5,6 @@ categories: [Unity, RenderTexture]
 tags: [Unity, RenderTexture, PostProcessing, ScreenCapture, ScreenShot, RenderTextureFormat, TextureFormat, ARGB32, RGBAHalf, ARGBHalf]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
----
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 <br>

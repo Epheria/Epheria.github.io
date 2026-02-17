@@ -5,12 +5,7 @@ categories: [Portfolio, TheQuesting]
 tags: [Portfolio, TheQuesting]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 ---
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
-------
 
 - 사실 입사를 위해 포트폴리오 목적으로 만든것이지만
 - 꼭 이것저것 새로운 기능들과 재밌는 요소들을 넣어서 완성시키고 싶은 프로젝트이기도 합니다.

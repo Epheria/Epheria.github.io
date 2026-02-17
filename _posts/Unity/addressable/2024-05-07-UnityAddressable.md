@@ -5,14 +5,8 @@ categories: [Unity, Addressable]
 tags: [Unity, Addressable, Addressable Group, reference count, load, unload, memory, assetbundle, addressable api, event viewer, resourcelocator, resourcelocation, resourceprovider, settings.json, catalog.json, bundle metadata]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
-math: true  
-use_math: true
+math: true
 mermaid: true
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 목차

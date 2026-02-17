@@ -5,9 +5,7 @@ categories: [Unity, Optimization]
 tags: [Addressable, Optimization, Unity]     # TAG names should always be lowercase
 
 toc: true
-toc_sticky: true
 ---
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
 
 <br>
 <br>

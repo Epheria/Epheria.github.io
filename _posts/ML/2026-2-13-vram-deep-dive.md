@@ -1,19 +1,12 @@
 ---
 title: VRAM 심화 가이드 - GPU 메모리 계층과 LLM 모델 적재
-date: 2026-2-13 10:00:00 +/-TTTT
+date: 2026-02-13 10:00:00 +/-TTTT
 categories: [ML, LLM]
 tags: [Machine Learning, ML, LLM, VRAM, GPU, Memory]
 
 toc: true
-toc_sticky: true
 math: true
-use_math: true
 mermaid: true
-
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 > 이 문서는 [LLM 동작 원리 - 게임 개발자를 위한 가이드](/posts/llm-guide/)의 7번 섹션 "하드웨어 구성"의 보충 자료입니다.

@@ -1,19 +1,12 @@
 ---
 title: LLM 동작 원리 - 게임 개발자를 위한 가이드
-date: 2026-2-13 10:00:00 +/-TTTT
+date: 2026-02-13 10:00:00 +/-TTTT
 categories: [ML, LLM]
 tags: [Machine Learning, ML, LLM, Transformer, Game Development]
 
 toc: true
-toc_sticky: true
 math: true
-use_math: true
 mermaid: true
-
----
-
-[![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 ---
 
 ## 서론
