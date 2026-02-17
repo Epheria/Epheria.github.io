@@ -617,4 +617,125 @@ _Client Authoritative Mode 물리 처리 영상_
 
 ### NetworkAnimator
 
-`테스트 및 작성중..`
+<br>
+
+- NetworkTransform이 위치를 동기화한다면, NetworkAnimator는 **애니메이션 상태**를 네트워크 전체에 동기화하는 역할을 한다. 멀티플레이어 게임에서 다른 플레이어의 캐릭터가 달리거나, 공격하거나, 피격당하는 모습이 자연스럽게 보여야 하는데, 이를 위해 Animator의 파라미터와 상태 전환이 정확하게 동기화되어야 한다.
+
+<br>
+
+#### 기본 구성
+
+- NetworkObject가 부착된 게임 오브젝트에 **Animator**와 함께 **NetworkAnimator** 컴포넌트를 부착하면 기본적인 애니메이션 동기화가 동작한다.
+
+- NetworkAnimator는 Animator 컨트롤러에 정의된 파라미터들을 자동으로 모니터링하며, 값이 변경되면 네트워크를 통해 전파한다.
+
+<br>
+
+> **NetworkAnimator가 자동으로 동기화하는 항목:**
+>
+> - **Animator 파라미터** : Float, Int, Bool 값의 변경
+> - **Animation State 전환** : 현재 재생 중인 상태와 전환 정보
+> - **Trigger 파라미터** : SetTrigger 호출 시 (단, 반드시 NetworkAnimator를 통해 호출해야 함)
+{: .prompt-info }
+
+<br>
+
+#### Trigger 파라미터 주의사항
+
+- Trigger는 다른 파라미터(Float, Int, Bool)와 달리 **one-shot 이벤트**이다. 한 번 발동 후 자동으로 리셋된다는 특성이 있다.
+
+- 네트워크 환경에서 Trigger를 사용할 때 가장 흔히 하는 실수는 `Animator.SetTrigger()`를 직접 호출하는 것이다. 이렇게 하면 로컬에서만 재생되고 다른 클라이언트에는 동기화되지 않는다. **반드시 `NetworkAnimator.SetTrigger()` 메서드를 사용해야 한다.**
+
+<br>
+
+```csharp
+// 올바른 방법 - NetworkAnimator를 통해 Trigger 호출
+NetworkAnimator networkAnimator = GetComponent<NetworkAnimator>();
+networkAnimator.SetTrigger("Attack");
+
+// 잘못된 방법 - 로컬에서만 실행되고 다른 클라이언트에 동기화되지 않음
+Animator animator = GetComponent<Animator>();
+animator.SetTrigger("Attack"); // 네트워크 동기화가 안된다!
+```
+
+<br>
+
+#### Authority Mode (권한 모드)
+
+- NetworkTransform과 마찬가지로 NetworkAnimator도 기본적으로 **서버 권한 모드**로 동작한다.
+
+- 서버 권한 모드에서는 서버에서 Animator 파라미터를 변경하면 연결된 모든 클라이언트에 동기화된다. 반대로, 클라이언트에서 직접 파라미터를 변경하더라도 서버의 상태로 덮어씌워진다.
+
+- 클라이언트 권한 모드로 변경하려면 NetworkTransform과 동일한 패턴으로 **OnIsServerAuthoritative** 를 오버라이드하면 된다.
+
+<br>
+
+```csharp
+public class OwnerNetworkAnimator : NetworkAnimator
+{
+    protected override bool OnIsServerAuthoritative()
+    {
+        return false;
+    }
+}
+```
+
+<br>
+
+- 이후 기존 NetworkAnimator 컴포넌트를 제거하고, 위의 **OwnerNetworkAnimator** 컴포넌트를 부착하면 소유자 권한 모드로 애니메이션이 동기화된다.
+
+<br>
+
+#### 실무 권장 사항
+
+<br>
+
+| 항목 | 서버 권한 | 클라이언트 권한 |
+|:---|:---|:---|
+| **동기화 주체** | 서버에서 파라미터 변경 → 클라이언트에 전파 | 소유 클라이언트에서 변경 → 서버 경유 → 전파 |
+| **반응성** | RTT만큼 지연 발생 | 즉각적인 피드백 가능 |
+| **추천 시나리오** | NPC, 보안이 중요한 액션 | 플레이어 캐릭터의 이동/공격 애니메이션 |
+
+<br>
+
+- 일반적으로 **NetworkTransform과 동일한 권한 모드**를 사용하는 것을 권장한다. 이동은 클라이언트 권한인데 애니메이션은 서버 권한이면, 클라이언트에서는 캐릭터가 이미 달리고 있는데 달리기 애니메이션이 RTT만큼 뒤늦게 재생되는 어색한 상황이 발생하기 때문이다.
+
+- 반면, NPC나 서버에서 제어하는 오브젝트는 서버 권한 모드로 NetworkTransform과 NetworkAnimator를 함께 설정하면 자연스러운 동기화가 가능하다.
+
+<br>
+
+> **NetworkAnimator를 사용하지 않는 대안**
+>
+> 경우에 따라 NetworkAnimator를 사용하지 않고, NetworkVariable로 상태 enum 값만 동기화한 뒤 각 클라이언트에서 로컬 Animator를 직접 제어하는 패턴도 실무에서 많이 사용된다. 이 방식은 대역폭을 절약할 수 있고, 애니메이션 블렌딩이나 전환 타이밍을 클라이언트에서 더 세밀하게 제어할 수 있다는 장점이 있다. 단, 직접 동기화 로직을 관리해야 하므로 코드 복잡도가 올라가는 트레이드오프가 존재한다.
+{: .prompt-tip }
+
+<br>
+
+```csharp
+// NetworkVariable 로 상태 값만 동기화하는 패턴 예시
+public enum PlayerAnimState { Idle, Running, Attacking, Hit }
+
+public NetworkVariable<PlayerAnimState> AnimState = new();
+
+private void Update()
+{
+    // 로컬에서 Animator 파라미터를 직접 설정
+    animator.SetBool("IsRunning", AnimState.Value == PlayerAnimState.Running);
+    animator.SetBool("IsAttacking", AnimState.Value == PlayerAnimState.Attacking);
+    animator.SetBool("IsHit", AnimState.Value == PlayerAnimState.Hit);
+}
+```
+
+<br>
+
+#### NetworkAnimator의 한계와 주의점
+
+- NetworkAnimator는 **모든 파라미터 변경을 매 틱마다 감시**하므로, 파라미터 수가 많아질수록 대역폭 소비가 증가한다. 복잡한 Animator Controller를 사용하는 경우 이 점을 반드시 염두에 두어야 한다.
+
+- **Animation Event**는 NetworkAnimator를 통해 동기화되지 않는다. 애니메이션 이벤트 기반 로직(발자국 소리, 이펙트 타이밍 등)은 별도로 RPC나 NetworkVariable을 통해 처리해야 한다.
+
+- **레이어 가중치(Layer Weight)** 변경은 동기화되지만, 런타임에서 Animator Controller의 레이어를 동적으로 추가/제거하는 것은 지원되지 않는다.
+
+<br>
+
+> **정리하자면**, NetworkAnimator는 간단한 애니메이션 동기화에는 매우 편리하지만, 복잡한 애니메이션 시스템에서는 NetworkVariable 기반의 상태 동기화 패턴이 더 유연하고 효율적일 수 있다. 프로젝트의 복잡도와 대역폭 요구사항에 따라 적절한 방식을 선택하자.
