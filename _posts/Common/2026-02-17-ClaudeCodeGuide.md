@@ -7,8 +7,6 @@ toc: true
 toc_sticky: true
 ---
 
-[![Hits](https://hits.sh/epheria.github.io/posts/ClaudeCodeGuide.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 <br>
 
 ## Claude Code란?

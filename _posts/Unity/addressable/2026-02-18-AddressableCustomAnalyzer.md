@@ -8,8 +8,6 @@ math: true
 mermaid: true
 ---
 
-[![Hits](https://hits.sh/epheria.github.io/posts/AddressableCustomAnalyzer.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-
 <br>
 
 ## 시리즈 안내

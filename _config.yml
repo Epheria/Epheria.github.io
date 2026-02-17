@@ -145,6 +145,82 @@ defaults:
       # DO NOT modify the following parameter unless you are confident enough
       # to update the code of all other post links in this project.
       permalink: /posts/:title/
+  # Category-specific OG images
+  - scope:
+      path: _posts/Common
+      type: posts
+    values:
+      image: /assets/img/og/common.png
+  - scope:
+      path: _posts/Csharp
+      type: posts
+    values:
+      image: /assets/img/og/csharp.png
+  - scope:
+      path: _posts/cpp
+      type: posts
+    values:
+      image: /assets/img/og/cpp.png
+  - scope:
+      path: _posts/ETC
+      type: posts
+    values:
+      image: /assets/img/og/etc.png
+  - scope:
+      path: _posts/Investment
+      type: posts
+    values:
+      image: /assets/img/og/investment.png
+  - scope:
+      path: _posts/Language
+      type: posts
+    values:
+      image: /assets/img/og/language.png
+  - scope:
+      path: _posts/Mathematics
+      type: posts
+    values:
+      image: /assets/img/og/mathematics.png
+  - scope:
+      path: _posts/ML
+      type: posts
+    values:
+      image: /assets/img/og/ml.png
+  - scope:
+      path: _posts/Pobos
+      type: posts
+    values:
+      image: /assets/img/og/pobos.png
+  - scope:
+      path: _posts/Python
+      type: posts
+    values:
+      image: /assets/img/og/python.png
+  - scope:
+      path: _posts/Survivor
+      type: posts
+    values:
+      image: /assets/img/og/survivor.png
+  - scope:
+      path: _posts/TheQuesting
+      type: posts
+    values:
+      image: /assets/img/og/thequesting.png
+  - scope:
+      path: _posts/Toyverse
+      type: posts
+    values:
+      image: /assets/img/og/toyverse.png
+  - scope:
+      path: _posts/Unity
+      type: posts
+    values:
+      image: /assets/img/og/unity.png
+  - scope:
+      path: _posts/Unreal
+      type: posts
+    values:
+      image: /assets/img/og/unreal.png
   - scope:
       path: _drafts
     values:
