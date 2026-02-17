@@ -1,6 +1,6 @@
 ---
 title: Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체
-date: 2026-02-18 14:00:00 +0900
+date: 2026-02-18 00:00:00 +0900
 categories: [Unity, Addressable]
 tags: [Unity, Addressable, Editor Tool, Duplication, Implicit Dependency, Strategy Pattern, AI, Claude Code]
 toc: true
