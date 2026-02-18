@@ -26,14 +26,23 @@
         </span>
       {% else %}
         {% comment %}
-          URL 생성: polyglot은 자동으로 /en/, /ja/ prefix를 추가
-          현재 페이지의 상대 경로를 유지하면서 언어 전환
+          URL에서 언어 prefix(/en, /ja)를 정확히 제거.
+          remove 필터는 URL 내부의 동일 문자열도 제거하므로
+          URL 앞 4글자가 '/en/' 또는 '/ja/'인지 확인 후 remove_first 사용.
         {% endcomment %}
-        {% if lang_code == site.default_lang %}
-          {% assign lang_url = page.url | remove: '/en' | remove: '/ja' | relative_url %}
+        {% capture url_start %}{{ page.url | truncate: 4, '' }}{% endcapture %}
+        {% if url_start == '/en/' %}
+          {% assign base_url = page.url | remove_first: '/en' %}
+        {% elsif url_start == '/ja/' %}
+          {% assign base_url = page.url | remove_first: '/ja' %}
         {% else %}
-          {% assign raw_url = page.url | remove: '/en' | remove: '/ja' %}
-          {% assign lang_url = lang_code | prepend: '/' | append: raw_url | relative_url %}
+          {% assign base_url = page.url %}
+        {% endif %}
+
+        {% if lang_code == site.default_lang %}
+          {% assign lang_url = base_url | relative_url %}
+        {% else %}
+          {% assign lang_url = lang_code | prepend: '/' | append: base_url | relative_url %}
         {% endif %}
         <a href="{{ lang_url }}" class="lang-item" role="menuitem"
            hreflang="{{ lang_code }}"
