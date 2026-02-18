@@ -35,9 +35,9 @@
         {% endif %}
 
         {% if lang_code == site.default_lang %}
-          {% assign lang_url = base_url | relative_url %}
+          {% assign lang_url = site.baseurl | append: base_url %}
         {% else %}
-          {% assign lang_url = '/' | append: lang_code | append: base_url | relative_url %}
+          {% assign lang_url = site.baseurl | append: '/' | append: lang_code | append: base_url %}
         {% endif %}
         <a href="{{ lang_url }}" class="lang-item" role="menuitem"
            hreflang="{{ lang_code }}"
