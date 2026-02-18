@@ -1,88 +1,77 @@
-/* 언어 전환 드롭다운 스타일 - 프로필 아래 위치 */
+/* 언어 전환 세그먼트 컨트롤 - 프로필 아래 위치 */
 
 .language-switcher {
-  position: relative;
   text-align: center;
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.15rem;
 
-  .lang-toggle {
+  .lang-pills {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    width: auto;
-    padding: 0.15rem 0.5rem;
-    color: inherit;
-    font-size: 0.75rem;
-    border: 1px solid currentColor;
-    border-radius: 1rem;
-    background: transparent;
-    opacity: 0.5;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 0.85;
-    }
-
-    .lang-current {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-
-    .lang-caret {
-      font-size: 0.55rem;
-      margin-left: -0.05rem;
-    }
+    background: rgba(128, 128, 128, 0.08);
+    border: 1px solid rgba(128, 128, 128, 0.12);
+    border-radius: 2rem;
+    padding: 0.2rem;
+    gap: 0.15rem;
   }
 
-  .lang-dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 0.35rem);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--card-bg, #2a2a2a);
-    border: 1px solid var(--border-color, rgba(128, 128, 128, 0.25));
-    border-radius: 0.5rem;
-    padding: 0.25rem 0;
-    min-width: 120px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+  .lang-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.6rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-muted-color, #868e96);
+    text-decoration: none;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.15s ease;
+    user-select: none;
+    position: relative;
 
-    &.show {
-      display: block;
+    &:hover:not(.active) {
+      color: var(--heading-color, inherit);
+      background: rgba(128, 128, 128, 0.12);
+      transform: translateY(-1px);
     }
 
-    .lang-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.4rem 0.75rem;
-      font-size: 0.8rem;
-      color: var(--text-muted-color, #868e96);
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.15s ease;
+    &:active:not(.active) {
+      transform: scale(0.95);
+    }
 
-      &:hover {
-        color: var(--heading-color, inherit);
-        background: rgba(128, 128, 128, 0.1);
-      }
+    &.active {
+      color: var(--heading-color, inherit);
+      background: var(--card-bg, #fff);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1),
+                  0 0 0 1px rgba(128, 128, 128, 0.08);
+      cursor: default;
+    }
+  }
+}
 
-      &.active {
-        color: var(--heading-color, inherit);
-        font-weight: 600;
+/* 다크 모드 보정 */
+[data-mode="dark"] .language-switcher,
+html[data-mode="dark"] .language-switcher {
+  .lang-pills {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 
-        i {
-          font-size: 0.65rem;
-        }
-      }
+  .lang-pill {
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+    }
 
-      &[href] {
-        display: flex;
-      }
+    &.active {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25),
+                  0 0 0 1px rgba(255, 255, 255, 0.06);
     }
   }
 }

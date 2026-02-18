@@ -1,72 +1,64 @@
 {% comment %}
-  언어 전환 드롭다운 컴포넌트
+  언어 전환 세그먼트 컨트롤 컴포넌트
   profile-wrapper 내부 (프로필 아래)에 삽입
+  — polyglot이 href를 자동 치환하므로 JavaScript에서 올바른 URL을 설정
 {% endcomment %}
 
 {% assign current_lang = site.active_lang | default: site.lang | default: 'ko' %}
+{% assign default_lang = site.default_lang | default: 'ko' %}
 
-<div class="language-switcher" id="languageSwitcher">
-  <button class="lang-toggle" type="button" aria-label="{{ site.data.locales[current_lang].i18n.language_label | default: 'Language' }}" aria-expanded="false" aria-haspopup="true">
-    <i class="fas fa-globe fa-fw"></i>
-    <span class="lang-current">{{ current_lang | upcase }}</span>
-    <i class="fas fa-caret-down fa-fw lang-caret"></i>
-  </button>
-
-  <div class="lang-dropdown" role="menu" aria-hidden="true">
-    {% assign lang_labels = "ko:한국어,en:English,ja:日本語" | split: "," %}
-    {% for lang_item in lang_labels %}
+<nav class="language-switcher" aria-label="{{ site.data.locales[current_lang].i18n.language_label | default: 'Language' }}">
+  <div class="lang-pills" data-default-lang="{{ default_lang }}">
+    {% assign lang_entries = "ko:한국어,en:English,ja:日本語" | split: "," %}
+    {% for lang_item in lang_entries %}
       {% assign parts = lang_item | split: ":" %}
       {% assign lang_code = parts[0] %}
       {% assign lang_name = parts[1] %}
 
       {% if lang_code == current_lang %}
-        <span class="lang-item active" role="menuitem" aria-current="true">
-          {{ lang_name }}
-          <i class="fas fa-check fa-fw"></i>
+        <span class="lang-pill active" data-lang="{{ lang_code }}" aria-current="page" title="{{ lang_name }}">
+          {{ lang_code | upcase }}
         </span>
       {% else %}
-        {% assign url_prefix = page.url | slice: 0, 4 %}
-        {% if url_prefix == '/en/' %}
-          {% assign base_url = page.url | slice: 3, 300 %}
-        {% elsif url_prefix == '/ja/' %}
-          {% assign base_url = page.url | slice: 3, 300 %}
-        {% else %}
-          {% assign base_url = page.url %}
-        {% endif %}
-
-        {% if lang_code == site.default_lang %}
-          {% assign lang_url = site.baseurl | append: base_url %}
-        {% else %}
-          {% assign lang_url = site.baseurl | append: '/' | append: lang_code | append: base_url %}
-        {% endif %}
-        <a href="{{ lang_url }}" class="lang-item" role="menuitem"
-           hreflang="{{ lang_code }}"
-           onclick="localStorage.setItem('preferred-lang', '{{ lang_code }}')">
-          {{ lang_name }}
+        <a href="#" class="lang-pill" data-lang="{{ lang_code }}" title="{{ lang_name }}"
+           hreflang="{{ lang_code }}">
+          {{ lang_code | upcase }}
         </a>
       {% endif %}
     {% endfor %}
   </div>
-</div>
+</nav>
 
 <script>
-/* language switcher dropdown toggle */
 (function() {
-  var switcher = document.getElementById('languageSwitcher');
-  if (!switcher) return;
-  var toggle = switcher.querySelector('.lang-toggle');
-  var dropdown = switcher.querySelector('.lang-dropdown');
-  toggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    var isOpen = dropdown.classList.contains('show');
-    dropdown.classList.toggle('show');
-    toggle.setAttribute('aria-expanded', !isOpen);
-    dropdown.setAttribute('aria-hidden', isOpen);
-  });
-  document.addEventListener('click', function() {
-    dropdown.classList.remove('show');
-    toggle.setAttribute('aria-expanded', 'false');
-    dropdown.setAttribute('aria-hidden', 'true');
-  });
+  var pills = document.querySelector('.lang-pills');
+  if (!pills) return;
+  var defaultLang = pills.getAttribute('data-default-lang') || 'ko';
+  var langs = {{ site.languages | jsonify }};
+  var path = window.location.pathname;
+
+  /* 현재 URL에서 언어 접두사 제거 → base path 추출 */
+  var basePath = path;
+  for (var i = 0; i < langs.length; i++) {
+    var l = langs[i];
+    if (l !== defaultLang) {
+      var prefix = '/' + l + '/';
+      if (path.indexOf(prefix) === 0) {
+        basePath = path.substring(prefix.length - 1);
+        break;
+      }
+    }
+  }
+
+  /* 각 비활성 pill에 올바른 href 설정 */
+  var links = pills.querySelectorAll('a.lang-pill[data-lang]');
+  for (var j = 0; j < links.length; j++) {
+    var a = links[j];
+    var lang = a.getAttribute('data-lang');
+    a.href = (lang === defaultLang) ? basePath : '/' + lang + basePath;
+    a.addEventListener('click', (function(lc) {
+      return function() { localStorage.setItem('preferred-lang', lc); };
+    })(lang));
+  }
 })();
 </script>
