@@ -263,6 +263,15 @@ exclude:
   - node_modules
   - package*.json
 
+# jekyll-polyglot 다국어 설정
+languages: ["ko", "en", "ja"]
+default_lang: "ko"
+exclude_from_localization: ["assets/js", "assets/css", "assets/img", "assets/lib"]
+parallel_localization: false
+
+plugins:
+  - jekyll-polyglot
+
 jekyll-archives:
   enabled: [categories, tags]
   layouts:

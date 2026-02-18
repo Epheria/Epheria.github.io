@@ -1,0 +1,89 @@
+# 日本語ロケール (blog-i18n 확장 포함)
+
+layout:
+  post: 記事
+  category: カテゴリー
+  tag: タグ
+
+tabs:
+  home: ホーム
+  categories: カテゴリー
+  tags: タグ
+  archives: アーカイブ
+  about: プロフィール
+  stats: 統計
+  books: 読書
+  sideproject: サイドプロジェクト
+
+search:
+  hint: 検索
+  cancel: キャンセル
+  no_results: 検索結果がありません。
+
+panel:
+  lastmod: 最近更新
+  trending_tags: 人気タグ
+  toc: 目次
+
+copyright:
+  license:
+    template: この記事は著者の:LICENSE_NAMEライセンスの下で提供されています。
+    name: CC BY 4.0
+    link: https://creativecommons.org/licenses/by/4.0/
+  brief: 一部の権利を保有。
+  verbose: >-
+    特別な記載がない限り、このサイトのブログ記事は著者による
+    Creative Commons Attribution 4.0 International (CC BY 4.0) ライセンスの下で提供されています。
+
+meta: Powered by :PLATFORM with :THEME theme
+
+not_found:
+  statment: お探しのURLは存在しません。
+
+notification:
+  update_found: 新しいバージョンのコンテンツが利用可能です。
+  update: 更新
+
+post:
+  written_by: By
+  posted: 投稿
+  updated: 更新
+  words: 語
+  pageview_measure: 閲覧
+  read_time:
+    unit: 分
+    prompt: 読む時間
+  relate_posts: 関連記事
+  share: シェア
+  button:
+    next: 次の記事
+    previous: 前の記事
+    copy_code:
+      succeed: コピーしました！
+    share_link:
+      title: リンクをコピー
+      succeed: リンクをコピーしました！
+
+df:
+  post:
+    strftime: "%Y/%m/%d"
+    dayjs: "YYYY/MM/DD"
+  archives:
+    strftime: "%Y年%m月"
+    dayjs: "YYYY年MM月"
+
+categories:
+  category_measure: カテゴリー
+  post_measure: 記事
+
+# blog-i18n 전용 키
+i18n:
+  language_label: 言語
+  no_translation: この記事はまだ翻訳されていません。
+  view_original: 原文（韓国語）を見る
+  popular_posts: 人気記事
+  series: シリーズ
+  difficulty:
+    beginner: 初級
+    intermediate: 中級
+    advanced: 上級

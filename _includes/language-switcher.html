@@ -1,0 +1,70 @@
+{% comment %}
+  언어 전환 드롭다운 컴포넌트
+  sidebar-bottom 영역에 삽입
+  현재 언어: site.active_lang (polyglot) 또는 site.lang
+{% endcomment %}
+
+{% assign current_lang = site.active_lang | default: site.lang | default: 'ko' %}
+
+<div class="language-switcher" id="languageSwitcher">
+  <button class="lang-toggle btn" aria-label="{{ site.data.locales[current_lang].i18n.language_label | default: 'Language' }}" aria-expanded="false" aria-haspopup="true">
+    <i class="fas fa-globe fa-fw"></i>
+    <span class="lang-current">{{ current_lang | upcase }}</span>
+  </button>
+
+  <div class="lang-dropdown" role="menu" aria-hidden="true">
+    {% assign lang_labels = "ko:한국어,en:English,ja:日本語" | split: "," %}
+    {% for lang_item in lang_labels %}
+      {% assign parts = lang_item | split: ":" %}
+      {% assign lang_code = parts[0] %}
+      {% assign lang_name = parts[1] %}
+
+      {% if lang_code == current_lang %}
+        <span class="lang-item active" role="menuitem" aria-current="true">
+          {{ lang_name }}
+          <i class="fas fa-check fa-fw"></i>
+        </span>
+      {% else %}
+        {% comment %}
+          URL 생성: polyglot은 자동으로 /en/, /ja/ prefix를 추가
+          현재 페이지의 상대 경로를 유지하면서 언어 전환
+        {% endcomment %}
+        {% if lang_code == site.default_lang %}
+          {% assign lang_url = page.url | remove: '/en' | remove: '/ja' | relative_url %}
+        {% else %}
+          {% assign raw_url = page.url | remove: '/en' | remove: '/ja' %}
+          {% assign lang_url = lang_code | prepend: '/' | append: raw_url | relative_url %}
+        {% endif %}
+        <a href="{{ lang_url }}" class="lang-item" role="menuitem"
+           hreflang="{{ lang_code }}"
+           onclick="localStorage.setItem('preferred-lang', '{{ lang_code }}')">
+          {{ lang_name }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // 언어 전환 드롭다운 토글
+  (function() {
+    var switcher = document.getElementById('languageSwitcher');
+    if (!switcher) return;
+    var toggle = switcher.querySelector('.lang-toggle');
+    var dropdown = switcher.querySelector('.lang-dropdown');
+
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = dropdown.classList.contains('show');
+      dropdown.classList.toggle('show');
+      toggle.setAttribute('aria-expanded', !isOpen);
+      dropdown.setAttribute('aria-hidden', isOpen);
+    });
+
+    document.addEventListener('click', function() {
+      dropdown.classList.remove('show');
+      toggle.setAttribute('aria-expanded', 'false');
+      dropdown.setAttribute('aria-hidden', 'true');
+    });
+  })();
+</script>

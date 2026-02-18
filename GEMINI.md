@@ -17,40 +17,23 @@ This repository contains the source code for Sehyup's technical blog, a Game Pro
 ### Prerequisites
 - **Ruby:** 3.2 (managed via `Gemfile`)
 - **Bundler:** `gem install bundler`
-- **Python:** 3.x (for OG image generation)
+- **Python:** 3.x (for OG image generation and popular posts fetching)
 
 ### Commands
-- **Install Dependencies:**
-  ```bash
-  bundle install
-  ```
-- **Local Development Server:**
-  ```bash
-  bundle exec jekyll serve
-  ```
-  The site will be available at `http://localhost:4000`.
-- **Production Build:**
-  ```bash
-  JEKYLL_ENV=production bundle exec jekyll build
-  ```
-- **HTML Proofing (Validation):**
-  ```bash
-  bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
-  ```
-- **Generate Category OG Images:**
-  ```bash
-  python3 scripts/generate_og_images.py
-  ```
+- **Install Dependencies:** `bundle install`
+- **Local Development Server:** `bundle exec jekyll serve` (Available at `http://localhost:4000`)
+- **Production Build:** `JEKYLL_ENV=production bundle exec jekyll build`
+- **HTML Proofing (Validation):** `bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href`
+- **Generate Category OG Images:** `python3 scripts/generate_og_images.py`
+- **Fetch Popular Posts:** `python3 scripts/fetch_popular_posts.py`
 
 ## Development Conventions
 
 ### Post Structure
-Posts are organized by category and subcategory directories:
 - **Path:** `_posts/{Category}/{Subcategory}/YYYY-MM-DD-slug.md`
-- **Existing Categories:** `Common`, `Csharp`, `ETC`, `Language`, `Mathematics`, `ML`, `Python`, `Survivor`, `TheQuesting`, `Toyverse`, `Unity`, `Unreal`.
+- **Categories:** `Common`, `Csharp`, `ETC`, `Language`, `Mathematics`, `ML`, `Python`, `Survivor`, `TheQuesting`, `Toyverse`, `Unity`, `Unreal`.
 
 ### Front Matter Requirements
-Every post should include the following front matter:
 ```yaml
 ---
 title: Post Title
@@ -58,28 +41,33 @@ date: YYYY-MM-DD HH:MM:SS +/-TTTT
 categories: [ParentCategory, SubCategory]
 tags: [tag1, tag2]
 toc: true
+toc_sticky: true
+difficulty: beginner | intermediate | advanced  # Optional
+prerequisites: ["/posts/slug/"]              # Optional
+tldr: ["Summary point 1", "Summary point 2"] # Optional
 ---
 ```
-- **Optional:** `math: true` (for MathJax), `mermaid: true` (for diagrams).
-- **Hits Counter:** Posts typically start with a hits counter badge immediately after the front matter:
-  ```markdown
-  [![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
-  ```
+- **Optional:** `math: true`, `mermaid: true`.
+- **Hits Counter:** Posts typically start with `[![Hits](...)](...)` immediately after front matter.
 
-### Asset Management
-- **Images:** Post-specific images belong in `assets/img/post/{category}/`.
-- **OG Images:** Category-specific OG images are generated into `assets/img/og/` via the Python script.
+### Rich Content & UI Features
+- **Difficulty Badges:** Use `difficulty` field to display level badges (beginner/intermediate/advanced).
+- **Series Navigation:** Automatically activated if a post has at least 2 categories. Posts sharing the same `categories[0]` and `categories[1]` are grouped into a series.
+- **TL;DR Box:** Use `tldr` list to display a summary box at the top.
+- **Prerequisites:** Use `prerequisites` list (post URL paths) to link required previous reading.
 
 ## Architecture & Automation
 
-- **Auto Lastmod:** `_plugins/posts-lastmod-hook.rb` automatically sets `last_modified_at` based on the latest Git commit date for each post.
-- **Custom Layouts:** 
-  - `_layouts/post.html` includes a custom dialog-based TOC UI.
-  - `_includes/toc-status.html` controls TOC visibility.
-- **Deployment:** GitHub Actions (`.github/workflows/pages-deploy.yml`) automatically builds and deploys to GitHub Pages upon pushing to the `main` branch.
+- **Auto Lastmod:** `_plugins/posts-lastmod-hook.rb` sets `last_modified_at` via Git logs.
+- **Stats Dashboard:** Accessible at `/stats/`. Layout defined in `_layouts/stats.html` using components in `_includes/stats/`.
+- **Popular Posts:** Managed via `_data/popular-posts.yml` and updated automatically via GitHub Actions or manually via Python script.
+- **Custom UI Components:** Found in `_includes/` (e.g., `series-nav.html`, `tldr.html`, `post-difficulty.html`).
+- **Asset Management:**
+  - **Images:** Post-specific images in `assets/img/post/{category}/`.
+  - **OG Images:** Category OG images generated into `assets/img/og/`.
 
 ## Key Files
-- `_config.yml`: Main site configuration (title, url, social links, defaults).
-- `CLAUDE.md`: Specific instructions for AI assistants.
-- `Gemfile`: Ruby dependencies.
-- `_tabs/`: Sidebar navigation pages (About, Archives, etc.).
+- `_config.yml`: Main site configuration.
+- `CLAUDE.md`: Detailed instructions for AI assistants.
+- `_tabs/`: Sidebar navigation pages (About, Archives, Categories, Tags, Books, Sideproject, **Stats**).
+- `_sass/addon/`: Custom styles for new UI features.

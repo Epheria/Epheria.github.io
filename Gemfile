@@ -3,6 +3,8 @@
 source "https://rubygems.org"
 
 gem "jekyll-theme-chirpy", "~> 6.1"
+gem 'ffi', '< 1.17.0'
+gem 'jekyll-polyglot'
 
 group :test do
   gem "html-proofer", "~> 3.4"

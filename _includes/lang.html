@@ -1,0 +1,18 @@
+{% comment %}
+  Chirpy lang.html 오버라이드:
+  jekyll-polyglot의 site.active_lang을 우선 사용,
+  없으면 기존 Chirpy 방식(site.lang) 사용
+{% endcomment %}
+{% if site.active_lang %}
+  {% if site.data.locales[site.active_lang] %}
+    {% assign lang = site.active_lang %}
+  {% elsif site.data.locales[site.lang] %}
+    {% assign lang = site.lang %}
+  {% else %}
+    {% assign lang = 'en' %}
+  {% endif %}
+{% elsif site.data.locales[site.lang] %}
+  {% assign lang = site.lang %}
+{% else %}
+  {% assign lang = 'en' %}
+{% endif %}

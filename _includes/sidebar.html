@@ -61,6 +61,9 @@
       {% endif %}
     {% endunless %}
 
+    {% include language-switcher.html %}
+    <span class="icon-border"></span>
+
     {% for entry in site.data.contact %}
       {% case entry.type %}
         {% when 'github', 'twitter' %}
