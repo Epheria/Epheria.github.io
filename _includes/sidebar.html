@@ -21,6 +21,7 @@
       <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
     </div>
     <div class="site-subtitle fst-italic">{{ site.tagline }}</div>
+    {% include language-switcher.html %}
   </div>
   <!-- .profile-wrapper -->
 
@@ -60,9 +61,6 @@
         <span class="icon-border"></span>
       {% endif %}
     {% endunless %}
-
-    {% include language-switcher.html %}
-    <span class="icon-border"></span>
 
     {% for entry in site.data.contact %}
       {% case entry.type %}

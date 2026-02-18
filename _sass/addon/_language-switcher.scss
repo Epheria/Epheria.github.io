@@ -1,41 +1,53 @@
-/* 언어 전환 드롭다운 스타일 */
+/* 언어 전환 드롭다운 스타일 - 프로필 아래 위치 */
 
 .language-switcher {
   position: relative;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
 
   .lang-toggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.25rem 0.4rem;
-    color: var(--sidebar-btn-color, inherit);
-    font-size: 0.85rem;
+    padding: 0.3rem 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    background: transparent;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: var(--sidebar-hover-color, #fff);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .lang-current {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.05em;
+    }
+
+    .lang-caret {
+      font-size: 0.6rem;
+      opacity: 0.6;
     }
   }
 
   .lang-dropdown {
     display: none;
     position: absolute;
-    bottom: calc(100% + 0.5rem);
+    top: calc(100% + 0.4rem);
     left: 50%;
     transform: translateX(-50%);
     background: var(--sidebar-bg, #21252a);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
-    border-radius: 0.375rem;
-    padding: 0.25rem 0;
-    min-width: 120px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.5rem;
+    padding: 0.3rem 0;
+    min-width: 130px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
     z-index: 1000;
 
     &.show {
@@ -46,20 +58,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.4rem 0.75rem;
+      padding: 0.45rem 0.85rem;
       font-size: 0.85rem;
-      color: var(--sidebar-muted-color, rgba(255, 255, 255, 0.6));
+      color: rgba(255, 255, 255, 0.6);
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
+      transition: all 0.15s ease;
 
       &:hover {
-        color: var(--sidebar-hover-color, #fff);
+        color: #fff;
         background: rgba(255, 255, 255, 0.08);
       }
 
       &.active {
-        color: var(--sidebar-active-color, #fff);
+        color: #fff;
         font-weight: 600;
 
         i {
@@ -67,7 +80,7 @@
         }
       }
 
-      // anchor 스타일 리셋
+      /* anchor 스타일 리셋 */
       &[href] {
         display: flex;
       }
