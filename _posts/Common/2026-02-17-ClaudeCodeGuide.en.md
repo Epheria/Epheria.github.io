@@ -89,7 +89,7 @@ You can use it directly from the terminal, but **we strongly recommend using it 
 4. Enter `claude` in the terminal and run it.
 
 ```bash
-# 프로젝트 디렉토리에서 실행
+# Run from project directory
 cd /path/to/your/project
 claude
 ```
@@ -120,7 +120,7 @@ It can also be executed using the `claude` command in JetBrains IDE's built-in t
 ### Slash commands in session| command | Features | Detailed description |
 |:---|:---|:---|
 | `/clear` | **Context initialization** | Start a new conversation. **Most important command.** Make sure you have enough context windows to reduce the chance of hallucination. It is recommended to start with `/clear` on a task basis. |
-| `/compact` | Conversation Compression | Summarize/condense the conversation to free up a context window. You can also compress it around specific content like `/compact 핵심 내용`. |
+| `/compact` | Conversation Compression | Summarize/condense the conversation to free up a context window. You can also compress it around specific content like `/compact Key takeaways`. |
 | `/model` | Change model | Select models such as Opus, Sonnet, etc. Opus for planning and Sonnet for implementation are efficient. |
 | `/resume` | Resume previous conversation | You can recall past conversations. |
 | `/config` | Settings Management | Adjust various settings such as verbose, model, todo list, etc. |
@@ -139,10 +139,10 @@ It can also be executed using the `claude` command in JetBrains IDE's built-in t
 ### update command
 
 ```bash
-# Claude Code 업데이트 (npm 설치인 경우)
+# Claude Code update (npm In case of installation)
 claude update
 
-# Homebrew로 설치한 경우
+# HomebrewIf installed with
 brew upgrade claude-code
 ```
 
@@ -150,7 +150,7 @@ brew upgrade claude-code
 
 | Features | How to use | Description |
 |:---|:---|:---|
-| **Refer to file** | `@파일명` | You can directly reference files within the project by adding `@`, like `@GameHandler.cs`. |
+| **Refer to file** | `@file name` | You can directly reference files within the project by adding `@`, like `@GameHandler.cs`. |
 | **Image attached** | Drag and drop / `Cmd+Shift+4` and paste | Attaching a screenshot or UI design greatly increases efficiency by providing visual context. The use of images is also recommended in official documents. |
 | **Rewind** | `Esc` Tap 2 | Stops the current conversation and reverts to a previous checkpoint. You can select from previous conversation/code/dialogue+code. This is very useful when hallucination is detected. |
 | **Change Mode** | `Shift+Tab` | Switch between Plan mode / Auto-accept mode / Basic mode |
@@ -170,7 +170,7 @@ These are the main features added in Claude Code v2.1.x.
 `/insights` is a command that analyzes session data for the last 30 days and generates an **interactive HTML report**.
 
 ```bash
-# Claude Code 세션 내에서 실행
+# Claude Code Run within session
 /insights
 ```
 
@@ -217,12 +217,12 @@ You can adjust the **Effort level** when selecting a model in the `/model` comma
 | **Max** | Absolute Best Performance | max | Extremely complex architecture analysis, multi-level reasoning |
 
 ```bash
-# Effort 레벨 환경변수로 설정
+# Effort Set as level environment variable
 CLAUDE_CODE_EFFORT_LEVEL=high claude
 
-# 또는 세션 내에서 /model로 변경
+# or within a session /modelchange to
 /model
-# → 모델 선택 후 Effort 슬라이더 조정
+# → After selecting a model Effort Slider adjustment
 ```
 
 > **Adaptive Thinking**: In Opus 4.6, **Adaptive Thinking** is recommended instead of specifying `budget_tokens` directly. Claude **dynamically** adjusts his thinking depth based on the complexity of the question. You can control this range through the Effort level.
@@ -233,11 +233,11 @@ CLAUDE_CODE_EFFORT_LEVEL=high claude
 **Fast mode** uses the same model but **speeds up output token generation by up to 2.5x**. Rather than changing the model, it uses a fast inference path from the same model.
 
 ```bash
-# 세션 내에서 토글
+# Toggle within a session
 /fast
 
-# 활성화되면 번개 아이콘(↯) 표시
-# 설정은 세션 간 유지됨
+# When activated, the lightning icon(↯) mark
+# Settings persist between sessions
 ```
 
 > Fast mode is subject to **premium rate** ($30/$150 per MTok). This is useful in the prototyping phase where rapid iteration is required, but use it selectively due to cost.
@@ -249,13 +249,13 @@ CLAUDE_CODE_EFFORT_LEVEL=high claude
 
 ```
 ┌─────────────────────────────┐
-│      Orchestrator (리더)      │
-│    전체 작업 조율 및 분배       │
+│      Orchestrator (leader)      │
+│    Coordinate and distribute overall work       │
 └──────┬──────┬──────┬────────┘
        │      │      │
   ┌────▼──┐ ┌─▼───┐ ┌▼─────┐
   │Agent 1│ │Agent2│ │Agent3│
-  │백엔드  │ │프론트│ │테스트 │
+  │backend  │ │front│ │test │
   └───────┘ └─────┘ └──────┘
 ```
 
@@ -327,9 +327,9 @@ The context window is the maximum size of tokens the LLM can process at one time
 For LLM, every request is **Stateless**. This means that each new chat with Claude Code is like collaborating with a new team member every time. Previous conversations are remembered only when they are within the context window.
 
 ```
-[시스템 프롬프트] + [CLAUDE.md] + [대화 이력] + [현재 질문] = 총 토큰 사용량
+[system prompt] + [CLAUDE.md] + [conversation history] + [current question] = Total token usage
                                                               ↕
-                                                    컨텍스트 윈도우 한계
+                                                    Context Window Limits
 ```
 
 When the context window is full:
@@ -354,7 +354,7 @@ Once Auto-compact is run, it **cannot be undone**. When it does, existing conver
 
 **1. Cyclic Manual `/compact`**
 - Do not rely on Auto-compact, but execute `/compact` directly at the appropriate time.
-- Key contents can be specified like `/compact 현재 Todo 리스트와 진행 상황을 중심으로`
+- Key contents can be specified like `/compact today Todo Focusing on the list and progress`
 
 **2. `/clear`** on a per-task basis
 - Separate one large task into multiple sessions
@@ -363,7 +363,7 @@ Once Auto-compact is run, it **cannot be undone**. When it does, existing conver
 **3. Using CLAUDE.md**
 - Record project information that needs to be repeated every time in CLAUDE.md
 - Automatically loaded for each new session, saving context**4. External documentation reference**
-- Complex plans should be written in a separate `.md` file and referenced as `@파일명`
+- Complex plans should be written in a separate `.md` file and referenced as `@file name`
 - More efficient than maintaining the plan directly within the context window
 
 <br>
@@ -382,20 +382,20 @@ CLAUDE.md is the project's **"AI Onboarding Document"**. Just as new team member
 # CLAUDE.md
 
 ## Project Overview
-- 프로젝트 설명, 기술 스택, 아키텍처 개요
+- Project Description, technology stack, Architecture Overview
 
 ## Build & Development Commands
-- 빌드, 테스트, 실행 명령어
+- build, test, run command
 
 ## Code Conventions
-- 코딩 스타일, 네이밍 규칙, 파일 구조
+- coding style, naming convention, file structure
 
 ## Architecture
-- 주요 디렉토리 구조, 핵심 모듈 설명
+- Main directory structure, Core module description
 
 ## Common Patterns
-- 프로젝트에서 자주 사용하는 패턴
-- "이렇게 하지 마라" 규칙 (Claude가 반복하는 실수 방지)
+- Patterns frequently used in projects
+- "don't do this" rule (ClaudeAvoid repeating mistakes)
 ```
 
 ### Memory Nesting
@@ -429,11 +429,11 @@ The key to using Claude Code is to clearly separate the **Plan** and **Execute**
 | **Code Implementation** | Sonnet | Fast response, cost-effective, suitable for simple implementation tasks |
 
 ```
-1. /model → Opus 선택
-2. Shift+Tab 2번 → Plan 모드 진입
-3. 계획 수립 및 Todo 리스트 작성
-4. /model → Sonnet으로 변경
-5. 단계별 코드 구현 진행
+1. /model → Opus select
+2. Shift+Tab 2th → Plan Enter mode
+3. planning and Todo Create a list
+4. /model → Sonnetchange to
+5. Step-by-step code implementation
 ```
 
 ### Plan mode-based workflow
@@ -495,15 +495,15 @@ PRD includes:
 ### Fine-grained control with `/permissions`It is recommended to pre-allow only frequently used safe commands with `/permissions` instead of `--dangerously-skip-permissions`.
 
 ```bash
-# .claude/settings.json에 저장되어 팀과 공유 가능
-# 예: git, npm, build 명령은 사전 허용
+# .claude/settings.jsonSaved to share with your team
+# yes: git, npm, build Commands are allowed in advance
 ```
 
 ### Safe use principles
 
 1. **Initially proceed in approval mode**, checking one by one.
 2. Switch to Auto-accept once the plan is confirmed
-3. If the function implementation is different from expected, revert to `Esc 2번` (Rewind)
+3. If the function implementation is different from expected, revert to `Esc 2th` (Rewind)
 4. If the plan itself is wrong, modify the plan.
 
 <br>
@@ -618,11 +618,11 @@ SDD (Spec-Driven Development) is a development method that goes beyond “develo
 [Spec Kit](https://github.com/github/spec-kit) is a tool to realize SDD.
 
 ```bash
-# Spec Kit 초기화
+# Spec Kit reset
 specify init --here
-# → 'y' 입력
-# → 'claude' 선택
-# → 'sh' 선택
+# → 'y' input
+# → 'claude' select
+# → 'sh' select
 ```
 
 After installation, if you run claude in a new session, new commands will be added.
@@ -668,13 +668,13 @@ After installation, if you run claude in a new session, new commands will be add
 ### How to install plugins
 
 ```bash
-# Claude Code 실행 후
+# Claude Code After running
 claude
 
-# 마켓플레이스에서 플러그인 다운로드
+# Download plugins from Marketplace
 /plugin marketplace add wshobson/agents
 
-# 원하는 플러그인 선택적 설치
+# Optionally install desired plugins
 /plugin install game-development
 /plugin install debugging-toolkit
 /plugin install code-refactoring
