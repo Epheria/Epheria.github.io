@@ -4,6 +4,7 @@ date: 2024-03-01 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, quadratic form, constrained optimization]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

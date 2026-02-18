@@ -4,6 +4,7 @@ date: 2024-05-18 10:00:00 +/-TTTT
 categories: [Unity, RenderTexture]
 tags: [Unity, RenderTexture, PostProcessing, ScreenCapture, ScreenShot, RenderTextureFormat, TextureFormat, ARGB32, RGBAHalf, ARGBHalf]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

@@ -1,0 +1,26 @@
+{% if page.prerequisites and page.prerequisites.size > 0 %}
+<div class="post-prerequisites">
+  <div class="prerequisites-header">
+    <i class="fas fa-graduation-cap fa-fw"></i>
+    이 글을 읽기 전에 먼저 확인하세요
+  </div>
+  <ul class="prerequisites-list">
+    {% for prereq in page.prerequisites %}
+      {% assign prereq_post = site.posts | where: "url", prereq | first %}
+      <li>
+        {% if prereq_post %}
+          <a href="{{ prereq_post.url | relative_url }}">
+            <i class="fas fa-file-alt fa-fw"></i>
+            {{ prereq_post.title }}
+          </a>
+        {% else %}
+          <a href="{{ prereq | relative_url }}">
+            <i class="fas fa-link fa-fw"></i>
+            {{ prereq }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

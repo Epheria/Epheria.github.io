@@ -4,6 +4,7 @@ date: 2024-03-11 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, SVD, Reduced SVD, Reduced Singular Value Dcomposition, Pseudoinverse, Matrix Classification, Inverse Matrix, hermitian, non-hermitian, tridiagonal, Iterative Method, Circulant matrix, Toeplitz matrix]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

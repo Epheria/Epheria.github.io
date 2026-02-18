@@ -4,6 +4,7 @@ date: 2024-01-12 12:42:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, linear independence, linearly independent, linearly dependent]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

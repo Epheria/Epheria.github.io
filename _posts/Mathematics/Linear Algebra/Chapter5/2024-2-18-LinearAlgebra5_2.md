@@ -4,6 +4,7 @@ date: 2024-02-18 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, Orthogonal Sets, Orthonormal Sets, Orthogonal Basis]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

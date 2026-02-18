@@ -4,6 +4,7 @@ date: 2024-01-10 15:20:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, homogeneous, nonhomogeneous, trivial solution, nontrivial solution]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

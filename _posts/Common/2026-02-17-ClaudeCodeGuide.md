@@ -3,6 +3,7 @@ title: Claude Code 완벽 가이드 - 설치부터 고급 활용 전략까지
 date: 2026-02-17 14:00:00 +0900
 categories: [Tool, Claude Code]
 tags: [claude code, ai, llm, vibe coding, claude, anthropic, cli]
+difficulty: intermediate
 toc: true
 toc_sticky: true
 ---

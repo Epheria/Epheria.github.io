@@ -4,6 +4,7 @@ date: 2023-08-29 14:38:00 +/-TTTT
 categories: [Unity, Build Error]
 tags: [Unity, Build, xcworkspace, iOS, pod install]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

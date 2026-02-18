@@ -4,6 +4,7 @@ date: 2024-02-26 12:59:00 +/-TTTT
 categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화, Android, DexArchiveMergerException, multiDexEnabled, mergeDexRelease, gradle build failed , Minify]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

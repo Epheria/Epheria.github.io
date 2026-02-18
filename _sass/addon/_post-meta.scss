@@ -1,0 +1,106 @@
+/* 포스트 난이도 뱃지 */
+
+.difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  border: 1px solid transparent;
+
+  i {
+    font-size: 0.7rem;
+  }
+
+  &.difficulty-beginner {
+    color: #1a7f4b;
+    background-color: rgba(26, 127, 75, 0.12);
+    border-color: rgba(26, 127, 75, 0.3);
+
+    [data-mode="dark"] & {
+      color: #4ade80;
+      background-color: rgba(74, 222, 128, 0.1);
+      border-color: rgba(74, 222, 128, 0.25);
+    }
+  }
+
+  &.difficulty-intermediate {
+    color: #b45309;
+    background-color: rgba(180, 83, 9, 0.1);
+    border-color: rgba(180, 83, 9, 0.25);
+
+    [data-mode="dark"] & {
+      color: #fbbf24;
+      background-color: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.25);
+    }
+  }
+
+  &.difficulty-advanced {
+    color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.25);
+
+    [data-mode="dark"] & {
+      color: #f87171;
+      background-color: rgba(248, 113, 113, 0.1);
+      border-color: rgba(248, 113, 113, 0.25);
+    }
+  }
+}
+
+/* 선수 지식 링크 */
+
+.post-prerequisites {
+  margin: 1.25rem 0 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--link-color, #007bff);
+  background-color: var(--card-bg, rgba(0, 123, 255, 0.05));
+
+  .prerequisites-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-color, #333);
+    margin-bottom: 0.6rem;
+
+    i {
+      color: var(--link-color, #007bff);
+      margin-right: 0.3rem;
+    }
+  }
+
+  .prerequisites-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.3rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        i {
+          font-size: 0.75rem;
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}

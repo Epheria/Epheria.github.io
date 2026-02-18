@@ -4,6 +4,7 @@ date: 2024-04-18 12:59:00 +/-TTTT
 categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, Addressable, error]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

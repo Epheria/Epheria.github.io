@@ -4,6 +4,7 @@ date: 2024-04-24 12:59:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, Xcode, Build, Pipeline]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

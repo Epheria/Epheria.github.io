@@ -4,12 +4,12 @@ date: 2024-7-15 17:42:00 +/-TTTT
 categories: [Mathematics, Mathematical Thinking]
 tags: [mathematics, set theory, proposition, axiom, cantor]
 
+difficulty: intermediate
 toc: true
 toc_sticky: true
 math: true
 use_math: true
 mermaid: true
-
 ---
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fepheria.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)

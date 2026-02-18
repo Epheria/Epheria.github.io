@@ -53,6 +53,9 @@ script_includes:
         </div>
       {% endif %}
 
+      <!-- 난이도 뱃지 -->
+      {% include post-difficulty.html %}
+
       <div class="d-flex justify-content-between">
         <!-- author(s) -->
         <span>
@@ -123,6 +126,9 @@ script_includes:
     </dialog>
     <!-- 🔼 TOC 블록 끝 -->
   {% endif %}
+
+  {% comment %} 선수 지식 링크 {% endcomment %}
+  {% include post-prerequisites.html %}
 
   {% comment %} 시리즈 네비게이션 (하위 카테고리 포스트만) {% endcomment %}
   {% include series-nav.html %}

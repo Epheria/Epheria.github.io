@@ -5,6 +5,7 @@ date: 2025-09-03 23:12:00 +0900
 categories: [Unreal, Study]
 tags: [Unreal, Study, UHT, UObject, FString, GameInstance, C++]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

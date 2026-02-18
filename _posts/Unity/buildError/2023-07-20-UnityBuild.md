@@ -4,6 +4,7 @@ date: 2023-07-20 15:15:00 +/-TTTT
 categories: [Unity, Build Error]
 tags: [Unity, Build, Error ID 238, StripEngineCode, cs0246]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

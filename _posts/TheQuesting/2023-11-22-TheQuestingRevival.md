@@ -4,6 +4,7 @@ date: 2023-11-22 13:07:00 +/-TTTT
 categories: [Portfolio, TheQuesting]
 tags: [Portfolio, TheQuesting]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

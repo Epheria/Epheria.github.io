@@ -4,6 +4,7 @@ date: 2023-08-30 21:38:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Addressable, Build, iOS, AOS]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

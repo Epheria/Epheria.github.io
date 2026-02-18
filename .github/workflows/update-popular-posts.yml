@@ -1,0 +1,40 @@
+name: "Update Popular Posts"
+
+on:
+  schedule:
+    # 매주 월요일 오전 9시 (KST = UTC+9) → UTC 00:00
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-popular-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install google-analytics-data pyyaml
+
+      - name: Fetch popular posts from GA4
+        env:
+          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+        run: python scripts/fetch_popular_posts.py
+
+      - name: Commit updated popular posts data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add _data/popular-posts.yml
+          git diff --staged --quiet || git commit -m "chore: update popular posts data [skip ci]"
+          git push

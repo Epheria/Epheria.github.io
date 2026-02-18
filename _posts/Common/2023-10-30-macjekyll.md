@@ -4,6 +4,7 @@ date: 2023-10-30 13:12:00 +/-TTTT
 categories: [Tool, Mac]
 tags: [Mac, Jekyll, Ruby, rbenv, gem]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

@@ -4,6 +4,7 @@ date: 2023-11-20 19:12:00 +/-TTTT
 categories: [Unity, Optimization]
 tags: [Unity, Optimization, iOS, Profiler, Memory, GPU, Batching, Addressable, Shader]
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

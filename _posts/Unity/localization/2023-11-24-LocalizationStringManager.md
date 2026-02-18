@@ -4,6 +4,7 @@ date: 2023-11-24 18:00:00 +/-TTTT
 categories: [Unity, Localization]
 tags: [Unity, Localization, Util]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

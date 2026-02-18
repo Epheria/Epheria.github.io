@@ -4,6 +4,7 @@ date: 2023-09-04 18:00:00 +/-TTTT
 categories: [ETC, RenderPipeline]
 tags: [RenderPipeline, 게임엔진]
 
+difficulty: intermediate
 toc: true
 ---
 

@@ -4,6 +4,7 @@ date: 2023-11-01 11:12:00 +/-TTTT
 categories: [Tool, Mac]
 tags: [Mac, Instruments, iOS, Log]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

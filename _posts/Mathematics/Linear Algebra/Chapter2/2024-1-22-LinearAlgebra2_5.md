@@ -4,6 +4,7 @@ date: 2024-01-22 10:17:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, LU Decomposition, General Case]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

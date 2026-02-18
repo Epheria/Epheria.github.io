@@ -4,6 +4,7 @@ date: 2023-09-10 18:15:00 +/-TTTT
 categories: [Unity, Animator]
 tags: [Unity, MechanimAnimator, Animator Controller, Animator Override Controller]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

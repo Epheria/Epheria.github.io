@@ -4,6 +4,7 @@ date: 2024-05-09 10:00:00 +/-TTTT
 categories: [Unity, Addressable]
 tags: [Unity, Addressable, Asset Bundle, Memory Structure]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

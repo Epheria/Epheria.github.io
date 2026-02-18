@@ -38,12 +38,13 @@
 - [x] **F1. 통계 대시보드 페이지** — 포스트 활동 시각화
 - [x] **F2. 검색 기능 활성화** — 클라이언트 사이드 검색
 - [x] **F3. 시리즈 네비게이션** — 연관 포스트 순차 탐색
+- [x] **F4. 인기 포스트 Top 10** — GitHub Actions + GA Data API로 자동 갱신
+- [x] **F5. 카테고리별 추천 포스트** — 수동 YAML 관리 방식
+- [x] **F6. 포스트 메타 정보 강화** — 난이도 뱃지(초급/중급/고급), 선수 지식 링크
 
 ### 2.2 Out of Scope
 
 - 서버 사이드 검색 (Algolia 등 외부 서비스)
-- Google Analytics 데이터 연동 인기 포스트 (API 키 필요, 보안 이슈)
-- 포스트 난이도 뱃지 시스템 (낮은 우선순위)
 - 인터랙티브 차트 라이브러리 (Chart.js/D3.js — 빌드 복잡도 증가)
 
 ---
@@ -63,6 +64,12 @@
 | FR-07 | 검색: 제목, 내용, 태그, 카테고리 대상 풀텍스트 검색 | High | Pending |
 | FR-08 | 시리즈 네비: 같은 카테고리 내 포스트 이전/다음 네비게이션 바 | High | Pending |
 | FR-09 | 시리즈 네비: 시리즈 목차(TOC) 사이드 위젯 표시 | Medium | Pending |
+| FR-10 | 인기 포스트: GitHub Actions + GA Data API로 주기적 갱신, `_data/popular-posts.yml` 생성 | High | Pending |
+| FR-11 | 인기 포스트: 사이드바 위젯으로 Top 10 표시 | High | Pending |
+| FR-12 | 카테고리별 추천 포스트: `_data/recommended-posts.yml` 수동 관리 | Medium | Pending |
+| FR-13 | 난이도 뱃지: front matter `difficulty: beginner/intermediate/advanced` 기반 시각적 뱃지 | High | Pending |
+| FR-14 | 선수 지식 링크: front matter `prerequisites` 배열로 관련 포스트 링크 표시 | High | Pending |
+| FR-15 | 전체 포스트 일괄 front matter 업데이트 (difficulty 기본값 적용) | Medium | Pending |
 
 ### 3.2 Non-Functional Requirements
 

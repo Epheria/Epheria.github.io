@@ -4,6 +4,7 @@ date: 2024-02-20 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, Gram-Schmidt Process, QR factorization]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

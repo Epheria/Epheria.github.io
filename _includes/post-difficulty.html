@@ -1,0 +1,19 @@
+{% if page.difficulty %}
+  {% assign diff = page.difficulty | downcase %}
+  {% if diff == "beginner" %}
+    {% assign diff_label = "초급" %}
+    {% assign diff_class = "difficulty-beginner" %}
+    {% assign diff_icon = "fas fa-seedling" %}
+  {% elsif diff == "advanced" %}
+    {% assign diff_label = "고급" %}
+    {% assign diff_class = "difficulty-advanced" %}
+    {% assign diff_icon = "fas fa-fire" %}
+  {% else %}
+    {% assign diff_label = "중급" %}
+    {% assign diff_class = "difficulty-intermediate" %}
+    {% assign diff_icon = "fas fa-bolt" %}
+  {% endif %}
+  <span class="difficulty-badge {{ diff_class }}" title="난이도: {{ diff_label }}">
+    <i class="{{ diff_icon }}"></i> {{ diff_label }}
+  </span>
+{% endif %}

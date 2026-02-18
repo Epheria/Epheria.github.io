@@ -4,6 +4,7 @@ date: 2023-07-26 18:47:00 +/-TTTT
 categories: [Unity, GoogleSheet]
 tags: [Unity, GoogleSheet, DataTable]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 ---

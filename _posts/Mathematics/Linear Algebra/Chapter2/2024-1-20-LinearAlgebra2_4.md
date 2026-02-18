@@ -4,6 +4,7 @@ date: 2024-01-20 13:32:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, partitioned matrix, block matrix]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

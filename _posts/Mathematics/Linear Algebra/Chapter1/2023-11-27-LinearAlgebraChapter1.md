@@ -4,6 +4,7 @@ date: 2023-11-27 00:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, consistent, inconsistent, equivalent, row equivalent, linear equation, row operation]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

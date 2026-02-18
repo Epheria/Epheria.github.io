@@ -4,6 +4,7 @@ date: 2025-08-28 00:25:00 +/-TTTT
 categories: [Unreal, MacOS]
 tags: [Unreal, Mac, Rider]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

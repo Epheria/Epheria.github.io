@@ -4,6 +4,7 @@ date: 2024-05-07 10:00:00 +/-TTTT
 categories: [Unity, Addressable]
 tags: [Unity, Addressable, Addressable Group, reference count, load, unload, memory, assetbundle, addressable api, event viewer, resourcelocator, resourcelocation, resourceprovider, settings.json, catalog.json, bundle metadata]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

@@ -4,6 +4,7 @@ date: 2024-08-13 10:00:00 +/-TTTT
 categories: [Unity, Netcode]
 tags: [Unity, Netcode, Server Authoritative Mode, Client Authoritative Mode, Authoritative Mode]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

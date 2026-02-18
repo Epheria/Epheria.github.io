@@ -4,6 +4,7 @@ date: 2026-02-13 10:00:00 +/-TTTT
 categories: [ML, LLM]
 tags: [Machine Learning, ML, LLM, Transformer, Game Development]
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

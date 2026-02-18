@@ -4,6 +4,7 @@ date: 2023-11-15 11:12:00 +/-TTTT
 categories: [Unity, Optimization]
 tags: [Addressable, Optimization, Unity]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

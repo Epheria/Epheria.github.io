@@ -4,6 +4,7 @@ date: 2024-10-22 10:00:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, Jenkins, Groovy, Pipeline]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

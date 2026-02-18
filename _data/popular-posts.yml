@@ -1,0 +1,5 @@
+# 이 파일은 GitHub Actions(update-popular-posts.yml)에 의해 자동 생성됩니다.
+# 수동 수정 시 다음 자동 실행 시 덮어씌워집니다.
+# GA_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY Secret 설정 후 Actions에서 수동 실행하세요.
+
+posts: []

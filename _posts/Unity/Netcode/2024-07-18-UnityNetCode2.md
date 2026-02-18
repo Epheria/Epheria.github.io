@@ -4,6 +4,7 @@ date: 2024-07-18 10:00:00 +/-TTTT
 categories: [Unity, Netcode]
 tags: [Unity, Netcode, NetworkVariable, RPC, legacy, universial]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

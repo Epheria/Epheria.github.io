@@ -4,6 +4,7 @@ date: 2024-02-12 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, conjugate, conjugate complex numbers, complex eigenvalue]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

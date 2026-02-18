@@ -4,6 +4,7 @@ date: 2023-12-21 12:59:00 +/-TTTT
 categories: [Unity, Build Error]
 tags: [Unity, Build, Jenkins, 자동화]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

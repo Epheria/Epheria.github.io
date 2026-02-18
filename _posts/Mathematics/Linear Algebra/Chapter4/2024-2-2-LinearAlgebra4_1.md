@@ -4,6 +4,7 @@ date: 2024-02-02 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, eigenvectors, eigenvalues, eigenspace]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

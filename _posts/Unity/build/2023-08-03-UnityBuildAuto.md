@@ -4,6 +4,7 @@ date: 2023-08-03 11:35:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, 자동화, BuildPipeline, fastlane, Jenkins]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

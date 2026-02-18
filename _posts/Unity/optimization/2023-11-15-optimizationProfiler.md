@@ -4,6 +4,7 @@ date: 2023-11-15 12:12:00 +/-TTTT
 categories: [Unity, Optimization]
 tags: [Unity, Optimization, Profiler]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

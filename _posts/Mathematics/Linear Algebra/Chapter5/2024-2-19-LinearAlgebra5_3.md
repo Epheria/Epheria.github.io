@@ -4,6 +4,7 @@ date: 2024-02-19 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, orthogonal projections, the orthogonal decomposition theorem]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

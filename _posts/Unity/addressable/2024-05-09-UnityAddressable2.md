@@ -4,6 +4,7 @@ date: 2024-05-09 10:00:00 +/-TTTT
 categories: [Unity, Addressable]
 tags: [Unity, Addressable, Remote Catalog, AWS S3, update work flow]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

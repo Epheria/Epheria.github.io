@@ -4,6 +4,7 @@ date: 2024-02-01 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, Cramer's Rule, An Inverse Formula, Determinatns as area or volume]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

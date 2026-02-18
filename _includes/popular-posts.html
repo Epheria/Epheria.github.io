@@ -1,0 +1,19 @@
+{% assign popular = site.data.popular-posts.posts %}
+{% if popular and popular.size > 0 %}
+<div class="popular-posts-widget">
+  <div class="popular-posts-header">
+    <i class="fas fa-fire fa-fw"></i>
+    <span>인기 포스트</span>
+  </div>
+  <ol class="popular-posts-list">
+    {% for post in popular limit: 10 %}
+      <li class="popular-post-item">
+        <a href="{{ post.url | relative_url }}" title="{{ post.title }}">
+          <span class="popular-post-rank">{{ forloop.index }}</span>
+          <span class="popular-post-title">{{ post.title | truncate: 40 }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}

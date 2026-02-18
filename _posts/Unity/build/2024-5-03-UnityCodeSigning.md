@@ -4,6 +4,7 @@ date: 2024-05-03 10:00:00 +/-TTTT
 categories: [Unity, Build]
 tags: [Unity, Build, Xcode, Code Signing, Certificates, Provisioning Profile, iOS]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

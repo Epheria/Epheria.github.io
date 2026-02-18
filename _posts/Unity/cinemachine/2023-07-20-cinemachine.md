@@ -4,6 +4,7 @@ date: 2023-07-20 15:59:00 +/-TTTT
 categories: [Unity, Cinemachine]
 tags: [Unity, Cinemachine, Jittering, Damping 알고리즘, CCD]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

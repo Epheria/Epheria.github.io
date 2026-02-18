@@ -4,6 +4,7 @@ date: 2024-05-22 18:00:00 +/-TTTT
 categories: [Unity, Localization]
 tags: [Unity, Localization, Smart Strings, Plural]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

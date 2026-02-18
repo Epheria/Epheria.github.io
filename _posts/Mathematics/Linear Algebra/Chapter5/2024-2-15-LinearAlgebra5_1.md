@@ -4,6 +4,7 @@ date: 2024-02-15 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, perpendicular, orthogonality, orthogonal complements]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

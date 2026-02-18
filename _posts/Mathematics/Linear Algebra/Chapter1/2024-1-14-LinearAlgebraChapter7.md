@@ -4,6 +4,7 @@ date: 2024-01-14 12:42:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, linear transformation, matrix multiplication]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

@@ -4,6 +4,7 @@ date: 2024-03-07 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, SVD, Singular Value Decomposition, singular value]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

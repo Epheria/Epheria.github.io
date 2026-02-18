@@ -4,6 +4,7 @@ date: 2023-07-19 11:06:00 +/-TTTT
 categories: [C#, C# Study]
 tags: [Csharp, LINQ]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 ---
 

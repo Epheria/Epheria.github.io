@@ -4,6 +4,7 @@ date: 2024-01-19 13:15:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, Invertible Matrix, Elementary Matrix]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

@@ -4,6 +4,7 @@ date: 2024-02-21 10:00:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [mathematics, linear algebra, normal equation, least-squares solution, least-squares problems, least-squares error, least-squares lines, weighted least-squares]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true

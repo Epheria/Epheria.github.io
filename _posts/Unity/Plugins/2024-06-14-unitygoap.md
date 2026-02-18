@@ -4,6 +4,7 @@ date: 2024-06-14 10:00:00 +/-TTTT
 categories: [Unity, Plugins]
 tags: [Unity, Plugins, GOAP]     # TAG names should always be lowercase
 
+difficulty: intermediate
 toc: true
 math: true
 mermaid: true
