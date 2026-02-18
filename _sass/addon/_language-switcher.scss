@@ -2,52 +2,50 @@
 
 .language-switcher {
   position: relative;
-  display: flex;
-  justify-content: center;
-  margin-top: 0.5rem;
+  text-align: center;
+  margin-top: 0.35rem;
 
   .lang-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.3rem 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 0.25rem;
+    padding: 0.15rem 0.5rem;
+    color: inherit;
+    font-size: 0.75rem;
+    border: 1px solid currentColor;
     border-radius: 1rem;
     background: transparent;
-    transition: all 0.2s ease;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
 
     &:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.06);
+      opacity: 0.85;
     }
 
     .lang-current {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
 
     .lang-caret {
-      font-size: 0.6rem;
-      opacity: 0.6;
+      font-size: 0.55rem;
+      margin-left: -0.05rem;
     }
   }
 
   .lang-dropdown {
     display: none;
     position: absolute;
-    top: calc(100% + 0.4rem);
+    top: calc(100% + 0.35rem);
     left: 50%;
     transform: translateX(-50%);
-    background: var(--sidebar-bg, #21252a);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--card-bg, #2a2a2a);
+    border: 1px solid var(--border-color, rgba(128, 128, 128, 0.25));
     border-radius: 0.5rem;
-    padding: 0.3rem 0;
-    min-width: 130px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    padding: 0.25rem 0;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
 
     &.show {
@@ -58,29 +56,28 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.45rem 0.85rem;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.6);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted-color, #868e96);
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
       transition: all 0.15s ease;
 
       &:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.08);
+        color: var(--heading-color, inherit);
+        background: rgba(128, 128, 128, 0.1);
       }
 
       &.active {
-        color: #fff;
+        color: var(--heading-color, inherit);
         font-weight: 600;
 
         i {
-          font-size: 0.7rem;
+          font-size: 0.65rem;
         }
       }
 
-      /* anchor 스타일 리셋 */
       &[href] {
         display: flex;
       }

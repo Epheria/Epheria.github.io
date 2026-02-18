@@ -31,7 +31,7 @@
           remove 필터는 URL 내부의 동일 문자열도 제거하므로
           URL 앞 4글자가 '/en/' 또는 '/ja/'인지 확인 후 remove_first 사용.
         {% endcomment %}
-        {% capture url_start %}{{ page.url | truncate: 4, '' }}{% endcapture %}
+        {% assign url_start = page.url | truncate: 4, '' %}
         {% if url_start == '/en/' %}
           {% assign base_url = page.url | remove_first: '/en' %}
         {% elsif url_start == '/ja/' %}
