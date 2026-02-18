@@ -8,6 +8,7 @@ difficulty: intermediate
 toc: true
 math: true
 mermaid: true
+chart: true
 ---
 
 > 이 문서는 [LLM 동작 원리 - 게임 개발자를 위한 가이드](/posts/llm-guide/)의 7번 섹션 "하드웨어 구성"의 보충 자료입니다.
@@ -75,6 +76,60 @@ flowchart TB
 | **L2 캐시** | 50~100 MB | ~수 TB/s | 자주 접근하는 가중치/KV 캐시 캐싱 | 텍스처 캐시 |
 | **VRAM (GDDR/HBM)** | 24~80 GB | ~1~3 TB/s | 전체 모델 가중치, KV 캐시, 활성화 저장 | 텍스처/프레임 버퍼 |
 
+<div class="chart-wrapper">
+  <div class="chart-title">GPU 메모리 계층 — 계층별 대역폭 비교 (대략적 수치, 로그 스케일 적용)</div>
+  <canvas id="memHierarchyChart" class="chart-canvas" height="200"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'memHierarchyChart',
+  type: 'bar',
+  data: {
+    labels: ['레지스터', 'SRAM (L1/공유)', 'L2 캐시', 'VRAM (GDDR/HBM)'],
+    datasets: [
+      {
+        label: '대역폭 (상대 지수)',
+        data: [100000, 10000, 1000, 100],
+        backgroundColor: [
+          'rgba(231, 76, 60, 0.75)',
+          'rgba(230, 126, 34, 0.75)',
+          'rgba(241, 196, 15, 0.75)',
+          'rgba(39, 174, 96, 0.75)'
+        ],
+        borderColor: [
+          'rgba(231, 76, 60, 1)',
+          'rgba(230, 126, 34, 1)',
+          'rgba(241, 196, 15, 1)',
+          'rgba(39, 174, 96, 1)'
+        ],
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            var desc = ['최고속 (~수십 PB/s급)', '수십 TB/s', '수 TB/s', '~1~3 TB/s (HBM3e)'];
+            return desc[ctx.dataIndex];
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        type: 'logarithmic',
+        title: { display: true, text: '상대 대역폭 (로그 스케일, 빠를수록 높음)' }
+      }
+    }
+  }
+});
+</script>
+
 ### 왜 메모리 계층이 중요한가: Memory-bound 문제
 
 LLM 추론의 핵심 병목은 **연산 속도가 아니라 메모리 대역폭**입니다. GPU의 연산 유닛(Tensor Core)은 데이터가 도착하기만 하면 극도로 빠르게 처리할 수 있지만, VRAM에서 데이터를 읽어오는 속도가 연산을 따라가지 못합니다. 이것을 **Memory-bound** 상태라고 합니다.
@@ -134,6 +189,47 @@ flowchart LR
 | Llama 3.1 8B | 8B | 16 GB | 8 GB | 4 GB |
 | Llama 3.1 70B | 70B | 140 GB | 70 GB | 35 GB |
 | DeepSeek-V3 | 671B (MoE, 활성 37B) | ~1,342 GB* | ~671 GB* | ~336 GB* |
+
+<div class="code-compare">
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-before">FP16 풀 정밀도 로드</div>
+    <div class="highlight">
+<pre><code class="language-python"># Llama 3.1 8B = 16 GB VRAM 필요
+# RTX 4090(24GB) 간신히 가능
+from transformers import AutoModelForCausalLM
+
+model = AutoModelForCausalLM.from_pretrained(
+    "meta-llama/Llama-3.1-8B",
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
+# VRAM: ~16 GB
+# 품질: 최고 (원본 정밀도)</code></pre>
+    </div>
+  </div>
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-after">INT4 양자화 로드 (bitsandbytes)</div>
+    <div class="highlight">
+<pre><code class="language-python"># Llama 3.1 8B = 4 GB VRAM으로 축소!
+# RTX 3060(12GB)에서도 실행 가능
+from transformers import (
+    AutoModelForCausalLM, BitsAndBytesConfig
+)
+
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.bfloat16
+)
+model = AutoModelForCausalLM.from_pretrained(
+    "meta-llama/Llama-3.1-8B",
+    quantization_config=bnb_config,
+    device_map="auto"
+)
+# VRAM: ~4 GB (75% 절감)
+# 품질: FP16 대비 약간 손실</code></pre>
+    </div>
+  </div>
+</div>
 
 *MoE 모델은 전체 Expert 가중치가 VRAM에 상주해야 하므로, **메모리 요구량은 전체 파라미터(671B) 기준**으로 계산합니다. 단, 토큰당 실제 연산에는 활성 파라미터(37B)만 사용되므로 **추론 속도(연산 비용)**는 유사 규모의 Dense 모델(~37B) 수준입니다.
 

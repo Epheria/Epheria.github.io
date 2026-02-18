@@ -8,6 +8,11 @@ difficulty: intermediate
 toc: true
 math: true
 mermaid: true
+tldr:
+  - "LLM은 수십억 개의 파라미터를 가진 신경망으로, 다음 토큰 예측을 반복하며 텍스트를 생성한다"
+  - "Transformer의 핵심인 Self-Attention 메커니즘이 단어 간 관계와 문맥을 파악한다"
+  - "Unity와 달리 LLM은 모든 가중치를 한 번에 GPU VRAM에 올려 유지한다 (즉시 응답을 위한 트레이드오프)"
+  - "KV Cache로 이전 토큰의 계산 결과를 재활용해 추론 속도를 최적화한다"
 ---
 
 ## 서론

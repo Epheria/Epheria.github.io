@@ -21,9 +21,9 @@ toc: true
 
 ```
 User
-ERROR:/Users/coconevbusan/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex: D8: Type com.google.firebase.MessagingUnityPlayerActivity is defined multiple times: /Users/coconevbusan/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex, /Users/coconevbusan/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/build/intermediates/external_libs_dex/release/mergeExtDexRelease/classes.dex
+ERROR:/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex: D8: Type com.google.firebase.MessagingUnityPlayerActivity is defined multiple times: /Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex, /Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/build/intermediates/external_libs_dex/release/mergeExtDexRelease/classes.dex
 com.android.builder.dexing.DexArchiveMergerException: Error while merging dex archives: 
-Type com.google.firebase.MessagingUnityPlayerActivity is defined multiple times: /Users/coconevbusan/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex, /Users/coconevbusan/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/laun
+Type com.google.firebase.MessagingUnityPlayerActivity is defined multiple times: /Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/.transforms/f5f2117adcaee1eb1097391e7bb3025e/transformed/classes/classes.dex, /Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android/Library/Bee/Android/Prj/IL2CPP/Gradle/laun
 ```
 
 - com.google.firebase.MessagingUnityPlayerActivity 라는 중복된 클래스가 정의되어 발생한 원인이였던거같다. 특히 두 번 이상 정의된 클래스는 두 dex 아카이브에서 충돌을 일으킨다고 한다.

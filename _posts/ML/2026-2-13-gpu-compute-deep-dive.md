@@ -8,6 +8,7 @@ difficulty: intermediate
 toc: true
 math: true
 mermaid: true
+chart: true
 ---
 
 > 이 문서는 [LLM 동작 원리 - 게임 개발자를 위한 가이드](/posts/llm-guide/)의 7번 섹션 "하드웨어 구성"의 보충 자료입니다.
@@ -93,6 +94,60 @@ LLM 추론에서 CUDA Core는 다음 작업을 수행합니다:
 | A100 | 6,912 | 2020 | 데이터센터 AI |
 | H100 | 14,592 | 2023 | 데이터센터 AI |
 | B200 | 18,432 | 2025 | 데이터센터 AI (Blackwell) |
+
+<div class="chart-wrapper">
+  <div class="chart-title">GPU별 CUDA Core 수 비교 (소비자용 vs 데이터센터)</div>
+  <canvas id="cudaCoreChart" class="chart-canvas" height="220"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'cudaCoreChart',
+  type: 'bar',
+  data: {
+    labels: ['RTX 3060', 'RTX 4090', 'RTX 5090', 'A100', 'H100', 'B200'],
+    datasets: [
+      {
+        label: '소비자용',
+        data: [3584, 16384, 21760, null, null, null],
+        backgroundColor: 'rgba(52, 152, 219, 0.75)',
+        borderColor: 'rgba(52, 152, 219, 1)',
+        borderWidth: 1
+      },
+      {
+        label: '데이터센터 (AI 특화)',
+        data: [null, null, null, 6912, 14592, 18432],
+        backgroundColor: 'rgba(231, 76, 60, 0.75)',
+        borderColor: 'rgba(231, 76, 60, 1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            if (ctx.parsed.y === null) return null;
+            return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + '개';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: 'CUDA Core 수' },
+        ticks: {
+          callback: function(v) { return v.toLocaleString(); }
+        }
+      }
+    }
+  }
+});
+</script>
 
 > **참고**: 데이터센터 GPU(A100, H100, B200)는 소비자용보다 CUDA Core 수가 적을 수 있지만, Tensor Core 수와 메모리 대역폭에서 압도적입니다. LLM 추론에서 중요한 것은 CUDA Core 수보다 **Tensor Core + VRAM 대역폭** 조합입니다.
 

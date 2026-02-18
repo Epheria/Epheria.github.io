@@ -45,20 +45,20 @@ Assets - External Dependency Manager - iOS Resolver - Settings
 
 ```
 # cocoapods bin 폴더 경로 확인 방법 (which something)
-coconevbusan@coconevbusanui-Macmini Xcode % which pod
+YOUR_USERNAME@YOUR_MACHINE Xcode % which pod
 /opt/homebrew/bin/pod
 
 
 # bin 폴더로 이동 (cd path)
-coconevbusan@coconevbusanui-Macmini Xcode % cd /opt/homebrew/bin
+YOUR_USERNAME@YOUR_MACHINE Xcode % cd /opt/homebrew/bin
 
 
 # cocoapdos 버젼 체크 (pod --version)
-coconevbusan@coconevbusanui-Macmini bin % pod --version
+YOUR_USERNAME@YOUR_MACHINE bin % pod --version
 1.12.1
 
 # gem 버전 체크
-coconevbusan@coconevbusanui-Macmini Xcode % gem --version
+YOUR_USERNAME@YOUR_MACHINE Xcode % gem --version
 3.4.19
 ```
 
@@ -71,23 +71,23 @@ coconevbusan@coconevbusanui-Macmini Xcode % gem --version
 # cocoapods 삭제 및 설치 (brew uninstall cocoapods)
 # sudo 는 자꾸 권한 이슈가 발생해서 homebrew 를 사용했다.
 # 삭제
-coconevbusan@coconevbusanui-Macmini bin % brew uninstall cocoapods
+YOUR_USERNAME@YOUR_MACHINE bin % brew uninstall cocoapods
 Warning: Treating cocoapods as a formula. For the cask, use homebrew/cask/cocoapods
 Warning: Calling the `appcast` stanza is deprecated! Use the `livecheck` stanza instead.
 Please report this issue to the adoptopenjdk/openjdk tap (not Homebrew/brew or Homebrew/homebrew-core), or even better, submit a PR to fix it:
   /opt/homebrew/Library/Taps/adoptopenjdk/homebrew-openjdk/Casks/adoptopenjdk11.rb:9
 
 Uninstalling /opt/homebrew/Cellar/cocoapods/1.12.1... (13,430 files, 27.8MB)
-coconevbusan@coconevbusanui-Macmini bin % brew unstall cocoapods -v 1.10.1
+YOUR_USERNAME@YOUR_MACHINE bin % brew unstall cocoapods -v 1.10.1
 
 #설치
-coconevbusan@coconevbusanui-Macmini bin % brew install cocoapods
+YOUR_USERNAME@YOUR_MACHINE bin % brew install cocoapods
 Warning: Treating cocoapods as a formula. For the cask, use homebrew/cask/cocoapods
 ==> Fetching cocoapods
 ==> Downloading https://ghcr.io/v2/homebrew/core/cocoapods/manifests/1.12.1
-Already downloaded: /Users/coconevbusan/Library/Caches/Homebrew/downloads/092af1d0eed5d8e2252554a1d84826de8e271bcb598c43452362a690991fa2bd--cocoapods-1.12.1.bottle_manifest.json
+Already downloaded: /Users/YOUR_USERNAME/Library/Caches/Homebrew/downloads/092af1d0eed5d8e2252554a1d84826de8e271bcb598c43452362a690991fa2bd--cocoapods-1.12.1.bottle_manifest.json
 ==> Downloading https://ghcr.io/v2/homebrew/core/cocoapods/blobs/sha256:6f1fca1cb0df79912e10743a80522e666fe605a1eaa2aac1094c501608fb7ee4
-Already downloaded: /Users/coconevbusan/Library/Caches/Homebrew/downloads/abfa7f252c7ffcc49894abb0d1afe0e47accb0b563df95a47f8f04ad93f8f681--cocoapods--1.12.1.arm64_ventura.bottle.tar.gz
+Already downloaded: /Users/YOUR_USERNAME/Library/Caches/Homebrew/downloads/abfa7f252c7ffcc49894abb0d1afe0e47accb0b563df95a47f8f04ad93f8f681--cocoapods--1.12.1.arm64_ventura.bottle.tar.gz
 ==> Pouring cocoapods--1.12.1.arm64_ventura.bottle.tar.gz
 🍺  /opt/homebrew/Cellar/cocoapods/1.12.1: 13,430 files, 27.8MB
 ==> Running `brew cleanup cocoapods`...
@@ -108,7 +108,7 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 ```
 #+ echo ------------------------------------- Pod Install
 #------------------------------------- Pod Install
-#+ cd /Users/coconevbusan/Xcode
+#+ cd /Users/YOUR_USERNAME/Xcode
 #+ /opt/homebrew/bin/pod install
 #    33mWARNING: CocoaPods requires your terminal to be using UTF-8 encoding.
 #    Consider adding the following to ~/.profile:
@@ -159,9 +159,9 @@ Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 # Jenkins Shell Script 
 
 echo ------------------------------------- Pod Install
-cd /Users/coconevbusan/Xcode
+cd /Users/YOUR_USERNAME/Xcode
 /opt/homebrew/bin/pod install
-cd /Users/coconevbusan/.jenkins/workspace/ios_fastlane
+cd /Users/YOUR_USERNAME/.jenkins/workspace/ios_fastlane
 
 ```
 
@@ -171,7 +171,7 @@ cd /Users/coconevbusan/.jenkins/workspace/ios_fastlane
 
 ```
 # locale 입력
-coconevbusan@coconevbusanui-Macmini bin % locale
+YOUR_USERNAME@YOUR_MACHINE bin % locale
 LANG="ko_KR.UTF-8"
 LC_COLLATE="ko_KR.UTF-8"
 LC_CTYPE="ko_KR.UTF-8"
@@ -187,8 +187,8 @@ LC_ALL=
 
 ```
 # LC_ALL 을 en 으로 바꾸자
-coconevbusan@coconevbusanui-Macmini bin % export LC_ALL=en_US.UTF-8
-coconevbusan@coconevbusanui-Macmini bin % locale
+YOUR_USERNAME@YOUR_MACHINE bin % export LC_ALL=en_US.UTF-8
+YOUR_USERNAME@YOUR_MACHINE bin % locale
 LANG="ko_KR.UTF-8"
 LC_COLLATE="en_US.UTF-8"
 LC_CTYPE="en_US.UTF-8"
@@ -199,8 +199,8 @@ LC_TIME="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"
 
 # LANG 도 바꿔야한다.
-coconevbusan@coconevbusanui-Macmini bin % export LANG=en_US.UTF-8
-coconevbusan@coconevbusanui-Macmini bin % locale
+YOUR_USERNAME@YOUR_MACHINE bin % export LANG=en_US.UTF-8
+YOUR_USERNAME@YOUR_MACHINE bin % locale
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
 LC_CTYPE="en_US.UTF-8"
@@ -254,7 +254,7 @@ LC_ALL=
 # pod install 이 정상적으로 실행되는 모습이다.
 + echo ------------------------------------- Pod Install
 ------------------------------------- Pod Install
-+ cd /Users/coconevbusan/Xcode
++ cd /Users/YOUR_USERNAME/Xcode
 + /opt/homebrew/bin/pod install
 Analyzing dependencies
 Downloading dependencies
@@ -276,7 +276,7 @@ Integrating client project
 
 [!] Please close any current Xcode sessions and use `Unity-iPhone.xcworkspace` for this project from now on.
 Pod installation complete! There are 4 dependencies from the Podfile and 13 total pods installed.
-+ cd /Users/coconevbusan/.jenkins/workspace/ios_fastlane
++ cd /Users/YOUR_USERNAME/.jenkins/workspace/ios_fastlane
 Finished: SUCCESS
 ```
 

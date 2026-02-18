@@ -133,6 +133,9 @@ script_includes:
   {% comment %} 시리즈 네비게이션 (하위 카테고리 포스트만) {% endcomment %}
   {% include series-nav.html %}
 
+  {% comment %} TL;DR 핵심 요약 박스 {% endcomment %}
+  {% include tldr.html %}
+
   <div class="content">
     {% include hits-counter.html %}
     {{ content }}
@@ -180,4 +183,21 @@ script_includes:
       {% include post-sharing.html lang=lang %}
     </div>
   </div>
+
+  {% if page.chart %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var isDark = document.documentElement.getAttribute('data-mode') === 'dark';
+    Chart.defaults.color = isDark ? '#ced4da' : '#6c757d';
+    Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+    if (window.chartConfigs) {
+      window.chartConfigs.forEach(function(cfg) {
+        var el = document.getElementById(cfg.id);
+        if (el) new Chart(el, { type: cfg.type, data: cfg.data, options: cfg.options || {} });
+      });
+    }
+  });
+  </script>
+  {% endif %}
 </article>

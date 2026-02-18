@@ -698,6 +698,47 @@ UniRx의 후속인 R3에서는 MessageBroker가 별도 패키지인 **[MessagePi
 | **필터링** | Rx 연산자 (Where, Select...) | MessagePipe 필터 또는 Rx 연산자 |
 | **버퍼링** | Rx 연산자 (Buffer, Throttle...) | `IBufferedPublisher<T>` |
 
+<div class="code-compare">
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-before">UniRx MessageBroker</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// 전역 싱글턴으로 바로 사용
+// DI 불필요
+
+// 발행 (어디서든)
+MessageBroker.Default
+    .Publish(new PlayerHitEvent(30f));
+
+// 구독
+MessageBroker.Default
+    .Receive&lt;PlayerHitEvent&gt;()
+    .Subscribe(evt =>
+        UpdateHealthBar(evt.Damage))
+    .AddTo(this);</code></pre>
+    </div>
+  </div>
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-after">MessagePipe (R3)</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// DI 주입 필수 (VContainer 등)
+// ISP 원칙: Publisher/Subscriber 분리
+
+// 발행 측
+[Inject] IPublisher&lt;PlayerHitEvent&gt; _pub;
+
+void ApplyDamage(float dmg)
+    => _pub.Publish(new PlayerHitEvent(dmg));
+
+// 구독 측
+[Inject] ISubscriber&lt;PlayerHitEvent&gt; _sub;
+
+void Start() =>
+    _sub.Subscribe(e => UpdateHealthBar(e.Damage))
+        .AddTo(this);</code></pre>
+    </div>
+  </div>
+</div>
+
 #### 핵심 차이점
 
 1. **전역 싱글턴 제거**: MessagePipe는 `Default` 인스턴스가 없습니다. 반드시 DI 컨테이너를 통해 `IPublisher<T>` / `ISubscriber<T>`를 주입받아야 합니다. 이는 앞서 다룬 "스코프 분리"가 아키텍처 수준에서 강제되는 것입니다.

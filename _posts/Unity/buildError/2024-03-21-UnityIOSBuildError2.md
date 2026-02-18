@@ -123,14 +123,14 @@ class PBR : IPostprocessBuildWithReport
             // project.WriteToFile(projectPath);
             //
             // // Fix the 'get-task-allow' error by enabling debugging in the entitlements file
-            // string entitlementsContents = System.IO.File.ReadAllText("/Users/coconevbusan/Xcode_dev/Entitlements.entitlements");
+            // string entitlementsContents = System.IO.File.ReadAllText("/Users/YOUR_USERNAME/Xcode_dev/Entitlements.entitlements");
             //
             // // Make sure the debugging entitlement is present
             // if (!entitlementsContents.Contains("<key>get-task-allow</key>"))
             // {
             //     // Add the entitlement for debugging
             //     entitlementsContents = entitlementsContents.Replace("</dict>", "<key>get-task-allow</key><true/></dict>");
-            //     System.IO.File.WriteAllText("/Users/coconevbusan/Xcode_dev/Entitlements.entitlements", entitlementsContents);
+            //     System.IO.File.WriteAllText("/Users/YOUR_USERNAME/Xcode_dev/Entitlements.entitlements", entitlementsContents);
             // }
 #endif
         }

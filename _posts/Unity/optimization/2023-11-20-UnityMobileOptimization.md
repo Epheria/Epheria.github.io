@@ -8,6 +8,7 @@ difficulty: intermediate
 toc: true
 math: true
 mermaid: true
+chart: true
 ---
 
 ## 서론
@@ -33,6 +34,68 @@ mermaid: true
 |:---:|:---:|:---|
 | **60 fps** | **16.67 ms** | 대부분의 처리가 16ms 내에 끝나야 한다 |
 | **30 fps** | **33.33 ms** | 모든 처리가 33ms 내에 끝나야 한다 |
+
+<div class="chart-wrapper">
+  <div class="chart-title">프레임 예산 분배 예시 — 60fps(16.67ms) 기준</div>
+  <canvas id="frameBudgetChart" class="chart-canvas" height="220"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'frameBudgetChart',
+  type: 'bar',
+  data: {
+    labels: ['CPU 로직', 'Physics', '렌더링 준비', 'GPU 드로우', '여유(마진)'],
+    datasets: [
+      {
+        label: '60fps 예산 (ms)',
+        data: [4.0, 2.0, 3.0, 5.0, 2.67],
+        backgroundColor: [
+          'rgba(52, 152, 219, 0.75)',
+          'rgba(155, 89, 182, 0.75)',
+          'rgba(230, 126, 34, 0.75)',
+          'rgba(231, 76, 60, 0.75)',
+          'rgba(39, 174, 96, 0.75)'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: '30fps 예산 (ms)',
+        data: [8.0, 4.0, 6.0, 10.0, 5.33],
+        backgroundColor: [
+          'rgba(52, 152, 219, 0.35)',
+          'rgba(155, 89, 182, 0.35)',
+          'rgba(230, 126, 34, 0.35)',
+          'rgba(231, 76, 60, 0.35)',
+          'rgba(39, 174, 96, 0.35)'
+        ],
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(2) + ' ms';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { stacked: false },
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '시간 (ms)' },
+        max: 16
+      }
+    }
+  }
+});
+</script>
 
 프로파일러 그래프에서 이 예산을 넘는 프레임이 보인다면, 그것이 곧 병목 지점입니다.
 
@@ -212,6 +275,57 @@ flowchart TD
 | **Dynamic Batching** | 높음 | 보통 | 변화 없음 | ★☆☆ |
 
 <br>
+
+<div class="code-compare">
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-before">Before — SRP Batcher 파괴</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// Material.SetFloat은 인스턴스를 생성해
+// SRP Batcher를 깨트린다 → SetPass Call 증가!
+public class EnemyFlash : MonoBehaviour
+{
+    Renderer _renderer;
+
+    void Start()
+        => _renderer = GetComponent&lt;Renderer&gt;();
+
+    public void OnHit()
+    {
+        // ❌ 새 Material 인스턴스 생성
+        _renderer.material.SetFloat("_FlashAmount", 1f);
+    }
+}</code></pre>
+    </div>
+  </div>
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-after">After — MaterialPropertyBlock 사용</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// MaterialPropertyBlock은 Material을 공유한 채로
+// 인스턴스별 값 변경 → SRP Batcher 유지!
+public class EnemyFlash : MonoBehaviour
+{
+    Renderer _renderer;
+    MaterialPropertyBlock _mpb;
+
+    static readonly int FlashAmount
+        = Shader.PropertyToID("_FlashAmount");
+
+    void Start()
+    {
+        _renderer = GetComponent&lt;Renderer&gt;();
+        _mpb = new MaterialPropertyBlock();
+    }
+
+    public void OnHit()
+    {
+        // ✅ SRP Batcher 유지
+        _mpb.SetFloat(FlashAmount, 1f);
+        _renderer.SetPropertyBlock(_mpb);
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
 
 > **SetPass Call 300 미만**을 목표로 설정하세요. Frame Debugger에서 SetPass Call이 합쳐지지 않는 이유를 확인할 수 있으며, 이를 기반으로 셰이더 통합 전략을 수립하면 됩니다.
 {: .prompt-tip }

@@ -77,7 +77,7 @@ public static void BuildAndroid()
    // 원격 빌드 시 지정한 경로인 locationPathName, 빌드 타겟 android, buildAppBundle은 .aab로 추출한것인지? 등이다.
    BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
    buildPlayerOptions.scenes = FindEnabledEditorScenes();
-   buildPlayerOptions.locationPathName = "/Users/coconevbusan/Build/toyverse_apk/toyverse.aab";
+   buildPlayerOptions.locationPathName = "/Users/YOUR_USERNAME/Build/toyverse_apk/toyverse.aab";
    buildPlayerOptions.target = BuildTarget.Android;
    EditorUserBuildSettings.buildAppBundle = true;
 
@@ -142,7 +142,7 @@ public static void BuildIOS()
    // 이 부분까지는 AOS 와 똑같다.
    BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
    buildPlayerOptions.scenes = FindEnabledEditorScenes();
-   buildPlayerOptions.locationPathName = "/Users/coconevbusan/Xcode";
+   buildPlayerOptions.locationPathName = "/Users/YOUR_USERNAME/Xcode";
    buildPlayerOptions.target = BuildTarget.iOS;
 
    var report = BuildPipeline.BuildPlayer(buildPlayerOptions);
@@ -210,7 +210,7 @@ class PBR : IPostprocessBuildWithReport
       build_target: "iOS",
       execute_method: "ProjectBuilder.BuildAddressable_IOS",
       unity_path: "/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity",
-      project_path: "/Users/coconevbusan/.jenkins/workspace/ios_fastlane"
+      project_path: "/Users/YOUR_USERNAME/.jenkins/workspace/ios_fastlane"
     )
   end
 ```

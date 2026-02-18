@@ -6,6 +6,12 @@ tags: [Csharp, LINQ]     # TAG names should always be lowercase
 
 difficulty: intermediate
 toc: true
+chart: true
+tldr:
+  - "LINQ의 Count()는 for/foreach 대비 상당한 성능 저하가 있다 — 매 프레임 호출 시 절대 사용 금지"
+  - "필터링(Where)과 변환(Select)은 for/foreach와 성능이 거의 유사하다"
+  - "LINQ는 중간 버퍼(배열)를 생성해 GC 압력을 높인다 — 잦은 호출 시 GC 스파이크 원인"
+  - "프로토타입·비성능 코드에는 LINQ 사용, 매 프레임 호출·성능 민감 코드에는 for/foreach 사용"
 ---
 
 ## 목차
@@ -59,6 +65,32 @@ toc: true
 
 ## 벤치마크 - 반복문
 > 연령이 18세 미만인 Customer 수를 반환
+
+<div class="code-compare">
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-before">For / Foreach</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// 성능: 빠름 (GC 없음)
+int count = 0;
+foreach (var c in customers)
+{
+    if (c.Age &lt; 18)
+        count++;
+}
+return count;</code></pre>
+    </div>
+  </div>
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-after">LINQ Count</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// 성능: 느림 (GC 발생)
+// Count()는 내부적으로
+// 전체 시퀀스를 순회함
+return customers
+    .Count(c => c.Age &lt; 18);</code></pre>
+    </div>
+  </div>
+</div>
 
 1. For / Foreach 문
 <img src="/assets/img/post/linq/linq01.png" width="1920px" height="1080px" title="256" alt="linq1">
@@ -128,6 +160,58 @@ for/foreach 사용한 구현과 매우 유사한 성능을 발휘함. for/foreac
 
 <br>
 <br>
+
+## LINQ vs For — 성능 비교 차트
+
+<div class="chart-wrapper">
+  <div class="chart-title">상대 실행 시간 비교 (낮을수록 빠름, for = 1.0 기준)</div>
+  <canvas id="linqBenchChart" class="chart-canvas" height="220"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'linqBenchChart',
+  type: 'bar',
+  data: {
+    labels: ['반복문(Count)', '필터링(Where)', '변환(Select)'],
+    datasets: [
+      {
+        label: 'For / Foreach',
+        data: [1.0, 1.0, 1.0],
+        backgroundColor: 'rgba(39, 174, 96, 0.7)',
+        borderColor: 'rgba(39, 174, 96, 1)',
+        borderWidth: 1
+      },
+      {
+        label: 'LINQ',
+        data: [3.8, 1.05, 1.1],
+        backgroundColor: 'rgba(192, 57, 43, 0.7)',
+        borderColor: 'rgba(192, 57, 43, 1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + 'x';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '상대 실행 시간 (배수)' }
+      }
+    }
+  }
+});
+</script>
 
 ## 결론
 1. LINQ의 성능은 Count가 상당히 느리다

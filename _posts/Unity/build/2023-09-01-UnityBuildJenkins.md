@@ -136,8 +136,8 @@ Real 은 본방, 스토어에 올라가는 브랜치로 설정.
 - aos 빌드에 비해 복잡한 부분이 많다. 특히 유니티 프로젝트 -> Xcode 프로젝트 -> ipa 빌드 순서가 있어서 복잡하다.
 
 ```
-rm -rf /Users/coconevbusan/Build/toyverse_ipa
-mkdir /Users/coconevbusan/Build/toyverse_ipa
+rm -rf /Users/YOUR_USERNAME/Build/toyverse_ipa
+mkdir /Users/YOUR_USERNAME/Build/toyverse_ipa
 ```
 - 우선 최종적으로 ipa 파일로 뽑혀나오는 경로 내부에 있는 모든 파일을 삭제해주고 폴더를 생성한다.
 
@@ -150,7 +150,7 @@ locale
 - [xcworkspace 생성되지 않는 이슈](https://epheria.github.io/posts/Unityxcworkspace/) 때문에 추가된 부분
 
 ```
-XCODE_PATH=/Users/coconevbusan/Xcode
+XCODE_PATH=/Users/YOUR_USERNAME/Xcode
 ENTITLEMENTS=Entitlements.entitlements
 TMP_FILE=tmp.txt
 
@@ -180,16 +180,16 @@ echo ------------------------------------- FIREBASE_SETTING
 rm -rf "${WORKSPACE}/Assets/Scripts/Manager/Firebase/Setting/GoogleService-Info.plist"
 cp "${WORKSPACE}/Assets/Scripts/Manager/Firebase/Config/GoogleService-Info_enterprise.plist" "${WORKSPACE}/Assets/Scripts/Manager/Firebase/Setting/GoogleService-Info.plist"
 echo ------------------------------------- UNITY IOS PROJECT BUILD 
-/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity -projectPath "/Users/coconevbusan/.jenkins/workspace/(DEV)ios" -batchmode -nographics -quit -buildTarget iOS -executeMethod ProjectBuilder.BuildIOS_Dev -logfile "" build_num:${BUILD_NUMBER}
+/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity -projectPath "/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)ios" -batchmode -nographics -quit -buildTarget iOS -executeMethod ProjectBuilder.BuildIOS_Dev -logfile "" build_num:${BUILD_NUMBER}
 ```
 - 유니티 프로젝트 빌드를 batchmode 로 실행해준다.
 - 원래 fastlane 에서 유니티 프로젝트 빌드를 하려고 했지만, 여러가지 제약사항이 많아서 유니티 프로젝트 빌드는 batchmode 로 변경했음.
 
 ```
 echo ------------------------------------- Pod Install
-cd /Users/coconevbusan/Xcode
+cd /Users/YOUR_USERNAME/Xcode
 /opt/homebrew/bin/pod install
-cd "/Users/coconevbusan/.jenkins/workspace/(DEV)ios"
+cd "/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)ios"
 if "${DEL_APPLE_LOGIN}"; then
 	echo ------------------------------------- Delete Sign in Apple
 	/usr/bin/sed '7,10d' ${XCODE_PATH}/${ENTITLEMENTS} > ${XCODE_PATH}/${TMP_FILE}
@@ -213,8 +213,8 @@ echo ------------------------------------- UPLOAD APPCENTER
 #### AOS 빌드 스크립트
 
 ```
-rm -rf /Users/coconevbusan/Build/toyverse_apk
-mkdir /Users/coconevbusan/Build/toyverse_apk
+rm -rf /Users/YOUR_USERNAME/Build/toyverse_apk
+mkdir /Users/YOUR_USERNAME/Build/toyverse_apk
 pwd
 chmod 755 ./fastlane/change_build_num.sh
 ./fastlane/change_build_num.sh ${BUILD_NUMBER}
@@ -225,7 +225,7 @@ echo ------------------------------------- INIT
 #/opt/homebrew/bin/fastlane android addrressable 
 echo ------------------------------------- ANDROID BUILD 
 #/opt/homebrew/bin/fastlane android android
-/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity -projectPath "/Users/coconevbusan/.jenkins/workspace/(DEV)android" -batchmode -nographics -quit -buildTarget Android -executeMethod ProjectBuilder.BuildAndroid_Dev -logfile "" build_num:${BUILD_NUMBER}
+/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity -projectPath "/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android" -batchmode -nographics -quit -buildTarget Android -executeMethod ProjectBuilder.BuildAndroid_Dev -logfile "" build_num:${BUILD_NUMBER}
 echo ------------------------------------- UPLOAD APPCENTER
 /opt/homebrew/bin/fastlane android upload_appcenter
 ```
@@ -247,7 +247,7 @@ echo ------------------------------------- INIT
 echo ------------------------------------- CLEAR ADDRESSABLE
 rm -rf ${WORKSPACE}/ServerData/iOS/*
 echo ------------------------------------- ADDRESSABLE
-"/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity" -projectPath "/Users/coconevbusan/.jenkins/workspace/(DEV)ios_addressable" -batchmode -nographics -quit -buildTarget iOS -executeMethod ProjectBuilder.BuildAddressable_IOS_Dev -logfile
+"/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity" -projectPath "/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)ios_addressable" -batchmode -nographics -quit -buildTarget iOS -executeMethod ProjectBuilder.BuildAddressable_IOS_Dev -logfile
 echo ------------------------------------- S3 UPLOAD
 chmod 775 ${WORKSPACE}/fastlane/upload_addressable_s3.sh
 ${WORKSPACE}/fastlane/upload_addressable_s3.sh ${WORKSPACE}/ServerData/iOS ios ${RESOURCE_VERSION} dev alpha
@@ -264,7 +264,7 @@ echo ------------------------------------- INIT
 echo ------------------------------------- CLEAR ADDRESSABLE
 rm -rf ${WORKSPACE}/ServerData/Android/*
 echo ------------------------------------- ADDRESSABLE
-"/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity" -projectPath "/Users/coconevbusan/.jenkins/workspace/(DEV)android_addressable" -batchmode -nographics -quit -buildTarget Android -executeMethod ProjectBuilder.BuildAddressable_AOS_Dev -logfile
+"/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity" -projectPath "/Users/YOUR_USERNAME/.jenkins/workspace/(DEV)android_addressable" -batchmode -nographics -quit -buildTarget Android -executeMethod ProjectBuilder.BuildAddressable_AOS_Dev -logfile
 echo ------------------------------------- S3 UPLOAD
 chmod 775 ${WORKSPACE}/fastlane/upload_addressable_s3.sh
 ${WORKSPACE}/fastlane/upload_addressable_s3.sh ${WORKSPACE}/ServerData/Android aos ${RESOURCE_VERSION} dev alpha

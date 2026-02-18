@@ -63,22 +63,50 @@ mermaid: true
 
 <br>
 
-```csharp
-// universial RPC
-[Rpc(SendTo.Server)] // Server
-public void PingRpc(int pingCount) { }
- 
-[Rpc(SendTo.NotServer)] // Client
-void PongRpc(int pingCount, string message) { }
- 
- 
-// Legacy RPC
+<div class="code-compare">
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-before">Legacy RPC</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// 메서드 이름에 Suffix 필수
+// ServerRpc / ClientRpc 별도 어트리뷰트
+
 [ServerRpc]
-public void PingServerRpc(int pingCount) { }
- 
+public void PingServerRpc(int pingCount)
+{
+    // 서버에서 실행
+}
+
 [ClientRpc]
-public void PongClientRpc(int pingCount, string message) { }
-```
+public void PongClientRpc(
+    int pingCount,
+    string message)
+{
+    // 모든 클라이언트에서 실행
+}</code></pre>
+    </div>
+  </div>
+  <div class="code-compare-pane">
+    <div class="code-compare-label label-after">Universal RPC (권장)</div>
+    <div class="highlight">
+<pre><code class="language-csharp">// 메서드 이름은 Rpc Suffix만
+// SendTo로 대상 지정 (유연)
+
+[Rpc(SendTo.Server)]
+public void PingRpc(int pingCount)
+{
+    // 서버에서 실행
+}
+
+[Rpc(SendTo.NotServer)]
+void PongRpc(
+    int pingCount,
+    string message)
+{
+    // 서버 제외 모두 실행
+}</code></pre>
+    </div>
+  </div>
+</div>
 
 <br>
 <br>

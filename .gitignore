@@ -20,3 +20,10 @@ package-lock.json
 
 # Misc
 assets/js/dist
+
+# Local tool state (Claude Code, bkit)
+.claude/settings.local.json
+.bkit/agent-state.json
+docs/.pdca-status.json
+docs/.pdca-snapshots/
+docs/.bkit-memory.json

@@ -1,0 +1,56 @@
+.code-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .code-compare-pane {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    .highlight,
+    pre {
+      flex: 1;
+      margin: 0;
+      border-radius: 0 0 0.375rem 0.375rem;
+    }
+  }
+
+  .code-compare-label {
+    display: inline-block;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 0.375rem 0.375rem 0 0;
+    text-transform: uppercase;
+    color: #fff;
+
+    &.label-before {
+      background-color: #c0392b;
+    }
+
+    &.label-after {
+      background-color: #27ae60;
+    }
+  }
+}
+
+[data-mode="dark"] {
+  .code-compare {
+    .code-compare-label {
+      &.label-before {
+        background-color: #922b21;
+      }
+
+      &.label-after {
+        background-color: #1e8449;
+      }
+    }
+  }
+}

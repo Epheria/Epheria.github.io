@@ -8,6 +8,12 @@ difficulty: intermediate
 toc: true
 math: true
 mermaid: true
+chart: true
+tldr:
+  - "AI > ML > DL 계층 구조: 딥러닝(DL)은 머신러닝(ML)의 하위 집합이며, 인공신경망 기반이다"
+  - "현재 모든 AI는 특정 작업에만 특화된 ANI(약인공지능)이며, AGI/ASI는 아직 실현되지 않았다"
+  - "머신러닝 학습 방식은 지도학습, 비지도학습, 강화학습 세 가지로 구분된다"
+  - "게임 개발에 활용 가능한 AI 분야: 절차적 콘텐츠 생성, NPC 행동, 적 AI, 게임 밸런싱 등"
 ---
 
 ## 목차
@@ -33,6 +39,57 @@ mermaid: true
 1. ANI(인공협소지능) - 약인공지능
 2. 일반 인공지능(AGI) - 강인공지능
 3. 인공슈퍼지능(ASI) - 실현 불가..하지 않을까요..
+
+<div class="chart-wrapper">
+  <div class="chart-title">AI 기술 계층 — 포함 관계 (영역이 클수록 포괄적인 범주)</div>
+  <canvas id="aiHierarchyChart" class="chart-canvas" height="200"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'aiHierarchyChart',
+  type: 'bar',
+  data: {
+    labels: ['AI (인공지능)', 'ML (머신러닝)', 'DL (딥러닝)'],
+    datasets: [{
+      label: '범주의 포괄 범위 (개념적 크기)',
+      data: [100, 60, 30],
+      backgroundColor: [
+        'rgba(52, 152, 219, 0.7)',
+        'rgba(39, 174, 96, 0.7)',
+        'rgba(230, 126, 34, 0.7)'
+      ],
+      borderColor: [
+        'rgba(52, 152, 219, 1)',
+        'rgba(39, 174, 96, 1)',
+        'rgba(230, 126, 34, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            var desc = ['AI ⊃ ML ⊃ DL', 'ML은 AI의 하위 집합', 'DL은 ML의 하위 집합 (신경망 기반)'];
+            return desc[ctx.dataIndex];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        max: 110,
+        title: { display: true, text: '포괄 범위 (%)' }
+      }
+    }
+  }
+});
+</script>
 
 - 현재까지 나온 AI 는 전부 ANI 약인공지능입니다. 아이폰의 Siri, Open AI 의 ChatGPT, 자율주행과 같이 각종 자연어 처리, 컴퓨터 비전으로 구현한 인공지능이 이에 해당합니다.
 

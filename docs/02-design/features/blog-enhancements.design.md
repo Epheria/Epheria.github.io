@@ -4,7 +4,7 @@
 > **Plan Reference**: `docs/01-plan/features/blog-enhancements.plan.md`
 > **Author**: Sehyup
 > **Date**: 2026-02-18
-> **Status**: Draft
+> **Status**: Final (구현 완료 반영)
 
 ---
 
@@ -205,41 +205,42 @@ layout: default
 
 #### `_includes/stats/heatmap.html` (신규)
 
-**설계**: 최근 52주 데이터 → CSS Grid (7×52 = 364칸)
+**설계**: 블로그 시작 연도부터 현재까지 **연도별 × 월별** 활동 히트맵
+
+> **변경 이유**: 52주 일별 방식은 Liquid의 timestamp 날짜 연산 한계로 구현 어려움.
+> 연도-월 문자열 비교 방식이 Liquid에서 안정적으로 동작함.
 
 **핵심 알고리즘**:
 ```liquid
-{% assign today = "now" | date: "%s" | plus: 0 %}
-{% assign one_year_ago = today | minus: 31536000 %}
+{% assign current_year = "now" | date: "%Y" | plus: 0 %}
+{% assign start_year   = site.posts.last.date | date: "%Y" | plus: 0 %}
 
-{% comment %} 날짜별 포스트 수 집계 {% endcomment %}
-{% assign post_dates = "" %}
-{% for post in site.posts %}
-  {% assign post_ts = post.date | date: "%s" | plus: 0 %}
-  {% if post_ts >= one_year_ago %}
-    {% assign date_str = post.date | date: "%Y-%m-%d" %}
-    {% assign post_dates = post_dates | append: date_str | append: "," %}
-  {% endif %}
+{% for year in (start_year..current_year) %}
+  {% for month_str in months_num %}
+    {% assign year_month = year | append: "-" | append: month_str %}
+    {% assign count = 0 %}
+    {% for post in site.posts %}
+      {% assign post_ym = post.date | date: "%Y-%m" %}
+      {% if post_ym == year_month %}
+        {% assign count = count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    {% comment %} level 0~4 산정: 0개/1~2개/3~4개/5~7개/8개+ {% endcomment %}
+  {% endfor %}
 {% endfor %}
 ```
 
-**그리드 렌더링**:
+**그리드 렌더링** (Flex row 방식):
 ```liquid
-{% comment %} 52주 × 7일 셀 렌더링 {% endcomment %}
-<div class="heatmap-grid">
-  {% for week in (0..51) %}
-    <div class="heatmap-week">
-      {% for day in (0..6) %}
-        {% assign days_ago = week | times: 7 | plus: day %}
-        {% comment %} 해당 날짜의 포스트 수 계산 {% endcomment %}
-        <div class="heatmap-cell level-{{ count }}" title="{{ date_str }}: {{ count }}개"></div>
-      {% endfor %}
-    </div>
-  {% endfor %}
+<div class="heatmap-row">
+  <span class="heatmap-year">{{ year }}</span>
+  <div class="heatmap-months">
+    {% for month_str in months_num %}
+      <div class="heatmap-cell level-{{ level }}" title="{{ year_month }}: {{ count }}개"></div>
+    {% endfor %}
+  </div>
 </div>
 ```
-
-> **Liquid 한계**: 날짜 연산이 복잡. `date_to_xmlschema` 필터와 오프셋 계산으로 처리.
 
 ---
 
@@ -277,33 +278,45 @@ layout: default
 
 > Chirpy 테마는 `_sass/addon/` 에 커스텀 SCSS를 추가하면 자동으로 로드됨.
 
-**SCSS 구조**:
+**SCSS 구조** (주요 클래스):
 ```scss
 // 통계 대시보드 스타일
 // Chirpy CSS 변수 활용 (다크/라이트 모드 자동 대응)
 
-.stats-cards { /* 지표 카드 그리드 */ }
-.stat-card { /* 개별 카드 */ }
+.stats-page-title { /* 페이지 제목 (stats-title → stats-page-title로 변경) */ }
+.stats-section-title { /* 섹션별 소제목 */ }
+
+.stats-cards { /* 지표 카드 그리드 (auto-fit) */ }
+.stat-card { background: var(--card-bg, var(--main-bg)); /* hover 시 box-shadow */ }
 
 .category-bar-row { /* 카테고리 바 행 */ }
-.bar-container { /* 바 배경 */ }
 .bar-fill {
-  background-color: var(--link-color); /* Chirpy 변수 활용 */
+  background: var(--link-color); /* Chirpy 변수 활용 */
+  transition: width 0.3s ease;
 }
 
-.heatmap-grid { display: grid; grid-template-columns: repeat(53, 1fr); }
+// 히트맵: Flex row 방식 (연도 × 월)
+.heatmap-row { display: flex; align-items: center; }
+.heatmap-months { display: flex; gap: 4px; }
 .heatmap-cell {
+  width: 32px; height: 22px; border-radius: 3px;
   &.level-0 { background: var(--main-border-color); }
   &.level-1 { background: #9be9a8; }
   &.level-2 { background: #40c463; }
   &.level-3 { background: #30a14e; }
   &.level-4 { background: #216e39; }
 }
+[data-mode="dark"] .heatmap-cell.level-0 { background: #21262d; }
 
-.tag-cloud { /* 워드클라우드 컨테이너 */ }
-.tag-sm { font-size: 0.85rem; }
-.tag-md { font-size: 1.0rem; }
-.tag-lg { font-size: 1.2rem; font-weight: bold; }
+.tag-sm { font-size: 0.78rem; }   /* 0.85 → 0.78 */
+.tag-md { font-size: 0.92rem; }   /* 1.0  → 0.92 */
+.tag-lg { font-size: 1.08rem; font-weight: 600; } /* 1.2 → 1.08 */
+
+// 반응형 (576px 이하)
+@media (max-width: 576px) {
+  .stats-cards { grid-template-columns: repeat(2, 1fr); }
+  .heatmap-cell { width: 22px; }
+}
 ```
 
 ---
@@ -338,57 +351,72 @@ categories: [Mathematics, Linear Algebra]
 
 #### `_includes/series-nav.html` (신규)
 
+> **변경 사항**:
+> - 시리즈 키 구분자 `-` → `|` (카테고리명에 하이픈 포함 시 충돌 방지)
+> - CSS 클래스명: `series-header` → `series-nav-header`, `current` → `current-post`
+> - 버튼: Bootstrap `btn-outline-primary` → 커스텀 `.series-nav-btn` (Bootstrap 의존 제거)
+> - 진행률 표시 추가: `(현재 / 전체)` 형식
+
 ```liquid
-{% assign current_cats = page.categories | join: "-" %}
-{% assign series_posts = "" | split: "" %}
+{% if page.categories.size >= 2 %}
+  {% assign series_key = page.categories[0] | append: "|" | append: page.categories[1] %}
+  {% assign series_posts = "" | split: "" %}
 
-{% for post in site.posts reversed %}
-  {% assign post_cats = post.categories | join: "-" %}
-  {% if post_cats == current_cats and post.categories.size >= 2 %}
-    {% assign series_posts = series_posts | push: post %}
-  {% endif %}
-{% endfor %}
-
-{% if series_posts.size > 1 %}
-<div class="series-nav">
-  <div class="series-header">
-    <i class="fas fa-list-ol"></i>
-    <span>{{ page.categories | last }} 시리즈 ({{ series_posts.size }}편)</span>
-  </div>
-  <ol class="series-list">
-    {% for post in series_posts %}
-      <li class="{% if post.url == page.url %}current{% endif %}">
-        {% if post.url == page.url %}
-          <strong>{{ post.title }}</strong>
-        {% else %}
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ol>
-
-  {% comment %} 이전/다음 버튼 {% endcomment %}
-  {% assign current_index = 0 %}
-  {% for post in series_posts %}
-    {% if post.url == page.url %}{% assign current_index = forloop.index0 %}{% endif %}
+  {% for post in site.posts reversed %}
+    {% if post.categories.size >= 2 %}
+      {% assign post_key = post.categories[0] | append: "|" | append: post.categories[1] %}
+      {% if post_key == series_key %}
+        {% assign series_posts = series_posts | push: post %}
+      {% endif %}
+    {% endif %}
   {% endfor %}
 
-  <div class="series-pagination">
-    {% if current_index > 0 %}
-      {% assign prev_post = series_posts[current_index | minus: 1] %}
-      <a href="{{ prev_post.url | relative_url }}" class="btn btn-sm btn-outline-primary">
-        ← {{ prev_post.title | truncate: 30 }}
-      </a>
-    {% endif %}
-    {% assign next_index = current_index | plus: 1 %}
-    {% if next_index < series_posts.size %}
-      {% assign next_post = series_posts[next_index] %}
-      <a href="{{ next_post.url | relative_url }}" class="btn btn-sm btn-outline-primary">
-        {{ next_post.title | truncate: 30 }} →
-      </a>
-    {% endif %}
-  </div>
-</div>
+  {% if series_posts.size > 1 %}
+    {% assign current_index = 0 %}
+    {% for post in series_posts %}
+      {% if post.url == page.url %}{% assign current_index = forloop.index0 %}{% endif %}
+    {% endfor %}
+
+    <div class="series-nav">
+      <div class="series-nav-header">
+        <i class="fas fa-list-ol fa-fw"></i>
+        {{ page.categories[1] }} 시리즈
+        <span>({{ current_index | plus: 1 }} / {{ series_posts.size }})</span>
+      </div>
+      <ol class="series-list">
+        {% for post in series_posts %}
+          <li class="{% if post.url == page.url %}current-post{% endif %}">
+            {% if post.url == page.url %}
+              {{ post.title }}
+            {% else %}
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+
+      <div class="series-pagination">
+        {% if current_index > 0 %}
+          {% assign prev_post = series_posts[current_index | minus: 1] %}
+          <a href="{{ prev_post.url | relative_url }}" class="series-nav-btn">
+            <i class="fas fa-angle-left fa-fw"></i>
+            <span class="nav-label">{{ prev_post.title | truncate: 35 }}</span>
+          </a>
+        {% else %}
+          <span></span>
+        {% endif %}
+
+        {% assign next_index = current_index | plus: 1 %}
+        {% if next_index < series_posts.size %}
+          {% assign next_post = series_posts[next_index] %}
+          <a href="{{ next_post.url | relative_url }}" class="series-nav-btn" style="margin-left:auto; text-align:right;">
+            <span class="nav-label">{{ next_post.title | truncate: 35 }}</span>
+            <i class="fas fa-angle-right fa-fw"></i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 {% endif %}
 ```
 
@@ -396,13 +424,13 @@ categories: [Mathematics, Linear Algebra]
 
 #### `_layouts/post.html` (수정)
 
-현재 `post.html`의 `<div class="content">` 직전에 `series-nav` include 추가:
+`<div class="content">` 직전에 `series-nav` include 추가.
+
+> **변경**: 카테고리 수 조건(`page.categories.size >= 2`)은 `series-nav.html` 내부로 이동 — 레이아웃을 단순하게 유지.
 
 ```html
-{% comment %} 시리즈 네비게이션 (2개 이상 카테고리 포스트만) {% endcomment %}
-{% if page.categories.size >= 2 %}
-  {% include series-nav.html %}
-{% endif %}
+{% comment %} 시리즈 네비게이션 {% endcomment %}
+{% include series-nav.html %}
 
 <div class="content">
   {% include hits-counter.html %}
@@ -414,31 +442,60 @@ categories: [Mathematics, Linear Algebra]
 
 #### `_sass/addon/_series-nav.scss` (신규)
 
+> **변경 사항**: `sidebar-bg` → `card-bg`, 클래스명 변경, Bootstrap 버튼 제거 후 커스텀 `.series-nav-btn` 추가
+
 ```scss
 .series-nav {
-  border: 1px solid var(--main-border-color);
+  border: 1px solid var(--main-border-color, #e1e4e8);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   margin-bottom: 1.5rem;
-  background: var(--sidebar-bg);
+  background: var(--card-bg, var(--main-bg)); /* sidebar-bg → card-bg */
+}
 
-  .series-header {
-    font-weight: bold;
-    margin-bottom: 0.75rem;
-    color: var(--link-color);
+.series-nav-header {  /* series-header → series-nav-header */
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--link-color, #0366d6);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+
+.series-list {
+  list-style: decimal;
+  padding-left: 1.5rem;
+
+  li.current-post {  /* current → current-post */
+    font-weight: 700;
+    color: var(--link-color, #0366d6);
+  }
+}
+
+.series-pagination {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--main-border-color, #e1e4e8);
+  padding-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Bootstrap btn-outline-primary 대체 */
+.series-nav-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--main-border-color, #e1e4e8);
+  border-radius: 0.35rem;
+  font-size: 0.8rem; text-decoration: none;
+  color: var(--text-color, inherit);
+  max-width: 48%;
+
+  &:hover {
+    background: var(--link-color, #0366d6);
+    color: #fff;
+    border-color: var(--link-color, #0366d6);
   }
 
-  .series-list {
-    padding-left: 1.5rem;
-    .current { font-weight: bold; }
-  }
-
-  .series-pagination {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    gap: 0.5rem;
-  }
+  .nav-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 ```
 
@@ -511,3 +568,4 @@ categories: [Mathematics, Linear Algebra]
 | Version | Date | Changes |
 |---------|------|---------|
 | 0.1 | 2026-02-18 | Initial design (검색 우선) |
+| 0.2 | 2026-02-18 | 구현 반영 업데이트: 히트맵 방식 변경(52주→연도×월), 시리즈 키 구분자 변경(`-`→`\|`), CSS 클래스명 정정, Bootstrap 버튼 제거 |

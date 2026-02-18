@@ -26,9 +26,9 @@ mermaid: true
 
 ```
 Setting up bundled DotNet SDK
-/Users/son_sehyup/UE_5.6/Engine/Build/BatchFiles/Mac/../../../Binaries/ThirdParty/DotNet/8.0.300/mac-arm64
-Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll Development Mac -Project=/Users/son_sehyup/Documents/Unreal Projects/dd/dd.uproject -TargetType=Editor -Progress -NoEngineChanges -NoHotReloadFromIDE
-Log file: /Users/son_sehyup/Library/Application Support/Epic/UnrealBuildTool/Log.txt
+/Users/YOUR_USERNAME/UE_5.6/Engine/Build/BatchFiles/Mac/../../../Binaries/ThirdParty/DotNet/8.0.300/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll Development Mac -Project=/Users/YOUR_USERNAME/Documents/Unreal Projects/dd/dd.uproject -TargetType=Editor -Progress -NoEngineChanges -NoHotReloadFromIDE
+Log file: /Users/YOUR_USERNAME/Library/Application Support/Epic/UnrealBuildTool/Log.txt
 Creating makefile for ddEditor (no existing makefile)
 Platform Mac is not a valid platform to build. Check that the SDK is installed properly and that you have the necessary platform support files (DataDrivenPlatformInfo.ini, SDK.json, etc).
 

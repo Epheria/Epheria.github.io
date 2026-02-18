@@ -1,0 +1,13 @@
+{% if page.tldr and page.tldr.size > 0 %}
+<div class="tldr-box">
+  <div class="tldr-header">
+    <i class="fas fa-bolt fa-fw"></i>
+    TL;DR — 핵심 요약
+  </div>
+  <ul class="tldr-list">
+    {% for item in page.tldr %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
