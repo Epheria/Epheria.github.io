@@ -1,13 +1,12 @@
 {% comment %}
   언어 전환 드롭다운 컴포넌트
   profile-wrapper 내부 (프로필 아래)에 삽입
-  현재 언어: site.active_lang (polyglot) 또는 site.lang
 {% endcomment %}
 
 {% assign current_lang = site.active_lang | default: site.lang | default: 'ko' %}
 
 <div class="language-switcher" id="languageSwitcher">
-  <button class="lang-toggle btn" aria-label="{{ site.data.locales[current_lang].i18n.language_label | default: 'Language' }}" aria-expanded="false" aria-haspopup="true">
+  <button class="lang-toggle" type="button" aria-label="{{ site.data.locales[current_lang].i18n.language_label | default: 'Language' }}" aria-expanded="false" aria-haspopup="true">
     <i class="fas fa-globe fa-fw"></i>
     <span class="lang-current">{{ current_lang | upcase }}</span>
     <i class="fas fa-caret-down fa-fw lang-caret"></i>
@@ -26,16 +25,11 @@
           <i class="fas fa-check fa-fw"></i>
         </span>
       {% else %}
-        {% comment %}
-          URL에서 언어 prefix(/en, /ja)를 정확히 제거.
-          remove 필터는 URL 내부의 동일 문자열도 제거하므로
-          URL 앞 4글자가 '/en/' 또는 '/ja/'인지 확인 후 remove_first 사용.
-        {% endcomment %}
-        {% assign url_start = page.url | truncate: 4, '' %}
-        {% if url_start == '/en/' %}
-          {% assign base_url = page.url | remove_first: '/en' %}
-        {% elsif url_start == '/ja/' %}
-          {% assign base_url = page.url | remove_first: '/ja' %}
+        {% assign url_prefix = page.url | slice: 0, 4 %}
+        {% if url_prefix == '/en/' %}
+          {% assign base_url = page.url | slice: 3, 300 %}
+        {% elsif url_prefix == '/ja/' %}
+          {% assign base_url = page.url | slice: 3, 300 %}
         {% else %}
           {% assign base_url = page.url %}
         {% endif %}
@@ -43,7 +37,7 @@
         {% if lang_code == site.default_lang %}
           {% assign lang_url = base_url | relative_url %}
         {% else %}
-          {% assign lang_url = lang_code | prepend: '/' | append: base_url | relative_url %}
+          {% assign lang_url = '/' | append: lang_code | append: base_url | relative_url %}
         {% endif %}
         <a href="{{ lang_url }}" class="lang-item" role="menuitem"
            hreflang="{{ lang_code }}"

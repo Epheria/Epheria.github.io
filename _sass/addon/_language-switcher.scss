@@ -9,6 +9,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
+    width: auto;
     padding: 0.15rem 0.5rem;
     color: inherit;
     font-size: 0.75rem;
@@ -16,6 +17,7 @@
     border-radius: 1rem;
     background: transparent;
     opacity: 0.5;
+    cursor: pointer;
     transition: opacity 0.2s ease;
 
     &:hover {
