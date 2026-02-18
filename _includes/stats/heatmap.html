@@ -1,0 +1,64 @@
+{% assign months_label = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}
+{% assign months_num   = "01,02,03,04,05,06,07,08,09,10,11,12" | split: "," %}
+
+{% assign current_year = "now" | date: "%Y" | plus: 0 %}
+{% assign start_year   = site.posts.last.date | date: "%Y" | plus: 0 %}
+
+<div class="heatmap-section">
+  <h2 class="stats-section-title">
+    <i class="fas fa-fire fa-fw"></i> 월별 작성 활동
+  </h2>
+
+  <!-- Month labels -->
+  <div style="display:flex; margin-left:48px; margin-bottom:4px; gap:4px;">
+    {% for label in months_label %}
+      <div class="heatmap-month-label">{{ label }}</div>
+    {% endfor %}
+  </div>
+
+  <!-- Year rows -->
+  {% for year in (start_year..current_year) %}
+    <div class="heatmap-row">
+      <span class="heatmap-year">{{ year }}</span>
+      <div class="heatmap-months">
+        {% for month_str in months_num %}
+          {% assign year_month = year | append: "-" | append: month_str %}
+          {% assign count = 0 %}
+          {% for post in site.posts %}
+            {% assign post_ym = post.date | date: "%Y-%m" %}
+            {% if post_ym == year_month %}
+              {% assign count = count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+
+          {% assign level = 0 %}
+          {% if count >= 8 %}
+            {% assign level = 4 %}
+          {% elsif count >= 5 %}
+            {% assign level = 3 %}
+          {% elsif count >= 3 %}
+            {% assign level = 2 %}
+          {% elsif count >= 1 %}
+            {% assign level = 1 %}
+          {% endif %}
+
+          <div
+            class="heatmap-cell level-{{ level }}"
+            title="{{ year_month }}: {{ count }}개"
+          ></div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <!-- Legend -->
+  <div class="heatmap-legend">
+    <span>Less</span>
+    <div class="heatmap-legend-cell level-0" style="background:var(--main-border-color,#e1e4e8);width:14px;height:14px;border-radius:2px;"></div>
+    <div class="heatmap-legend-cell" style="background:#9be9a8;width:14px;height:14px;border-radius:2px;"></div>
+    <div class="heatmap-legend-cell" style="background:#40c463;width:14px;height:14px;border-radius:2px;"></div>
+    <div class="heatmap-legend-cell" style="background:#30a14e;width:14px;height:14px;border-radius:2px;"></div>
+    <div class="heatmap-legend-cell" style="background:#216e39;width:14px;height:14px;border-radius:2px;"></div>
+    <span>More</span>
+  </div>
+</div>

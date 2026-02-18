@@ -124,6 +124,9 @@ script_includes:
     <!-- 🔼 TOC 블록 끝 -->
   {% endif %}
 
+  {% comment %} 시리즈 네비게이션 (하위 카테고리 포스트만) {% endcomment %}
+  {% include series-nav.html %}
+
   <div class="content">
     {% include hits-counter.html %}
     {{ content }}

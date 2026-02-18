@@ -1,0 +1,27 @@
+{% assign max_count = 0 %}
+{% for category in site.categories %}
+  {% if category[1].size > max_count %}
+    {% assign max_count = category[1].size %}
+  {% endif %}
+{% endfor %}
+
+<div class="category-chart">
+  <h2 class="stats-section-title">
+    <i class="far fa-folder-open fa-fw"></i> 카테고리별 포스트
+  </h2>
+  {% for category in site.categories %}
+    {% assign count = category[1].size %}
+    {% assign width_pct = count | times: 100 | divided_by: max_count %}
+    <div class="category-bar-row">
+      <a
+        href="{{ site.baseurl }}/categories/{{ category[0] | slugify | url_encode }}/"
+        class="category-name"
+        title="{{ category[0] }} ({{ count }}개)"
+      >{{ category[0] }}</a>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: {{ width_pct }}%"></div>
+      </div>
+      <span class="bar-count">{{ count }}</span>
+    </div>
+  {% endfor %}
+</div>

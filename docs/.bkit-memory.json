@@ -1,14 +1,8 @@
 {
-  "sessionCount": 14,
-  "lastSession": {
-    "startedAt": "2026-02-18T00:00:00.000Z",
-    "platform": "claude",
-    "level": "Starter"
-  },
-  "currentFeature": "blog-enhancements",
-  "pdca": {
-    "feature": "blog-enhancements",
-    "phase": "plan",
-    "startedAt": "2026-02-18T00:00:00.000Z"
-  }
+  "sessionCount": 16,
+  "platform": "gemini",
+  "level": "Starter",
+  "lastSessionStarted": "2026-02-18T01:00:18.508Z",
+  "outputStyle": null,
+  "lastSessionEnded": null
 }

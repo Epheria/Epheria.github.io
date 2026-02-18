@@ -1,0 +1,16 @@
+---
+layout: default
+---
+
+{% include lang.html %}
+
+<div id="stats-page" class="px-1">
+  <h1 class="stats-page-title" data-toc-skip>
+    Blog Statistics
+  </h1>
+
+  {% include stats/summary-cards.html %}
+  {% include stats/category-chart.html %}
+  {% include stats/heatmap.html %}
+  {% include stats/tag-cloud.html %}
+</div>

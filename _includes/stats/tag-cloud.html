@@ -1,0 +1,32 @@
+{% assign max_tag_count = 0 %}
+{% for tag in site.tags %}
+  {% if tag[1].size > max_tag_count %}
+    {% assign max_tag_count = tag[1].size %}
+  {% endif %}
+{% endfor %}
+
+<div>
+  <h2 class="stats-section-title">
+    <i class="fa fa-tags fa-fw"></i> 태그 클라우드
+  </h2>
+  <div class="tag-cloud">
+    {% for tag in site.tags %}
+      {% assign count = tag[1].size %}
+      {% assign ratio = count | times: 3 | divided_by: max_tag_count %}
+      {% if ratio >= 2 %}
+        {% assign size_class = "tag-lg" %}
+      {% elsif ratio >= 1 %}
+        {% assign size_class = "tag-md" %}
+      {% else %}
+        {% assign size_class = "tag-sm" %}
+      {% endif %}
+      <a
+        href="{{ site.baseurl }}/tags/{{ tag[0] | slugify | url_encode }}/"
+        class="tag-cloud-item {{ size_class }}"
+        title="{{ tag[0] }}: {{ count }}개 포스트"
+      >
+        {{ tag[0] }}<span class="tag-count">{{ count }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{% assign total_posts = site.posts | size %}
+{% assign total_tags = site.tags | size %}
+{% assign total_categories = site.categories | size %}
+{% assign first_post = site.posts | last %}
+{% assign last_post = site.posts | first %}
+{% assign blog_start_year = first_post.date | date: "%Y" %}
+
+<div class="stats-cards">
+  <div class="stat-card">
+    <span class="stat-number">{{ total_posts }}</span>
+    <span class="stat-label">총 포스트</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ total_categories }}</span>
+    <span class="stat-label">카테고리</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ total_tags }}</span>
+    <span class="stat-label">태그</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ blog_start_year }}</span>
+    <span class="stat-label">블로그 시작</span>
+  </div>
+</div>

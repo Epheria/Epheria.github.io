@@ -1,0 +1,72 @@
+{% comment %}
+시리즈 네비게이션: categories[0] + categories[1] 조합으로 시리즈 판정
+카테고리가 2개 이상인 포스트만 대상
+{% endcomment %}
+
+{% if page.categories.size >= 2 %}
+  {% assign series_key = page.categories[0] | append: "|" | append: page.categories[1] %}
+  {% assign series_posts = "" | split: "" %}
+
+  {% for post in site.posts reversed %}
+    {% if post.categories.size >= 2 %}
+      {% assign post_key = post.categories[0] | append: "|" | append: post.categories[1] %}
+      {% if post_key == series_key %}
+        {% assign series_posts = series_posts | push: post %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if series_posts.size > 1 %}
+    {% comment %} 현재 포스트 인덱스 찾기 {% endcomment %}
+    {% assign current_index = 0 %}
+    {% for post in series_posts %}
+      {% if post.url == page.url %}
+        {% assign current_index = forloop.index0 %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="series-nav">
+      <div class="series-nav-header">
+        <i class="fas fa-list-ol fa-fw"></i>
+        {{ page.categories[1] }} 시리즈
+        <span style="font-weight:400; color:var(--text-muted-color,#6c757d);">
+          ({{ current_index | plus: 1 }} / {{ series_posts.size }})
+        </span>
+      </div>
+
+      <ol class="series-list">
+        {% for post in series_posts %}
+          <li class="{% if post.url == page.url %}current-post{% endif %}">
+            {% if post.url == page.url %}
+              {{ post.title }}
+            {% else %}
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+
+      <div class="series-pagination">
+        {% if current_index > 0 %}
+          {% assign prev_index = current_index | minus: 1 %}
+          {% assign prev_post = series_posts[prev_index] %}
+          <a href="{{ prev_post.url | relative_url }}" class="series-nav-btn">
+            <i class="fas fa-angle-left fa-fw"></i>
+            <span class="nav-label">{{ prev_post.title | truncate: 35 }}</span>
+          </a>
+        {% else %}
+          <span></span>
+        {% endif %}
+
+        {% assign next_index = current_index | plus: 1 %}
+        {% if next_index < series_posts.size %}
+          {% assign next_post = series_posts[next_index] %}
+          <a href="{{ next_post.url | relative_url }}" class="series-nav-btn" style="margin-left:auto; text-align:right;">
+            <span class="nav-label">{{ next_post.title | truncate: 35 }}</span>
+            <i class="fas fa-angle-right fa-fw"></i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

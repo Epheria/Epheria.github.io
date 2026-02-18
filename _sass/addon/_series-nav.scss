@@ -1,0 +1,83 @@
+// ===== Series Navigation Styles =====
+// 동일 카테고리 시리즈 포스트 탐색 UI
+
+.series-nav {
+  border: 1px solid var(--main-border-color, #e1e4e8);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--card-bg, var(--main-bg));
+}
+
+.series-nav-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--link-color, #0366d6);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.series-list {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0 0 1rem 0;
+  font-size: 0.88rem;
+
+  li {
+    padding: 0.2rem 0;
+    line-height: 1.4;
+
+    &.current-post {
+      font-weight: 700;
+      color: var(--link-color, #0366d6);
+    }
+
+    a {
+      color: var(--text-color, inherit);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--link-color, #0366d6);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.series-pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--main-border-color, #e1e4e8);
+  flex-wrap: wrap;
+}
+
+.series-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--main-border-color, #e1e4e8);
+  border-radius: 0.35rem;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: var(--text-color, inherit);
+  max-width: 48%;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--link-color, #0366d6);
+    color: #fff;
+    border-color: var(--link-color, #0366d6);
+  }
+
+  .nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
