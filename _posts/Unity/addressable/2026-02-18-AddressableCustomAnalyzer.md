@@ -9,20 +9,6 @@ math: true
 mermaid: true
 ---
 
-<br>
-
-## 시리즈 안내
-
-> 이 글은 Unity Addressable 시리즈의 4편입니다.
-> - [1편 - Operating Principle and Usage](/posts/UnityAddressable/)
-> - [2편 - Update Work Flow And Management](/posts/UnityAddressable2/)
-> - [3편 - Internal Memory Structure and Asset Bundle](/posts/UnityAddressableMemory/)
-> - **4편 - 커스텀 분석 도구 제작기 (이 글)**
-
-<br>
-
----
-
 ## I. 왜 커스텀 도구가 필요했나
 
 ### 수천 개 에셋을 수동으로 관리하는 고통
