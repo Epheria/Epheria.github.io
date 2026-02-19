@@ -508,7 +508,7 @@ public class CommonModal : UIPopup
 <br>
 <br>
 
-## 5. Asset Table setup
+## 5. Asset Table setup {#5-how-to-configure-asset-table}
 
 - In New Table Collection, besides String Table there is Asset Table.
 - Asset Table maps font/font material per locale code.

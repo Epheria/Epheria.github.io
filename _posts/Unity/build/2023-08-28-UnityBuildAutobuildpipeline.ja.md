@@ -16,7 +16,7 @@ toc: true
 
 ---
 
-## はじめに
+## はじめに {#introduction}
 - Unity プロジェクトをビルドする際に、batchmode で CI/CD ツール (Jenkins, fastlane) を使ってバックグラウンド実行する方法を指す。
 - 前回の fastlane 記事で説明した FastFile の unity plugin では、`execute_method` で static 関数を呼ぶ形が一般的。
 - 引数をビルドスクリプトで柔軟に受けたい場合、fastlane は制約があるため Jenkins shell 実行の方が向く場合がある。
@@ -39,7 +39,7 @@ public static class ProjectBuilder
 
 <br>
 
-#### 1. AOS ビルド
+#### 1. AOS ビルド {#1-aos-build}
 - `.apk` か `.aab` かを区別する。開発向けは `.apk`、Google Play の内部/公開テストやリリースは `.aab`。
 - keystore は生成/保管を厳密に。紛失・破損すると Unity 側ビルド失敗や Play Console 認証問題が発生する。
     > keystore 参考: [>>こちら<<](https://learnandcreate.tistory.com/1583)
@@ -115,7 +115,7 @@ private static string[] FindEnabledEditorScenes()
 
 <br>
 
-#### 2. iOS ビルド
+#### 2. iOS ビルド {#2-ios-build}
 - iOS ビルド手順は簡潔に言うと:
 1. Unity プロジェクトビルド -> `xcworkspace` (cocoapods 必須) と `xcodeproj` 出力
 2. Xcode ビルド -> `.ipa` 出力
@@ -192,7 +192,7 @@ class PBR : IPostprocessBuildWithReport
 
 <br>
 
-#### 3. Addressable ビルド
+#### 3. Addressable ビルド {#3-addressable-build}
 - Addressable ビルドも Unity プロジェクトを fastlane から呼ぶ方式で同様に運用する。
 
 ```ruby

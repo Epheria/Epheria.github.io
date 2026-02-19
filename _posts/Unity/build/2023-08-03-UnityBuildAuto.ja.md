@@ -31,7 +31,7 @@ toc: true
 <br>
 <br>
 
-## 1. fastlane 設定方法
+## 1. fastlane 設定方法 {#fastlane-setup}
 
 #### fastlane インストール
 1. Homebrew で fastlane を導入
@@ -86,7 +86,7 @@ toc: true
 
 <br>
 
-#### Plugin インストール
+#### Plugin インストール {#plugin-setup}
 
 | 種類 | リンク |
 | ------------ | ------------- |
@@ -107,7 +107,7 @@ toc: true
 
 <br>
 
-#### FastFile 設定
+#### FastFile 設定 {#fastfile-setup}
 - fastlane の核心は **FastFile**。  
 Jenkins と組み合わせると、ビルドマシンの Unity プロジェクトと fastlane を使ってリモートビルド/配布が可能。  
 Jenkins の *Execute Shell* で fastlane init -> Addressable Build -> Unity Project Build -> AppCenter Upload まで実行できる。

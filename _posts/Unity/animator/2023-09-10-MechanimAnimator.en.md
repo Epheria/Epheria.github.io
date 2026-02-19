@@ -131,7 +131,7 @@ if(fsm.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
 
 <br>
 
-#### 4. Control Animation Event by script
+#### 4. Control Animation Event by script {#4-how-to-control-animation-event-by-script}
 
 - There are two methods: assign animation events manually in editor, or create/assign them dynamically by script.
 > [Animation Event Reference](https://docs.unity3d.com/ScriptReference/AnimationEvent.html)

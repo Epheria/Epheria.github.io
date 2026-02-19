@@ -131,7 +131,7 @@ if(fsm.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
 
 <br>
 
-#### 4. Animation Event をスクリプトで制御
+#### 4. Animation Event をスクリプトで制御 {#4-animation-event-をスクリプトで制御する方法}
 
 - 方法は 2 つ: エディタで Animation Clip に直接追加する方法、スクリプトで該当フレームに動的追加する方法。
 > [Animation Event Reference](https://docs.unity3d.com/ScriptReference/AnimationEvent.html)
@@ -173,7 +173,7 @@ if(fsm.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
 <br>
 <br>
 
-#### 5. Animator Controller パラメータをコード制御する方法
+#### 5. Animator Controller パラメータをコード制御する方法 {#5-animator-controller-パラメータをコードで制御する方法}
 - Mono スクリプトを GameObject に付けるのと同様に、`StateMachineBehaviour` 継承スクリプトは状態ごとに接続可能。
 - 例: `OnStateEnter`, `OnStateExit`, `OnStateIK`, `OnStateMove`, `OnStateUpdate`
 > [StateMachineBehaviour Reference](https://docs.unity3d.com/kr/530/ScriptReference/StateMachineBehaviour.html)
