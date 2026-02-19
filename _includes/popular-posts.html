@@ -8,7 +8,7 @@
   <ol class="popular-posts-list content list-unstyled ps-0 pb-1 ms-1 mt-2">
     {% for item in popular limit: 10 %}
       <li class="popular-post-item lh-lg">
-        <a href="{{ item.url | relative_url }}" title="{{ item.title }}">
+        <a href="{{ item.url }}" title="{{ item.title }}">
           <span class="popular-post-rank {% if forloop.index <= 3 %}top-three{% endif %}">{{ forloop.index }}</span>
           <span class="popular-post-title text-truncate">{{ item.title }}</span>
         </a>
