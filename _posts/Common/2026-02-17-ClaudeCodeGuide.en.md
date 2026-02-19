@@ -1,482 +1,481 @@
 ---
-categories:
-- Tool
-- Claude Code
+title: The Complete Claude Code Guide - From Installation to Advanced Usage Strategies
 date: 2026-02-17 14:00:00 +0900
+categories: [Tool, Claude Code]
+tags: [claude code, ai, llm, vibe coding, claude, anthropic, cli]
 difficulty: intermediate
 lang: en
-tags:
-- claude code
-- ai
-- llm
-- vibe coding
-- claude
-- anthropic
-- cli
-title: The Complete Guide to Claude Code - From Installation to Advanced Usage Strategies
 toc: true
 toc_sticky: true
 ---
 
 <br>
 
-## What is Claude Code?
+## What Is Claude Code?
 
-**Claude Code** is an Agentic Coding Tool** developed by Anthropic. It runs directly from the terminal (CLI) and allows you to perform almost all development tasks, including writing code in natural language, refactoring, debugging, and git management.
+**Claude Code** is an **agentic coding tool** developed by Anthropic. It runs directly in the terminal (CLI) and can handle almost every development task through natural language, including writing code, refactoring, debugging, and git operations.
 
-The biggest difference from existing AI coding assistants (Copilot, Cursor, etc.) is that it **understands the entire project as a context** and is in the form of an **Agent** that can directly read and write the file system.
+Its biggest difference from existing AI coding assistants (Copilot, Cursor, etc.) is that it **understands the entire project as context** and works as an **agent** that can directly read and write the file system.
 
 <br>
 
 ---
 
-## I. Installation (macOS environment)
+## I. Installation (macOS)
 
-### Method 1: Installation via Homebrew (recommended)
+### Method 1: Install via Homebrew (Recommended)
 
-| steps | command | Description |
+| Step | Command | Description |
 |:---:|:---|:---|
 | **1** | `brew install --cask claude-code` | Install Claude Code with Homebrew |
-| **2** | `claude --version` | Check installation and version |
+| **2** | `claude --version` | Verify installation and check version |
 
-### Method 2: Installation via npm
+### Method 2: Install via npm
 
-| steps | command | Description |
+| Step | Command | Description |
 |:---:|:---|:---|
-| **1** | `node --version` | Check Node.js 18.0 or higher |
-| **2** | `npm install -g @anthropic-ai/claude-code` | npm global install |
+| **1** | `node --version` | Verify Node.js 18.0+ |
+| **2** | `npm install -g @anthropic-ai/claude-code` | Global install via npm |
 | **3** | `claude --version` | Verify installation |
 
-> If you don't have Node.js, you can install the LTS version from [official site](https://nodejs.org/), or install it with `brew install node`.
+> If Node.js is not installed, use the LTS version from the [official site](https://nodejs.org/) or install it with `brew install node`.
 {: .prompt-tip }
 
 <br>
 
 ---
 
-## II. Initial settings
+## II. Initial Setup
 
-### 1. Login
+### 1. Sign In
 
-After installation, log in to the terminal.
+After installation, sign in from the terminal.
 
 ```bash
 claude login
 ```
 
-When the browser opens, log in to your Anthropic account and select the CLI tool type.
+When your browser opens, sign in with your Anthropic account and choose the CLI tool type.
 
-### 2. Check token usage
+### 2. Check Token Usage
 
-You can check your current token usage at [https://claude.ai/settings/usage](https://claude.ai/settings/usage).
+You can check current usage at [https://claude.ai/settings/usage](https://claude.ai/settings/usage).
 
-> **What is a Token?** It is the minimum unit by which LLM processes text. In English, approximately 1 word = 1.3 tokens, in Korean, 1 letter = approximately 2 to 3 tokens. Claude Code consumes both **input tokens (prompt + context)** and **output tokens (response)**.
+> **What is a token?** A token is the minimum unit an LLM processes. Roughly, English is about 1 word = 1.3 tokens, while Korean is about 1 character = 2-3 tokens. Claude Code consumes both **input tokens (prompt + context)** and **output tokens (response)**.
 {: .prompt-info }
 
 <br>
 
 ---
 
-## III. IDE integration (recommended environment)
+## III. IDE Integration (Recommended)
 
-You can use it directly from the terminal, but **we strongly recommend using it connected to an IDE**. It's much more efficient because you can see code changes in real time.
+You can use it directly from terminal, but using it with an IDE is **strongly recommended**. You can inspect code changes in real time, which is much more efficient.
 
-### VS Code (recommended)
+### VS Code (Recommended)
 
 1. Install [VS Code](https://code.visualstudio.com/)
-2. Open the project folder with **Open Folder**
-3. Open **Terminal > New Terminal** from the top menu.
-4. Enter `claude` in the terminal and run it.
+2. Open your project folder with **Open Folder**
+3. Open **Terminal > New Terminal**
+4. Run `claude` in that terminal
 
 ```bash
-# Run from project directory
+# Run from your project directory
 cd /path/to/your/project
 claude
 ```
 
-> When Claude Code runs, it automatically reads the `CLAUDE.md` file in the project root to understand the project's architecture, coding rules, and work procedures. We then provide more accurate and relevant answers tailored to your needs.
+> At startup, Claude Code automatically reads `CLAUDE.md` in your project root to understand architecture, coding conventions, and workflow. That context improves relevance and accuracy.
 {: .prompt-tip }
 
 ### JetBrains (Rider, IntelliJ, etc.)
 
-It can also be executed using the `claude` command in JetBrains IDE's built-in terminal. However, I personally liked the terminal usability of VS Code better.
+You can run `claude` from the built-in terminal in JetBrains IDEs as well. Personally, I found VS Code terminal UX better.
 
 <br>
 
 ---
 
-## IV. Complete summary of key commands
+## IV. Complete Reference of Core Commands
 
-### Session management commands
+### Session Management Commands
 
-| command | Features | Description |
+| Command | Function | Description |
 |:---|:---|:---|
-| `claude` | Welcome to Claude Code | Start a new session in the current directory |
-| `claude -c` / `claude --continue` | Continue recent session | Continuing from the last conversation |
-| `claude -r` / `claude --resume` | Recall previous conversation | Resume by selecting from a list of past sessions |
-| `claude --verbose` | Detailed log mode | Detailed log output useful for debugging |
-| `claude --dangerously-skip-permissions` | Skip permission check | Automatically allow access/execution of all files (Caution!) |
+| `claude` | Start Claude Code | Start a new session in the current directory |
+| `claude -c` / `claude --continue` | Continue latest session | Continue from the last conversation |
+| `claude -r` / `claude --resume` | Resume previous conversation | Pick and resume from past sessions |
+| `claude --verbose` | Verbose mode | Show detailed logs useful for debugging |
+| `claude --dangerously-skip-permissions` | Skip permission checks | Auto-allow all file access and execution (caution) |
 
-### Slash commands in session| command | Features | Detailed description |
+### Slash Commands Inside a Session
+
+| Command | Function | Detailed Description |
 |:---|:---|:---|
-| `/clear` | **Context initialization** | Start a new conversation. **Most important command.** Make sure you have enough context windows to reduce the chance of hallucination. It is recommended to start with `/clear` on a task basis. |
-| `/compact` | Conversation Compression | Summarize/condense the conversation to free up a context window. You can also compress it around specific content like `/compact Key takeaways`. |
-| `/model` | Change model | Select models such as Opus, Sonnet, etc. Opus for planning and Sonnet for implementation are efficient. |
-| `/resume` | Resume previous conversation | You can recall past conversations. |
-| `/config` | Settings Management | Adjust various settings such as verbose, model, todo list, etc. |
-| `/memory` | Edit CLAUDE.md | Edit the project/global CLAUDE.md file directly |
-| `/init` | Project initialization | Claude analyzes the entire project and automatically generates CLAUDE.md |
-| `/terminal-setup` | Terminal line wrapping settings | Set line breaks to `Shift+Enter` |
-| `/plugin` | Plugin Management | Explore, install, and uninstall plugins |
-| `/agents` | Agent Management | Check and manage custom agents |
-| `/mcp` | MCP Server Management | Model Context Protocol server settings |
-| `/statusline` | Status line settings | Terminal status bar display settings |
-| `/todos` | Check Todo list | Check your current task list |
-| `/permissions` | Permission Management | Setting pre-allowance rules for bash commands, etc. |
-| `/insights` | **Usage pattern analysis** | Generates an HTML report by analyzing sessions for the last 30 days. Provides usage patterns, bottlenecks, and workflow improvement suggestions. |
-| `/fast` | **Toggle Fast Mode** | Fast output mode switching. A lightning bolt icon (↯) appears and persists between sessions. |
+| `/clear` | **Reset context** | Start a new conversation. **Most important command.** Having enough context window reduces hallucination risk. Use `/clear` per task. |
+| `/compact` | Compress conversation | Summarize/compact chat to free context. You can target specific content, e.g. `/compact core points`. |
+| `/model` | Switch model | Choose Opus, Sonnet, etc. A practical pattern is Opus for planning, Sonnet for implementation. |
+| `/resume` | Resume old conversation | Load past conversations. |
+| `/config` | Manage settings | Adjust verbose, model, todo list, and more. |
+| `/memory` | Edit CLAUDE.md | Edit project/global CLAUDE.md directly. |
+| `/init` | Initialize project | Claude analyzes the project and generates CLAUDE.md automatically. |
+| `/terminal-setup` | Configure terminal line breaks | Enable line breaks via `Shift+Enter`. |
+| `/plugin` | Plugin management | Explore, install, and remove plugins. |
+| `/agents` | Agent management | Inspect and manage custom agents. |
+| `/mcp` | MCP server management | Configure Model Context Protocol servers. |
+| `/statusline` | Status line settings | Configure terminal status line display. |
+| `/todos` | View todo list | Check the current task list. |
+| `/permissions` | Permission management | Configure pre-approval rules for bash commands, etc. |
+| `/insights` | **Usage pattern analysis** | Analyze the last 30 days of sessions and generate an HTML report with patterns, bottlenecks, and workflow suggestions. |
+| `/fast` | **Toggle Fast mode** | Switch fast output mode. Shows lightning icon (↯), persisted across sessions. |
 
-### update command
+### Update Commands
 
 ```bash
-# Claude Code update (npm In case of installation)
+# Update Claude Code (npm install)
 claude update
 
-# HomebrewIf installed with
+# If installed via Homebrew
 brew upgrade claude-code
 ```
 
-### Special features
+### Special Features
 
-| Features | How to use | Description |
+| Feature | How to Use | Description |
 |:---|:---|:---|
-| **Refer to file** | `@file name` | You can directly reference files within the project by adding `@`, like `@GameHandler.cs`. |
-| **Image attached** | Drag and drop / `Cmd+Shift+4` and paste | Attaching a screenshot or UI design greatly increases efficiency by providing visual context. The use of images is also recommended in official documents. |
-| **Rewind** | `Esc` Tap 2 | Stops the current conversation and reverts to a previous checkpoint. You can select from previous conversation/code/dialogue+code. This is very useful when hallucination is detected. |
-| **Change Mode** | `Shift+Tab` | Switch between Plan mode / Auto-accept mode / Basic mode |
-| **Thinking toggle** | `Tab` | Turn Extended Thinking mode on and off. Settings are retained between sessions. |
-| **Add Memory** | `#` key | Quickly add reminders to CLAUDE.md. It's used for things like "Remember this rule." |
+| **File reference** | `@filename` | Add `@` to reference files directly, e.g. `@GameHandler.cs`. |
+| **Image attach** | Drag & drop / `Cmd+Shift+4` then paste | Adding screenshots/UI designs gives visual context and significantly boosts efficiency. Official docs also recommend image usage. |
+| **Rewind** | Tap `Esc` twice | Stop current conversation and roll back to a checkpoint. You can choose conversation/code/conversation+code. Very useful when hallucination appears. |
+| **Mode switch** | `Shift+Tab` | Switch between Plan mode / Auto-accept mode / default mode. |
+| **Thinking toggle** | `Tab` | Toggle Extended Thinking mode on/off. Setting persists across sessions. |
+| **Add memory** | `#` key | Quickly add memory content to CLAUDE.md (e.g. “remember this rule”). |
 
 <br>
 
 ---
 
-## V. Latest features (v2.1.x, as of February 2026)
+## V. Latest Features (v2.1.x, as of February 2026)
 
-These are the main features added in Claude Code v2.1.x.
+Major additions in Claude Code v2.1.x:
 
-### 1. `/insights` - Usage pattern analysis report
+### 1. `/insights` - Usage Pattern Analysis Report
 
-`/insights` is a command that analyzes session data for the last 30 days and generates an **interactive HTML report**.
+`/insights` analyzes the last 30 days of session data and generates an **interactive HTML report**.
 
 ```bash
-# Claude Code Run within session
+# Run inside a Claude Code session
 /insights
 ```
 
-**Analyzed by:**
-- Session history stored in `~/.claude/` (prompt + Claude response)
+**Data analyzed:**
+- Session logs in `~/.claude/` (prompts + Claude responses)
 - Tool usage patterns, error patterns, interaction patterns
-- The source code itself is not analyzed (privacy guaranteed)
+- Source code itself is not analyzed (privacy preserved)
 
-**What the report includes:**| Item | Description |
+**Report contents:**
+
+| Item | Description |
 |:---|:---|
-| **Usage Statistics** | Number of messages, number of sessions, file modification history |
-| **Analysis by project** | What projects did you mainly work on? |
-| **Tool Usage Pattern** | Visualize with charts which tools you use the most |
-| **Usage by language** | What programming language did you work in |
-| **Bottleneck** | Identify patterns that reduce productivity |
-| **Improvement Suggestions** | Custom suggestions, Custom Skill recommendations, Hook recommendations that can be copied to CLAUDE.md |
+| **Usage stats** | Number of messages, sessions, and file edits |
+| **Project breakdown** | What kind of work you did in each project |
+| **Tool usage patterns** | Charts showing most-used tools |
+| **Language usage** | Which programming languages you worked in |
+| **Bottlenecks** | Patterns that reduce productivity |
+| **Improvement suggestions** | Personalized suggestions, custom skill recommendations, and hook recommendations that can be copied into CLAUDE.md |
 
-The report is saved to `~/.claude/usage-data/report.html` and automatically opens in your browser.
+The report is saved to `~/.claude/usage-data/report.html` and opened automatically in your browser.
 
-> The suggestion from `/insights` includes a **Copy button** so you can paste it directly into CLAUDE.md. This is very useful as it offers customized optimization suggestions based on your usage patterns.
+> Suggestions in `/insights` include a **Copy button**, so you can paste directly into CLAUDE.md. This is highly useful because the optimization guidance is personalized from your own usage patterns.
 {: .prompt-tip }
 
 ### 2. Extended Thinking & Effort System
 
-Claude Code supports **Extended Thinking** functionality. This forces Claude to think deeply internally before responding, which greatly improves accuracy in complex problems.
+Claude Code supports **Extended Thinking**, where Claude performs deeper internal reasoning before replying, greatly improving accuracy on complex problems.
 
 **How to toggle Thinking:**
 
-| method | Description |
+| Method | Description |
 |:---|:---|
-| `Tab` key | Toggle Thinking Mode On/Off on the fly within a session |
-| `/config` | Enable/Disable Thinking in Settings |
-| Environment variable `MAX_THINKING_TOKENS=8000` | Specify your own Thinking token budget (minimum 1,024) |
+| `Tab` key | Toggle Thinking mode on/off instantly in session |
+| `/config` | Enable/disable Thinking from settings |
+| Environment variable `MAX_THINKING_TOKENS=8000` | Set Thinking token budget directly (minimum 1,024) |
 
-**Effort level (Opus 4.6 only):**
+**Effort levels (Opus 4.6 only):**
 
-You can adjust the **Effort level** when selecting a model in the `/model` command. This controls how deeply Claude will reason.
+You can set **Effort level** when choosing a model via `/model`. It controls how deeply Claude reasons.
 
-| Effort | Use | Token Consumption | Recommendation situation |
+| Effort | Use Case | Token Usage | Recommended For |
 |:---:|:---|:---:|:---|
-| **Low** | Fast response, simple operation | Less | Simple sorting, fast lookup, bulk processing |
-| **Medium** | Balanced Performance | Normal | Common Coding Tasks |
-| **High** (default) | Highest quality inference | many | Complex reasoning, difficult coding problems |
-| **Max** | Absolute Best Performance | max | Extremely complex architecture analysis, multi-level reasoning |
+| **Low** | Fast response, simple tasks | Low | Simple classification, quick lookup, batch processing |
+| **Medium** | Balanced performance | Medium | General coding tasks |
+| **High** (default) | Best reasoning quality | High | Complex reasoning, difficult coding tasks |
+| **Max** | Absolute best performance | Highest | Extremely complex architecture analysis, multi-step reasoning |
 
 ```bash
-# Effort Set as level environment variable
+# Set Effort level via environment variable
 CLAUDE_CODE_EFFORT_LEVEL=high claude
 
-# or within a session /modelchange to
+# Or change from /model in-session
 /model
-# → After selecting a model Effort Slider adjustment
+# -> choose model, then adjust Effort slider
 ```
 
-> **Adaptive Thinking**: In Opus 4.6, **Adaptive Thinking** is recommended instead of specifying `budget_tokens` directly. Claude **dynamically** adjusts his thinking depth based on the complexity of the question. You can control this range through the Effort level.
+> **Adaptive Thinking**: On Opus 4.6, **Adaptive Thinking** is recommended over manually setting `budget_tokens`. Claude adjusts reasoning depth **dynamically** based on prompt complexity. Effort level controls that range.
 {: .prompt-info }
 
-### 3. Fast mode
+### 3. Fast Mode
 
-**Fast mode** uses the same model but **speeds up output token generation by up to 2.5x**. Rather than changing the model, it uses a fast inference path from the same model.
+**Fast mode** keeps the same model but can increase output token generation speed by up to **2.5x**. It is not a model switch; it uses a faster inference path on the same model.
 
 ```bash
-# Toggle within a session
+# Toggle inside session
 /fast
 
-# When activated, the lightning icon(↯) mark
-# Settings persist between sessions
+# Lightning icon (↯) appears when enabled
+# Setting persists across sessions
 ```
 
-> Fast mode is subject to **premium rate** ($30/$150 per MTok). This is useful in the prototyping phase where rapid iteration is required, but use it selectively due to cost.
+> Fast mode uses **premium pricing** ($30/$150 per MTok). It is useful for rapid iteration in prototyping, but choose it selectively with cost in mind.
 {: .prompt-warning }
 
 ### 4. Agent Teams (Research Preview)
 
-**Agent Teams** is a feature where multiple Claude Code instances **collaborate as teams**. A single orchestrator coordinates the entire operation, with each subagent processing different parts in parallel.
+**Agent Teams** lets multiple Claude Code instances **collaborate as a team**. One orchestrator coordinates the whole task while sub-agents process different parts in parallel.
 
 ```
 ┌─────────────────────────────┐
-│      Orchestrator (leader)      │
-│    Coordinate and distribute overall work       │
+│      Orchestrator (Leader) │
+│  Coordinates and dispatches │
 └──────┬──────┬──────┬────────┘
        │      │      │
   ┌────▼──┐ ┌─▼───┐ ┌▼─────┐
   │Agent 1│ │Agent2│ │Agent3│
-  │backend  │ │front│ │test │
+  │Backend│ │Front │ │Tests │
   └───────┘ └─────┘ └──────┘
 ```
 
-- Each subagent runs in its own **tmux pane**
-- Speed up large-scale operations by processing independent tasks **in parallel**
-- Currently in **Research Preview** phase (subject to change)
+- Each sub-agent runs in its own **tmux pane**
+- Independent work runs **in parallel** to speed up large tasks
+- Currently in **research preview** (subject to change)
 
 ### 5. Auto Memory
 
-A feature that allows Claude Code to **automatically remember context between sessions**. It operates in the background without manual settings.
+Claude Code can **automatically remember context across sessions**. It runs in the background without manual setup.
 
 **How it works:**
 
-| display | meaning |
+| Indicator | Meaning |
 |:---|:---|
-| `Recalled X memories` | When starting a session, load memories from previous sessions |
-| `Wrote X memories` | Saves a snapshot of current work during a session |
+| `Recalled X memories` | Loaded memories from previous sessions at startup |
+| `Wrote X memories` | Saved snapshot of current work during session |
 
-- Automatically saves project patterns, main commands, and user preferences
-- Save to `~/.claude/projects/<project-hash>/<session-id>/session-memory/summary.md`
-- You can quickly add memory to CLAUDE.md with the `#` key.
+- Automatically stores project patterns, key commands, and user preferences
+- Saved at `~/.claude/projects/<project-hash>/<session-id>/session-memory/summary.md`
+- Press `#` to quickly add memory to CLAUDE.md
 
-> Auto Memory is separate from CLAUDE.md. CLAUDE.md is an explicit rule managed directly by the user, and Auto Memory is an implicit context automatically extracted by Claude. Using the two together is most effective.
-{: .prompt-info }### 6. Opus 4.6 & 1M Token Context (Beta)
+> Auto Memory is separate from CLAUDE.md. CLAUDE.md is explicit, user-managed rules; Auto Memory is implicit context extracted by Claude. Using both together is most effective.
+{: .prompt-info }
 
-The latest model, **Claude Opus 4.6**, supports the **1M token context window** in beta.
+### 6. Opus 4.6 & 1M Token Context (Beta)
 
-| Features | Description |
+The latest model, **Claude Opus 4.6**, supports a **1M-token context window** in beta.
+
+| Feature | Description |
 |:---|:---|
-| **1M Token Context** | 5 times the existing 200K. Able to analyze entire large code base at once |
-| **Adaptive Thinking** | Dynamically adjust inference depth based on question complexity |
-| **Context Compaction** | Overcoming limitations by automatically summarizing old context in long conversations |
-| **Agent Teams** | Multi-agent collaboration support |
+| **1M token context** | 5x larger than 200K. Enables full analysis of large codebases in one pass |
+| **Adaptive Thinking** | Dynamically adjusts reasoning depth by task complexity |
+| **Context Compaction** | Summarizes old context in long sessions to push past limits |
+| **Agent Teams** | Supports multi-agent collaboration |
 
-### 7. Comparison by model (as of February 2026)
+### 7. Model Comparison (as of February 2026)
 
-| model | Context | speed | reasoning skills | cost | Recommended use |
+| Model | Context | Speed | Reasoning | Cost | Recommended Use |
 |:---|:---:|:---:|:---:|:---:|:---|
-| **Opus 4.6** | 200K (1M beta) | Normal | Strongest | High | Architecture Design, Complex Refactoring, Plan Mode |
-| **Opus 4.6 Fast** | 200K (1M beta) | Fast (2.5x) | Strongest | very high | Rapid prototyping, iterative work |
-| **Sonnet 4.5** | 200K | Fast | Excellent | Normal | General implementation, code writing, debugging |
-| **Haiku 4.5** | 200K | Very fast | Good | low | Simple operation, high volume processing |
+| **Opus 4.6** | 200K (1M beta) | Medium | Best | High | Architecture design, complex refactoring, Plan mode |
+| **Opus 4.6 Fast** | 200K (1M beta) | Fast (2.5x) | Best | Very High | Rapid prototyping, iterative work |
+| **Sonnet 4.5** | 200K | Fast | Strong | Medium | General implementation, coding, debugging |
+| **Haiku 4.5** | 200K | Very Fast | Good | Low | Simple tasks, bulk processing |
 
-> **Hybrid Strategy**: By using the **opusplan** pattern, which involves planning with Opus (`/model` → Opus) and implementing with Sonnet (`/model` → Sonnet), **60-80% cost savings** are possible compared to using Opus alone.
+> **Hybrid strategy**: Plan with Opus (`/model` -> Opus), implement with Sonnet (`/model` -> Sonnet). This **opusplan** pattern can reduce costs by **60-80%** versus using Opus for everything.
 {: .prompt-tip }
 
 <br>
 
 ---
 
-##VI. Deep understanding of the context window
+## VI. Deep Dive: Context Window
 
-To use Claude Code effectively, an understanding of the **Context Window** is essential.
+To use Claude Code effectively, understanding the **context window** is essential.
 
-### What is a context window?
+### What Is the Context Window?
 
-The context window is the maximum size of tokens the LLM can process at one time. Based on Claude model:
+The context window is the **maximum token size** an LLM can process at once. For Claude models:
 
-| model | context window | Features |
+| Model | Context Window | Characteristics |
 |:---|:---|:---|
-| **Claude Opus 4.6** | 200K (1M beta) | The most powerful inference, suitable for analyzing complex architectures |
-| **Claude Sonnet 4.5** | 200K tokens | Fast response, efficient for general coding tasks |
+| **Claude Opus 4.6** | 200K (1M beta) | Strongest reasoning, ideal for complex architecture analysis |
+| **Claude Sonnet 4.5** | 200K tokens | Faster response, efficient for general coding |
 
-> **Approximately how much is 200K tokens?** This is approximately 150,000 words in English and approximately 300 A4 pages. However, Code and Korean have lower token efficiency so there is actually less. 1M tokens are about 5 times the size of 1,500 A4 pages.
+> **How large is 200K tokens?** Roughly 150,000 English words, around 300 A4 pages. In practice, code and Korean are less token-efficient, so usable size is smaller. 1M tokens is about 5x that, roughly 1,500 A4 pages.
 {: .prompt-info }
 
-### Why the context window is important
+### Why Context Window Matters
 
-For LLM, every request is **Stateless**. This means that each new chat with Claude Code is like collaborating with a new team member every time. Previous conversations are remembered only when they are within the context window.
+LLMs are **stateless** per request. A new chat with Claude Code is like working with a **new teammate every time**. Earlier information is remembered only if it stays inside the current context window.
 
 ```
-[system prompt] + [CLAUDE.md] + [conversation history] + [current question] = Total token usage
-                                                              ↕
-                                                    Context Window Limits
+[System Prompt] + [CLAUDE.md] + [Chat History] + [Current Prompt] = Total token usage
+                                                                ↕
+                                                      Context window limit
 ```
 
-When the context window is full:
-1. **Auto-compact** is triggered → Previous conversations are automatically summarized
-2. **Information loss/distortion** occurs during the summarization process.
-3. The context of existing plans may be lost.
+When context fills up:
+1. **Auto-compact** triggers and summarizes prior conversation
+2. **Information loss/distortion** can occur during summarization
+3. Existing plan context can disappear
 
-### Structural problems with Auto-Compact
+### Structural Issues with Auto-Compact
 
-Once Auto-compact is run, it **cannot be undone**. When it does, existing conversations are lost forever, causing the following problems:
+Once auto-compact runs, it is **not reversible**. Original conversation is permanently compressed, which can cause:
 
-| problem | Description |
+| Issue | Description |
 |:---|:---|
-| **Context Distortion** | The meaning of the original may be altered during the summarization process. |
-| **Loss of temporal context** | Sequential context such as “Let’s do B based on A previously mentioned” disappears |
-| **Information Fragmentation** | Separation of related information reduces inference quality |
+| **Context distortion** | Summarization can alter the original meaning |
+| **Temporal context loss** | Sequential context like “Based on A earlier, do B now” can disappear |
+| **Information fragmentation** | Related information gets split, reducing reasoning quality |
 
-> Auto-compact tends to summarize the "midpoint" of a conversation, resulting in around Phase 1.2 to 1.5 rather than all of Phase 1.
+> Auto-compact often summarizes a “middle segment” of the session. Instead of summarizing all of Phase 1, it may compress around Phase 1.2-1.5.
 {: .prompt-warning }
 
-### Context management strategy
+### Context Management Strategies
 
-**1. Cyclic Manual `/compact`**
-- Do not rely on Auto-compact, but execute `/compact` directly at the appropriate time.
-- Key contents can be specified like `/compact today Todo Focusing on the list and progress`
+**1. Use manual `/compact` regularly**
+- Do not rely only on auto-compact; run `/compact` at good checkpoints
+- You can target key content, e.g. `/compact focused on current todo list and progress`
 
-**2. `/clear`** on a per-task basis
-- Separate one large task into multiple sessions
-- Each session starts in a clean context with `/clear`
+**2. Use `/clear` per task**
+- Split large work into multiple sessions
+- Start each session with `/clear` for clean context
 
-**3. Using CLAUDE.md**
-- Record project information that needs to be repeated every time in CLAUDE.md
-- Automatically loaded for each new session, saving context**4. External documentation reference**
-- Complex plans should be written in a separate `.md` file and referenced as `@file name`
-- More efficient than maintaining the plan directly within the context window
+**3. Use CLAUDE.md well**
+- Put recurring project information into CLAUDE.md
+- It auto-loads each session and saves context budget
+
+**4. Reference external documents**
+- Write complex plans in separate `.md` files and reference with `@filename`
+- Usually more efficient than keeping full plans directly in context
 
 <br>
 
 ---
 
-## VII. Understanding the CLAUDE.md file
+## VII. Understanding the CLAUDE.md File
 
-### What is CLAUDE.md?
+### What Is CLAUDE.md?
 
-CLAUDE.md is the project's **"AI Onboarding Document"**. Just as new team members read the project wiki when they join the company, Claude Code reads this file every session to understand the project.
+CLAUDE.md is your project’s **AI onboarding document**. Like a new teammate reading project docs, Claude Code reads this file every session to understand your project.
 
-### What to include in CLAUDE.md
+### What to Include in CLAUDE.md
 
 ```markdown
 # CLAUDE.md
 
 ## Project Overview
-- Project Description, technology stack, Architecture Overview
+- Project description, tech stack, architecture summary
 
 ## Build & Development Commands
-- build, test, run command
+- Build, test, and run commands
 
 ## Code Conventions
-- coding style, naming convention, file structure
+- Coding style, naming conventions, file structure
 
 ## Architecture
-- Main directory structure, Core module description
+- Main directory structure, core module descriptions
 
 ## Common Patterns
-- Patterns frequently used in projects
-- "don't do this" rule (ClaudeAvoid repeating mistakes)
+- Frequently used patterns in this project
+- “Do not do this” rules (prevent repeated Claude mistakes)
 ```
 
 ### Memory Nesting
 
-CLAUDE.md can be [organized into multiple layers](https://code.claude.com/docs/en/memory#how-claude-looks-up-memories):
+CLAUDE.md can be [layered across multiple levels](https://code.claude.com/docs/en/memory#how-claude-looks-up-memories):
 
-| Location | range | Use |
+| Location | Scope | Purpose |
 |:---|:---|:---|
-| `~/.claude/CLAUDE.md` | **Global (per user)** | Rules common to all projects |
-| `./CLAUDE.md` | **Project Root** | Apply to the entire project |
+| `~/.claude/CLAUDE.md` | **Global (user-level)** | Rules shared across all projects |
+| `./CLAUDE.md` | **Project root** | Applies to entire project |
 | `./src/CLAUDE.md` | **Subdirectory** | Applies only to specific modules/directories |
 
-> **Do not use the CLAUDE.md automatically generated by the `/init` command.** You must manually add the project's code rules, design direction, and common mistakes and continuously improve it.
+> Do **not** use `/init` output as-is forever. Add your real code conventions, design direction, and recurring mistakes yourself, then keep improving it.
 {: .prompt-warning }
 
 <br>
 
 ---
 
-## VIII. Plan-Execute Workflow (Plan & Execute)
+## VIII. Plan & Execute Workflow
 
-### Core Principles
+### Core Principle
 
-The key to using Claude Code is to clearly separate the **Plan** and **Execute** steps.
+The key to effective Claude Code usage is clearly separating **Plan** and **Execute** phases.
 
-### Model selection strategy
+### Model Selection Strategy
 
-| steps | Recommended Model | Reason |
+| Phase | Recommended Model | Why |
 |:---|:---|:---|
-| **Make a plan** | Opus | Strong in complex reasoning, architecture analysis, and strategy formulation |
-| **Code Implementation** | Sonnet | Fast response, cost-effective, suitable for simple implementation tasks |
+| **Planning** | Opus | Better for complex reasoning, architecture analysis, strategy |
+| **Implementation** | Sonnet | Faster, cost-efficient, great for direct coding work |
 
 ```
-1. /model → Opus select
-2. Shift+Tab 2th → Plan Enter mode
-3. planning and Todo Create a list
-4. /model → Sonnetchange to
-5. Step-by-step code implementation
+1. /model -> select Opus
+2. Press Shift+Tab twice -> enter Plan mode
+3. Build plan and todo list
+4. /model -> switch to Sonnet
+5. Implement code step by step
 ```
 
-### Plan mode-based workflow
+### Plan-Mode Workflow
 
-**Step 1: Explore & Plan**
+**Step 1: Explore and plan**
 
-Start in Plan mode (`Shift+Tab` number 2):
+Start in Plan mode (Shift+Tab twice):
 
-- Establishment of implementation strategy
-- Decompose tasks into **independently testable steps**
-- Estimate expected travel time
-- Includes UI/library related matters
+- Build implementation strategy
+- Break work into **independently testable steps**
+- Estimate effort/time
+- Include UI/library decisions
 
-> Detailed prompting is key. Give specific instructions such as “Break down the work to implement this feature into steps. Each step must be independently testable, and provide an estimate of how long it will take.”
+> Detailed prompting matters. For example: “Break implementation into step-by-step tasks. Each step must be independently testable, and estimate time for each.”
 {: .prompt-tip }
 
-**Step 2: Confirm and implement plan**
+**Step 2: Finalize plan and execute**
 
-Once you are satisfied with your plan:
-1. Switch to **Auto-accept edits mode** with `Shift+Tab`
-2. Claude implements **1-shot** according to plan
+Once the plan is satisfactory:
+1. Press `Shift+Tab` to switch to **Auto-accept edits mode**
+2. Let Claude execute **one-shot implementation** following the plan
 
-**Benefits of Plan Mode:**
+**Advantages of Plan mode:**
 
-| Advantages | Description |
+| Advantage | Description |
 |:---|:---|
-| **Context Continuation** | The Todo list in Plan mode is maintained even if the session is longer, ensuring work continuity. |
-| **Dynamic Plan Modification** | If anything is missed during implementation, you can immediately revise the plan. |
-| **Reduces hallucination** | Having a clear plan prevents Claude from going in the wrong direction. |
+| **Context continuity** | Plan-mode todo list persists even in long sessions, preserving task continuity |
+| **Dynamic updates** | You can revise the plan immediately if gaps appear during implementation |
+| **Lower hallucination risk** | Clear plan prevents drifting in wrong directions |
 
-> If possible, it is recommended to create a checklist document of the tasks currently being worked on in the form of `.md` and encourage continuous updating.
+> When possible, maintain a checklist `.md` file for the current task and keep it updated continuously.
 {: .prompt-tip }
 
-### Utilize PRD (Product Requirements Document)
+### Using a PRD (Product Requirements Document)
 
-Although it is good to simply create a Todo list in Plan mode, it is effective to use PRD for **large-scale work or refactoring**.
+A simple todo plan is fine, but for **large-scale work or refactoring**, a PRD is more effective.
 
-PRD includes:
-- **Goals and Background**: Why do we need to do this?
-- **Requirements**: Functional/non-functional requirements
-- **Scope**: Included/excluded
-- **Design Direction**: Architectural Decisions
-- **Success Criteria**: Completion Conditions
+Include in PRD:
+- **Goal and background**: why this work is needed
+- **Requirements**: functional and non-functional
+- **Scope**: included/excluded items
+- **Design direction**: architecture decisions
+- **Success criteria**: completion conditions
 
 <br>
 
@@ -484,231 +483,237 @@ PRD includes:
 
 ## IX. Safety & Control
 
-### Understanding permission modes
+### Understanding Permission Modes
 
-| mode | Description | When to use |
+| Mode | Description | When to Use |
 |:---|:---|:---|
-| **Default Mode** | Requires approval every time you modify a file/execute a command | Critical Projects, Learning Steps |
-| **Auto-accept** | File modifications are automatically approved | Implementation stage after the plan is confirmed |
-| **dangerously-skip-permissions** | Automatically grant all permissions | Recommended for use only in sandbox environments |
+| **Default mode** | Requires approval for file edits and command execution | Critical projects, learning phase |
+| **Auto-accept** | File edits auto-approved | Execution phase after plan is finalized |
+| **dangerously-skip-permissions** | Auto-approves all permissions | Recommended only in sandboxed environments |
 
-### Fine-grained control with `/permissions`It is recommended to pre-allow only frequently used safe commands with `/permissions` instead of `--dangerously-skip-permissions`.
+### Fine-Grained Control with `/permissions`
+
+Instead of `--dangerously-skip-permissions`, it is recommended to pre-allow only safe, frequently used commands via `/permissions`.
 
 ```bash
-# .claude/settings.jsonSaved to share with your team
-# yes: git, npm, build Commands are allowed in advance
+# Saved in .claude/settings.json and can be shared with team
+# Example: pre-allow git, npm, and build commands
 ```
 
-### Safe use principles
+### Safe Usage Principles
 
-1. **Initially proceed in approval mode**, checking one by one.
-2. Switch to Auto-accept once the plan is confirmed
-3. If the function implementation is different from expected, revert to `Esc 2th` (Rewind)
-4. If the plan itself is wrong, modify the plan.
+1. Start in approval mode and review actions one by one
+2. Switch to Auto-accept only after plan is finalized
+3. If implementation diverges, roll back with `Esc` twice (Rewind)
+4. If the plan is wrong, revise the plan itself
 
 <br>
 
 ---
 
-##
+## X. 13 Advanced Usage Tips (Creator Workflow)
 
-These are practical tips shared directly by developer Claude Code.
+Practical tips directly shared by Claude Code’s creator.
 
-### 1. Configuring parallel execution environment
+### 1. Build a parallel execution environment
 
-**Run 5 Claudes in parallel** in your terminal. Number the tabs 1 to 5, and use [System Notifications](https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications) to know when input is needed.
+Run **five Claude sessions in parallel** in terminal. Label tabs 1-5, and use [system notifications](https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications) to know when input is needed.
 
-### 2. Parallel operation of web and local
+### 2. Run web and local in parallel
 
-- `claude.ai/code` **Run additional 5 to 10 Claudes in parallel on the web**
-- Handoff the local session to the web (using `&`), or switch to both directions with `-teleport`
-- You can also start a session from the iOS app and check it later
+- Run **5-10 additional Claude sessions** in parallel on `claude.ai/code`
+- Handoff local sessions to web (`&`) or switch bidirectionally with `-teleport`
+- Start sessions from iOS app and check later
 
-### 3. Model selection: Opus with thinking
+### 3. Model choice: Opus with thinking
 
-- Use **Opus 4 with thinking** for everything
-- Bigger and slower than Sonnet, but **requires less steering** and **has better toolability**
-- This results in a final result that is **almost always** faster** than a smaller model.
+- Use **Opus 4 with thinking** for all work
+- Bigger/slower than Sonnet, but requires less steering and has stronger tool use
+- In practice, often reaches final outcomes **faster** than smaller models
 
-### 4. Team-based knowledge accumulation through CLAUDE.md
+### 4. Accumulate team knowledge with CLAUDE.md
 
-- Maintain a **single CLAUDE.md file** shared across the team
-- Check in to git, and the whole team contributes **multiple times a week**
-- Add every time Claude does something wrong **Prevent the same mistake next time**
+- Maintain one shared **CLAUDE.md** for the whole team
+- Check it into git; team contributes multiple times weekly
+- Add guidance whenever Claude behaves incorrectly to prevent repeat mistakes
 
 ### 5. Update CLAUDE.md during code review
 
-- When reviewing code, tag **@.claude** in your colleague's PR and add content to CLAUDE.md
-- Utilize **Claude Code GitHub Action**(`/install-github-action`)
+- In peer PR reviews, tag **@.claude** to add updates into CLAUDE.md
+- Use **Claude Code GitHub Action** (`/install-github-action`)
 
-### 6. Plan mode and auto-acceptance workflow
+### 6. Plan mode + auto-accept workflow
 
-- Start most sessions in **Plan mode** (`Shift+Tab` number 2)
-- Repeat consultations until the plan is satisfactory.
-- After confirmation, switch to **Auto-accept mode** and **complete in one shot (1-shot)**
-- **Good planning is really important**
+- Start most sessions in **Plan mode** (Shift+Tab twice)
+- Iterate until plan quality is high
+- Switch to **Auto-accept mode** to finish in **one shot**
+- **Good planning is critical**
 
-### 7. Automate repetitive tasks with slash commands
+### 7. Automate repetitive loops with slash commands
 
-- Use the slash command for each frequently performed “inner loop” workflow.
-- Saved in `.claude/commands/` directory and checked into git
-- Example: `/commit-push-pr` Use the slash command dozens of times every day
-- Prevent unnecessary model round trips by pre-calculating git status, etc. with [inline bash](https://code.claude.com/docs/en/slash-commands#bash-command-execution)
+- Use slash commands for each frequent inner-loop workflow
+- Store them in `.claude/commands/` and check into git
+- Example: use `/commit-push-pr` dozens of times daily
+- Use [inline bash](https://code.claude.com/docs/en/slash-commands#bash-command-execution) to precompute `git status`, reducing unnecessary model round trips
 
-### 8. Use of subagents
+### 8. Use sub-agents
 
-Regular use of multiple [subagents](https://code.claude.com/docs/en/sub-agents):
-- **code-simplifier**: Simplifies code after work is done.
-- **verify-app**: Detailed instructions for end-to-end testing
+Use several [sub-agents](https://code.claude.com/docs/en/sub-agents) regularly:
+- **code-simplifier**: simplify code after implementation
+- **verify-app**: detailed instructions for end-to-end testing
 
-### 9. Formatting code with PostToolUse hook
+### 9. Auto-format with PostToolUse hooks
 
-- Automatically handle code formatting using the **PostToolUse hook**
-- Claude generates well-formatted code by default, and hooks **take care of the remaining 10%**
+- Use **PostToolUse hooks** to automate formatting
+- Claude usually produces well-formatted code already; hooks handle the remaining **10%**
 
-### 10. Permission management method
+### 10. Permission management style
 
-- `--dangerously-skip-permissions` Not used
-- **Pre-allow** safe bash commands with `/permissions` instead
-- Check in with `.claude/settings.json` and share with your team
+- Do not use `--dangerously-skip-permissions`
+- Instead, pre-allow safe bash commands via `/permissions`
+- Check `.claude/settings.json` into git for team sharing
 
-### 11. Take advantage of tool integrations
+### 11. Integrate external tools
 
-Claude Code **uses an external tool instead**:
-- **Slack** search and post (using MCP server)
-- Run **BigQuery** query (bq CLI)
-- Get error log from **Sentry**
-- MCP settings are shared with the team by checking in to `.mcp.json`
+Let Claude Code operate external tools:
+- Search and post to **Slack** (via MCP)
+- Run **BigQuery** queries (`bq` CLI)
+- Pull error logs from **Sentry**
+- Check `.mcp.json` into git and share MCP setup across team
 
-### 12. How to handle tasks over long periods of timeFor very long tasks, choose between three methods:
-- Prompt to verify task with **Background Agent** upon completion of **(a)**
-- **(b)** Verify more deterministically using [Agent Stop hook](https://code.claude.com/docs/en/hooks-guide)
+### 12. Handling long-running tasks
+
+For very long jobs, choose one of these:
+- **(a)** Prompt Claude to validate work using a **background agent** at completion
+- **(b)** Use [agent Stop hooks](https://code.claude.com/docs/en/hooks-guide) for more deterministic validation
 - **(c)** Use [ralph-wiggum plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-wiggum)
 
-### 13. Top Tip: Validation Feedback Loop
+### 13. Most important tip: verification feedback loop
 
-> The **most important** to getting great results in Claude Code: Give Claude **a way to validate his work**.
+> The **single most important factor** for great Claude Code results: provide Claude with a **way to verify the work**.
 {: .prompt-warning }
 
-Having this feedback loop will result in a **2-3x improvement** in the quality of your final output:
-- Check results by executing bash command
-- Run test suite
-- Test your app in a browser or simulator
+With this feedback loop, final output quality can improve by **2-3x**:
+- Verify results via bash commands
+- Run test suites
+- Test app in browser/simulator
 - Test UI with [Chrome extension](https://code.claude.com/docs/en/chrome)
 
-**Investing in building a robust validation process is the most worthwhile thing you can do.**
+**Investing in robust verification loops has the highest ROI.**
 
 <br>
 
 ---
 
-##XI. SDD (Spec-Driven Development)
+## XI. SDD (Spec-Driven Development)
 
-### What is SDD?
+### What Is SDD?
 
-SDD (Spec-Driven Development) is a development method that goes beyond “development by telling Claude to do it verbally,” and uses AI to implement and test based on tech specifications shared by the team.
+SDD (Spec-Driven Development) moves beyond “telling Claude what to do” and lets AI implement and test against **team-shared technical specs**.
 
-**SDD Core Values:**
+**Core value of SDD:**
 - Minimize context loss
-- Reduce hallucination
-- Efficient team collaboration
+- Reduce hallucinations
+- Improve team collaboration efficiency
 
-### Installing and using the Spec Kit
+### Install and Use Spec Kit
 
-[Spec Kit](https://github.com/github/spec-kit) is a tool to realize SDD.
+[Spec Kit](https://github.com/github/spec-kit) is a tool for SDD.
 
 ```bash
-# Spec Kit reset
+# Initialize Spec Kit
 specify init --here
-# → 'y' input
-# → 'claude' select
-# → 'sh' select
+# -> type 'y'
+# -> select 'claude'
+# -> select 'sh'
 ```
 
-After installation, if you run claude in a new session, new commands will be added.
+After setup, run `claude` in a new session to access additional commands.
 
 ### Spec Kit Workflow
 
-| command | steps | Description |
+| Command | Phase | Description |
 |:---|:---|:---|
-| `/speckit.constitution` | Protocol settings | CLAUDE.md and project code rules, architecture-based conventions |
-| `/speckit.specify` | Requirements Definition | Based on **What/Why**. No technology stack |
-| `/speckit.clarify` | Detailing | Supplementing insufficient technical documents |
-| `/speckit.plan` | Planning | Decide on technology stack/architecture at this stage |
-| `/speckit.tasks` | Task decomposition | Breaking it down into implementable units |
-| `/speckit.implement` | implementation | Write actual code |
-| `/speckit.analyze` | Analysis (Optional) | Check consistency between documents |
-| `/speckit.checklist` | Checklist (optional) | Quality check |
+| `/speckit.constitution` | Rules | Standards based on CLAUDE.md, code rules, architecture |
+| `/speckit.specify` | Requirements | **What/Why** focused, no tech stack |
+| `/speckit.clarify` | Clarification | Fill missing spec details |
+| `/speckit.plan` | Planning | Decide tech stack/architecture here |
+| `/speckit.tasks` | Task breakdown | Split into implementable units |
+| `/speckit.implement` | Implementation | Write actual code |
+| `/speckit.analyze` | Analysis (optional) | Check consistency across documents |
+| `/speckit.checklist` | Checklist (optional) | Quality checks |
 
-### `/speckit.specify` Writing Guide
+### Guide for `/speckit.specify`
 
-`specify` is the step of writing **What/Why)**. How to implement is covered in `/speckit.plan`.
+`specify` is for **What/Why**. Implementation details (How) belong in `/speckit.plan`.
 
-**WHAT (requirement)**
-- What users should be able to do (actions)
-- Rules that the system must guarantee (verification/constraints/compatibility)
+**WHAT (requirements)**
+- User actions that must be possible
+- Rules the system must guarantee (validation/constraints/compatibility)
 - Deliverables (assets, prefabs, registration, test environment)
 - Success criteria (time constraints, legacy compatibility, etc.)
 
-**WHY**
-- Existing issues (bottlenecks, duplication, inconsistency, loss of context)
-- Contribution to success indicators
+**WHY (necessity)**
+- Existing problems (bottlenecks, duplication, inconsistency, context loss)
+- Contribution to success metrics
 
-**Do not write (this is in `/plan`)**
-- ~~"Put a DI container into BaseWeapon..."~~
-- ~~"Make BulletRecipe a ScriptableObject..."~~
-- ~~"Optimize with ECS..."~~
+**Do not write these in `specify` (save for `/plan`)**
+- ~~“Inject a DI container into BaseWeapon...”~~
+- ~~“Create BulletRecipe as a ScriptableObject...”~~
+- ~~“Optimize with ECS...”~~
 
 <br>
 
 ---
 
-## XII. Utilize plugins
+## XII. Using Plugins
 
-### How to install plugins
+### How to Install Plugins
 
 ```bash
-# Claude Code After running
+# Start Claude Code
 claude
 
-# Download plugins from Marketplace
+# Download from marketplace
 /plugin marketplace add wshobson/agents
 
-# Optionally install desired plugins
+# Install selected plugins
 /plugin install game-development
 /plugin install debugging-toolkit
 /plugin install code-refactoring
 ```
 
-The [wshobson/agents](https://github.com/wshobson/agents/tree/main) repository contains a variety of agents optimized through orchestration.
+The [wshobson/agents](https://github.com/wshobson/agents/tree/main) repository includes many optimized agents for orchestration workflows.
 
-### How the plugin works
+### How Plugins Work
 
-Installed plugins are **automatically used**:
+Installed plugins are **used automatically by context**:
 
-- **Auto Utilization**: The agent automatically operates if it matches the task characteristics.
-  - After writing code → code-reviewer agent
-  - When an error occurs → debugger agent
-- **Explicit request**: “Please review the code” → Activate code-reviewer
-- **Situation judgment**: Handle simple tasks directly without a separate agent
+- **Automatic activation**: relevant agent runs based on task
+  - After coding -> code-reviewer agent
+  - On errors -> debugger agent
+- **Explicit request**: “Please review this code” -> code-reviewer activated
+- **Context judgment**: simple tasks may run without extra agents
 
 <br>
 
 ---
 
-## XIII. Precautions
+## XIII. Notes and Cautions
 
-### Unity integration limitationsThere is currently no direct connection between Claude Code and the Unity editor. Because of this, there are cases where the error code of the Unity editor is not accurately recognized. However, **performance for logic error analysis and code intent identification is excellent.**
+### Unity Integration Limitations
 
-> There is a tool called Unity-MCP, but it has security vulnerabilities, so be sure to review its security before using it.
+Currently, there is no direct bridge between Claude Code and Unity Editor. Because of that, Claude may not always detect Unity editor error states precisely. Still, it performs strongly in **logic analysis and code intent understanding**.
+
+> A tool named Unity-MCP exists, but it may have security vulnerabilities. Perform security review before using it.
 {: .prompt-danger }
 
-### Caution when using MCP server
+### Caution When Using MCP Servers
 
-When using a Model Context Protocol (MCP) server:
-- Make sure it is a trustworthy source
-- Review whether there are any security vulnerabilities
-- Whitelist management recommended when used by a team
+When using MCP (Model Context Protocol) servers:
+- Verify the source is trustworthy
+- Review for security vulnerabilities
+- If used in team environments, manage with a whitelist
 
 <br>
 
@@ -716,10 +721,10 @@ When using a Model Context Protocol (MCP) server:
 
 ## References
 
-- [Claude Code official document](https://code.claude.com/docs)
+- [Claude Code Official Docs](https://code.claude.com/docs)
 - [Spec Kit (GitHub)](https://github.com/github/spec-kit)
-- [wshobson/agents plugin collection](https://github.com/wshobson/agents/tree/main)
+- [wshobson/agents Plugin Collection](https://github.com/wshobson/agents/tree/main)
 - [Claude Code Memory System](https://code.claude.com/docs/en/memory#how-claude-looks-up-memories)
 - [Claude Code Hooks Guide](https://code.claude.com/docs/en/hooks-guide)
-- [Claude Code slash command](https://code.claude.com/docs/en/slash-commands#bash-command-execution)
-- [Claude Code Sub-Agent](https://code.claude.com/docs/en/sub-agents)
+- [Claude Code Slash Commands](https://code.claude.com/docs/en/slash-commands#bash-command-execution)
+- [Claude Code Sub-Agents](https://code.claude.com/docs/en/sub-agents)
