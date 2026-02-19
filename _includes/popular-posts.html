@@ -1,19 +1,19 @@
 {% assign popular = site.data.popular-posts.posts %}
 {% if popular and popular.size > 0 %}
-<div class="popular-posts-widget">
-  <div class="popular-posts-header">
+<section id="access-popular">
+  <h2 class="panel-heading">
     <i class="fas fa-fire fa-fw"></i>
-    <span>인기 포스트</span>
-  </div>
-  <ol class="popular-posts-list">
-    {% for post in popular limit: 10 %}
-      <li class="popular-post-item">
-        <a href="{{ post.url | relative_url }}" title="{{ post.title }}">
-          <span class="popular-post-rank">{{ forloop.index }}</span>
-          <span class="popular-post-title">{{ post.title | truncate: 40 }}</span>
+    {{- site.data.locales[include.lang].panel.popular_posts | default: "Popular Posts" -}}
+  </h2>
+  <ol class="popular-posts-list content list-unstyled ps-0 pb-1 ms-1 mt-2">
+    {% for item in popular limit: 10 %}
+      <li class="popular-post-item lh-lg">
+        <a href="{{ item.url | relative_url }}" title="{{ item.title }}">
+          <span class="popular-post-rank {% if forloop.index <= 3 %}top-three{% endif %}">{{ forloop.index }}</span>
+          <span class="popular-post-title text-truncate">{{ item.title }}</span>
         </a>
       </li>
     {% endfor %}
   </ol>
-</div>
+</section>
 {% endif %}

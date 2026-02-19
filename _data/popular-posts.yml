@@ -1,5 +1,37 @@
 # 이 파일은 GitHub Actions(update-popular-posts.yml)에 의해 자동 생성됩니다.
 # 수동 수정 시 다음 자동 실행 시 덮어씌워집니다.
 # GA_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY Secret 설정 후 Actions에서 수동 실행하세요.
+#
+# 아래는 샘플 데이터입니다. GA4 연동 전까지 수동으로 관리하세요.
 
-posts: []
+posts:
+  - url: "/posts/UnityMobileOptimization/"
+    title: "Unity 모바일 최적화 실전 가이드 - 프로파일링"
+    views: 3200
+  - url: "/posts/UnityBuild/"
+    title: "Unity Build 이슈 해결 모음"
+    views: 2800
+  - url: "/posts/UnityAOSBuildError/"
+    title: "Unity AOS 빌드 에러 해결 - DexArchiveMergerException"
+    views: 2400
+  - url: "/posts/UnityIOSBuildError2/"
+    title: "Unity iOS TestFlight 업로드 에러 해결"
+    views: 2100
+  - url: "/posts/UnityAddressable/"
+    title: "Unity Addressable System - 동작 원리와 사용법"
+    views: 1900
+  - url: "/posts/UnityBuildJenkins/"
+    title: "Unity 빌드 자동화 - Jenkins"
+    views: 1700
+  - url: "/posts/GoogleSheets/"
+    title: "Unity Google Sheet 연동하기"
+    views: 1500
+  - url: "/posts/MessageBroker/"
+    title: "UniRx - MessageBroker 활용 가이드"
+    views: 1300
+  - url: "/posts/unrealMacBuild/"
+    title: "Unreal Mac OS 에서 프로젝트 로드가 안될 때"
+    views: 1100
+  - url: "/posts/ClaudeCodeGuide/"
+    title: "Claude Code 완벽 가이드 - 설치부터 고급 활용까지"
+    views: 950
