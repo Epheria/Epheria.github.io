@@ -69,8 +69,8 @@ df:
     strftime: "%Y/%m/%d"
     dayjs: "YYYY/MM/DD"
   archives:
-    strftime: "%Y년 %m월"
-    dayjs: "YYYY년 MM월"
+    strftime: "%b"
+    dayjs: "MMM"
 
 categories:
   category_measure: 카테고리
