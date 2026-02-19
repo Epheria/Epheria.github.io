@@ -215,7 +215,26 @@
 .tag-md { font-size: 0.92rem; }
 .tag-lg { font-size: 1.08rem; font-weight: 600; }
 
+// --- Stats Chart Grid (donut + bar side by side) ---
+.stats-chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  align-items: start;
+}
+
+.stats-chart-col {
+  min-height: 0;
+}
+
 // --- Responsive ---
+@media (max-width: 768px) {
+  .stats-chart-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 576px) {
   .stats-cards { grid-template-columns: repeat(2, 1fr); }
   .category-name { min-width: 90px; max-width: 90px; }

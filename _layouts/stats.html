@@ -9,8 +9,20 @@ layout: default
     Blog Statistics
   </h1>
 
-  {% include stats/summary-cards.html %}
-  {% include stats/category-chart.html %}
+  {% include stats/summary-cards-enhanced.html %}
+
+  <div class="stats-chart-row">
+    <div class="stats-chart-col">
+      {% include charts/category-donut.html %}
+    </div>
+    <div class="stats-chart-col">
+      {% include stats/category-chart.html %}
+    </div>
+  </div>
+
+  {% include charts/monthly-trend.html %}
   {% include stats/heatmap.html %}
   {% include stats/tag-cloud.html %}
 </div>
+
+{% include chart-init.html %}

@@ -1,0 +1,44 @@
+{% assign max_tag_count = 0 %}
+{% assign min_tag_count = 999999 %}
+{% for tag in site.tags %}
+  {% if tag[1].size > max_tag_count %}
+    {% assign max_tag_count = tag[1].size %}
+  {% endif %}
+  {% if tag[1].size < min_tag_count %}
+    {% assign min_tag_count = tag[1].size %}
+  {% endif %}
+{% endfor %}
+
+{% assign range = max_tag_count | minus: min_tag_count %}
+{% if range == 0 %}{% assign range = 1 %}{% endif %}
+
+<div class="page-chart-section">
+  <h2 class="stats-section-title">
+    <i class="fa fa-tags fa-fw"></i> 태그 클라우드
+  </h2>
+  <div class="enhanced-tag-cloud">
+    {% assign sorted_tags = site.tags | sort %}
+    {% for tag in sorted_tags %}
+      {% assign count = tag[1].size %}
+      {% assign normalized = count | minus: min_tag_count | times: 4 | divided_by: range %}
+      {% if normalized >= 4 %}
+        {% assign level = "etag-xl" %}
+      {% elsif normalized >= 3 %}
+        {% assign level = "etag-lg" %}
+      {% elsif normalized >= 2 %}
+        {% assign level = "etag-md" %}
+      {% elsif normalized >= 1 %}
+        {% assign level = "etag-sm" %}
+      {% else %}
+        {% assign level = "etag-xs" %}
+      {% endif %}
+      <a
+        href="{{ site.baseurl }}/tags/{{ tag[0] | slugify | url_encode }}/"
+        class="etag-item {{ level }}"
+        title="{{ tag[0] }}: {{ count }}개 포스트"
+      >
+        {{ tag[0] }}<span class="etag-count">{{ count }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<!-- Chart.js CDN (shared across layouts) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var isDark = document.documentElement.getAttribute('data-mode') === 'dark';
+  Chart.defaults.color = isDark ? '#ced4da' : '#6c757d';
+  Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  if (window.chartConfigs) {
+    window.chartConfigs.forEach(function(cfg) {
+      var el = document.getElementById(cfg.id);
+      if (el) new Chart(el, { type: cfg.type, data: cfg.data, options: cfg.options || {} });
+    });
+  }
+});
+</script>

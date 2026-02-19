@@ -1,0 +1,81 @@
+{% assign total_posts = site.posts | size %}
+
+{% assign cat_names = '' %}
+{% assign cat_counts = '' %}
+{% assign sorted_cats = site.categories | sort %}
+{% for cat in sorted_cats %}
+  {% assign cat_names = cat_names | append: '"' | append: cat[0] | append: '"' %}
+  {% assign cat_counts = cat_counts | append: cat[1].size %}
+  {% unless forloop.last %}
+    {% assign cat_names = cat_names | append: ',' %}
+    {% assign cat_counts = cat_counts | append: ',' %}
+  {% endunless %}
+{% endfor %}
+
+<div class="page-chart-section">
+  <h2 class="stats-section-title">
+    <i class="fas fa-chart-pie fa-fw"></i> 카테고리 분포
+  </h2>
+  <div class="donut-chart-wrapper">
+    <canvas id="categoryDonutChart"></canvas>
+    <div class="donut-center-label">
+      <span class="donut-center-number">{{ total_posts }}</span>
+      <span class="donut-center-text">포스트</span>
+    </div>
+  </div>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+(function() {
+  var isDark = document.documentElement.getAttribute('data-mode') === 'dark';
+  var labels = [{{ cat_names }}];
+  var data = [{{ cat_counts }}];
+  var total = {{ total_posts }};
+
+  var palette = [
+    '#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f',
+    '#edc948','#b07aa1','#ff9da7','#9c755f','#bab0ac',
+    '#86bcb6','#8cd17d','#b6992d','#499894','#d37295',
+    '#a0cbe8','#ffbe7d','#8b8b8b','#d4a6c8','#fabfd2'
+  ];
+
+  window.chartConfigs.push({
+    id: 'categoryDonutChart',
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: palette.slice(0, labels.length),
+        borderWidth: isDark ? 0 : 1,
+        borderColor: isDark ? 'transparent' : '#fff'
+      }]
+    },
+    options: {
+      cutout: '60%',
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 12,
+            usePointStyle: true,
+            pointStyleWidth: 10,
+            font: { size: 11 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var pct = ((ctx.parsed / total) * 100).toFixed(1);
+              return ctx.label + ': ' + ctx.parsed + '개 (' + pct + '%)';
+            }
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
