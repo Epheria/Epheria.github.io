@@ -119,44 +119,98 @@
   width: 100%;
 }
 
-// --- Yearly Summary Cards ---
-.yearly-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 0.75rem;
+// --- Yearly Inline Badges ---
+.yearly-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
 }
 
-.yearly-card {
-  border: 1px solid var(--main-border-color, #e1e4e8);
-  border-radius: 0.6rem;
-  padding: 0.8rem 0.5rem;
-  text-align: center;
+.yearly-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.5rem;
   background: var(--card-bg, var(--main-bg));
-  transition: box-shadow 0.2s;
+  font-size: 0.82rem;
+  line-height: 1;
+  transition: all 0.2s;
+  border: 1px solid var(--main-border-color, #e1e4e8);
 
   &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   }
 }
 
-.yearly-year {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--text-muted-color, #6c757d);
-  margin-bottom: 0.2rem;
+.yearly-badge-year {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-color, inherit);
 }
 
-.yearly-count {
-  display: block;
-  font-size: 1.6rem;
+.yearly-badge-bar {
+  width: 48px;
+  height: 4px;
+  background: var(--main-border-color, #e1e4e8);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.yearly-badge-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.yearly-badge-count {
   font-weight: 700;
-  color: var(--link-color, #0366d6);
-  line-height: 1;
+  font-size: 0.85rem;
+  min-width: 1.2em;
+  text-align: right;
 }
 
-.yearly-label {
-  font-size: 0.7rem;
+.yearly-badge-unit {
+  font-weight: 400;
+  font-size: 0.72rem;
   color: var(--text-muted-color, #6c757d);
+  margin-left: 0.1em;
+}
+
+// Activity levels — bar color + count accent
+.yb-hot {
+  border-color: rgba(#30a14e, 0.3);
+  .yearly-badge-fill { background: #30a14e; }
+  .yearly-badge-count { color: #30a14e; }
+}
+
+.yb-warm {
+  border-color: rgba(#40c463, 0.25);
+  .yearly-badge-fill { background: #40c463; }
+  .yearly-badge-count { color: #40c463; }
+}
+
+.yb-mild {
+  border-color: rgba(#9be9a8, 0.3);
+  .yearly-badge-fill { background: #9be9a8; }
+  .yearly-badge-count { color: var(--link-color, #0366d6); }
+}
+
+.yb-cool {
+  .yearly-badge-fill { background: var(--main-border-color, #e1e4e8); }
+  .yearly-badge-count { color: var(--text-muted-color, #6c757d); }
+}
+
+[data-mode="dark"],
+.dark {
+  .yb-hot { border-color: rgba(#30a14e, 0.4); }
+  .yb-warm { border-color: rgba(#40c463, 0.3); }
+  .yb-mild {
+    border-color: rgba(#9be9a8, 0.2);
+    .yearly-badge-fill { background: #9be9a8; }
+  }
 }
 
 // --- Stats 2-column grid ---
@@ -187,10 +241,6 @@
 }
 
 @media (max-width: 576px) {
-  .yearly-cards {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .donut-center-number {
     font-size: 1.4rem;
   }
