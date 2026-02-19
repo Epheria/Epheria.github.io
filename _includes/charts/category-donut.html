@@ -18,10 +18,6 @@
   </h2>
   <div class="donut-chart-wrapper">
     <canvas id="categoryDonutChart"></canvas>
-    <div class="donut-center-label">
-      <span class="donut-center-number">{{ total_posts }}</span>
-      <span class="donut-center-text">포스트</span>
-    </div>
   </div>
 </div>
 
@@ -40,6 +36,35 @@ window.chartConfigs = window.chartConfigs || [];
     '#a0cbe8','#ffbe7d','#8b8b8b','#d4a6c8','#fabfd2'
   ];
 
+  // Plugin to draw center text inside the donut hole
+  var centerTextPlugin = {
+    id: 'donutCenterText',
+    afterDraw: function(chart) {
+      var ctx = chart.ctx;
+      var meta = chart.getDatasetMeta(0);
+      if (!meta || !meta.data || !meta.data.length) return;
+      var arc = meta.data[0];
+      var cx = (chart.chartArea.left + chart.chartArea.right) / 2;
+      var cy = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+      var textColor = isDark ? '#ced4da' : '#343a40';
+      var subColor = isDark ? '#868e96' : '#6c757d';
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.font = 'bold 1.8rem -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillStyle = textColor;
+      ctx.fillText(total, cx, cy - 8);
+
+      ctx.font = '0.75rem -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillStyle = subColor;
+      ctx.fillText('포스트', cx, cy + 16);
+
+      ctx.restore();
+    }
+  };
+
   window.chartConfigs.push({
     id: 'categoryDonutChart',
     type: 'doughnut',
@@ -57,15 +82,7 @@ window.chartConfigs = window.chartConfigs || [];
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            padding: 12,
-            usePointStyle: true,
-            pointStyleWidth: 10,
-            font: { size: 11 }
-          }
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
             label: function(ctx) {
@@ -75,7 +92,8 @@ window.chartConfigs = window.chartConfigs || [];
           }
         }
       }
-    }
+    },
+    plugins: [centerTextPlugin]
   });
 })();
 </script>

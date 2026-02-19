@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.chartConfigs) {
     window.chartConfigs.forEach(function(cfg) {
       var el = document.getElementById(cfg.id);
-      if (el) new Chart(el, { type: cfg.type, data: cfg.data, options: cfg.options || {} });
+      if (el) new Chart(el, { type: cfg.type, data: cfg.data, options: cfg.options || {}, plugins: cfg.plugins || [] });
     });
   }
 });
