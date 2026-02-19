@@ -13,7 +13,7 @@ toc: true
 - [2. Localization environment setup](#2-localization-environment-setup)
 - [3. Integrate Google Sheets](#3-integrate-google-sheets)
 - [4. How to use in UGUI](#4-how-to-use-localization-in-ugui)
-- [5. Asset Table setup](#5-how-to-configure-asset-table)
+- [5. How to configure Asset Table](#5-how-to-configure-asset-table)
 - [6. Localization customization](#6-localization-customization)
 
 ---
@@ -508,7 +508,7 @@ public class CommonModal : UIPopup
 <br>
 <br>
 
-## 5. Asset Table setup {#5-how-to-configure-asset-table}
+## 5. How to configure Asset Table
 
 - In New Table Collection, besides String Table there is Asset Table.
 - Asset Table maps font/font material per locale code.
