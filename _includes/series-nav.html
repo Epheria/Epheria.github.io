@@ -28,7 +28,14 @@
     <div class="series-nav">
       <div class="series-nav-header">
         <i class="fas fa-list-ol fa-fw"></i>
-        {{ page.categories[1] }} 시리즈
+        {% assign current_lang = page.lang | default: site.active_lang | default: site.lang | default: "ko" %}
+        {% if current_lang == "en" %}
+          {{ page.categories[1] }} Series
+        {% elsif current_lang == "ja" %}
+          {{ page.categories[1] }} シリーズ
+        {% else %}
+          {{ page.categories[1] }} 시리즈
+        {% endif %}
         <span style="font-weight:400; color:var(--text-muted-color,#6c757d);">
           ({{ current_index | plus: 1 }} / {{ series_posts.size }})
         </span>

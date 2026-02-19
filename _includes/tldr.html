@@ -2,7 +2,14 @@
 <div class="tldr-box">
   <div class="tldr-header">
     <i class="fas fa-bolt fa-fw"></i>
-    TL;DR — 핵심 요약
+    {% assign current_lang = page.lang | default: site.active_lang | default: site.lang | default: "ko" %}
+    {% if current_lang == "en" %}
+      TL;DR — Key Takeaways
+    {% elsif current_lang == "ja" %}
+      TL;DR — 要点まとめ
+    {% else %}
+      TL;DR — 핵심 요약
+    {% endif %}
   </div>
   <ul class="tldr-list">
     {% for item in page.tldr %}

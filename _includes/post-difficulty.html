@@ -1,19 +1,49 @@
 {% if page.difficulty %}
   {% assign diff = page.difficulty | downcase %}
+  {% assign current_lang = page.lang | default: site.active_lang | default: site.lang | default: "ko" %}
+
   {% if diff == "beginner" %}
-    {% assign diff_label = "초급" %}
     {% assign diff_class = "difficulty-beginner" %}
     {% assign diff_icon = "fas fa-seedling" %}
+    {% if current_lang == "en" %}
+      {% assign diff_label = "Beginner" %}
+      {% assign diff_title = "Difficulty" %}
+    {% elsif current_lang == "ja" %}
+      {% assign diff_label = "初級" %}
+      {% assign diff_title = "難易度" %}
+    {% else %}
+      {% assign diff_label = "초급" %}
+      {% assign diff_title = "난이도" %}
+    {% endif %}
   {% elsif diff == "advanced" %}
-    {% assign diff_label = "고급" %}
     {% assign diff_class = "difficulty-advanced" %}
     {% assign diff_icon = "fas fa-fire" %}
+    {% if current_lang == "en" %}
+      {% assign diff_label = "Advanced" %}
+      {% assign diff_title = "Difficulty" %}
+    {% elsif current_lang == "ja" %}
+      {% assign diff_label = "上級" %}
+      {% assign diff_title = "難易度" %}
+    {% else %}
+      {% assign diff_label = "고급" %}
+      {% assign diff_title = "난이도" %}
+    {% endif %}
   {% else %}
-    {% assign diff_label = "중급" %}
     {% assign diff_class = "difficulty-intermediate" %}
     {% assign diff_icon = "fas fa-bolt" %}
+    {% if current_lang == "en" %}
+      {% assign diff_label = "Intermediate" %}
+      {% assign diff_title = "Difficulty" %}
+    {% elsif current_lang == "ja" %}
+      {% assign diff_label = "中級" %}
+      {% assign diff_title = "難易度" %}
+    {% else %}
+      {% assign diff_label = "중급" %}
+      {% assign diff_title = "난이도" %}
+    {% endif %}
   {% endif %}
-  <span class="difficulty-badge {{ diff_class }}" title="난이도: {{ diff_label }}">
+
+  <span class="difficulty-badge {{ diff_class }}" title="{{ diff_title }}: {{ diff_label }}">
     <i class="{{ diff_icon }}"></i> {{ diff_label }}
   </span>
 {% endif %}

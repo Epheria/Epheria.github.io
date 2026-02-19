@@ -2,7 +2,14 @@
 <div class="post-prerequisites">
   <div class="prerequisites-header">
     <i class="fas fa-graduation-cap fa-fw"></i>
-    이 글을 읽기 전에 먼저 확인하세요
+    {% assign current_lang = page.lang | default: site.active_lang | default: site.lang | default: "ko" %}
+    {% if current_lang == "en" %}
+      Prerequisites — Read these first
+    {% elsif current_lang == "ja" %}
+      前提知識 — 先にこちらをご確認ください
+    {% else %}
+      이 글을 읽기 전에 먼저 확인하세요
+    {% endif %}
   </div>
   <ul class="prerequisites-list">
     {% for prereq in page.prerequisites %}
