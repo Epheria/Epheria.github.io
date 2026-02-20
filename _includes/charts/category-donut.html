@@ -1,4 +1,5 @@
 {% assign total_posts = site.posts | size %}
+{% assign l = site.data.locales[lang].stats %}
 
 {% assign cat_names = '' %}
 {% assign cat_counts = '' %}
@@ -14,7 +15,7 @@
 
 <div class="page-chart-section">
   <h2 class="stats-section-title">
-    <i class="fas fa-chart-pie fa-fw"></i> 카테고리 분포
+    <i class="fas fa-chart-pie fa-fw"></i> {{ l.category_distribution | default: "Category Distribution" }}
   </h2>
   <div class="donut-chart-wrapper">
     <canvas id="categoryDonutChart"></canvas>
@@ -28,6 +29,8 @@ window.chartConfigs = window.chartConfigs || [];
   var labels = [{{ cat_names }}];
   var data = [{{ cat_counts }}];
   var total = {{ total_posts }};
+  var centerLabel = '{{ l.center_label | default: "Posts" }}';
+  var unitText = '{{ l.unit | default: "" }}';
 
   var palette = [
     '#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f',
@@ -59,7 +62,7 @@ window.chartConfigs = window.chartConfigs || [];
 
       ctx.font = '0.75rem -apple-system, BlinkMacSystemFont, sans-serif';
       ctx.fillStyle = subColor;
-      ctx.fillText('포스트', cx, cy + 16);
+      ctx.fillText(centerLabel, cx, cy + 16);
 
       ctx.restore();
     }
@@ -87,7 +90,7 @@ window.chartConfigs = window.chartConfigs || [];
           callbacks: {
             label: function(ctx) {
               var pct = ((ctx.parsed / total) * 100).toFixed(1);
-              return ctx.label + ': ' + ctx.parsed + '개 (' + pct + '%)';
+              return ctx.label + ': ' + ctx.parsed + unitText + ' (' + pct + '%)';
             }
           }
         }

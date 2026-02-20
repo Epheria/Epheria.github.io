@@ -1,5 +1,6 @@
 {% assign current_year = "now" | date: "%Y" | plus: 0 %}
 {% assign start_year = site.posts.last.date | date: "%Y" | plus: 0 %}
+{% assign l = site.data.locales[lang].stats %}
 
 {% assign max_yearly = 0 %}
 {% assign year_data = "" %}
@@ -41,7 +42,7 @@
       <div class="yearly-badge-bar">
         <div class="yearly-badge-fill" style="width: {{ pct }}%"></div>
       </div>
-      <span class="yearly-badge-count">{{ year_count }}<span class="yearly-badge-unit">개</span></span>
+      <span class="yearly-badge-count">{{ year_count }}<span class="yearly-badge-unit">{{ l.unit }}</span></span>
     </div>
   {% endfor %}
 </div>

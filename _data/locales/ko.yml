@@ -77,6 +77,25 @@ categories:
   category_measure: 카테고리
   post_measure: 포스트
 
+stats:
+  page_title: 블로그 통계
+  total_posts: 총 포스트
+  categories: 카테고리
+  tags: 태그
+  blog_start: 블로그 시작
+  top_category: 최다 카테고리
+  category_distribution: 카테고리 분포
+  category_posts: 카테고리별 포스트
+  monthly_trend: 월별 작성 추이
+  monthly_activity: 월별 작성 활동
+  tag_cloud: 태그 클라우드
+  center_label: 포스트
+  posts_count: 포스트 수
+  unit: "개"
+  n_posts: "개 포스트"
+  legend_less: Less
+  legend_more: More
+
 # blog-i18n 전용 키
 i18n:
   language_label: 언어

@@ -77,6 +77,25 @@ categories:
   category_measure: カテゴリー
   post_measure: 記事
 
+stats:
+  page_title: ブログ統計
+  total_posts: 総記事数
+  categories: カテゴリー
+  tags: タグ
+  blog_start: ブログ開始
+  top_category: 最多カテゴリー
+  category_distribution: カテゴリー分布
+  category_posts: カテゴリー別記事
+  monthly_trend: 月別投稿推移
+  monthly_activity: 月別投稿活動
+  tag_cloud: タグクラウド
+  center_label: 記事
+  posts_count: 記事数
+  unit: "件"
+  n_posts: "記事"
+  legend_less: Less
+  legend_more: More
+
 # blog-i18n 전용 키
 i18n:
   language_label: 言語

@@ -4,10 +4,11 @@
     {% assign max_count = category[1].size %}
   {% endif %}
 {% endfor %}
+{% assign l = site.data.locales[lang].stats %}
 
 <div class="category-chart">
   <h2 class="stats-section-title">
-    <i class="far fa-folder-open fa-fw"></i> 카테고리별 포스트
+    <i class="far fa-folder-open fa-fw"></i> {{ l.category_posts | default: "Posts by Category" }}
   </h2>
   {% for category in site.categories %}
     {% assign count = category[1].size %}
@@ -16,7 +17,7 @@
       <a
         href="{{ site.baseurl }}/categories/{{ category[0] | slugify | url_encode }}/"
         class="category-name"
-        title="{{ category[0] }} ({{ count }}개)"
+        title="{{ category[0] }} ({{ count }}{{ l.unit }})"
       >{{ category[0] }}</a>
       <div class="bar-container">
         <div class="bar-fill" style="width: {{ width_pct }}%"></div>

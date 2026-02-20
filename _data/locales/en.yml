@@ -81,6 +81,25 @@ categories:
     singular: post
     plural: posts
 
+stats:
+  page_title: Blog Statistics
+  total_posts: Total Posts
+  categories: Categories
+  tags: Tags
+  blog_start: Blog Since
+  top_category: Top Category
+  category_distribution: Category Distribution
+  category_posts: Posts by Category
+  monthly_trend: Monthly Trend
+  monthly_activity: Monthly Activity
+  tag_cloud: Tag Cloud
+  center_label: Posts
+  posts_count: Posts
+  unit: ""
+  n_posts: " posts"
+  legend_less: Less
+  legend_more: More
+
 # blog-i18n 전용 키
 i18n:
   language_label: Language

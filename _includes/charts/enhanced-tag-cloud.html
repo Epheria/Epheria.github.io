@@ -11,10 +11,11 @@
 
 {% assign range = max_tag_count | minus: min_tag_count %}
 {% if range == 0 %}{% assign range = 1 %}{% endif %}
+{% assign l = site.data.locales[lang].stats %}
 
 <div class="page-chart-section">
   <h2 class="stats-section-title">
-    <i class="fa fa-tags fa-fw"></i> 태그 클라우드
+    <i class="fa fa-tags fa-fw"></i> {{ l.tag_cloud | default: "Tag Cloud" }}
   </h2>
   <div class="enhanced-tag-cloud">
     {% assign sorted_tags = site.tags | sort %}
@@ -35,7 +36,7 @@
       <a
         href="{{ site.baseurl }}/tags/{{ tag[0] | slugify | url_encode }}/"
         class="etag-item {{ level }}"
-        title="{{ tag[0] }}: {{ count }}개 포스트"
+        title="{{ tag[0] }}: {{ count }}{{ l.n_posts }}"
       >
         {{ tag[0] }}<span class="etag-count">{{ count }}</span>
       </a>

@@ -3,10 +3,11 @@
 
 {% assign current_year = "now" | date: "%Y" | plus: 0 %}
 {% assign start_year   = site.posts.last.date | date: "%Y" | plus: 0 %}
+{% assign l = site.data.locales[lang].stats %}
 
 <div class="heatmap-section">
   <h2 class="stats-section-title">
-    <i class="fas fa-fire fa-fw"></i> 월별 작성 활동
+    <i class="fas fa-fire fa-fw"></i> {{ l.monthly_activity | default: "Monthly Activity" }}
   </h2>
 
   <!-- Month labels -->
@@ -44,7 +45,7 @@
 
           <div
             class="heatmap-cell level-{{ level }}"
-            title="{{ year_month }}: {{ count }}개"
+            title="{{ year_month }}: {{ count }}{{ l.unit }}"
           ></div>
         {% endfor %}
       </div>
@@ -53,12 +54,12 @@
 
   <!-- Legend -->
   <div class="heatmap-legend">
-    <span>Less</span>
+    <span>{{ l.legend_less | default: "Less" }}</span>
     <div class="heatmap-legend-cell level-0" style="background:var(--main-border-color,#e1e4e8);width:14px;height:14px;border-radius:2px;"></div>
     <div class="heatmap-legend-cell" style="background:#9be9a8;width:14px;height:14px;border-radius:2px;"></div>
     <div class="heatmap-legend-cell" style="background:#40c463;width:14px;height:14px;border-radius:2px;"></div>
     <div class="heatmap-legend-cell" style="background:#30a14e;width:14px;height:14px;border-radius:2px;"></div>
     <div class="heatmap-legend-cell" style="background:#216e39;width:14px;height:14px;border-radius:2px;"></div>
-    <span>More</span>
+    <span>{{ l.legend_more | default: "More" }}</span>
   </div>
 </div>

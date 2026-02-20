@@ -6,7 +6,7 @@ layout: default
 
 <div id="stats-page" class="px-1">
   <h1 class="stats-page-title" data-toc-skip>
-    Blog Statistics
+    {{ site.data.locales[lang].stats.page_title | default: "Blog Statistics" }}
   </h1>
 
   {% include stats/summary-cards-enhanced.html %}

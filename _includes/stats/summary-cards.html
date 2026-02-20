@@ -4,22 +4,23 @@
 {% assign first_post = site.posts | last %}
 {% assign last_post = site.posts | first %}
 {% assign blog_start_year = first_post.date | date: "%Y" %}
+{% assign l = site.data.locales[lang].stats %}
 
 <div class="stats-cards">
   <div class="stat-card">
     <span class="stat-number">{{ total_posts }}</span>
-    <span class="stat-label">총 포스트</span>
+    <span class="stat-label">{{ l.total_posts | default: "Total Posts" }}</span>
   </div>
   <div class="stat-card">
     <span class="stat-number">{{ total_categories }}</span>
-    <span class="stat-label">카테고리</span>
+    <span class="stat-label">{{ l.categories | default: "Categories" }}</span>
   </div>
   <div class="stat-card">
     <span class="stat-number">{{ total_tags }}</span>
-    <span class="stat-label">태그</span>
+    <span class="stat-label">{{ l.tags | default: "Tags" }}</span>
   </div>
   <div class="stat-card">
     <span class="stat-number">{{ blog_start_year }}</span>
-    <span class="stat-label">블로그 시작</span>
+    <span class="stat-label">{{ l.blog_start | default: "Blog Since" }}</span>
   </div>
 </div>
