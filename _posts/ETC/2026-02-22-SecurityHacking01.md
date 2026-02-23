@@ -6,6 +6,7 @@ tags: [Security, Hacking, SQL Injection, XSS, Buffer Overflow, DDoS, Social Engi
 difficulty: intermediate
 toc: true
 mermaid: true
+image: /assets/img/post/etc/security-hacking-og.png
 tldr:
   - "해킹은 '규칙이 허용하지 않는 방식으로 시스템을 동작시키는 기술'이며, 게임의 글리치/익스플로잇과 본질적으로 같다"
   - "SQL Injection은 채팅창에 치트 코드를 입력하는 것, XSS는 다른 플레이어의 화면에 가짜 UI를 띄우는 것과 같다"
@@ -183,6 +184,8 @@ sequenceDiagram
 ---
 
 ## Part 3: 해킹 기법 총정리 -- 공격자의 무기고
+
+![공격자의 무기고 - 사이버 공격과 방어의 전장](/assets/img/post/etc/security-hacking-01.png)
 
 지금부터 현대 사이버 보안에서 가장 중요한 7가지 공격 기법을 해부한다. 각 기법은 동일한 구조로 설명한다: 한줄요약, 게임 비유, 상세 원리, 실제 사례, 간략 방어법.
 
