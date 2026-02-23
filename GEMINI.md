@@ -71,3 +71,6 @@ tldr: ["Summary point 1", "Summary point 2"] # Optional
 - `CLAUDE.md`: Detailed instructions for AI assistants.
 - `_tabs/`: Sidebar navigation pages (About, Archives, Categories, Tags, Books, Sideproject, **Stats**).
 - `_sass/addon/`: Custom styles for new UI features.
+
+## Mandates
+- 모든 답변은 한국어로 작성하세요.
