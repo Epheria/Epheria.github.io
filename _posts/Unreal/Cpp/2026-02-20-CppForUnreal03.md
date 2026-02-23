@@ -1,7 +1,7 @@
 ---
 title: "유니티 개발자를 위한 언리얼 C++ #3"
 description: "포인터 입문 - C#에는 없는 그것"
-date: 2026-02-20 07:00:00 +0900
+date: 2026-02-20 12:00:00 +0900
 categories: [Unreal, Cpp]
 tags: [Unreal, C++, Unity, C#, 포인터, nullptr, new, delete]
 toc: true

@@ -1,7 +1,7 @@
 ---
 title: "유니티 개발자를 위한 언리얼 C++ #5"
 description: "클래스와 OOP - C++만의 생성자/소멸자 규칙"
-date: 2026-02-20 11:00:00 +0900
+date: 2026-02-21 11:00:00 +0900
 categories: [Unreal, Cpp]
 tags: [Unreal, C++, Unity, C#, 클래스, 생성자, 소멸자, OOP]
 toc: true
