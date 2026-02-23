@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Game Programmer "Sehyup"의 기술 블로그. Jekyll 기반 정적 사이트로, **jekyll-theme-chirpy v6.1** 테마를 사용한다. GitHub Pages로 배포되며, 한국어(`lang: ko`)로 운영된다.
+Game Programmer "Sehyup"의 기술 블로그. Jekyll 기반 정적 사이트로, **jekyll-theme-chirpy v6.1** 테마를 사용한다. GitHub Pages로 배포되며, **jekyll-polyglot**으로 다국어 지원 (ko/en/ja).
 
 - URL: https://Epheria.github.io
-- 댓글 시스템: utterances (GitHub Issues 기반)
+- 기본 언어: 한국어 (`ko`), 지원 언어: 영어 (`en`), 일본어 (`ja`)
+- 댓글 시스템: Giscus (GitHub Discussions 기반)
 - 분석: Google Analytics (G-3GL54C48GF)
 
 ## Build & Development Commands
@@ -36,7 +37,8 @@ Ruby 3.2 필요. `Gemfile.lock`은 `.gitignore`에 포함되어 있으므로 커
 
 ### 파일 위치 및 네이밍
 - 경로: `_posts/{Category}/{Subcategory}/YYYY-MM-DD-slug.md`
-- 카테고리 디렉토리: Common, Csharp, ETC, Language, ML, Mathematics, Python, Survivor, TheQuesting, Toyverse, Unity, Unreal
+- 번역 파일: `YYYY-MM-DD-slug.en.md`, `YYYY-MM-DD-slug.ja.md` (같은 디렉토리)
+- 카테고리 디렉토리: AI, Common, Csharp, ETC, Investment, Language, ML, Mathematics, Pobos, Python, Survivor, TheQuesting, Toyverse, Unity, Unreal
 
 ### Front Matter 필수 형식
 ```yaml
@@ -150,3 +152,56 @@ tldr:
 - `categories[1]`이 같은 포스트가 여러 개면 시리즈 네비게이션이 자동으로 표시됨
 - `difficulty`는 초급(`beginner`)/중급(`intermediate`)/고급(`advanced`) 중 하나
 - `prerequisites`에는 포스트 URL 경로(`/posts/{slug}/` 형식)를 사용
+
+## 포스트 현황 (2026-02-24 기준)
+
+### 카테고리별 포스트 수
+
+| 카테고리 | 포스트 수 | 하위 카테고리 |
+|----------|----------|--------------|
+| Unity | 70 | addressable, animator, build, buildError, cinemachine, googleSheets, light, localization, naninovel, Netcode, optimization, Plugins, RenderTexture, Shader |
+| Unreal | 32 | Cpp, Mac, Study |
+| ETC | 18 | — |
+| Common | 15 | — |
+| Language | 12 | Japanese |
+| Python | 10 | Linear Algebra, numpy, Python Language |
+| ML | 8 | — |
+| Csharp | 7 | DataStructure, UniRx |
+| AI | 5 | Claude, LLM |
+| Toyverse | 4 | — |
+| TheQuesting | 3 | — |
+| Mathematics | 2 | Linear Algebra, Mathematical Thinking, Set Theory |
+| Survivor | 1 | — |
+| **합계** | **187** | |
+
+빈 카테고리 (예정): Investment, Pobos
+
+### 다국어 번역 진척도
+
+jekyll-polyglot 플러그인으로 다국어 지원. 지원 언어: `ko`(기본), `en`, `ja`.
+
+- **전체 기본 포스트 (ko)**: 147개
+- **영어 번역 (`.en.md`)**: 37개 (25.2%)
+- **일본어 번역 (`.ja.md`)**: 37개 (25.2%)
+- **중국어 번역**: 없음
+
+#### 카테고리별 번역 현황
+
+| 카테고리 | 기본(ko) | EN | JA | 번역률 |
+|----------|---------|-----|-----|--------|
+| Unity | 70 | 16 | 16 | 22.9% |
+| Unreal | 32 | 7 | 7 | 21.9% |
+| ETC | 18 | 5 | 5 | 27.8% |
+| Common | 15 | 5 | 5 | 33.3% |
+| Csharp | 7 | 2 | 2 | 28.6% |
+| AI | 5 | 0 | 0 | 0% |
+| Toyverse | 4 | 1 | 1 | 25.0% |
+| TheQuesting | 3 | 1 | 1 | 33.3% |
+| Language | 12 | 0 | 0 | 0% |
+| Python | 10 | 0 | 0 | 0% |
+| ML | 8 | 0 | 0 | 0% |
+| Mathematics | 2 | 0 | 0 | 0% |
+| Survivor | 1 | 0 | 0 | 0% |
+| **합계** | **187** | **37** | **37** | **25.2%** |
+
+미번역 카테고리: AI, Language, Python, ML, Mathematics, Survivor

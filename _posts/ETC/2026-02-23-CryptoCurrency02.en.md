@@ -2,7 +2,7 @@
 title: "Cryptocurrency (2) — Anatomy of Bitcoin: Blockchain, Mining, and Digital Scarcity"
 date: 2026-02-23 11:00:00 +0900
 categories: [ETC, Blockchain]
-tags: [Bitcoin, Blockchain, SHA-256, Merkle Tree, UTXO, Proof of Work, Mining, Halving]
+tags: [Bitcoin, Blockchain, SHA-256, Merkle Tree, UTXO, Proof of Work, Mining, Halving, Quantum Computing, Energy Currency]
 difficulty: intermediate
 toc: true
 mermaid: true
@@ -13,6 +13,8 @@ tldr:
   - "Mining is a brute-force process of finding a nonce such that the SHA-256 hash result is below a certain difficulty, which guarantees Bitcoin's security."
   - "In the UTXO model, Bitcoin exists not as 'account balance' but as 'sum of unspent transaction outputs'."
   - "Halving cuts mining rewards in half every 4 years, ensuring only 21 million BTC will ever be issued until 2140."
+  - "Elon Musk claims 'energy is the real currency' and defines Bitcoin as a 'physics-based currency' that converts energy into value."
+  - "Google's Willow (105 qubits) is far from the millions of qubits needed to break Bitcoin, and if quantum threats materialize, all of humanity's digital infrastructure faces crisis before Bitcoin does."
 image: /assets/img/og/blockchain.png
 ---
 
@@ -641,18 +643,138 @@ Using analogy familiar in game development, similar to **Network Synchronization
 
 Through Lightning Network, El Salvador actually pays for coffee with Bitcoin. In 2021 El Salvador adopted Bitcoin as **legal tender** for first time in world.
 
-### Quantum Computer Threat
+### Energy Becomes Currency — Elon Musk's Prediction
 
-Frequently asked concern. "Can't quantum computer break Bitcoin?"
+In late 2025, Elon Musk made an intriguing prediction during a podcast with Indian entrepreneur Nikhil Kamath.
 
-Theoretically quantum computer poses two threats:
-1. **Shor's Algorithm**: Can break ECDSA signature (Extract private key from public key)
-2. **Grover's Algorithm**: Accelerate reverse calculation of SHA-256 hash (But reducing $2^{256}$ to $2^{128}$)
+> **"Energy is the real currency. Governments can print money, but they cannot print energy."**
 
-But realistically:
-- Quantum computer capable of breaking Bitcoin estimated to be possible decades later with current tech
-- Bitcoin protocol is **upgradeable** — Can switch to quantum-resistant cryptography before quantum computer becomes reality
-- If quantum computer breaks SHA-256, not only Bitcoin but **entire Internet security** collapses (HTTPS, online banking, electronic signatures all based on same crypto principles)
+Musk argued that as AI and robotics advance, the value of human labor will fundamentally change, and **"money as a concept will disappear."** In that world, the true measure of value will be **energy**. This is why he called Bitcoin a **"Physics-based Currency."**
+
+Why energy? From a physics perspective, every valuable operation in the universe (computation, movement, production, communication) is ultimately an **energy conversion**. Mining gold, manufacturing semiconductors, running servers — all require energy. Energy cannot be created by law or manipulated politically. **No government can circumvent the laws of thermodynamics.**
+
+Connecting this to Bitcoin's context, the logic links up:
+
+```
+[Fiat Money vs Bitcoin: Energy Perspective]
+
+Fiat Money:
+  Basis of Value = Government credit (Abstract, mutable)
+  Issuance Cost  = Paper + Ink (Approaching zero)
+  Manipulation   = High (Quantitative easing, interest rate control, etc.)
+
+Bitcoin:
+  Basis of Value = Energy invested + Mathematical scarcity (Physical, immutable)
+  Issuance Cost  = Electrical energy + Computing power (Actual physical cost)
+  Manipulation   = None (Cannot change laws of thermodynamics)
+```
+
+As we explored in Part 1, fiat money has value "because the government says it does." Bitcoin's value, on the other hand, has **real energy condensed** into it. Mining 1 BTC currently consumes approximately **266,000 kWh** of electricity — about 9 years of electricity for an average American household. This energy is irrecoverable. Irreversible. Permanently "burned" into SHA-256 hashes.
+
+NVIDIA CEO Jensen Huang has expressed a similar view. In the AI era, the equation **computing power = energy = value** is becoming increasingly clear.
+
+Of course, counterarguments exist. The mere fact of consuming energy doesn't create value. Spending energy to dig a hole and fill it back up doesn't generate value. Bitcoin's energy consumption has value because that energy is used for **Proof of Work that maintains network security**. Energy invested in Bitcoin is the cost of maintaining the service called "immutable global ledger."
+
+What if energy production costs drop dramatically in the future? (Fusion power, etc.) If mining costs decrease, more miners participate, difficulty rises, and equilibrium is restored. Bitcoin's difficulty adjustment mechanism absorbs this scenario too. **Cheaper energy → more miners → difficulty increase → more energy per block → back to equilibrium.** Bitcoin is a system designed to constantly absorb available energy.
+
+Whether Musk's prediction proves correct or not, one thing is clear: Bitcoin occupies a unique position as **a mechanism that converts energy into value in the digital world**. This is a fundamentally different characteristic from any other cryptocurrency (PoS-based) or fiat currency.
+
+### Quantum Computing Threat — Doomsday Scenario for Bitcoin?
+
+"Can quantum computers break Bitcoin?" — If you've been interested in cryptocurrency, you've heard this question at least once. When Google unveiled its **105-qubit quantum chip 'Willow'** in December 2024, this question heated up again.
+
+Willow performed a computation that would take conventional supercomputers **10 septillion years** (10,000,000,000,000,000,000,000,000 years) in just **5 minutes**. Hearing such numbers, one might think "Can't Bitcoin's trillion-year hash calculations be cracked in seconds too?" But reality isn't that simple.
+
+#### Two Attack Vectors of Quantum Computers Against Bitcoin
+
+Bitcoin depends on two cryptographic systems, and the quantum threat level differs for each:
+
+| Crypto System | Purpose | Quantum Attack Algorithm | Threat Level |
+|-----------|------|-------------------|----------|
+| **ECDSA (secp256k1)** | Transaction signing (Private key → Public key) | **Shor's Algorithm** (Exponential speedup) | **High** — Can extract private key from public key |
+| **SHA-256** | Mining (Proof of Work), Block linking | **Grover's Algorithm** (Square root speedup) | **Low** — Only reduces $2^{256}$ to $2^{128}$ |
+
+This difference is crucial. The quantum threat is **not uniform.**
+
+**Shor's Algorithm and ECDSA**: The most serious threat is against the transaction signing system. Bitcoin currently uses ECDSA to prove "this transaction was authorized by the Bitcoin owner." Shor's algorithm can reverse this process — extracting the private key from the public key alone. If successful, one could **freely spend someone else's Bitcoin**.
+
+**Grover's Algorithm and SHA-256**: Grover's algorithm can be applied to SHA-256 used in mining, but it provides only **square root level speedup**. $2^{256}$ attempts become $2^{128}$. If you can't grasp how large $2^{128}$ is — it's **340,282,366,920,938,463,463,374,607,431,768,211,456**. Still astronomically large for brute force. SHA-256 remains effectively secure even against quantum computers.
+
+#### Gap Between Reality and Requirement: 105 Qubits vs Millions of Qubits
+
+So how powerful a quantum computer is needed to break Bitcoin's ECDSA?
+
+```
+[Current Quantum Computers vs Level Needed to Break Bitcoin]
+
+Google Willow (2024):
+  105 physical qubits
+  Single-qubit error rate: 0.035%
+  Two-qubit error rate: 0.33%
+
+Level needed for ECDSA cracking:
+  Approx 2,330 logical qubits (minimum theoretical)
+  → With error correction: millions of physical qubits needed
+
+Level needed for SHA-256 cracking:
+  Approx 2.5 million logical qubits
+  → With error correction: tens of millions to hundreds of millions physical qubits
+
+Current gap:
+  105 qubits → millions of qubits
+  Approx 10,000x ~ 1,000,000x gap
+```
+
+The difference between "logical qubits" and "physical qubits" matters here. Quantum computers are extremely unstable. Qubits easily produce errors from minute vibrations, temperature changes, and electromagnetic waves in the environment (called **decoherence**). To create one stable "logical qubit," thousands of physical qubits are needed for error correction.
+
+If you're a game developer, this analogy might resonate. Think about **physics simulation precision**. Some tasks are fine with `float` precision, others require `double`. Quantum computers similarly require vastly different qubit counts for simple calculations (where some errors are tolerable) versus cryptographic cracking (where perfect accuracy is required).
+
+As of February 2026, Iceberg Quantum's **Pinnacle Architecture** succeeded in reducing the physical qubits needed for RSA-2048 cracking to under 100,000 using QLDPC codes — approximately 10x reduction from previous estimates. This signals rapidly improving quantum computing efficiency, but it's still a long way from breaking Bitcoin.
+
+Blockstream CEO Adam Back maintains that "a cryptographically meaningful quantum threat is likely **20 to 40 years away**."
+
+#### What If Quantum Computers Actually Break Bitcoin?
+
+We need to see the bigger picture here. A quantum computer capable of breaking Bitcoin's ECDSA means **it's not just Bitcoin's problem.**
+
+```
+[What Collapses Together If Quantum Computers Break ECDSA]
+
+✗ Bitcoin, Ethereum, and all cryptocurrencies
+✗ HTTPS (Foundation of internet security)
+✗ Online banking (TLS/SSL)
+✗ Digital signatures (E-government, contracts, certificates)
+✗ VPN, SSH, encrypted email
+✗ Military communication encryption
+✗ Nuclear launch code security
+
+→ Entire digital infrastructure of human civilization under threat
+→ Worrying about "Bitcoin is at risk" at this point is like
+  worrying "the picture frame is crooked" when the house is on fire
+```
+
+Therefore, at the point quantum computers become a realistic threat, not just Bitcoin but **all of humanity's digital security systems will be transitioning to post-quantum cryptography**. And Bitcoin is no exception.
+
+#### Bitcoin's Defense: Post-Quantum Cryptography
+
+Bitcoin can be upgraded through **Soft Forks**. The transition to quantum-resistant signature schemes is already being researched:
+
+- **NIST Standardization**: In 2024, the U.S. National Institute of Standards and Technology published 3 post-quantum cryptography standards (CRYSTALS-Kyber, CRYSTALS-Dilithium, SPHINCS+)
+- **Bitcoin Community**: Introduction of quantum-resistant signature algorithms through BIP (Bitcoin Improvement Proposal) is under discussion
+- **Hash-based Signatures**: Since SHA-256 itself has high quantum resistance, transitioning to hash-based signatures like Lamport signatures can provide additional security
+
+Another defense mechanism Bitcoin has is **address reuse avoidance**. Bitcoin addresses are hashes of public keys, and the public key itself is not exposed to the network until a transaction is sent. Since Shor's algorithm needs the **public key** to extract the private key, Bitcoin stored in never-used addresses is safe from quantum computers.
+
+In summary, a realistic assessment of the quantum threat:
+
+| Scenario | Probability | Impact on Bitcoin |
+|----------|------|-------------|
+| Cryptographic quantum computer within 10 years | Very low | Sufficient transition time |
+| Within 20~30 years | Possible | Post-quantum crypto upgrade expected complete |
+| Quantum computer secretly developed suddenly | Extremely low | All digital security threatened simultaneously |
+| Quantum computer never becomes practical | Possible | No impact on Bitcoin |
+
+In conclusion, quantum computers are a **theoretical threat** to Bitcoin but not an **immediate danger**. Bitcoin has overcome numerous technical challenges and upgraded over its 15-year history, and preparations for the quantum threat are already underway. However, the pace of technological advancement is inherently unpredictable — a fact worth keeping in mind.
 
 ---
 
