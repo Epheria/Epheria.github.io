@@ -35,7 +35,7 @@ tldr:
 
 성을 공격하는 방법을 배웠으니, 이제 성벽을 쌓는 기술을 배워봅시다.
 
-![방패의 기술 - 사이버 공격에 맞서는 방어 시스템](/assets/img/post/etc/security-hacking-01.png)
+![방패의 기술 - 사이버 공격에 맞서는 방어 시스템](/assets/img/og/security.png)
 
 ---
 

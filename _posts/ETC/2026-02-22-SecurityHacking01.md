@@ -185,7 +185,7 @@ sequenceDiagram
 
 ## Part 3: 해킹 기법 총정리 -- 공격자의 무기고
 
-![공격자의 무기고 - 사이버 공격과 방어의 전장](/assets/img/post/etc/security-hacking-01.png)
+![공격자의 무기고 - 사이버 공격과 방어의 전장](/assets/img/og/security.png)
 
 지금부터 현대 사이버 보안에서 가장 중요한 7가지 공격 기법을 해부한다. 각 기법은 동일한 구조로 설명한다: 한줄요약, 게임 비유, 상세 원리, 실제 사례, 간략 방어법.
 
