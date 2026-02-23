@@ -1,7 +1,7 @@
 ---
 title: 실전 데이터로 보는 게임 개발자의 AI 활용법 - 2,165 메시지의 기록
 date: 2026-02-20 12:00:00 +0900
-categories: [ML, LLM]
+categories: [AI, Claude]
 tags: [Claude Code, AI, Game Development, Unity, Productivity, LLM, Developer Tools]
 
 difficulty: intermediate

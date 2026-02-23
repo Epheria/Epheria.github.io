@@ -1,7 +1,7 @@
 ---
 title: VRAM 심화 가이드 - GPU 메모리 계층과 LLM 모델 적재
 date: 2026-02-13 10:00:00 +/-TTTT
-categories: [ML, LLM]
+categories: [AI, LLM]
 tags: [Machine Learning, ML, LLM, VRAM, GPU, Memory]
 
 difficulty: intermediate

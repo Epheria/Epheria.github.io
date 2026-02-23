@@ -1,7 +1,7 @@
 ---
 title: Claude Opus 4.5 → 4.6 전환기 - 게임 개발자가 체감한 성능, 토큰, 워크플로우의 변화
 date: 2026-02-20 14:00:00 +0900
-categories: [ML, LLM]
+categories: [AI, Claude]
 tags: [Claude Code, AI, Opus 4.6, Opus 4.5, Sonnet 4.6, LLM, Benchmark, Game Development]
 
 difficulty: intermediate

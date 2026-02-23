@@ -1,7 +1,7 @@
 ---
 title: LLM 동작 원리 - 게임 개발자를 위한 가이드
 date: 2026-02-13 10:00:00 +/-TTTT
-categories: [ML, LLM]
+categories: [AI, LLM]
 tags: [Machine Learning, ML, LLM, Transformer, Game Development]
 
 difficulty: intermediate
