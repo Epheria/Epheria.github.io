@@ -573,6 +573,70 @@ RAII 덕분에 C++에서는 **자원 누수가 원천적으로 방지**됩니다
 >
 > 생성자에서 `new`로 할당한 메모리 해제(`delete`), 파일 핸들 닫기, 네트워크 연결 종료, 이벤트 바인딩 해제 등입니다. **"생성자에서 얻은 것은 소멸자에서 돌려준다"**가 원칙입니다.
 
+### 4-3. 복사 생성자와 특수 멤버 함수 (맛보기)
+
+서론에서 **복사 생성자**를 언급했습니다. 소멸자와 함께 알아야 할 중요한 개념이지만, 여기서는 맛보기만 합니다.
+
+```cpp
+class FBuffer
+{
+public:
+    FBuffer(int32 InSize) : Size(InSize)
+    {
+        Data = new uint8[Size];
+    }
+
+    // 복사 생성자 — 객체를 복사할 때 호출
+    FBuffer(const FBuffer& Other) : Size(Other.Size)
+    {
+        Data = new uint8[Size];                    // 새 메모리 할당
+        FMemory::Memcpy(Data, Other.Data, Size);   // 내용 복사
+    }
+
+    ~FBuffer()
+    {
+        delete[] Data;
+    }
+
+private:
+    uint8* Data;
+    int32 Size;
+};
+
+FBuffer A(1024);
+FBuffer B = A;    // 복사 생성자 호출 → B는 A의 복사본
+```
+
+**C#에서는 이런 걱정이 없습니다.** GC가 있으니까요. C++에서는 소멸자를 직접 쓰는 클래스라면 복사 생성자도 신경 써야 합니다. 이것을 **Rule of Three**라고 합니다 (소멸자, 복사 생성자, 복사 대입 연산자를 세트로 관리). 자세한 내용은 9강(메모리 관리)에서 다룹니다.
+
+언리얼 코드에서는 `= default`와 `= delete` 키워드도 자주 볼 수 있습니다:
+
+```cpp
+class FMySystem
+{
+public:
+    FMySystem() = default;                           // 컴파일러 기본 생성자 사용
+    ~FMySystem() = default;                          // 컴파일러 기본 소멸자 사용
+
+    FMySystem(const FMySystem&) = delete;            // ❌ 복사 금지!
+    FMySystem& operator=(const FMySystem&) = delete; // ❌ 복사 대입 금지!
+};
+
+FMySystem A;
+// FMySystem B = A;  // ❌ 컴파일 에러! 복사 삭제됨
+```
+
+| 키워드 | 의미 | C# 대응 |
+|--------|------|---------|
+| `= default` | "컴파일러가 자동 생성해줘" | 없음 (항상 자동) |
+| `= delete` | "이 함수는 사용 금지" | 없음 (접근 지정자로 제한) |
+
+> **💬 잠깐, 이건 알고 가자**
+>
+> **Q. 왜 복사를 금지하나요?**
+>
+> 싱글톤이나 시스템 매니저처럼 **복사되면 안 되는 객체**가 있습니다. C#에서는 이런 패턴을 관례로 지키지만, C++에서는 `= delete`로 **컴파일 타임에 강제**합니다. 언리얼의 `FNoncopyable`을 상속해도 같은 효과입니다.
+
 ---
 
 ## 5. this 포인터 - 자기 자신을 가리키는 방법
@@ -951,6 +1015,8 @@ void AMyCharacter::BeginPlay()
 - [ ] C++ 멤버 변수는 자동 초기화되지 않는다는 것을 안다
 - [ ] `CreateDefaultSubobject<T>()`가 언리얼 생성자에서 컴포넌트를 만드는 방법임을 안다
 - [ ] 언리얼 생성자에서 게임 로직을 쓰면 안 되는 이유를 안다 (→ BeginPlay 사용)
+- [ ] 복사 생성자가 뭔지 안다 (소멸자가 있으면 복사 생성자도 필요 → Rule of Three)
+- [ ] `= default`(컴파일러 기본 구현)와 `= delete`(사용 금지)의 의미를 안다
 
 ---
 
