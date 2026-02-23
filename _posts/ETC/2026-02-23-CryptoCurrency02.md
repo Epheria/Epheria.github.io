@@ -12,6 +12,7 @@ tldr:
   - "채굴(Mining)은 SHA-256 해시의 결과가 특정 난이도 이하가 되는 nonce를 찾는 브루트포스 과정이며, 이것이 비트코인의 보안을 담보한다"
   - "UTXO 모델에서 비트코인은 '계좌 잔고'가 아니라 '아직 쓰지 않은 거래 출력값들의 합'으로 존재한다"
   - "반감기(Halving)는 4년마다 채굴 보상을 절반으로 줄여, 2140년까지 총 2,100만 BTC만 발행되도록 보장한다"
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency02.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency02/)

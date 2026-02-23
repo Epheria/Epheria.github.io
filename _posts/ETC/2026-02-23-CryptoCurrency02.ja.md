@@ -13,6 +13,7 @@ tldr:
   - "採掘(Mining)はSHA-256ハッシュの結果が特定難易度以下になるnonceを探すブルートフォース過程であり、これがビットコインのセキュリティを担保する"
   - "UTXOモデルでビットコインは「口座残高」ではなく「まだ使っていない取引出力値の合計」として存在する"
   - "半減期(Halving)は4年ごとに採掘報酬を半分に減らし、2140年まで総2,100万BTCだけ発行されるように保障する"
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency02.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency02/)

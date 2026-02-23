@@ -11,6 +11,7 @@ tldr:
   - "1971년 닉슨 쇼크 이후, 전 세계 화폐는 금이라는 앵커를 잃고 순수한 신용화폐가 되었다"
   - "중앙은행의 무제한 화폐 발행은 인플레이션을 유발하며, 1970년 이후 미국 달러의 구매력은 95% 이상 하락했다"
   - "비트코인은 '신뢰할 수 없는 제3자' 문제를 수학과 암호학으로 해결하려는 시도다"
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency01.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency01/)

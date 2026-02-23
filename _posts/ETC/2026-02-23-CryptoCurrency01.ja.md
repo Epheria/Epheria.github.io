@@ -12,6 +12,7 @@ tldr:
   - "1971年ニクソン・ショック以降、全世界の通貨は金というアンカーを失い純粋な信用通貨になった"
   - "中央銀行の無制限通貨発行はインフレーションを誘発し、1970年以降米国ドルの購買力は95%以上下落した"
   - "ビットコインは「信頼できない第三者」問題を数学と暗号学で解決しようとする試みだ"
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency01.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency01/)

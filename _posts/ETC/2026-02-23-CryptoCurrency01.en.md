@@ -12,6 +12,7 @@ tldr:
   - "After the Nixon Shock in 1971, currencies worldwide lost the anchor of gold and became pure credit money."
   - "Unlimited money printing by central banks causes inflation; the purchasing power of the US dollar has fallen by over 95% since 1970."
   - "Bitcoin is an attempt to solve the 'untrusted third party' problem using mathematics and cryptography."
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency01.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency01/)

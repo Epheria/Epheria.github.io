@@ -13,6 +13,7 @@ tldr:
   - "Mining is a brute-force process of finding a nonce such that the SHA-256 hash result is below a certain difficulty, which guarantees Bitcoin's security."
   - "In the UTXO model, Bitcoin exists not as 'account balance' but as 'sum of unspent transaction outputs'."
   - "Halving cuts mining rewards in half every 4 years, ensuring only 21 million BTC will ever be issued until 2140."
+image: /assets/img/og/blockchain.png
 ---
 
 [![Hits](https://hits.sh/epheria.github.io/posts/CryptoCurrency02.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/CryptoCurrency02/)
