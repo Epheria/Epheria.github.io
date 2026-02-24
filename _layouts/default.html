@@ -54,7 +54,11 @@ layout: compress
               {% assign _include_path = _include | append: '.html' %}
               {% include {{ _include_path }} lang=lang %}
             {% endfor %}
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="col-12 col-lg-11 col-xl-9 px-md-4">
             {% include_cached footer.html lang=lang %}
           </div>
         </div>
