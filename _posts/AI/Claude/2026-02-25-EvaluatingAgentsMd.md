@@ -1,6 +1,6 @@
 ---
 title: "AGENTS.md는 정말 도움이 될까? - 코딩 에이전트의 컨텍스트 파일 효과를 검증한 논문 분석"
-date: 2026-02-25 10:00:00 +0900
+date: 2026-02-25 01:00:00 +0900
 categories: [AI, Claude]
 tags: [Claude Code, AI, AGENTS.md, CLAUDE.md, LLM, Benchmark, SWE-bench, Coding Agent, Paper Review]
 
