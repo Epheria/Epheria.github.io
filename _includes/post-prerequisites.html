@@ -1,4 +1,26 @@
 {% if page.prerequisites and page.prerequisites.size > 0 %}
+  {% comment %} 같은 시리즈(categories[0]+categories[1]) 포스트는 series-nav에서 표시하므로 제외 {% endcomment %}
+  {% assign series_key = "" %}
+  {% if page.categories.size >= 2 %}
+    {% assign series_key = page.categories[0] | append: "|" | append: page.categories[1] %}
+  {% endif %}
+
+  {% assign filtered_prereqs = "" | split: "" %}
+  {% for prereq in page.prerequisites %}
+    {% assign prereq_post = site.posts | where: "url", prereq | first %}
+    {% assign in_same_series = false %}
+    {% if prereq_post and series_key != "" and prereq_post.categories.size >= 2 %}
+      {% assign prereq_key = prereq_post.categories[0] | append: "|" | append: prereq_post.categories[1] %}
+      {% if prereq_key == series_key %}
+        {% assign in_same_series = true %}
+      {% endif %}
+    {% endif %}
+    {% unless in_same_series %}
+      {% assign filtered_prereqs = filtered_prereqs | push: prereq %}
+    {% endunless %}
+  {% endfor %}
+
+  {% if filtered_prereqs.size > 0 %}
 <div class="post-prerequisites">
   <div class="prerequisites-header">
     <i class="fas fa-graduation-cap fa-fw"></i>
@@ -12,7 +34,7 @@
     {% endif %}
   </div>
   <ul class="prerequisites-list">
-    {% for prereq in page.prerequisites %}
+    {% for prereq in filtered_prereqs %}
       {% assign prereq_post = site.posts | where: "url", prereq | first %}
       <li>
         {% if prereq_post %}
@@ -30,4 +52,5 @@
     {% endfor %}
   </ul>
 </div>
+  {% endif %}
 {% endif %}
