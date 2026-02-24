@@ -147,6 +147,11 @@ defaults:
       permalink: /posts/:title/
   # Category-specific OG images
   - scope:
+      path: _posts/AI
+      type: posts
+    values:
+      image: /assets/img/og/claude.png
+  - scope:
       path: _posts/Common
       type: posts
     values:
