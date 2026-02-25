@@ -1,5 +1,5 @@
 ---
-title: AI in Game Development: Insights from 2,165 Messages - A Developer's 47-Day Log
+title: "AI in Game Development: Insights from 2,165 Messages - A Developer's 47-Day Log"
 date: 2026-02-20 12:00:00 +0900
 categories: [AI, Claude]
 tags: [Claude Code, AI, Game Development, Unity, Productivity, LLM, Developer Tools]
