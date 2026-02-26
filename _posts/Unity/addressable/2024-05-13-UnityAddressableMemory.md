@@ -1,6 +1,6 @@
 ---
 title: Unity Addressable System - Internal Memory Structure and Asset Bundle
-date: 2024-05-09 10:00:00 +/-TTTT
+date: 2024-05-13 10:00:00 +0900
 categories: [Unity, Addressable]
 tags: [Unity, Addressable, Asset Bundle, Memory Structure]     # TAG names should always be lowercase
 

@@ -137,6 +137,102 @@ class PBR : IPostprocessBuildWithReport
         }
     }
 }
+
+ [PostProcessBuild(callbackOrder:999)]
+    public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
+    {
+#if UNITY_IPHONE
+        if (target == BuildTarget.iOS)
+        {
+            var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+            var project = new PBXProject();
+            Debug.Log($"Post Process Build callback : {projectPath}");
+            project.ReadFromString(File.ReadAllText(projectPath));
+
+            // UnityFramework separation support since Unity 2019.3
+            project.AddFrameworkToProject(project.GetUnityMainTargetGuid(), "UnityFramework.framework", false);
+
+            // iOS 14 support
+            var frameworkTarget = project.GetUnityFrameworkTargetGuid();
+            project.AddFrameworkToProject(frameworkTarget, "AppTrackingTransparency.framework", true);
+            project.AddFrameworkToProject(frameworkTarget, "AdSupport.framework", true);
+
+            string infoPlistPath = pathToBuiltProject + "/Info.plist";
+            PlistDocument plistDoc = new PlistDocument();
+            plistDoc.ReadFromFile(infoPlistPath);
+            if (plistDoc.root != null)
+            {
+                plistDoc.root.SetBoolean("ITSAppUsesNonExemptEncryption", false);
+
+
+                var locale = new string[] { "en", "ja" };
+                var mainTargetGuid = project.GetUnityMainTargetGuid();
+                var array = plistDoc.root.CreateArray("CFBundleLocalizations");
+                foreach (var localization in locale)
+                {
+                    array.AddString(localization);
+                }
+
+                plistDoc.root.SetString("NSUserTrackingUsageDescription", "Please allow permission to provide service and personalized marketing. It will be used only for the purpose of providing personalized advertising based on Apple's policy.");
+
+                // var entry = LocalizationSettings.StringDatabase.GetTableEntryAsync("LocalizeTable", "LZ_SRT_038");
+                // if (entry.IsDone)
+                // {
+                //     var comment = entry.Result.Entry.GetMetadata<Comment>();
+                //     var sharedEntry = entry.Result.Table.SharedData.GetEntry("LZ_SRT_038");
+                //     var sharedComment = sharedEntry.Metadata.GetMetadata<Comment>();
+                //     plistDoc.root.SetString("NSUserTrackingUsageDescription", sharedComment.CommentText);
+                // }
+
+                //plistDoc.root.SetString("NSUserTrackingUsageDescription", sharedComment);
+
+                plistDoc.WriteToFile(projectPath);
+
+                for (int i = 0; i < locale.Length; i++)
+                {
+                    var guid = project.AddFolderReference(Application.dataPath + string.Format("/Editor/iOS/Localization/{0}.lproj", locale[i]), string.Format("{0}.lproj", locale[i]), PBXSourceTree.Source);
+                    project.AddFileToBuild(mainTargetGuid, guid);
+                }
+                // Set to Japanese
+                //plistDoc.root.SetString("CFBundleDevelopmentRegion", "en");
+
+                // For displaying iOS 14 AppTracking popup
+                //var attMessage = StringManager.GetLZString("LZ_SRT_038") ?? "Localize is null";
+
+                //var attMessage = "Please allow permission to provide service and personalized marketing. It will be used only for the purpose of providing personalized advertising based on Apple's policy.";
+                //var attMessage = "att tracking test";
+                //var attMessage = "If permitted, the information collected from you in this service will be used to improve the quality of the app." +
+                //    "\nPlease configure tracking settings for future service improvement." +
+                //    "\n*Tracking settings can be changed at any time from your device settings.";
+                //var info = new UnityEngine.Localization.Platform.iOS.AppInfo();
+                //UnityEngine.Localization.Platform.iOS.AppInfo appInfo = info;
+                //var attMessage = info.UserTrackingUsageDescription.ToString();
+                //plistDoc.root.SetString("NSUserTrackingUsageDescription", attMessage);
+
+
+
+                // Background mode configuration required for Firebase
+                PlistElementArray backgroundModes;
+                if (plistDoc.root.values.ContainsKey("UIBackgroundModes"))
+                {
+                    backgroundModes = plistDoc.root["UIBackgroundModes"].AsArray();
+                }
+                else
+                {
+                    backgroundModes = plistDoc.root.CreateArray("UIBackgroundModes");
+                }
+                backgroundModes.AddString("remote-notification");
+                plistDoc.WriteToFile(infoPlistPath);
+            }
+            else
+            {
+                Debug.LogError("ERROR: Can't open " + infoPlistPath);
+            }
+            project.WriteToFile(projectPath);
+        }
+#endif
+    }
+
 ```
 
 </div>
