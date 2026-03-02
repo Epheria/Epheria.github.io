@@ -1,5 +1,5 @@
 ---
-title: 게임 개발자를 위한 Swift & Xcode 가이드 - AI 시대의 네이티브 앱 도전기
+title: 게임 개발자를 위한 Swift & Xcode 가이드 - AI 시대의 네이티브 앱 개발 여정
 date: 2026-03-03 00:12:00 +0900
 categories: [AI, Swift]
 tags: [Swift, Xcode, iOS, macOS, SwiftUI, SpriteKit, Unity, Game Development, Native App, AI]
