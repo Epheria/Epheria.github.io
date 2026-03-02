@@ -3,7 +3,7 @@ title: Mathematical Thinking - 集合と命題、公理
 date: 2024-7-15 17:42:00 +/-TTTT
 categories: [Mathematics, Mathematical Thinking]
 tags: [mathematics, set theory, proposition, axiom, cantor]
-
+lang: ja
 difficulty: intermediate
 toc: true
 toc_sticky: true
