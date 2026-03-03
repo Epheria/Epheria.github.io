@@ -1,5 +1,7 @@
 {% assign popular = site.data.popular-posts.posts %}
 {% if popular and popular.size > 0 %}
+{% assign current_lang = include.lang | default: site.active_lang | default: 'ko' %}
+{% assign default_lang = site.default_lang | default: 'ko' %}
 <section id="access-popular">
   <h2 class="panel-heading">
     <i class="fas fa-fire fa-fw"></i>
@@ -7,10 +9,21 @@
   </h2>
   <ol class="popular-posts-list content list-unstyled ps-0 pb-1 ms-1 mt-2">
     {% for item in popular limit: 10 %}
+      {% assign display_url = item.url %}
+      {% assign display_title = item.title %}
+      {% if current_lang != default_lang %}
+        {% assign base_slug = item.url | split: '/posts/' | last | replace: '/', '' %}
+        {% assign target_slug = base_slug | append: '.' | append: current_lang %}
+        {% assign matched_posts = site.posts | where: 'slug', target_slug %}
+        {% if matched_posts.size > 0 %}
+          {% assign display_url = matched_posts[0].url %}
+          {% assign display_title = matched_posts[0].title %}
+        {% endif %}
+      {% endif %}
       <li class="popular-post-item lh-lg">
-        <a href="{{ item.url }}" title="{{ item.title }}">
+        <a href="{{ display_url }}" title="{{ display_title }}">
           <span class="popular-post-rank {% if forloop.index <= 3 %}top-three{% endif %}">{{ forloop.index }}</span>
-          <span class="popular-post-title text-truncate">{{ item.title }}</span>
+          <span class="popular-post-title text-truncate">{{ display_title }}</span>
         </a>
       </li>
     {% endfor %}
