@@ -3,6 +3,7 @@ title: "Playing DOOM with Brain Cells — In-Depth Analysis of Biological Neural
 date: 2026-03-03 01:22:00 +0900
 categories: [AI, LLM]
 tags: [Biological Computing, Cortical Labs, Neuralink, BCI, Neuroscience, DishBrain, Full Dive VR, Organoid Intelligence]
+lang: en
 difficulty: intermediate
 toc: true
 math: true

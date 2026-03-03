@@ -3,6 +3,7 @@ title: "脳細胞でDOOMをプレイする — 生体神経コンピューティ
 date: 2026-03-03 01:22:00 +0900
 categories: [AI, LLM]
 tags: [Biological Computing, Cortical Labs, Neuralink, BCI, Neuroscience, DishBrain, Full Dive VR, Organoid Intelligence]
+lang: ja
 difficulty: intermediate
 toc: true
 math: true

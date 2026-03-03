@@ -3,7 +3,7 @@ title: Swift & Xcode Guide for Game Developers — A Native App Journey in the A
 date: 2026-03-03 00:12:00 +0900
 categories: [AI, Swift]
 tags: [Swift, Xcode, iOS, macOS, SwiftUI, SpriteKit, Unity, Game Development, Native App, AI]
-
+lang: en
 difficulty: intermediate
 toc: true
 toc_sticky: true
