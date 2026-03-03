@@ -38,12 +38,26 @@ Ruby 3.2 필요. `Gemfile.lock`은 `.gitignore`에 포함되어 있으므로 커
 ### 파일 위치 및 네이밍
 - 경로: `_posts/{Category}/{Subcategory}/YYYY-MM-DD-slug.md`
 - 번역 파일: `YYYY-MM-DD-slug.en.md`, `YYYY-MM-DD-slug.ja.md` (같은 디렉토리)
+- **번역 파일 필수**: front matter에 반드시 `lang: en` 또는 `lang: ja`를 명시해야 한다. 누락하면 polyglot이 번역본으로 인식하지 못하고 ko 사이트에 별도 포스트로 생성된다.
 - 카테고리 디렉토리: AI, Common, Csharp, ETC, Investment, Language, ML, Mathematics, Pobos, Python, Survivor, TheQuesting, Toyverse, Unity, Unreal
 
 ### Front Matter 필수 형식
 ```yaml
 ---
 title: 포스트 제목
+date: YYYY-MM-DD HH:MM:SS +/-TTTT
+categories: [상위카테고리, 하위카테고리]
+tags: [tag1, tag2, tag3]
+toc: true
+toc_sticky: true
+---
+```
+
+번역 파일(`.en.md`, `.ja.md`)의 Front Matter에는 `lang` 필드 필수:
+```yaml
+---
+title: Post Title in English
+lang: en          # 필수! en 또는 ja. 누락 시 ko 사이트에 별도 포스트로 노출됨
 date: YYYY-MM-DD HH:MM:SS +/-TTTT
 categories: [상위카테고리, 하위카테고리]
 tags: [tag1, tag2, tag3]
