@@ -50,12 +50,35 @@
     }
   }
 
+  /* polyglot이 포스트 slug에 .en/.ja 접미사를 유지하므로 이를 처리 */
+  var cleanBasePath = basePath;
+  var isPostPage = basePath.indexOf('/posts/') === 0;
+  if (isPostPage) {
+    for (var k = 0; k < langs.length; k++) {
+      var sl = langs[k];
+      if (sl !== defaultLang) {
+        var suffix = '.' + sl + '/';
+        if (basePath.slice(-suffix.length) === suffix) {
+          cleanBasePath = basePath.slice(0, -suffix.length) + '/';
+          break;
+        }
+      }
+    }
+  }
+
   /* 각 비활성 pill에 올바른 href 설정 */
   var links = pills.querySelectorAll('a.lang-pill[data-lang]');
   for (var j = 0; j < links.length; j++) {
     var a = links[j];
     var lang = a.getAttribute('data-lang');
-    a.href = (lang === defaultLang) ? basePath : '/' + lang + basePath;
+    if (lang === defaultLang) {
+      a.href = cleanBasePath;
+    } else if (isPostPage) {
+      /* 포스트: slug에 .{lang} 접미사 추가 */
+      a.href = '/' + lang + cleanBasePath.replace(/\/$/, '.' + lang + '/');
+    } else {
+      a.href = '/' + lang + cleanBasePath;
+    }
     a.addEventListener('click', (function(lc) {
       return function() { localStorage.setItem('preferred-lang', lc); };
     })(lang));
