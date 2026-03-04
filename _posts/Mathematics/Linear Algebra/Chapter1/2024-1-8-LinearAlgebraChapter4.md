@@ -66,7 +66,7 @@ mermaid: true
 <br>
 
 > ***<span style="color:#179CFF">Theorem3.  </span>*** **<span style="color:#179CFF">linear system 의 3가지 표현 방법 </span>**   
-> If $ A $ is a $ m \times n $, with columns $ \mathbf{a_1}, \dots, \mathbf{a_n} $, and if $ \mathbf{b} $ is in $ \mathbb{R}^{m} $, the matrix equation   
+> If $ A $ is an $ m \times n $ matrix, with columns $ \mathbf{a_1}, \dots, \mathbf{a_n} $, and if $ \mathbf{b} $ is in $ \mathbb{R}^{m} $, the matrix equation   
 >   
 > $$ A\mathbf{x} = \mathbf{b} $$   
 >   
@@ -88,7 +88,7 @@ mermaid: true
 > Let $ A $ be an $ m \times n $ matrix. Then the following statements are logically equivalent.   
 > That is, for a particular $ A $ , either they are all true statements or they are all false.   
 >   
-> a.  For each $ \mathbf{b} $ in $ \mathbb{R}^{m} $ , the equation $ Ax = mathbf{b} $ has a solution.   
+> a.  For each $ \mathbf{b} $ in $ \mathbb{R}^{m} $ , the equation $ Ax = \mathbf{b} $ has a solution.   
 > b.  Each $ \mathbf{b} $ in  $ \mathbb{R}^{m} $ is a linear combination of the columns of $ A $.   
 > c.  The columns of $ A $ span  $ \mathbb{R}^{m} $.   
 > d.  $ A $ has a pivot position in every row.   
@@ -98,7 +98,7 @@ mermaid: true
 
 <br>
 
-**<span style="color:#179CFF"> a.  For each $ \mathbf{b} $ in $ \mathbb{R}^{m} $ , the equation $ Ax = mathbf{b} $ has a solution. </span>**
+**<span style="color:#179CFF"> a.  For each $ \mathbf{b} $ in $ \mathbb{R}^{m} $ , the equation $ Ax = \mathbf{b} $ has a solution. </span>**
 - $ \mathbb{R}^{m} $ 공간에 있는 임의의 b에 대해서 matrix equation 인 $ Ax = b $ 는 solution 을 갖고 있다.
 
 <br>
@@ -133,7 +133,7 @@ mermaid: true
 <br>
 
 > ***<span style="color:#179CFF">Theorem5.  </span>***   
-> If $ A $ is an $ m \times n $ matrix, $ \mathbf{v} $ and $ \mathbf{v} $ are vectors in $ \mathbb{R}^{n} $, and  $ c $ is a scalar, then:   
+> If $ A $ is an $ m \times n $ matrix, $ \mathbf{u} $ and $ \mathbf{v} $ are vectors in $ \mathbb{R}^{n} $, and  $ c $ is a scalar, then:   
 >   
 > a.  $ A(\mathbf{u} + \mathbf{v}) = A\mathbf{u} + A\mathbf{v}; $    
 > b.  $ A(c\mathbf{u}) = c(A\mathbf{u}) $    

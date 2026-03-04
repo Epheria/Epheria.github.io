@@ -1,5 +1,5 @@
 ---
-title: Linear Algebra - 1.5 Solution Sets of Linear Algebra
+title: Linear Algebra - 1.5 Solution Sets of Linear Systems
 date: 2024-01-10 15:20:00 +/-TTTT
 categories: [Mathematics, Linear Algebra]
 tags: [Mathematics,  Linear Algebra, homogeneous, nonhomogeneous, trivial solution, nontrivial solution]     # TAG names should always be lowercase
@@ -13,7 +13,7 @@ mermaid: true
 > **용어 정리**   
 > * homogeneous system (제차 선형계)
 > * nonhomogeneous system (비제차 선형계)
-> * tirivial solution (자명해)
+> * trivial solution (자명해)
 > * nontrivial solution (비자명해)
 > * particular solution (특수해)
 > * homogeneous solution (제차해)
@@ -27,7 +27,7 @@ mermaid: true
 
 - homogeneous linear system 의 특징
 
-> **The homogeneous equation $ A\mathsf{x} = 0 $ has a nontrivial solution if and only if the equation has at least one free varialbe.**   
+> **The homogeneous equation $ A\mathsf{x} = 0 $ has a nontrivial solution if and only if the equation has at least one free variable.**   
 >   
 > **<span style="color:#179CFF">(1)  항상 최소 하나의 trivial solution을 갖고 있다. </span>**   
 > **trivial solution은 $ x = 0 $** 을 의미한다.   
@@ -35,7 +35,7 @@ mermaid: true
 > **<span style="color:#179CFF">(2)  nontrivial solution 을 갖는 조건 </span>**    
 > 방정식이 1개 이상의 free variable 을 갖고있으면 nontrivial solution이다.   
 > **nontrivial solution은 $ x \ne 0 $** 을 의미한다.   
-> theorem 2 에 따르면, free varialbe 이 없으면 unique solution을 갖고, free variable 이 있으면 infinitely many solution을 갖는다.
+> theorem 2 에 따르면, free variable 이 없으면 unique solution을 갖고, free variable 이 있으면 infinitely many solution을 갖는다.
 {: .prompt-warning}
 
 <br>
@@ -48,7 +48,7 @@ mermaid: true
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra5_01.png){: : width="600" .normal }
 
-- 3row 가 전부 0 이므로 $ x_3 $는 free varialbe 이다. $ x_1 $은 basic solution, $ x_2 $는 trivial solution.
+- 3row 가 전부 0 이므로 $ x_3 $는 free variable 이다. $ x_1, x_2 $는 basic variable 이다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra5_02.png){: : width="600" .normal }
 
@@ -73,7 +73,7 @@ mermaid: true
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra5_04.png){: : width="600" .normal }
 
-   - $ x_1 $ 은 basic solution, $ x_2, x_3 $ 는 free varialbe이다.
+   - $ x_1 $ 은 basic variable, $ x_2, x_3 $ 는 free variable이다.
    - 따라서 **<span style="color:#179CFF"> nontrivial 이 존재하고 두 개의 벡터의 linear combination 으로 표현할 수 있으므로 Span{$ u, v $} </span>** 가 된다.
    - $ \mathbb{R}^{3} $ 공간에서 평면으로 표현된다.
 
@@ -84,7 +84,7 @@ mermaid: true
 ### 정리하자면
 
 - Ax = 0 homogeneous linear system 에서 solution set 은 Span{$ v_1, \dots , v_p $} 로 표현할 수 있다.
-- 만약 trivial solution이 존재하면 Span{0} 으로 표한한다. (n 공간에서 하나의 점 이므로)
+- 만약 trivial solution이 존재하면 Span{0} 으로 표현한다. (n 공간에서 하나의 점 이므로)
 - trivial solution 은 x = 0 이므로 Span{}에서 x = 0 에 해당되는 v는 의미가 없어지게 된다.
 - 따라서 nontrivial solution이 없다면 Span{$ v_1, \dots , v_p $} 로 표현할 수 없다.
 
@@ -99,7 +99,7 @@ mermaid: true
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra5_06.png){: : width="600" .normal }
 
-- $x_1$은 basic variable, $x_2$는 nontrivial solution, $x_3$는 free varialbe이다.
+- $x_1, x_2$는 basic variable, $x_3$는 free variable이다.
 - p 를 **<span style="color:#179CFF">particular solution</span>**, v 를 **<span style="color:#179CFF">homogeneous solution</span>** 이라고 한다.
 - **<span style="color:#179CFF">nonhomogeneous linear system 의 solution 은 p (particular solution) 와 v (homogeneous solution)의 합으로 표현된다.</span>**
 - 이처럼 homogeneous linear system 과 nonhomogeneous linear system은 밀접한 관계를 갖고있다.

@@ -34,7 +34,7 @@ mermaid: true
 
 ## Linearly Dependent - 선형 종속
 
-- 벡터 방정식 $c_1v_1 + \dots + c_pv_p = 0$ 에서 **<span style="color:#179CFF">weight $c_1, \dots, + c_p$ 중 하나라도 nonzero면 linearly dependent</span>**라고 한다.
+- 벡터 방정식 $c_1v_1 + \dots + c_pv_p = 0$ 에서 **<span style="color:#179CFF">weight $c_1, \dots, c_p$ 중 하나라도 nonzero면 linearly dependent</span>**라고 한다.
 - nontrivial solution을 갖고 있으면 최소 1개가 nonzero, 여러개가 nonzero 일 수 있으므로 linear combination으로 표현되지 않을 수 있다.
 
 
@@ -43,7 +43,7 @@ mermaid: true
 
 ## Linearly Independent or Linearly Dependent 판단 예시
 
-- trivial solution (free varialble 이 없음) 만 확인하면 linear independent 하므로 augmented matrix 로 변환 후 row reduction을 통해 검출해야한다.
+- trivial solution (free variable 이 없음) 만 확인하면 linear independent 하므로 augmented matrix 로 변환 후 row reduction을 통해 검출해야한다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_02.png){: : width="600" .normal }
 
@@ -73,7 +73,7 @@ mermaid: true
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_03.png){: : width="600" .normal }
 
 - **모든 row 에 pivot position이 존재한다.**
-- free varialbe 이 없으므로 trivial solution 밖에 없음.
+- free variable 이 없으므로 trivial solution 밖에 없음.
 - trivial solution 이므로 linearly independent하다.
 
 <br>
@@ -94,7 +94,7 @@ mermaid: true
 
 <br>
 
-> **A set of tow vectors {$v_1, v_2$} is linearly dependent if at least one of the vectors is a multiple of the other. The set is linearly independent if and only if neither of the vectors is a multiple of the other**    
+> **A set of two vectors {$v_1, v_2$} is linearly dependent if at least one of the vectors is a multiple of the other. The set is linearly independent if and only if neither of the vectors is a multiple of the other**    
 {: .prompt-warning}
 
 <br>
@@ -123,7 +123,7 @@ mermaid: true
 
 
 > ***<span style="color:#179CFF">Theorem7.  </span>*** **<span style="color:#179CFF">Characterization of Linearly Dependent Sets </span>**   
-> An indexed set $ \mathbf{S} = $ { $ v_1, \dots, v_p $ } of two or more vectors is linearly dependent if and only if at leat one of the vectors in $\mathbf{S}$ is a linear combination of the others. In fact, if $\mathbf{S}$ is linearly dependent and $v_1 \ne \mathbf{0}$, then some $v_j$ (with $j$ > 1) is a linear combination of the preceding vectors $ v_1, \dots, v_{j-1} $.   
+> An indexed set $ \mathbf{S} = $ { $ v_1, \dots, v_p $ } of two or more vectors is linearly dependent if and only if at least one of the vectors in $\mathbf{S}$ is a linear combination of the others. In fact, if $\mathbf{S}$ is linearly dependent and $v_1 \ne \mathbf{0}$, then some $v_j$ (with $j$ > 1) is a linear combination of the preceding vectors $ v_1, \dots, v_{j-1} $.   
 {: .prompt-tip}
 
 - 집합 $ \mathbf{S} = $ { $ v_1, \dots, v_p $ } 의 **<span style="color:#179CFF">두 개 이상의 vector가 linearly dependent 하다면 $\mathbf{S}$ 에 있는 vector들 중 적어도 하나는 다른 vector들의 linear combination으로 표현할 수 있다.</span>**
@@ -134,25 +134,25 @@ mermaid: true
 - $c_1v_1 + \dots + c_pv_p = 0$ 에서 두 개 이상의 vector가 linearly dependent라고 가정해보자.
 - linearly dependent 하므로 하나의 벡터는 다른 벡터의 scalar multiplication 형태로 표현이 가능하다. 따라서 하나의 벡터는 다른 벡터의 linear combination 으로 표현될 수 있다.
 - $v_1 = (-c_2 / c_1)v_2 + \dots + (-c_p / c_1)v_p$
-- $-v_1 + c_2v_2 + \dots + c_pv_p = 0$ 에서 $c_2v_2 + \dots + c_pv_p = 0$ 이여도 $v_1$은 nonzero이다. $\because$ **linearly dependent**
+- 즉, $v_1 \neq 0$이고 $c_1 \neq 0$이면 $v_1 = (-c_2/c_1)v_2 + \dots + (-c_p/c_1)v_p$ 와 같이 $v_1$을 나머지 벡터들의 linear combination으로 표현할 수 있다.
 
 <br>
 <br>
 
 ## $ \mathbb{R}^{3} $ 공간에서의 {u,v,w}
 
-- **<span style="color:#179CFF">u와 v가 linearly independent 할 때, set{u,v,w}가 linearly dependent 하다면 w is in Span{u.v}이다.</span>**
-- w is in Span{u.v}는 **<span style="color:#179CFF">Span{u,v}에 w가 존재</span>**한다는 의미이다. 즉, **<span style="color:#179CFF">u와 v의 linear combination으로 w를 표현</span>**할 수 있다.
+- **<span style="color:#179CFF">u와 v가 linearly independent 할 때, set{u,v,w}가 linearly dependent 하다면 w is in Span{u,v}이다.</span>**
+- w is in Span{u,v}는 **<span style="color:#179CFF">Span{u,v}에 w가 존재</span>**한다는 의미이다. 즉, **<span style="color:#179CFF">u와 v의 linear combination으로 w를 표현</span>**할 수 있다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra6_08.png){: : width="600" .normal }
 
-- 일반화 하자면, S = {u,v,w}가 dependent 하면 $v_j$는 $v_{j-1}$의 linear combination으로 표현 가능하다 -> w는 u와 v의 linear combination으로 표현 가능하다 -> w is in Span{u,v}이다.
+- 일반화 하자면, S = {u,v,w}가 dependent 하면 $v_j$는 선행 벡터들 $v_1, \dots, v_{j-1}$의 linear combination으로 표현 가능하다 -> w는 u와 v의 linear combination으로 표현 가능하다 -> w is in Span{u,v}이다.
 
 <br>
 <br>
 
 > ***<span style="color:#179CFF">Theorem8. </span>***    
-> **If a set contains more vectors than there are entries in each vector. then the set is linearly dependent. That is, any set {$v_1, \dots, v_p$} in $ \mathbb{R}^{n} $ is linearly dependent if $ p > n$.**
+> **If a set contains more vectors than there are entries in each vector, then the set is linearly dependent. That is, any set {$v_1, \dots, v_p$} in $ \mathbb{R}^{n} $ is linearly dependent if $ p > n$.**
 {: .prompt-tip}
 
 <br>
@@ -178,7 +178,7 @@ mermaid: true
 
 $$ 1v_1 + 0v_2 + \dots + 0v_p = \mathbf{0} $$
 
-- $v_1$을 zero vector로 가정했을 때 $v_2 ~ v/p$에 해당하는 coefficient가 0이어도 $v_1$에 해당하는 coefficient는 nonzero 가 될 수 있다.
+- $v_1$을 zero vector로 가정했을 때 $v_2, \dots, v_p$에 해당하는 coefficient가 0이어도 $v_1$에 해당하는 coefficient는 nonzero 가 될 수 있다.
 - **<span style="color:#179CFF">$v_1$은 0이므로 $c_1$은 어떤 값을 곱해도 0이 성립하기 때문이다. nontrivial solution을 갖게되므로 linearly dependent를 의미한다.</span>**
 
 <br>
@@ -190,4 +190,4 @@ $$ 1v_1 + 0v_2 + \dots + 0v_p = \mathbf{0} $$
 
 - a. linearly dependent하다. theorem 8 의 $ n < p $
 - b. linearly dependent하다. 0 벡터가 존재하므로..
-- c. linearly independent하다. scalar multiplication 표현되지 않고, $ n > p $ 이기 때문
+- c. linearly independent하다. scalar multiplication으로 표현되지 않기 때문. (주의: $ n > p $가 항상 independent를 보장하지는 않는다. 여기서는 두 벡터가 scalar multiple 관계가 아님을 직접 확인해야 한다.)

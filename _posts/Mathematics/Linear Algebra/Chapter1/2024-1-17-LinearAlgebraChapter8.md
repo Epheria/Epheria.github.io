@@ -30,7 +30,7 @@ $$ \mathbf{I}_2 = \begin{bmatrix} 1 & 0 \\\ 0 & 1 \; \end{bmatrix} \quad are \qu
 
 <br>
 
-- $ \mathbf{T}(\mathbf{x}) = \mathbf{A}\mathbf{x} $ 를 의미한다. $  \mathbb{R}^{2} $ domain 에서  \mathbb{R}^{3} codomain 으로 변환해주는  $ \mathbf{A} $ 를 모르고  **$ \mathbf{T}( \mathbf{e}) $ (e 의 image)를 안다고 가정**하면 이경우에 **$ \mathbf{A} $ 가 무엇인지 찾을 수 있다.**
+- $ \mathbf{T}(\mathbf{x}) = \mathbf{A}\mathbf{x} $ 를 의미한다. $  \mathbb{R}^{2} $ domain 에서 $ \mathbb{R}^{3} $ codomain 으로 변환해주는  $ \mathbf{A} $ 를 모르고  **$ \mathbf{T}( \mathbf{e}) $ (e 의 image)를 안다고 가정**하면 이경우에 **$ \mathbf{A} $ 가 무엇인지 찾을 수 있다.**
 
 $$ \mathbf{T}(\mathbf{e}_1) = \begin{bmatrix} \phantom{-}5 \\\ -7 \\\ \phantom{-}2 \end{bmatrix} \quad and \quad \mathbf{T}( \mathbf{e}_2) = \begin{bmatrix} -3 \\\ \phantom{-}8 \\\ \phantom{-}0 \end{bmatrix} $$
 
@@ -100,7 +100,7 @@ $$ T : \mathbb{R}^{2} \rightarrow \mathbb{R}^{2} $$
 ## Onto - Surjective , 전사 함수
 
 - Transformation 에서 중요한 단어 onto 와 one to one 2가지를 알아보자.
-- Onto 는 임의의 $y$ 에 대해서 여러개의 $x$ 가 존재한다는 것이다.
+- Onto 는 codomain의 임의의 $y$ 에 대해서 적어도 하나의 $x$ 가 대응된다는 것이다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra8_08.png){: : width="300" .normal }
 
@@ -119,7 +119,7 @@ $$ T : \mathbb{R}^{2} \rightarrow \mathbb{R}^{2} $$
    ![Desktop View](/assets/img/post/mathematics/linearalgebra8_11.png){: : width="600" .normal }
 
 - $\mathbb{R}^{m}$ 에서 $T(x)$ 가 $T$ 의 range에 포함되지 않는 경우가 있으면 not onto 이다.
-- 모든 $\mathbb{R}^{n}$ space 가 range 그 자체면 onto 이다.
+- codomain $\mathbb{R}^{m}$ 전체가 range 그 자체면 onto 이다.
 - 임의의 $b$ 에 대해 최소 1개의 solution 이 있으면 onto 이다.
 
 <br>
@@ -149,7 +149,7 @@ $$ T : \mathbb{R}^{2} \rightarrow \mathbb{R}^{2} $$
    ![Desktop View](/assets/img/post/mathematics/linearalgebra8_15.png){: : width="600" .normal }
 
 - row 3개, pivot position 3개 있으므로 solution 이 존재한다. 무조건 **<span style="color:#179CFF">solution 이 존재하므로 $\mathbb{R}^{4}$ 에서 $\mathbb{R}^{3}$ 으로 onto</span>**  한다.
-- $x_3$ 는 free varialbe 이므로 **<span style="color:#179CFF">infinitely many solution 이므로 not one-to-one</span>** 이다.
+- $x_3$ 는 free variable 이므로 **<span style="color:#179CFF">infinitely many solution 이므로 not one-to-one</span>** 이다.
 
 <br>
 <br>
@@ -201,7 +201,7 @@ $$ T(\mathbf{u} - \mathbf{v}) = T(\mathbf{u}) - T(\mathbf{v}) = 0  $$
    ![Desktop View](/assets/img/post/mathematics/linearalgebra8_16.png){: : width="600" .normal }
 
    - standard matrix 인 $A$ 행렬 $ \begin{bmatrix} 3 & 1 \\\ 5 & 7 \\\ 1 & 3 \end{bmatrix} $ 이 **<span style="color:#179CFF">scalar multiplication 형태로 표현되지 않는다.</span>**
-   - 즉, 이는 linearly independent 한다. -> trivial solution 이 존재한다는 의미 이므로 **<span style="color:#179CFF">one-to-one</span>** 이 성립한다.
+   - 즉, 이는 linearly independent 하다. -> trivial solution만을 갖는다는 의미 이므로 **<span style="color:#179CFF">one-to-one</span>** 이 성립한다.
 
    <br>
 

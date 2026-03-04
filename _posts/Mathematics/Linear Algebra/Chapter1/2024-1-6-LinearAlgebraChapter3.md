@@ -320,7 +320,7 @@ $$
 
 <br>
 
-> ***<span style="color:#179CFF">Q1</span>***  Is a vector $ \mathbf{b} $ is span {$ v_1, \dots, v_p $}?   
+> ***<span style="color:#179CFF">Q1</span>***  Is a vector $ \mathbf{b} $ in Span {$ v_1, \dots, v_p $}?   
 > ***<span style="color:#179CFF">Q2</span>***  Does the following vector equation have a solution?    $ x_1v_1 + x_2v_2 + \dots + x_nv_n = \mathbf{b} $   
 > ***<span style="color:#179CFF">Q3</span>***  Does the following augmented matrix have a solution?    $ \begin{bmatrix} v_1, \dots, v_n, \mathbf{b} \, \end{bmatrix} $
 >
@@ -337,7 +337,7 @@ $$
 
 - Span{v} 는 3차원에서 직선
 - Span{u,v} 는 3차원에서 평면으로 나타낼 수 있다.
-- u와 v는 다른 벡터라는 조건에서 Span{u,v}로 표현이 가능하다.
+- u와 v가 선형 독립(linearly independent)이라는 조건에서 Span{u,v}는 평면을 이룬다. (단순히 다른 벡터인 것만으로는 부족하다. 예: u = (1,0,0), v = (2,0,0)은 다르지만 같은 직선 위에 있다.)
 
 <br>
 
@@ -376,7 +376,7 @@ $$
    ![Desktop View](/assets/img/post/mathematics/linearalgebra3_18.png){: : width="400" .normal }
 
 - 좌변의 선형결합으로 공간상의 모든 벡터(혹은 점)을 만들어낼 수 있는가를 생각해야한다.
-- 여기서 더 나아가 살펴볼 점은 $v_3 = v_1 + v_2$ 를 의미하며 이것은 시스템 A에서 어떠 한 column 벡터가 나머지 두 벡터의 선형결합으로 이루어진 경우이고 이는 공간상에서 $v_3$ 는 $v_1, v_2$ 가 이루는 평면 위에 놓여져 있단 것이다.
+- 여기서 더 나아가, 만약 어떤 시스템에서 $v_3 = v_1 + v_2$ 처럼 한 column 벡터가 나머지 두 벡터의 선형결합으로 이루어진 경우, $v_3$ 는 $v_1, v_2$ 가 이루는 평면 위에 놓이게 된다. (참고: 위 시스템 A의 세 열벡터는 선형 독립이므로 이 경우에 해당하지 않는다.)
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra3_19.png){: : width="400" .normal }
 

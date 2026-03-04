@@ -44,7 +44,7 @@ mermaid: true
    ![Desktop View](/assets/img/post/mathematics/linearalgebra7_03.png){: : width="600" .normal }
 
 - $\mathbb{R}^{n}$ 에서 $ \mathbb{R}^{m}$ 로의 transformation (or function or mapping) $T$는 규칙이 있다.
-- **$ \mathbb{R}^{n}$ 에 있는 vector x를 $ \mathbb{R}^{n} $ 에 있는 $T(\mathrm{x})$ 로 할당하는 것이다. 이 규칙을 Transformation (변환) 이라한다.**
+- **$ \mathbb{R}^{n}$ 에 있는 vector x를 $ \mathbb{R}^{m} $ 에 있는 $T(\mathrm{x})$ 로 할당하는 것이다. 이 규칙을 Transformation (변환) 이라한다.**
 
 <br>
 
@@ -127,7 +127,7 @@ $$ the \quad image \quad of \; \begin{bmatrix} 2 \\\ 2 \; \end{bmatrix} \; is \;
 - 이 두 가지 조건을 만족하는 Transformation 은 Linear Transformation이다.
 > 이는 Theorem 5 와 동일하다!! matrix equation 은 linear system 이고 이것은 위 두 조건을 성립한다고 배웠다. 마찬가지로 위 두 조건을 만족하면 transformation 도 linear로 정의가 가능하다.
 
--  $m \times n$ matrix 가 Theorem5 성질을 지니고 있으므로 **모든 matrix transformation 은 linear transformation이다.** linear transformation 이 아닌 trnasformation이 있지만, matrix transformation은 linear transformation이다.
+-  $m \times n$ matrix 가 Theorem5 성질을 지니고 있으므로 **모든 matrix transformation 은 linear transformation이다.** linear transformation 이 아닌 transformation이 있지만, matrix transformation은 linear transformation이다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra7_09.png){: : width="600" .normal }
 
