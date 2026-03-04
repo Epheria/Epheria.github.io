@@ -16,7 +16,7 @@ mermaid: true
 > * solution set (해의 집합)   
 > * consistent - exactly one solution, infinitely many solutions   
 > * inconsistent - no solution   
-> * matrix notation (행령 표기법)   
+> * matrix notation (행렬 표기법)   
 > * elimination (소거법)   
 > * row operation (행 연산) - replacement, interchange, scaling   
 > * equivalent (상등)   
@@ -27,7 +27,7 @@ mermaid: true
 
 ## 선형대수 (Linear Algebra) 는 선형 방정식(Linear Equation)을 풀기 위한 방법론이다.
 
-- 다음과 같은 lineqr equation 이 있다고 하자, $2x + 3y = 0$
+- 다음과 같은 linear equation 이 있다고 하자, $2x + 3y = 0$
 - 여기서 우측의 해 $0$ 을 만족시키는 $x$ 와 $y$ 를 찾아내는 것이다.
 - 방정식과 미지수가 하나씩 있으면 solution 을 구하는게 매우 쉽지만
 - 방정식 1개에 미지수2개 의 경우 해를 만족시키는 x와 y를 방정식 1개로 찾기는 어렵다.
@@ -48,13 +48,13 @@ $$ a_1x_1 + a_2x_2 + \dots + a_nx_n = b $$
 
 - 우리는 위와 같은 식을 선형 방정식이라고 부른다.
 - 변수 앞에 붙은 $ a_1, a_2, \dots, a_n $ 을 우리는 **Coefficients** 라고 부른다.
-- 여기서 $ b $ 와 $ a_1, \dots, a_n $ 은 실수(real number) 혹은 허수(complex numbers)인 상수(coefficient)이다.
+- 여기서 $ a_1, \dots, a_n $ 은 계수(coefficient)이고, $ b $ 는 상수(constant)이다. 이들은 실수(real number) 혹은 복소수(complex number)이다.
 
 <br>
 
 - 문제. 그렇다면 다음 두 식은 Linear Equation 인가?   
    $$ 4x_1 - 5x_2 = x_1x_2 $$   
-   $$ x_2 = \sqrt x_1 - 6 $$   
+   $$ x_2 = \sqrt{x_1} - 6 $$   
    정답 : 아니다.
 
 <br>
@@ -109,7 +109,7 @@ x2 = np.array(range(1, 6))
 x3 = np.array(range(1, 6))
 
 plt.plot(x1, 1/2 * x1 + 1/2, color='tomato', label="$x_1 - 2x_2 = -1$") # y = x 꼴로 간단히 표현가능
-plt.plot(x2, x2 ** 2, color='royalblue', label="$-x_1 + 3x_2 = 3$")
+plt.plot(x2, 1/3 * x2 + 1, color='royalblue', label="$-x_1 + 3x_2 = 3$")
 plt.xlabel("X-Axis")
 plt.ylabel("Y-Axis")
 plt.legend()
@@ -128,16 +128,16 @@ plt.show()
 
 - **<span style="color:#179CFF"> Column Picture </span>**
 
-$ \mathbf{x_1} \begin{bmatrix} 1 \\\ -1 \end{bmatrix} + \mathbf{x_2} \begin{bmatrix} -2 \\\ 3 \end{bmatrix} = \begin{bmatrix} -1 \\\ 3 \end{bmatrix}  $ - 위 방정식을 column 식으로 표현
+$ x_1 \begin{bmatrix} 1 \\\ -1 \end{bmatrix} + x_2 \begin{bmatrix} -2 \\\ 3 \end{bmatrix} = \begin{bmatrix} -1 \\\ 3 \end{bmatrix}  $ - 위 방정식을 column 식으로 표현
 
-$ a_1\mathbf{x_1} + a_2\mathbf{x_2} = b $ - 일반화 한 것
+$ x_1\mathbf{a_1} + x_2\mathbf{a_2} = \mathbf{b} $ - 일반화 한 것
 
 <br>
 
-$$ a_1\mathbf{x_1} + a_2\mathbf{x_2} + \dots + a_n\mathbf{x_n} = b $$
+$$ x_1\mathbf{a_1} + x_2\mathbf{a_2} + \dots + x_n\mathbf{a_n} = \mathbf{b} $$
 
 - 우리는 위와 같은 형태를 linear combination (선형 결합)이라고 부르며, 이러한 형태의 연산은 선형대수에서 가장 근본적이며 핵심적인 연산이다.
-- 여기서는 column 의 선형 결합이라 할 수 있음.
+- 여기서 $ x_1, x_2, \dots, x_n $ 은 스칼라(가중치)이고, $ \mathbf{a_1}, \mathbf{a_2}, \dots, \mathbf{a_n} $ 은 열 벡터(column vector)이다.
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra1_10.png){: : width="400" .normal }
 
@@ -214,8 +214,8 @@ plt.show()
 
    #1. 해가 하나인 경우
 
-   $ x_1 - 2x_2 = -1 $   
-   $ -x_1 + 2x_2 = 3 $
+   $ x_1 - 2x_2 = -1 $
+   $ -x_1 + 3x_2 = 3 $
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra1_01.png){: : width="300" .normal }
 
@@ -251,7 +251,7 @@ $ -4x_1 + 5x_2 + 9x_3 = -9 $
 
 $
 \begin{bmatrix}
-   \phantom{-}1 & -1 & \phantom{-}1 \\\ \phantom{-}0 & \phantom{-}2 & -8 \\\ -4 &  \phantom{-}5 &  \phantom{-}9 
+   \phantom{-}1 & -2 & \phantom{-}1 \\\ \phantom{-}0 & \phantom{-}2 & -8 \\\ -4 &  \phantom{-}5 &  \phantom{-}9
 \end{bmatrix}
 $
 
@@ -289,8 +289,8 @@ $
 - 예제 2. Solve the following system of linear equations   
    	![Desktop View](/assets/img/post/mathematics/linearalgebra1_08.png){: : width="500" .normal }   
 	- 행렬에서 좌측 상단을 pivot position 이라고 하는데, 이 pivot position 이 0이 되면 안되므로 interchange 를 실시해야한다.  
-	- column 들 끼리는 자유롭게 interchange 할 수 있다.
-	- 이 문제는 $ 0 = 5 / 2 $ 이기 때문에 incosistent 하므로 해가 없다.
+	- row 들 끼리는 자유롭게 interchange 할 수 있다.
+	- 이 문제는 $ 0 = 5 / 2 $ 이기 때문에 inconsistent 하므로 해가 없다.
 
 <br>
 
@@ -309,5 +309,5 @@ $
 
 ## 행 상등 - row equivalent
 
-- row operation을 통해 하나의 matrix 를 다른 matrix로 변환된다면 두 matrix 는 row quivalent 하다고 할 수있다.
+- row operation을 통해 하나의 matrix 를 다른 matrix로 변환된다면 두 matrix 는 row equivalent 하다고 할 수있다.
 - 두 linear system 이 row equivalent 하다면 두 linear system은 have same solution set.

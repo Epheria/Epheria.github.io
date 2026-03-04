@@ -11,12 +11,12 @@ mermaid: true
 ---
 
 > **용어 정리**   
-> * A nonzero row of column (0이 아닌 행과 열)   
+> * A nonzero row or column (0이 아닌 행과 열)   
 > * A leading entry of row (행의 선행 성분)   
 > * Echelon form (사다리꼴)   
 > * Reduced echelon form (기약 사다리꼴)   
 > * Uniqueness of the Reduced Echelon Form (기약 사다리꼴의 유일성)   
-> * Row reduction algorithm (행령 표기법)   
+> * Row reduction algorithm (행 줄임 알고리즘)   
 > * Solution of linear systems (소거법)   
 > * general solution (일반 해)   
 > * basic variables (기본 변수)   
@@ -68,7 +68,7 @@ mermaid: true
 
    ![Desktop View](/assets/img/post/mathematics/linearalgebra2_04.png){: : width="500" .normal }
 
-- pivot position : 1의 위치, reduced echelon form이아니고 그냥 echelon form 만되어도 reduced echelon form 이된다.
+- pivot position : leading entry 1의 위치. pivot position은 reduced echelon form이 아니라 echelon form만으로도 확인할 수 있다.
 
 <br>
 <br>
@@ -115,9 +115,9 @@ mermaid: true
 
 - **~** 표시는 row equivalent 하다는 뜻, 즉 row reduction을 통해서 얻을 수 있다.
 
-- The combination of steps 1-4 is called  **<span style="color:#FFD412">forwad phase</span>** 
+- The combination of steps 1-4 is called  **<span style="color:#FFD412">forward phase</span>**
 - 이 결과물이 ->  **<span style="color:#FFD412">echelon form!</span>** 이다
-- 이 echelon form을 redouced echelon form 으로 만드는 것은 
+- 이 echelon form을 reduced echelon form 으로 만드는 것은
 
 <br>
 
@@ -148,13 +148,13 @@ If a pivot is not 1, make it 1 by a scaling operation.
 
 $$
 \begin{bmatrix}
-   \phantom{-}1 & -1 & \phantom{-}0 & -5 \quad \\\ \phantom{-}0 & \phantom{-}1 & \phantom{-}1 & \phantom{-}4 \quad \\\ \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \quad
+   \phantom{-}1 & \phantom{-}0 & -5 & \phantom{-}1 \quad \\\ \phantom{-}0 & \phantom{-}1 & \phantom{-}1 & \phantom{-}4 \quad \\\ \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \quad
 \end{bmatrix}
 $$
 
 <br>
 
-- 이를 lineqr equation 으로 표현해보자.
+- 이를 linear equation 으로 표현해보자.
 
 $$
 \begin{aligned}
@@ -166,7 +166,7 @@ $$
 
 <br>
 
-- 위 lineqr equation의 해를 구하면 다음과 같다.
+- 위 linear equation의 해를 구하면 다음과 같다.
 
 $$
 \begin{cases}
@@ -176,7 +176,7 @@ x_3 \; is \; free
 \end{cases}
 $$
 
-- 여기서 중요한 것은 general solution (일반 해), basic variable (기본 변수), free varialbe (자유 변수) 가 무엇인지 확실하게 짚고 넘어가야 한다.
+- 여기서 중요한 것은 general solution (일반 해), basic variable (기본 변수), free variable (자유 변수) 가 무엇인지 확실하게 짚고 넘어가야 한다.
 
 <br>
 
@@ -215,14 +215,14 @@ $$
 - general solution 은 basic variable 과 free variable 로 표현된 해를 의미한다.
 
 - 해가 무한대로 존재한다. 이럴 때는 $x_3$라는 것을 free variable 으로 둔다.
-- $x_1, x_2, x_3$ 이 중 어떤것이든 free variable 로 하지 않고 $x_1, x_2$ 같이 leading variables 에 포함되는 변수들을 basic varialbes로 잡고 
+- $x_1, x_2, x_3$ 이 중 어떤것이든 free variable 로 하지 않고 $x_1, x_2$ 같이 leading variables 에 포함되는 변수들을 basic variables로 잡고
 - $x_3$를 free variable 로 정하기로 약속.
 - 이런식으로 표현된 솔루션을 -> **<span style="color:#FFD412">general solution</span>** 
 
 <br>
 <br>
 
-## find the general solution of the following augumented matrix - augmented matrix 에서 general solution 찾기
+## find the general solution of the following augmented matrix - augmented matrix 에서 general solution 찾기
 
 <br>
 
@@ -249,7 +249,7 @@ $$
 
 $$
 \begin{aligned}
-x_1 + 6x_2  \quad +3x_x \quad = 0 \\
+x_1 + 6x_2  \quad +3x_4 \quad = 0 \\
 \quad \quad x_3 - 4x_4 = 5 \\
 \quad \quad \quad \quad x_5 = 7   
 \end{aligned}
@@ -273,30 +273,30 @@ $$
 
 <br>
 
-- 하지만 여기서 모순점이 발생한다. $ 0 = 7 $ 은 모순이므로 이 linear system 은 inconsistent 하므로 no solution 이다.
-
    ![Desktop View](/assets/img/post/mathematics/linearalgebra2_14.png){: : width="500" .normal }
+
+- 만약 augmented matrix의 마지막 행이 $ [0 \quad 0 \quad 0 \quad 0 \quad 0 \quad | \quad b] $ (b ≠ 0) 형태였다면 $ 0 = b $ 라는 모순이 발생하여 inconsistent, 즉 no solution이 된다.
 
 <br>
 <br>
 
 > ***<span style="color:#179CFF">Theorem2.  </span>*** **<span style="color:#179CFF">Existence and Uniqueness Theorem </span>**   
-> - A linear system is **<span style="color:#FFD412">consistent</span>** if and only if the rightmost column of the augumented matrix is not a pivot column - that is, if and only if an echelon form of the augumented matrix has no row of the forms.
+> - A linear system is **<span style="color:#FFD412">consistent</span>** if and only if the rightmost column of the augmented matrix is not a pivot column - that is, if and only if an echelon form of the augmented matrix has no row of the forms.
 >   
 > - $$ \begin{bmatrix}
 > 0 & \cdots & 0 & b
 > \end{bmatrix} \quad $$ with $ \; b \; $ is **nonzero**
 >   
-> If a linear system is consistent, then the solution set contains either **(i)** a unique solution, when there are no free variables, of **(ii)** infinitely many solutions, whene there is at least one free variables.
+> If a linear system is consistent, then the solution set contains either **(i)** a unique solution, when there are no free variables, or **(ii)** infinitely many solutions, when there is at least one free variable.
 {: .prompt-tip}
 
 - 이를 정리하자면 다음과 같다.
-- lineqr equation 이 consistent 하면 augmented matrix에서 b가 pivot position이 아니다.
+- linear equation 이 consistent 하면 augmented matrix에서 b가 pivot position이 아니다.
 - 즉, b를 제외하고 0인 행렬이 있으면 안된다.
 - 반대로, 0 & \cdots & 0 & b 인 row 가 있으면 -> no solution 이다.
 
-- linear system 이 consistent 하면, (i) free variable 이 없다면 exactly one solution (trivial solution) 이다.
-- (ii) 1개 이상의 free variable 이 있다면 infinitely many solution (nontrivial solution) 이다.
+- linear system 이 consistent 하면, (i) free variable 이 없다면 exactly one solution (unique solution) 이다.
+- (ii) 1개 이상의 free variable 이 있다면 infinitely many solutions 이다.
 - 즉, 해가 1개 -> free variable 이 존재하지 않고 해가 무수히 많다면 -> at least one free variable 이 존재한다.
 
 <br>
