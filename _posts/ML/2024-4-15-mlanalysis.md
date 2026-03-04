@@ -1,11 +1,12 @@
 ---
 title: AI(ML/DL) 조사 보고서
-date: 2024-04-14 10:00:00 +/-TTTT
+date: 2024-04-14 10:00:00 +0900
 categories: [ML, Supervised Machine Learning]
-tags: [AI, ML, DL, Report]     # TAG names should always be lowercase
+tags: [AI, ML, DL, Report]
 
 difficulty: intermediate
 toc: true
+toc_sticky: true
 math: true
 mermaid: true
 chart: true
@@ -93,9 +94,9 @@ window.chartConfigs.push({
 
 - 현재까지 나온 AI 는 전부 ANI 약인공지능입니다. 아이폰의 Siri, Open AI 의 ChatGPT, 자율주행과 같이 각종 자연어 처리, 컴퓨터 비전으로 구현한 인공지능이 이에 해당합니다.
 
-- AGI는 강인공지능으로 인간의 어조와 감정을 해석하거나 통합하는 능력을 가진다고 정의합니다. 인간과 완전 동등한 성능을 발휘한다고 생각하시면 됩니다. AGI 에 대해 수많은 연구자들 과학자들이 연구를 진행하고 있으나 실현 불가능하다는 의견이 주류라고 알고있습니다. 하지만, 엔비디아의 젠슨황이나 OepnAI 의 샘 올트먼 같이 AI 의 권위자들은 대부분 2050년 이전에는 실현이 가능할 것이다라고 보고있습니다.
+- AGI는 강인공지능으로 인간의 어조와 감정을 해석하거나 통합하는 능력을 가진다고 정의합니다. 인간과 완전 동등한 성능을 발휘한다고 생각하시면 됩니다. AGI 에 대해 수많은 연구자들 과학자들이 연구를 진행하고 있으나 실현 불가능하다는 의견이 주류라고 알고있습니다. 하지만, 엔비디아의 젠슨황이나 OpenAI 의 샘 올트먼 같이 AI 의 권위자들은 대부분 2050년 이전에는 실현이 가능할 것이다라고 보고있습니다.
 
-- ASI 는 지사장님께서 지식과 지능의 차이점에 대해 알고 계시듯이, 인간의 지능과 능력을 초월하는 존재입니다. 이 분야에 대해서도 연구가 이루어지고있습니다.
+- ASI 는 인간의 지능과 능력을 초월하는 존재입니다. 이 분야에 대해서도 연구가 이루어지고있습니다.
 
 <br>
 
@@ -206,7 +207,7 @@ window.chartConfigs.push({
 
 <br>
 
-- **Python Libararies 파이썬 라이브러리**
+- **Python Libraries 파이썬 라이브러리**
 
 - Numpy, Scipy - 주로 데이터 계산을 처리, 행렬 계산 등 (linalg 선형대수 계산)
 
