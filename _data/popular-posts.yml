@@ -2,30 +2,30 @@
 # 수동 수정 시 다음 자동 실행 시 덮어씌워집니다.
 
 posts:
-  - url: "/posts/optimizationAddressable/"
-    title: "Unity 어드레서블 최적화 방법 | Sehyup"
-    views: 47
-  - url: "/posts/instruments/"
-    title: "Mac 에서 배포한 iOS 앱 디버깅 로그 확인하는 방법 - Instruments | Sehyup"
-    views: 41
-  - url: "/posts/LocalizationStringManager2/"
-    title: "Unity Localization - Smart Strings 활용 방법 | Sehyup"
-    views: 39
   - url: "/posts/VCtip/"
     title: "Visual Studio Code 한글 노란 박스 끄는 방법 | Sehyup"
-    views: 39
-  - url: "/posts/Localization/"
-    title: "Unity Localization 연동 | Sehyup"
-    views: 38
+    views: 51
   - url: "/posts/llm-guide/"
     title: "LLM 동작 원리 - 게임 개발자를 위한 가이드 | Sehyup"
-    views: 38
+    views: 40
+  - url: "/posts/Localization/"
+    title: "Unity Localization 연동 | Sehyup"
+    views: 37
+  - url: "/posts/LocalizationStringManager2/"
+    title: "Unity Localization - Smart Strings 활용 방법 | Sehyup"
+    views: 37
   - url: "/posts/LocalizationStringManager/"
     title: "Unity Localization 좀 더 효율적으로 사용해보기 | Sehyup"
-    views: 37
-  - url: "/posts/MechanimAnimator/"
-    title: "Unity Animator Controller - 오버라이드 컨트롤러 사용법 | Sehyup"
     views: 35
   - url: "/posts/EvaluatingAgentsMd/"
     title: "AGENTS.md는 정말 도움이 될까? - 코딩 에이전트의 컨텍스트 파일 효과를 검증한 논문 분석 | Sehyup"
+    views: 34
+  - url: "/posts/instruments/"
+    title: "Mac 에서 배포한 iOS 앱 디버깅 로그 확인하는 방법 - Instruments | Sehyup"
+    views: 34
+  - url: "/posts/MechanimAnimator/"
+    title: "Unity Animator Controller - 오버라이드 컨트롤러 사용법 | Sehyup"
+    views: 29
+  - url: "/posts/optimizationAddressable/"
+    title: "Unity 어드레서블 최적화 방법 | Sehyup"
     views: 26
