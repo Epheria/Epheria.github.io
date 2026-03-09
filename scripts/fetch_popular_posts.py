@@ -11,9 +11,12 @@ _data/popular-posts.yml 파일을 생성합니다.
    - GA_SERVICE_ACCOUNT_KEY: 서비스 계정 JSON 키 (전체 내용)
 """
 
+import glob
 import json
 import os
 import re
+from datetime import datetime, timedelta
+
 import yaml
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -40,7 +43,29 @@ def get_ga_client():
     return BetaAnalyticsDataClient(credentials=credentials)
 
 
-def fetch_popular_pages(client, property_id, days=30, limit=15):
+def get_recent_post_slugs(posts_dir="_posts", months=6):
+    """_posts/ 디렉토리에서 최근 N개월 이내 작성된 포스트의 slug 목록 반환"""
+    cutoff = datetime.now() - timedelta(days=months * 30)
+    slugs = set()
+
+    for filepath in glob.glob(os.path.join(posts_dir, "**/*.md"), recursive=True):
+        filename = os.path.basename(filepath)
+        # 번역 파일(.en.md, .ja.md) 제외
+        if re.search(r'\.(en|ja)\.md$', filename):
+            continue
+        # 파일명 패턴: YYYY-MM-DD-slug.md
+        match = re.match(r'(\d{4}-\d{2}-\d{2})-(.+)\.md$', filename)
+        if not match:
+            continue
+        post_date = datetime.strptime(match.group(1), "%Y-%m-%d")
+        if post_date >= cutoff:
+            slug = match.group(2)
+            slugs.add(slug)
+
+    return slugs
+
+
+def fetch_popular_pages(client, property_id, days=30, limit=50):
     """지난 N일간 페이지뷰 기준 상위 페이지 조회"""
     request = RunReportRequest(
         property=f"properties/{property_id}",
@@ -76,8 +101,8 @@ def is_post_path(path):
     return len(parts) >= 2
 
 
-def build_popular_posts(response):
-    """GA 응답에서 포스트 데이터 추출"""
+def build_popular_posts(response, recent_slugs=None):
+    """GA 응답에서 포스트 데이터 추출 (최근 포스트만 필터링)"""
     posts = []
     for row in response.rows:
         path = row.dimension_values[0].value
@@ -90,6 +115,13 @@ def build_popular_posts(response):
         # 경로 정규화 (trailing slash 보장)
         if not path.endswith("/"):
             path += "/"
+
+        # 최근 포스트 필터링: URL의 마지막 segment가 slug
+        if recent_slugs is not None:
+            parts = [p for p in path.split("/") if p]
+            slug = parts[-1] if parts else ""
+            if slug not in recent_slugs:
+                continue
 
         posts.append({
             "url": path,
@@ -138,10 +170,14 @@ def main():
 
     client = get_ga_client()
 
+    # 최근 6개월 이내 작성된 포스트 slug 목록
+    recent_slugs = get_recent_post_slugs()
+    print(f"최근 6개월 이내 포스트: {len(recent_slugs)}개")
+
     print("지난 30일간 인기 페이지 조회 중...")
     response = fetch_popular_pages(client, property_id)
 
-    posts = build_popular_posts(response)
+    posts = build_popular_posts(response, recent_slugs)
     print(f"포스트 {len(posts)}개 추출 완료")
 
     write_yaml(posts)
