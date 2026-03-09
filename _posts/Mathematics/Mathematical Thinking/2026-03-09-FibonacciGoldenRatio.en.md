@@ -128,6 +128,8 @@ This is the core part of the article. We analyze how Genshin Impact's composer Y
 
 ### 3.1 "Gilded Runner" — Building Rhythms with Fibonacci
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NkFQ3T7ZWAk" title="Genshin Impact - Gilded Runner" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 The Sumeru battle track **"Gilded Runner"** is a piece where Yu-Peng Chen experimentally applied the Fibonacci sequence. He revealed this directly in HOYO-MiX's official behind-the-scenes video ["Travelers' Reverie"](https://genshin.hoyoverse.com/en/news/detail/24845):
 
 > *"In one of the pieces, I experimented with the Fibonacci sequence to create rich and varied rhythmic changes, which make it sound very modern."*
@@ -137,15 +139,7 @@ Conductor and music producer **Robert Ziegler** noted that this track (internal 
 
 #### Track Breakdown
 
-"Gilded Runner" is approximately 4 minutes 5 seconds (245 seconds), with **Fibonacci-based rhythmic sequencing** at its core. Synthesizing Bilibili's detailed analysis video and community analysis:
-
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
-  <iframe src="https://player.bilibili.tv/player.html?aid=4789442275312695&autoplay=false"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-</div>
-<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ "Gilded Runner" Fibonacci Rhythm Analysis (Bilibili)</p>
+"Gilded Runner" is approximately 4 minutes 5 seconds (245 seconds), with **Fibonacci-based rhythmic sequencing** at its core. Synthesizing [Bilibili's detailed analysis video](https://www.bilibili.tv/video/4789442275312695) and community analysis:
 
 **1) Fibonacci Rhythmic Sequencing**
 

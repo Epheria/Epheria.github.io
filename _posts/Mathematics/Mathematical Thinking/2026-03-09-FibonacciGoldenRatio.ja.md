@@ -128,6 +128,8 @@ $$\frac{1}{\varphi} = \varphi - 1 \approx 0.6180339887...$$
 
 ### 3.1 「Gilded Runner（流金疾驰）」 — フィボナッチ数列でリズムを積み上げる
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NkFQ3T7ZWAk" title="Genshin Impact - Gilded Runner" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 スメール（Sumeru）地域の戦闘曲**「Gilded Runner（流金疾驰）」**は、Yu-Peng Chenがフィボナッチ数列を実験的に適用した曲だ。HOYO-MiXの公式メイキング映像["Travelers' Reverie"](https://genshin.hoyoverse.com/en/news/detail/24845)で直接明かした：
 
 > *"In one of the pieces, I experimented with the Fibonacci sequence to create rich and varied rhythmic changes, which make it sound very modern."*
@@ -137,15 +139,7 @@ $$\frac{1}{\varphi} = \varphi - 1 \approx 0.6180339887...$$
 
 #### 楽曲分解分析
 
-「Gilded Runner」は約4分05秒（245秒）の曲で、**フィボナッチ数列ベースのリズムシーケンシング**が核心だ。Bilibiliの詳細分析映像とコミュニティ分析を総合すると：
-
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
-  <iframe src="https://player.bilibili.tv/player.html?aid=4789442275312695&autoplay=false"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-</div>
-<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲「Gilded Runner」フィボナッチリズム分析（Bilibili）</p>
+「Gilded Runner」は約4分05秒（245秒）の曲で、**フィボナッチ数列ベースのリズムシーケンシング**が核心だ。[Bilibiliの詳細分析映像](https://www.bilibili.tv/video/4789442275312695)とコミュニティ分析を総合すると：
 
 **1) フィボナッチ・リズム・シーケンシング**
 

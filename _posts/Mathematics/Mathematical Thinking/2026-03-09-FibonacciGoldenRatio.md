@@ -127,6 +127,8 @@ $$\frac{1}{\varphi} = \varphi - 1 \approx 0.6180339887...$$
 
 ### 3.1 "Gilded Runner(流金疾驰)" — 피보나치 수열로 리듬을 쌓다
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NkFQ3T7ZWAk" title="Genshin Impact - Gilded Runner" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 수메르(Sumeru) 지역의 전투 음악 **"Gilded Runner(流金疾驰)"**는 Yu-Peng Chen이 피보나치 수열을 실험적으로 적용한 곡이다. HOYO-MiX의 공식 비하인드 영상 ["Travelers' Reverie"](https://genshin.hoyoverse.com/en/news/detail/24845)에서 직접 밝혔다:
 
 > *"In one of the pieces, I experimented with the Fibonacci sequence to create rich and varied rhythmic changes, which make it sound very modern."*
@@ -136,15 +138,7 @@ $$\frac{1}{\varphi} = \varphi - 1 \approx 0.6180339887...$$
 
 #### 곡 분해 분석
 
-"Gilded Runner"는 약 4분 05초(245초)의 곡으로, **피보나치 수열 기반 리듬 시퀀싱**이 핵심이다. Bilibili의 상세 분석 영상과 커뮤니티 분석을 종합하면:
-
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
-  <iframe src="https://player.bilibili.tv/player.html?aid=4789442275312695&autoplay=false"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-</div>
-<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ "Gilded Runner" 피보나치 리듬 분석 (Bilibili)</p>
+"Gilded Runner"는 약 4분 05초(245초)의 곡으로, **피보나치 수열 기반 리듬 시퀀싱**이 핵심이다. [Bilibili의 상세 분석 영상](https://www.bilibili.tv/video/4789442275312695)과 커뮤니티 분석을 종합하면:
 
 **1) 피보나치 리듬 시퀀싱**
 
