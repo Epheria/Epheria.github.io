@@ -16,15 +16,13 @@ tldr:
 
 [![Hits](https://hits.sh/epheria.github.io/posts/FibonacciGoldenRatio.svg?view=today-total&label=visitors&color=11b48a)](https://hits.sh/epheria.github.io/posts/FibonacciGoldenRatio/)
 
-## Introduction — The Secret Behind Spine-Tingling Moments in Game Music
+## Introduction — The Mathematics of Nature, the Mathematics of Music
 
-The moment you enter the Azhdaha boss fight in Genshin Impact, Chinese vocals reminiscent of the *Chu Ci* poetry rise over orchestra and electric guitar, delivering a spine-chilling climax. The battle music in Sumeru's tropical rainforest unfolds with subtly different rhythms each time you hear it, leaving you wondering: "Why does this track never get old?"
+The spirals of sunflower seeds, the arrangement of pine cones, the swirl of galaxies — a single sequence appears repeatedly throughout the natural world. It is the **Fibonacci Sequence**. And this sequence runs deep in music as well.
 
-The secret lies in the **Fibonacci Sequence**.
+Genshin Impact's composer **Yu-Peng Chen** revealed in an official behind-the-scenes video that he actually applied the Fibonacci sequence to Sumeru's battle music. Bartok inscribed this sequence directly into his scores, and Tool matched even the syllable count of their lyrics to it.
 
-Genshin Impact's composer **Yu-Peng Chen** revealed in an official behind-the-scenes video that he actually used the Fibonacci sequence in Sumeru's battle music. A sequence discovered 800 years ago by an Italian mathematician studying rabbit breeding patterns is now creating "the more you listen, the more captivating" rhythms in 21st-century game soundtracks.
-
-This article explores **how the Fibonacci sequence and the Golden Ratio work in music, centering on the Genshin Impact OST**. We trace the beauty that mathematics creates — from classical music to modern rock.
+This article explores **how the Fibonacci sequence and the Golden Ratio work in music, centering on the Genshin Impact OST**. From classical to modern rock, we trace the role that nature's mathematics plays within music.
 
 ---
 
@@ -137,17 +135,17 @@ The Sumeru battle track **"Gilded Runner"** is a piece where Yu-Peng Chen experi
 
 Conductor and music producer **Robert Ziegler** noted that this track (internal codename **x063**) features many changing patterns like "12 12 123 12345 12."
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
-  <iframe src="https://www.youtube.com/embed/ps8oa3CRNfk"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-</div>
-<p style="text-align: center; color: #868e96; font-size: 0.9em;">Travelers' Reverie — Behind the Scenes of Sumeru Music (HOYO-MiX Official)</p>
-
 #### Track Breakdown
 
-"Gilded Runner" is approximately 4 minutes 5 seconds (245 seconds), with **Fibonacci-based rhythmic sequencing** at its core. Synthesizing [Bilibili's detailed analysis video](https://www.bilibili.tv/video/4789442275312695) and community analysis:
+"Gilded Runner" is approximately 4 minutes 5 seconds (245 seconds), with **Fibonacci-based rhythmic sequencing** at its core. Synthesizing Bilibili's detailed analysis video and community analysis:
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://player.bilibili.tv/player.html?aid=4789442275312695&autoplay=false"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ "Gilded Runner" Fibonacci Rhythm Analysis (Bilibili)</p>
 
 **1) Fibonacci Rhythmic Sequencing**
 
@@ -194,6 +192,14 @@ This combination creates the unique charm of Sumeru's battle music that "feels d
 
 "Rage Beneath the Mountains" — Genshin Impact's first **soundtrack featuring Chinese lyrics** — is the Azhdaha boss fight Phase 2 theme. Composed by Yu-Peng Chen, B-flat minor, 136 BPM.
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://www.youtube.com/embed/C1MmhgVBxWI"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ "Rage Beneath the Mountains" — Azhdaha Boss Fight Phase 2 Theme (Yu-Peng Chen & HOYO-MiX)</p>
+
 There is no official statement that the Fibonacci sequence was intentionally used in this piece. However, analyzing the structure reveals interesting patterns.
 
 #### Structural Analysis (approx. 3min 30sec = 210 seconds)
@@ -234,6 +240,14 @@ Key production facts:
 
 Rock band **Tool** is the modern artist that most overtly wove the Fibonacci sequence into music. The title track of the album *Lateralus* is literally the sequence made into a song.
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://www.youtube.com/embed/Y7JG63IuaWs"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ Tool — "Lateralus" (2001)</p>
+
 **The syllable count of the lyrics follows the Fibonacci sequence:**
 
 ```
@@ -259,6 +273,14 @@ The chorus shifts through **9/8, 8/8, and 7/8** time. According to drummer Danny
 
 Nintendo's legendary composers **Koji Kondo** and **Mahito Yokota** have stated they don't consciously use the Fibonacci sequence. Yet according to [Kotaku's analysis](https://kotaku.com/mario-music-of-golden-proportions-5541606):
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://www.youtube.com/embed/p0Ff06PSNkU"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ Super Mario Galaxy — "Gusty Garden Galaxy" (Koji Kondo & Mahito Yokota)</p>
+
 **Gusty Garden Galaxy Theme (64 measures):**
 
 - Golden section: Measure 39.552 (64 x 0.618)
@@ -273,6 +295,14 @@ There is a hypothesis that **human aesthetic sense naturally responds to the Gol
 
 ### 4.3 Genesis — "Firth of Fifth"
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://www.youtube.com/embed/SD5engyVXe0"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ Genesis — "Firth of Fifth" (1973)</p>
+
 Analysis suggests that the solo sections of progressive rock band **Genesis**'s "Firth of Fifth" are structured in **55, 34, and 13 measures** — all Fibonacci numbers. However, this was not officially stated by the band but is rather an interpretation by fans and analysts. It should be distinguished from cases where intentional use has been confirmed, such as Bartok's 3rd movement xylophone solo (see Part 5).
 
 ---
@@ -284,6 +314,14 @@ The roots of game music lie in classical music. Genshin Impact's Yu-Peng Chen is
 ### 5.1 Bartok — The Composer Who Wrote Mathematics into Scores
 
 **Bela Bartok (1881-1945)** was the composer who most consciously applied the Fibonacci sequence to music.
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5em 0;">
+  <iframe src="https://www.youtube.com/embed/yIKUWKD1TDw"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+</div>
+<p style="text-align: center; color: #868e96; font-size: 0.9em;">▲ Bartok — Music for Strings, Percussion and Celesta (Pierre Boulez / Chicago Symphony Orchestra)</p>
 
 **"Music for Strings, Percussion and Celesta" (1936), 1st Movement:**
 
