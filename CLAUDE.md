@@ -73,6 +73,11 @@ toc_sticky: true
 - `prerequisites: ["/posts/slug/", "/posts/slug2/"]` — 선수지식 포스트 링크 목록
 - `tldr: ["핵심 요약 1", "핵심 요약 2"]` — 포스트 상단 TL;DR 요약 박스
 
+### 수식 작성 규칙 (MathJax)
+- `\text{}` 블록 안에서 언더스코어(`_`)를 쓸 때 `\_`로 이스케이프하면 `\_`가 그대로 렌더링된다. 공백으로 대체하거나 별도 `\text` 블록으로 분리할 것.
+  - Bad: `\text{base\_address}` → 렌더링 시 `base\_address`로 보임
+  - Good: `\text{base address}` 또는 `\text{base}\_\text{address}`
+
 ### 본문 시작 패턴
 대부분의 포스트는 front matter 직후 방문자 카운터 뱃지로 시작:
 ```markdown
