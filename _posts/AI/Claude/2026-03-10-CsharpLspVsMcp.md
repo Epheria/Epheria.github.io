@@ -14,7 +14,7 @@ tldr:
   - "하이브리드 전략(LSP 우선 + MCP 보조)으로 세션당 약 60% 이상의 토큰을 절약할 수 있다"
 ---
 
-日本語バージョンはこちらへ [csharp-lsp と Rider MCP 比較分析](/ja/posts/CsharpLspVsMcp/)
+日本語バージョンはこちらへ [csharp-lsp と Rider MCP 比較分析](/ja/posts/CsharpLspVsMcp.ja/)
 
 > **Project:** psv-client (Unity 2022.3.31)
 > **Target File:** `Assets/App/Editor/EditorStartup.cs`
