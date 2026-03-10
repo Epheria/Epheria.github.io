@@ -165,7 +165,7 @@ Address:  0x100  0x104  0x108  0x10C  0x110  0x114  0x118  0x11C
 
 To access `arr[5]`, you simply add `5 × sizeof(int)` = 20 bytes to the base address:
 
-$$\text{address}(arr[i]) = \text{base\_address} + i \times \text{element\_size}$$
+$$\text{address}(arr[i]) = \text{base address} + i \times \text{element size}$$
 
 A single addition and multiplication. This is O(1) — even with 1 million elements, you can access any element in one step as long as you know the index. This is the most fundamental strength of arrays.
 

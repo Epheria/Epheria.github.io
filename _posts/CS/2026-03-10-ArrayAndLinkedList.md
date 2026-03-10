@@ -164,7 +164,7 @@ CPU가 메모리 주소 `0x1000`의 데이터를 요청한다고 하자. CPU는 
 
 `arr[5]`에 접근하려면, 시작 주소에서 `5 × sizeof(int)` = 20바이트만 더하면 된다:
 
-$$\text{address}(arr[i]) = \text{base\_address} + i \times \text{element\_size}$$
+$$\text{address}(arr[i]) = \text{base address} + i \times \text{element size}$$
 
 단순한 덧셈과 곱셈 한 번. 이것이 O(1) — 원소가 100만 개여도 인덱스만 알면 한 번에 접근한다. 배열의 가장 근본적인 강점이다.
 

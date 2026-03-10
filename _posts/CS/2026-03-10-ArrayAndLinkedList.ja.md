@@ -165,7 +165,7 @@ CPUがメモリアドレス`0x1000`のデータを要求するとします。CPU
 
 `arr[5]`にアクセスするには、開始アドレスから`5 × sizeof(int)` = 20バイトを加えるだけです：
 
-$$\text{address}(arr[i]) = \text{base\_address} + i \times \text{element\_size}$$
+$$\text{address}(arr[i]) = \text{base address} + i \times \text{element size}$$
 
 単純な足し算と掛け算が1回ずつ。これがO(1) — 要素が100万個あっても、インデックスさえ分かれば一度でアクセスできます。配列の最も根本的な強みです。
 
