@@ -99,6 +99,17 @@ graph TD
     style HDD fill:#495057,color:#fff
 ```
 
+> **A Quick Note on Terminology**
+>
+> **What is ns (nanosecond)?** One nanosecond is one billionth of a second. 1ns = 0.000000001 seconds. A single blink of your eye takes about 300 million ns. In the world where CPUs operate, even 1ns is a meaningful amount of time.
+>
+> **What are L1, L2, L3 caches?** These are ultra-fast memories physically built into the CPU chip itself. The lower the number, the closer to the CPU core — faster, but smaller:
+> - **L1 cache** — Right next to the CPU core. About 64KB per core. The fastest (~1ns). The closest memory after registers.
+> - **L2 cache** — Behind L1. 256KB–1MB per core. Slightly slower (~4ns).
+> - **L3 cache** — Shared among multiple cores. 8–64MB. Slower (~12ns), but still much faster than RAM (~100ns).
+>
+> These three layers act as a **speed buffer** between the CPU and RAM. If data is in L1, it takes 1ns; if it must go all the way to RAM, 100ns — the same operation becomes 100x slower.
+
 Let's revisit the key point. **L1 cache access is 1ns, RAM access is 100ns**. A 100x difference. Depending on whether data is in the cache or not, the same operation becomes 100x faster or slower. This is the real reason why data structure selection matters.
 
 ### How Does the Cache Work?
