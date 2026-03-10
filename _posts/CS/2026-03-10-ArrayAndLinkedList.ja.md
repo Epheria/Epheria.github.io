@@ -2,7 +2,7 @@
 title: "CSロードマップ (1) — 配列と連結リスト：メモリの地形を読む"
 lang: ja
 date: 2026-03-10 11:00:00 +0900
-categories: [CS, Data Structures]
+categories: [AI, CS]
 tags: [Array, Linked List, Memory, Cache, Data Structure, Time Complexity, CS Fundamentals]
 difficulty: intermediate
 toc: true

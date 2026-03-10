@@ -1,7 +1,7 @@
 ---
 title: "CS 로드맵 (1) — 배열과 연결 리스트: 메모리의 지형을 읽다"
 date: 2026-03-10 11:00:00 +0900
-categories: [CS, Data Structures]
+categories: [AI, CS]
 tags: [Array, Linked List, Memory, Cache, Data Structure, Time Complexity, CS Fundamentals]
 difficulty: intermediate
 toc: true

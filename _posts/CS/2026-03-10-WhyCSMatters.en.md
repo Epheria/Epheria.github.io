@@ -2,7 +2,7 @@
 title: "CS Roadmap (0) — Why CS Knowledge Matters More Than Ever in the AI Era"
 lang: en
 date: 2026-03-10 10:00:00 +0900
-categories: [CS, Roadmap]
+categories: [AI, CS]
 tags: [CS, Computer Science, AI, Vibe Coding, Software Engineering, Fundamentals]
 difficulty: beginner
 toc: true

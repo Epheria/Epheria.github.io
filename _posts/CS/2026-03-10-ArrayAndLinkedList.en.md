@@ -2,7 +2,7 @@
 title: "CS Roadmap (1) — Arrays and Linked Lists: Reading the Terrain of Memory"
 lang: en
 date: 2026-03-10 11:00:00 +0900
-categories: [CS, Data Structures]
+categories: [AI, CS]
 tags: [Array, Linked List, Memory, Cache, Data Structure, Time Complexity, CS Fundamentals]
 difficulty: intermediate
 toc: true

@@ -1,7 +1,7 @@
 ---
 title: "CS 로드맵 (0) — AI 시대, CS 지식은 왜 더 중요해졌는가"
 date: 2026-03-10 10:00:00 +0900
-categories: [CS, Roadmap]
+categories: [AI, CS]
 tags: [CS, Computer Science, AI, Vibe Coding, Software Engineering, Fundamentals]
 difficulty: beginner
 toc: true
