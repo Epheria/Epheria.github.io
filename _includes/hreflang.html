@@ -1,0 +1,16 @@
+{% comment %}
+  다국어 SEO를 위한 hreflang 태그 생성
+  jekyll-polyglot과 연동하여 각 언어별 대체 URL을 자동 생성
+{% endcomment %}
+
+{% assign default_lang = site.default_lang | default: 'ko' %}
+
+{% for lang in site.languages %}
+  {% if lang == default_lang %}
+    {% assign alt_url = page.url | absolute_url %}
+  {% else %}
+    {% assign alt_url = page.url | prepend: '/' | prepend: lang | absolute_url %}
+  {% endif %}
+  <link rel="alternate" hreflang="{{ lang }}" href="{{ alt_url }}">
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
