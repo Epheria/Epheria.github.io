@@ -500,6 +500,109 @@ dotnet tool update --global csharp-ls
 
 ---
 
+## 8. workspaceSymbol Limitation and Alternatives
+
+### What is workspaceSymbol?
+
+`workspace/symbol` is a standard LSP request that **searches for symbols by name across the entire workspace**.
+
+```
+Client → Server: { method: "workspace/symbol", params: { query: "GamePauseLayer" } }
+Server → Client: [ { name: "GamePauseLayer", kind: Class, location: {...} }, ... ]
+```
+
+In IDEs, this is the `Ctrl+T` (Go to Symbol in Workspace) functionality.
+
+### Why It Doesn't Work in Claude Code
+
+Claude Code's LSP tool spec is **missing the `query` parameter** that `workspaceSymbol` requires:
+
+```json
+{
+    "operation": "workspaceSymbol",
+    "filePath": "string (required)",    // ← unnecessary for workspaceSymbol
+    "line": "integer (required)",       // ← unnecessary for workspaceSymbol
+    "character": "integer (required)"   // ← unnecessary for workspaceSymbol
+    // No query parameter!
+}
+```
+
+As a result, an empty query (`query: ""`) is sent, returning only the **first 100 symbols** from the entire workspace. In large projects, the desired symbol is unlikely to be included.
+
+> Example: In a Unity project (18,500+ symbols), searching for `GamePauseLayer` returned 100 proto auto-generated files sorted alphabetically, with no game code symbols included.
+{: .prompt-warning }
+
+### Other LSP Operations Work Fine
+
+| Operation | Requires Query? | Status | Notes |
+| --- | --- | --- | --- |
+| `documentSymbol` | No (file specified) | **Works** | File structure analysis |
+| `hover` | No (position specified) | **Works** | Rich type + docs |
+| `findReferences` | No (position specified) | **Works** | Semantic search |
+| `goToDefinition` | No (position specified) | **Works** | Precise navigation |
+| `goToImplementation` | No (position specified) | **Works** | Interface → implementation |
+| `incomingCalls` / `outgoingCalls` | No (position specified) | **Works** | Call tracing |
+| `workspaceSymbol` | **Yes (query required)** | **Unusable** | No query parameter |
+
+`workspaceSymbol` is the only operation that requires a `query` string, and Claude Code's tool doesn't support it.
+
+### Alternatives: Symbol Search Strategy
+
+#### Finding File/Class Locations
+
+| Method | Speed | Accuracy |
+| --- | --- | --- |
+| **With Rider:** `find_files_by_name_keyword` → `documentSymbol` | Instant (~0.1s + ~0.5s) | 100% |
+| **Without Rider:** `Glob **/ClassName.cs` → `documentSymbol` | Instant (~0.1s + ~0.5s) | 100% |
+| `Grep "class ClassName"` | Fast (~1s) | 100% |
+| `workspaceSymbol` | Slow (~3s) | **0%** (large projects) |
+
+#### Searching Symbol Name Patterns
+
+| Method | Example |
+| --- | --- |
+| **Rider:** `search_in_files_by_text "class.*Pause"` → `documentSymbol` | Semantic search + structure analysis |
+| **No Rider:** `Glob **/*Pause*.cs` → `documentSymbol` on each file | File search + structure analysis |
+| `Grep "class.*Pause"` | Text matching |
+
+#### Finding Symbol References
+
+| Method | Accuracy |
+| --- | --- |
+| `LSP findReferences` | **Best** (code references only) |
+| `Grep "ClassName"` | Includes strings/comments |
+
+### Recommended Workflow
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Optimal Symbol Search Strategy                          │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  "Where is this class file?"                             │
+│  → [Rider] find_files_by_name_keyword "ClassName"        │
+│  → [No Rider] Glob **/ClassName.cs                       │
+│  → LSP documentSymbol (structure check)                  │
+│                                                          │
+│  "Find all Pause-related classes"                        │
+│  → [Rider] search_in_files_by_text "class.*Pause"        │
+│  → [No Rider] Glob **/*Pause*.cs                         │
+│  → LSP documentSymbol on each file                       │
+│                                                          │
+│  "Where is this symbol used?"                            │
+│  → LSP findReferences (file + position specified)        │
+│                                                          │
+│  "What's the structure of this file?"                    │
+│  → LSP documentSymbol                                    │
+│                                                          │
+│  ✗ workspaceSymbol → Do NOT use                          │
+│    (query parameter unsupported, 100 result limit)       │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Conclusion
 
 The key to C# LSP setup is **2 environment variable lines**:

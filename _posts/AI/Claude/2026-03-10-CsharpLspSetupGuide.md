@@ -499,6 +499,109 @@ dotnet tool update --global csharp-ls
 
 ---
 
+## 8. workspaceSymbol 제한사항 및 대안
+
+### workspaceSymbol이란?
+
+`workspace/symbol`은 LSP 표준 요청으로, **워크스페이스 전체에서 심볼을 이름으로 검색**하는 기능이다.
+
+```
+클라이언트 → 서버: { method: "workspace/symbol", params: { query: "GamePauseLayer" } }
+서버 → 클라이언트: [ { name: "GamePauseLayer", kind: Class, location: {...} }, ... ]
+```
+
+IDE에서는 `Ctrl+T` (Go to Symbol in Workspace)로 사용되는 기능이다.
+
+### Claude Code에서 작동하지 않는 이유
+
+Claude Code의 LSP tool 스펙에는 `workspaceSymbol`에 필요한 `query` 파라미터가 **존재하지 않는다**:
+
+```json
+{
+    "operation": "workspaceSymbol",
+    "filePath": "string (required)",    // ← workspaceSymbol에 불필요
+    "line": "integer (required)",       // ← workspaceSymbol에 불필요
+    "character": "integer (required)"   // ← workspaceSymbol에 불필요
+    // query 파라미터 없음!
+}
+```
+
+결과적으로 빈 쿼리(`query: ""`)가 전송되어 전체 심볼 중 **최대 100개만 반환**되며, 대규모 프로젝트에서는 원하는 심볼이 포함되지 않는다.
+
+> 예시: Unity 프로젝트(18,500+ 심볼)에서 `GamePauseLayer`를 검색하면, proto 자동생성 파일이 알파벳순으로 먼저 나와서 100개 제한 안에 게임 코드 심볼이 포함되지 않았다.
+{: .prompt-warning }
+
+### 다른 LSP operation은 정상 작동
+
+| Operation | 쿼리 필요? | 상태 | 비고 |
+| --- | --- | --- | --- |
+| `documentSymbol` | 아니오 (파일 지정) | **정상** | 파일 구조 파악 |
+| `hover` | 아니오 (위치 지정) | **정상** | 타입+문서 풍부 |
+| `findReferences` | 아니오 (위치 지정) | **정상** | 시맨틱 검색 |
+| `goToDefinition` | 아니오 (위치 지정) | **정상** | 정확한 점프 |
+| `goToImplementation` | 아니오 (위치 지정) | **정상** | 인터페이스→구현 |
+| `incomingCalls` / `outgoingCalls` | 아니오 (위치 지정) | **정상** | 호출 추적 |
+| `workspaceSymbol` | **예 (쿼리 필수)** | **사용 불가** | 쿼리 파라미터 없음 |
+
+`workspaceSymbol`만 유일하게 `query` 문자열이 필요한 operation이며, Claude Code에서 이를 지원하지 않는다.
+
+### 대안: 심볼 찾기 전략
+
+#### 파일/클래스 위치 찾기
+
+| 방법 | 속도 | 정확도 |
+| --- | --- | --- |
+| **Rider 실행 시:** `find_files_by_name_keyword` → `documentSymbol` | 즉시 (~0.1s + ~0.5s) | 100% |
+| **Rider 미실행:** `Glob **/ClassName.cs` → `documentSymbol` | 즉시 (~0.1s + ~0.5s) | 100% |
+| `Grep "class ClassName"` | 빠름 (~1s) | 100% |
+| `workspaceSymbol` | 느림 (~3s) | **0%** (대규모 프로젝트) |
+
+#### 심볼 이름 패턴 검색
+
+| 방법 | 예시 |
+| --- | --- |
+| **Rider:** `search_in_files_by_text "class.*Pause"` → `documentSymbol` | 시맨틱 검색 + 구조 분석 |
+| **No Rider:** `Glob **/*Pause*.cs` → 각 파일에 `documentSymbol` | 파일 찾기 + 구조 분석 |
+| `Grep "class.*Pause"` | 텍스트 매칭 |
+
+#### 심볼 사용처 찾기
+
+| 방법 | 정확도 |
+| --- | --- |
+| `LSP findReferences` | **최고** (코드 참조만) |
+| `Grep "ClassName"` | 문자열/주석 포함 |
+
+### 권장 워크플로우
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  심볼 찾기 최적 전략                                       │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  "이 클래스 파일이 어디있지?"                               │
+│  → [Rider] find_files_by_name_keyword "ClassName"        │
+│  → [No Rider] Glob **/ClassName.cs                       │
+│  → LSP documentSymbol (구조 확인)                         │
+│                                                          │
+│  "Pause 관련 클래스 전부 찾아줘"                            │
+│  → [Rider] search_in_files_by_text "class.*Pause"        │
+│  → [No Rider] Glob **/*Pause*.cs                         │
+│  → 각 파일에 LSP documentSymbol                           │
+│                                                          │
+│  "이 심볼을 어디서 쓰고 있지?"                              │
+│  → LSP findReferences (파일+위치 지정)                     │
+│                                                          │
+│  "이 파일 구조가 어떻게 되지?"                              │
+│  → LSP documentSymbol                                    │
+│                                                          │
+│  ✗ workspaceSymbol → 사용하지 말 것                        │
+│    (쿼리 파라미터 미지원, 100개 제한)                        │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 마치며
 
 C# LSP 설정의 핵심은 **환경변수 2줄**이다:

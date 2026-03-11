@@ -500,6 +500,109 @@ dotnet tool update --global csharp-ls
 
 ---
 
+## 8. workspaceSymbol制限事項と代替手段
+
+### workspaceSymbolとは？
+
+`workspace/symbol`はLSPの標準リクエストで、**ワークスペース全体からシンボルを名前で検索**する機能である。
+
+```
+クライアント → サーバー: { method: "workspace/symbol", params: { query: "GamePauseLayer" } }
+サーバー → クライアント: [ { name: "GamePauseLayer", kind: Class, location: {...} }, ... ]
+```
+
+IDEでは`Ctrl+T`（Go to Symbol in Workspace）として使用される機能だ。
+
+### Claude Codeで動作しない理由
+
+Claude CodeのLSPツール仕様には、`workspaceSymbol`に必要な`query`パラメータが**存在しない**：
+
+```json
+{
+    "operation": "workspaceSymbol",
+    "filePath": "string (required)",    // ← workspaceSymbolには不要
+    "line": "integer (required)",       // ← workspaceSymbolには不要
+    "character": "integer (required)"   // ← workspaceSymbolには不要
+    // queryパラメータなし！
+}
+```
+
+結果として空クエリ（`query: ""`）が送信され、全シンボルの**最大100件のみ返却**される。大規模プロジェクトでは目的のシンボルが含まれない。
+
+> 例：Unityプロジェクト（18,500+シンボル）で`GamePauseLayer`を検索すると、proto自動生成ファイルがアルファベット順で先に出現し、100件の制限内にゲームコードシンボルが含まれなかった。
+{: .prompt-warning }
+
+### 他のLSP operationは正常動作
+
+| Operation | クエリ必要？ | 状態 | 備考 |
+| --- | --- | --- | --- |
+| `documentSymbol` | いいえ（ファイル指定） | **正常** | ファイル構造把握 |
+| `hover` | いいえ（位置指定） | **正常** | 型+ドキュメント豊富 |
+| `findReferences` | いいえ（位置指定） | **正常** | セマンティック検索 |
+| `goToDefinition` | いいえ（位置指定） | **正常** | 正確なジャンプ |
+| `goToImplementation` | いいえ（位置指定） | **正常** | インターフェース→実装 |
+| `incomingCalls` / `outgoingCalls` | いいえ（位置指定） | **正常** | 呼び出し追跡 |
+| `workspaceSymbol` | **はい（クエリ必須）** | **使用不可** | クエリパラメータなし |
+
+`workspaceSymbol`だけが唯一`query`文字列を必要とするoperationであり、Claude Codeツールではこれをサポートしていない。
+
+### 代替手段：シンボル検索戦略
+
+#### ファイル/クラスの位置検索
+
+| 方法 | 速度 | 精度 |
+| --- | --- | --- |
+| **Rider実行時:** `find_files_by_name_keyword` → `documentSymbol` | 即座（~0.1s + ~0.5s） | 100% |
+| **Rider未実行:** `Glob **/ClassName.cs` → `documentSymbol` | 即座（~0.1s + ~0.5s） | 100% |
+| `Grep "class ClassName"` | 高速（~1s） | 100% |
+| `workspaceSymbol` | 低速（~3s） | **0%**（大規模プロジェクト） |
+
+#### シンボル名パターン検索
+
+| 方法 | 例 |
+| --- | --- |
+| **Rider:** `search_in_files_by_text "class.*Pause"` → `documentSymbol` | セマンティック検索 + 構造分析 |
+| **No Rider:** `Glob **/*Pause*.cs` → 各ファイルで`documentSymbol` | ファイル検索 + 構造分析 |
+| `Grep "class.*Pause"` | テキストマッチング |
+
+#### シンボル使用箇所の検索
+
+| 方法 | 精度 |
+| --- | --- |
+| `LSP findReferences` | **最高**（コード参照のみ） |
+| `Grep "ClassName"` | 文字列/コメント含む |
+
+### 推奨ワークフロー
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  シンボル検索最適戦略                                       │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  「このクラスのファイルはどこ？」                             │
+│  → [Rider] find_files_by_name_keyword "ClassName"        │
+│  → [No Rider] Glob **/ClassName.cs                       │
+│  → LSP documentSymbol（構造確認）                          │
+│                                                          │
+│  「Pause関連のクラスを全部探して」                            │
+│  → [Rider] search_in_files_by_text "class.*Pause"        │
+│  → [No Rider] Glob **/*Pause*.cs                         │
+│  → 各ファイルで LSP documentSymbol                         │
+│                                                          │
+│  「このシンボルはどこで使われている？」                        │
+│  → LSP findReferences（ファイル+位置指定）                  │
+│                                                          │
+│  「このファイルの構造は？」                                  │
+│  → LSP documentSymbol                                    │
+│                                                          │
+│  ✗ workspaceSymbol → 使用しないこと                         │
+│    （クエリパラメータ未対応、100件制限）                       │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## おわりに
 
 C# LSPセットアップの要は**環境変数の2行**だ：
