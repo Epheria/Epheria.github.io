@@ -65,7 +65,7 @@ Jeff Dean's (Google) "Latency Numbers Every Programmer Should Know" is fundament
 ![Latency Numbers Every Programmer Should Know](/assets/img/post/cs/latency-numbers-classic.png)
 _A visual diagram of Jeff Dean's latency numbers. The small black square (1ns) represents L1 cache, while the large blue block (100ns) represents RAM access. The size difference is the performance difference. (Source: gist.github.com/2841832)_
 
-Updated figures for modern hardware:
+The figures below are **rough estimates** for modern hardware. They can vary by 2–3x depending on the specific CPU and device, so read them not as exact constants but as a guide for **"what order of magnitude are we talking about"**:
 
 | Layer | Latency | Analogy (scaling 1ns = 1 second) |
 | --- | --- | --- |
@@ -83,7 +83,7 @@ Updated figures for modern hardware:
 
 ```mermaid
 graph TD
-    REG["CPU Register<br/>~0.3ns"] --> L1["L1 Cache<br/>~1ns | 64KB"]
+    REG["CPU Register<br/>~0.3ns"] --> L1["L1 Cache<br/>~1ns | 32~64KB(D)"]
     L1 --> L2["L2 Cache<br/>~4ns | 256KB~1MB"]
     L2 --> L3["L3 Cache<br/>~12ns | 8~64MB"]
     L3 --> RAM["RAM<br/>~100ns | 16~64GB"]
@@ -104,13 +104,13 @@ graph TD
 > **What is ns (nanosecond)?** One nanosecond is one billionth of a second. 1ns = 0.000000001 seconds. A single blink of your eye takes about 300 million ns. In the world where CPUs operate, even 1ns is a meaningful amount of time.
 >
 > **What are L1, L2, L3 caches?** These are ultra-fast memories physically built into the CPU chip itself. The lower the number, the closer to the CPU core — faster, but smaller:
-> - **L1 cache** — Right next to the CPU core. About 64KB per core. The fastest (~1ns). The closest memory after registers.
+> - **L1 cache** — Right next to the CPU core. The fastest (~1ns). L1 is actually split into two parts: one for "code (L1I)" and one for "data (L1D)." What data structures like arrays and linked lists use is the data cache (L1D), which is typically 32–64KB per core.
 > - **L2 cache** — Behind L1. 256KB–1MB per core. Slightly slower (~4ns).
 > - **L3 cache** — Shared among multiple cores. 8–64MB. Slower (~12ns), but still much faster than RAM (~100ns).
 >
-> These three layers act as a **speed buffer** between the CPU and RAM. If data is in L1, it takes 1ns; if it must go all the way to RAM, 100ns — the same operation becomes 100x slower.
+> These three layers act as a **speed buffer** between the CPU and RAM. If data is in L1, it takes ~1ns; if it must go all the way to RAM, ~100ns — it can be tens to 100x slower. CPUs do use tricks like "pre-fetching data it thinks you'll need next" and "executing instructions out of order" to partially hide this delay, but when you repeatedly access data that isn't in cache, the performance gap is still very real.
 
-Let's revisit the key point. **L1 cache access is 1ns, RAM access is 100ns**. A 100x difference. Depending on whether data is in the cache or not, the same operation becomes 100x faster or slower. This is the real reason why data structure selection matters.
+Let's revisit the key point. **L1 cache access is ~1ns, RAM access is ~100ns**. Roughly a 100x difference. CPUs have various optimizations that partially reduce this gap, but when cache misses pile up, the performance difference is still dramatic. This is the real reason why data structure selection matters.
 
 ### How Does the Cache Work?
 
@@ -139,7 +139,7 @@ Modern CPUs go one step further. A **hardware prefetcher** detects memory access
 >
 > **Q. What happens when the cache is full?**
 >
-> When new data comes in, an existing cache line must be **evicted**. The policy that decides which line to evict is the **replacement algorithm**. Most CPUs use an approximation of LRU (Least Recently Used) — evicting the line that hasn't been used for the longest time.
+> When new data comes in, an existing cache line must be **evicted**. The cache doesn't search the entire cache for the oldest line — instead, each memory address belongs to a **small group (set)**, and the replacement candidate is chosen only within that group. The replacement policy is theoretically LRU (Least Recently Used) — "evict the line that hasn't been used the longest" — but real CPUs often use simplified approximations of LRU.
 
 ---
 
