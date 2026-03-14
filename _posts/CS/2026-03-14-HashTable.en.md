@@ -1,5 +1,5 @@
 ---
-title: "CS Roadmap (3) — Hash Tables: The Magic of O(1) and Its Price"
+title: "CS Roadmap (3) — Hash Tables: Conditions and Limits of O(1) Lookup"
 lang: en
 date: 2026-03-14 10:00:00 +0900
 categories: [AI, CS]
@@ -12,7 +12,7 @@ image: /assets/img/og/cs.png
 tldr:
   - "Hash tables achieve O(1) lookups by converting keys to integers (hash function) and mapping them to array indices — the quality of the hash function determines overall performance"
   - "Two collision resolution strategies — chaining is simple to implement but causes cache misses due to pointer chasing, while open addressing (especially Linear Probing) is cache-friendly through sequential memory access"
-  - "When the load factor (α) exceeds 0.7, collision probability surges and performance degrades from O(1) to O(n) — timely resizing is the key to hash table performance"
+  - "For Linear Probing, when the load factor (α) exceeds 0.7, collision probability surges and performance degrades from O(1) to O(n) — the tolerable load factor varies depending on the collision resolution strategy"
   - "Robin Hood Hashing uses a 'steal from the rich, give to the poor' strategy to reduce variance in probe distances, serving as the foundation for Rust HashMap and modern high-performance hash tables"
 ---
 
@@ -62,6 +62,31 @@ Key "MOB_001" → hash("MOB_001") = 374821 → 374821 % 8 = 5 → bucket[5]
 
 Lookups follow the same path: key → hash function → index → array access. Since array access is O(1), **if the hash function is O(1)**, the entire operation is O(1).
 
+Strictly speaking, hash table O(1) rests on the assumption that **hash computation cost and key equality comparison cost are both constant**. For integer keys this holds, but for string keys, hash computation is O(L) and comparison is also O(L), so it's effectively O(L). We'll revisit this point later.
+
+### The Hash-Equality Contract
+
+For a hash table to function correctly, there is a **contract that must be upheld** between the hash function and equality comparison:
+
+> **If `a == b`, then `hash(a) == hash(b)` must hold.**
+
+The converse need not be true — `hash(a) == hash(b)` but `a != b` is simply a collision. But violating the forward rule breaks the hash table. The same key gets stored in different buckets, making lookups fail.
+
+A common mistake in practice:
+
+```csharp
+// Dangerous: using a mutable object as a key
+var enemy = new Enemy { Id = 1, Hp = 100 };
+dict[enemy] = "goblin";
+
+enemy.Hp = 50;  // Key object's state changed!
+dict[enemy];    // KeyNotFoundException! Hash value changed, probing a different bucket
+```
+
+Therefore, **hash table keys should be immutable**. In C#, if you override `GetHashCode()`, you must also override `Equals()`. In Java, if you override `hashCode()`, you must also override `equals()`. Bloch's *Effective Java* Item 11 explains this principle in detail.
+
+Lesson for game development: it's safe to use **immutable identifiers** like monster IDs and item IDs as keys. Using game objects themselves as keys risks breaking the hash table when their state changes.
+
 ### Conditions for a Good Hash Function
 
 Knuth summarized the key conditions for hash functions in *The Art of Computer Programming Vol. 3*:
@@ -89,7 +114,7 @@ $$h(k) = \lfloor m \cdot (k \cdot A \mod 1) \rfloor, \quad 0 < A < 1$$
 
 Knuth's suggested value for A is **the reciprocal of the golden ratio** $A = \frac{\sqrt{5} - 1}{2} \approx 0.6180339887$. This value is theoretically the constant that "spreads most evenly" in a one-dimensional uniform distribution.
 
-The advantage of the multiplication method is that m can be chosen freely. In particular, **choosing m as a power of 2** allows the modular operation to be replaced with bit shifts, making it fast.
+The advantage of the multiplication method is that m can be chosen freely. In particular, **choosing m as a power of 2** allows the modular operation to be replaced with a **bitmask (AND)**, making it fast. For example, `hash % 16` is identical to `hash & 0xF` — the same principle as the `& (capacity - 1)` trick from Part 2's ring buffer.
 
 > **Let's pause and address this**
 >
@@ -124,10 +149,10 @@ More modern hash functions:
 | Hash Function | Speed | Quality | Use Cases |
 | --- | --- | --- | --- |
 | **FNV-1a** | Fast | Fair | General purpose, simple implementation |
-| **MurmurHash3** | Very fast | Good | General hash tables, Redis |
+| **MurmurHash3** | Very fast | Good | General hash tables, Cassandra, Elasticsearch |
 | **xxHash** | Extremely fast | Good | Checksums, data processing |
-| **SipHash** | Moderate | Good + DoS defense | Rust HashMap, Python dict |
-| **wyhash** | Extremely fast | Good | Go map (1.17+) |
+| **SipHash** | Moderate | Good + DoS defense | Rust HashMap, Python dict, Redis, Ruby |
+| **wyhash** | Extremely fast | Good | Go map (1.17~1.23) |
 
 Common uses of string keys in game development: resource paths, animation names, event names. **String hash computation is proportional to string length (O(L))**, so in places called every frame, you should consider **caching the hash** or **string interning**.
 
@@ -275,7 +300,9 @@ $$E[\text{probes}] = \frac{1}{2}\left(1 + \frac{1}{(1 - \alpha)^2}\right)$$
 | 0.90 | 5.5 probes | 50.5 probes |
 | 0.95 | 10.5 probes | 200.5 probes |
 
-**Performance degrades sharply beyond α = 0.7.** Unsuccessful searches (when the key doesn't exist) are particularly sensitive since they must probe until finding an empty slot. This is why most hash tables resize at a load factor threshold of **0.7 to 0.75**.
+**For linear probing, performance degrades sharply beyond α = 0.7.** Unsuccessful searches (when the key doesn't exist) are particularly sensitive since they must probe until finding an empty slot. These numbers apply to linear probing specifically because of **clustering** — collisions pile up immediately adjacent, and the piled data triggers more collisions in a positive feedback loop.
+
+However, **not all open addressing schemes are bound by these numbers.** Quadratic probing disperses probes at squared intervals, reducing cluster formation. Robin Hood Hashing reduces variance in probe distances, suppressing worst-case behavior. SwissTable uses SIMD to compare 16 slots at once, reducing probe cost itself. Thanks to these techniques, Rust `HashMap` allows α=0.875, and Go `map` allows 6.5 per bucket (effective α≈0.81). The load factor comparison table below shows these differences.
 
 ```mermaid
 graph LR
@@ -376,10 +403,11 @@ The load factor is the **density** of the hash table. α = 0 means completely em
 | Java `HashMap` | **0.75** | Chaining (→ tree conversion) | 2x |
 | .NET `Dictionary` | **1.0** (when entries are full) | In-array chaining | ~2x in primes |
 | Python `dict` | **0.67** | Open addressing | 4x (small) / 2x |
-| Go `map` | **6.5** (per bucket) | Chaining (8-slot buckets) | 2x |
+| Go `map` (~1.23) | **6.5** (per bucket) | Chaining (8-slot buckets) | 2x |
+| Go `map` (1.24+) | Switched to Swiss Tables | Open addressing (Swiss Tables) | 2x |
 | Rust `HashMap` | **0.875** | Robin Hood → SwissTable | 2x |
 
-Java is unique in that when a single bucket accumulates **8 or more** elements, it converts the linked list to a **red-black tree**. This is a defensive mechanism that prevents O(n) degradation by capping it at O(log n).
+Java is unique in that when a single bucket accumulates **8 or more** elements, it converts the linked list to a **red-black tree**. This is a defensive mechanism that prevents O(n) degradation by capping it at O(log n). More precisely, this tree conversion only occurs **when the total table capacity is 64 or more**. When the table is small, **resizing (expanding the array)** is more effective than tree conversion — distributing collisions by increasing bucket count is cheaper than building a tree in a small table. The `MIN_TREEIFY_CAPACITY = 64` constant in the OpenJDK source defines this condition.
 
 ### The Cost of Resizing
 
@@ -445,28 +473,49 @@ On collision, move to next slot → sequential memory access → cache hit
 
 Google's **SwissTable** (2017), included in the Abseil library, is a milestone in modern hash table design. Core ideas:
 
-1. **Metadata array (control bytes)**: Each slot's state (empty/occupied/deleted) and the upper 7 bits of the hash are **compressed into 1 byte** and stored in a separate array
-2. **SIMD probing**: Compare 16 metadata bytes **at once** using a single SSE2 instruction
+1. **Metadata array (control bytes)**: A 1-byte control byte is stored in a separate array for each slot. The **most significant bit (MSB)** of this byte determines the slot's state
+2. **SIMD probing**: Compare 16 control bytes **at once** using a single SSE2 instruction
+
+Structure of a control byte:
 
 ```
-Control bytes (compare 16 at once):
-[0x82][0xFF][0x31][0xFF][0x82][0x55][0xFF][0xFF]
-[0xFF][0x82][0xFF][0xFF][0xFF][0xFF][0xFF][0xFF]
-  ↑ 0x80 or above = occupied, lower 7 bits = upper 7 bits of hash
-  ↑ 0xFF = empty
-  ↑ 0xFE = deleted (tombstone)
+Control byte interpretation:
 
-When upper 7 bits of hash for key "Orc" = 0x31:
-SIMD compares all 16 bytes at once → match at index 2!
-→ Actual key comparison needed only once
+MSB = 0 (0x00~0x7F): Slot is FULL
+  → Lower 7 bits = upper 7 bits of the hash (called H2)
+  → Example: 0x31 = full, H2=0x31
+
+MSB = 1 (0x80~0xFF): Special state
+  → 0xFF = EMPTY
+  → 0xFE = DELETED (tombstone)
+
+Control bytes example (group of 16):
+[0x31][0xFF][0x55][0xFF][0x31][0x72][0xFF][0xFF]
+[0xFF][0x1A][0xFF][0xFF][0xFF][0xFF][0xFE][0xFF]
+ FULL  EMPTY FULL EMPTY FULL  FULL EMPTY EMPTY
+                                    DEL  EMPTY
 ```
 
-**Result**: 64 metadata entries fit in a single cache line (64 bytes). Most lookups finish with one SIMD operation + one key comparison.
+The lookup process for key "Orc":
+
+```
+1. Compute hash("Orc")
+2. Select a group (16 slots) using the lower bits of the hash
+3. Extract the upper 7 bits of the hash → H2 = 0x31
+4. SIMD compares all 16 control bytes in the group against 0x31
+   → H2 matches at index 0 and 4!
+5. Perform actual key comparison only at matched slots (0, 4)
+   → index 0: key mismatch, index 4: "Orc" confirmed!
+
+Most cases: 1 SIMD operation + 1~2 key comparisons
+```
+
+**Why is this fast?** The key is the **dramatic reduction in comparison count**. Traditional linear probing must compare the full key at every slot. SwissTable filters 16 control bytes at once via SIMD, then performs actual key comparison only at slots where H2 matches (typically 0~2). Since 64 control bytes fit in a single cache line (64 bytes), metadata access is almost always resolved in L1 cache.
 
 The influence of this design:
 - C++ Abseil `absl::flat_hash_map`
 - Rust `hashbrown` (SwissTable port → standard HashMap)
-- Go 1.21+ `runtime.map` (Swiss Tables adoption discussion)
+- Go 1.24+ `runtime.map` (Swiss Tables adopted, replacing the previous bucket chaining)
 
 > **Let's pause and address this**
 >
@@ -611,7 +660,7 @@ Key takeaways from this article:
 
 2. **Collisions are unavoidable** — the pigeonhole principle and birthday paradox guarantee this mathematically. **How you resolve collisions** defines the character of the hash table. Chaining is simple but cache-unfriendly, while open addressing (especially linear probing) is cache-friendly but vulnerable to clustering.
 
-3. **Load factor (α) is the key performance regulator.** Beyond α = 0.7, collisions surge; beyond 0.9, it becomes practically unusable. Resizing is O(n) but amortized O(1) — yet in games, preventing it entirely through initial capacity settings is best.
+3. **Load factor (α) is the key performance regulator.** For linear probing, beyond α = 0.7 collisions surge, and beyond 0.9 it becomes practically unusable. However, the tolerable load factor varies by collision resolution strategy — Quadratic probing, Robin Hood Hashing, SwissTable, etc. can operate stably at higher load factors thanks to cluster mitigation or SIMD parallel comparison. Resizing is O(n) but amortized O(1) — yet in games, preventing it entirely through initial capacity settings is best.
 
 4. **Cache performance matters as much as theoretical complexity.** The lesson from Part 1 repeats here. Google SwissTable's use of SIMD to compare 16 slots at once is not an algorithmic innovation but a **design innovation aligned with hardware characteristics**.
 
