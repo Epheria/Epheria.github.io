@@ -92,7 +92,7 @@ OUTPUT_PATH="${IMG_DIR}${FILENAME}"
 
 | 속성 | 값 | 이유 |
 |------|-----|------|
-| `fontFamily` | `1` (Virgil) | 영문/숫자 필기체 (CJK는 폴백) |
+| `fontFamily` | `5` (Excalifont) | CJK 포함 필기체. Virgil(1)은 구형으로 CJK 미지원 |
 | `roughness` | `1~2` | 손그림 테두리 |
 | `roughness` | `0` | 점선/대시 라인에만 |
 | `strokeWidth` | `2` | 기본, 강조는 `3` |
@@ -157,9 +157,8 @@ for t in non_virgil:
 | 5 | Excalifont | 변환 |
 | 기타 | — | 변환 |
 
-> **CJK 린트 필수**: 프론트엔드가 한글 텍스트의 fontFamily를 1→5로 자동 교체하므로,
-> `batch_create_elements` 후 반드시 `query_elements` + `update_element`로 fontFamily: 1 강제 복원해야 함.
-> 복원 후에는 Virgil이 유지되며, 브라우저에서 수동 변경한 것과 동일한 결과.
+> **fontFamily: 5 (Excalifont) 사용 필수**: CJK 포함 필기체. Virgil(1)은 구형으로 CJK 미지원.
+> fontFamily: 5는 프론트엔드 기본값이므로 린트 불필요 — 생성 시 5로 지정하면 그대로 유지됨.
 
 ### Phase 6: 확인 및 조정
 
