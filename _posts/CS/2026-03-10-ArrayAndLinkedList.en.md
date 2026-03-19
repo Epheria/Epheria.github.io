@@ -6,7 +6,6 @@ categories: [AI, CS]
 tags: [Array, Linked List, Memory, Cache, Data Structure, Time Complexity, CS Fundamentals]
 difficulty: intermediate
 toc: true
-mermaid: true
 math: true
 image: /assets/img/og/cs.png
 tldr:
@@ -81,23 +80,7 @@ The figures below are **rough estimates** for modern hardware. They can vary by 
 | **HDD seek** | ~2,000,000 ns | **23 days** |
 | **HDD sequential read 1MB** | ~825,000 ns | 9.5 days |
 
-```mermaid
-graph TD
-    REG["CPU Register<br/>~0.3ns"] --> L1["L1 Cache<br/>~1ns | 32~64KB(D)"]
-    L1 --> L2["L2 Cache<br/>~4ns | 256KB~1MB"]
-    L2 --> L3["L3 Cache<br/>~12ns | 8~64MB"]
-    L3 --> RAM["RAM<br/>~100ns | 16~64GB"]
-    RAM --> SSD["SSD<br/>~16,000ns | TB-scale"]
-    SSD --> HDD["HDD<br/>~2,000,000ns | TB-scale"]
-
-    style REG fill:#ff6b6b,color:#fff
-    style L1 fill:#ff922b,color:#fff
-    style L2 fill:#ffd43b,color:#000
-    style L3 fill:#51cf66,color:#fff
-    style RAM fill:#339af0,color:#fff
-    style SSD fill:#845ef7,color:#fff
-    style HDD fill:#495057,color:#fff
-```
+![Memory Hierarchy](/assets/img/post/cs/excalidraw-09-memory-hierarchy-en.png)
 
 > **A Quick Note on Terminology**
 >
@@ -241,17 +224,7 @@ Memory space:
 
 To go from Node A to Node B, you must jump from 0x2000 to 0x5040. They are more than 12KB apart. Since a cache line is 64 bytes, **nearly every node access triggers a cache miss**.
 
-```mermaid
-graph LR
-    A["Node A<br/>0x2000"] -->|"next: 0x5040<br/>cache miss"| B["Node B<br/>0x5040"]
-    B -->|"next: 0x3080<br/>cache miss"| C["Node C<br/>0x3080"]
-    C -->|"next: 0x7020<br/>cache miss"| D["Node D<br/>0x7020"]
-
-    style A fill:#ff6b6b,color:#fff
-    style B fill:#ff922b,color:#fff
-    style C fill:#ffd43b,color:#000
-    style D fill:#51cf66,color:#fff
-```
+![Linked List Memory Access Pattern](/assets/img/post/cs/excalidraw-10-linked-list-cache-miss-en.png)
 
 ### O(1) Insertion/Deletion — The Theoretical Advantage
 
@@ -299,23 +272,7 @@ Bjarne Stroustrup, the creator of C++, has repeatedly demonstrated `std::vector`
 
 **Actual result**: From the moment N exceeds a few hundred, **vector dominates list**. The gap widens as N grows.
 
-```mermaid
-graph LR
-    subgraph "Textbook Analysis"
-        A1["vector insert: O(n)"] --> A2["Should be slower"]
-        B1["list insert: O(1)"] --> B2["Should be faster"]
-    end
-
-    subgraph "Actual Benchmark"
-        C1["vector"] -->|"cache hits + memcpy optimization"| C2["Fast"]
-        D1["list"] -->|"cache miss × N times"| D2["Slow"]
-    end
-
-    style A2 fill:#ff6b6b,color:#fff
-    style B2 fill:#51cf66,color:#fff
-    style C2 fill:#51cf66,color:#fff
-    style D2 fill:#ff6b6b,color:#fff
-```
+![Textbook vs Reality — vector vs list](/assets/img/post/cs/excalidraw-11-vector-vs-list-en.png)
 
 ![Stroustrup's vector vs list benchmark](/assets/img/post/cs/vector-vs-list-benchmark.png)
 _Benchmark reproduced from Bjarne Stroustrup's Going Native 2012 presentation. As the number of elements increases, the gap between vector (blue line) and list (red line) grows dramatically. Even a pre-allocated list (green line) fails to beat vector._
@@ -581,21 +538,7 @@ This is the starting point of **Data-Oriented Design**, which will be revisited 
 
 ### When to Use What
 
-```mermaid
-graph TD
-    Q1{"Can you predict<br/>the number of elements<br/>in advance?"} -->|"Yes"| A1["Static array or<br/>dynamic array with reserve()"]
-    Q1 -->|"No"| Q2{"Is mid-position<br/>insertion/deletion<br/>very frequent?"}
-    Q2 -->|"No"| A2["Dynamic array<br/>(vector, ArrayList)"]
-    Q2 -->|"Yes"| Q3{"Do you already know<br/>the insertion position?"}
-    Q3 -->|"No"| A2
-    Q3 -->|"Yes"| Q4{"Are elements large<br/>and expensive to move?"}
-    Q4 -->|"No"| A2
-    Q4 -->|"Yes"| A3["Linked list"]
-
-    style A1 fill:#339af0,color:#fff
-    style A2 fill:#339af0,color:#fff
-    style A3 fill:#51cf66,color:#fff
-```
+![Array vs Linked List Selection Guide](/assets/img/post/cs/excalidraw-12-array-or-list-decision-en.png)
 
 Most paths lead to arrays. To reach linked lists, **three conditions must be met simultaneously**: frequent mid-position insertion, position already known, and high element-moving cost. Cases where all three hold true are rarer than you might think.
 

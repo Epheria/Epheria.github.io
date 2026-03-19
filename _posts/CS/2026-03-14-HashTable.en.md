@@ -6,7 +6,7 @@ categories: [AI, CS]
 tags: [Hash Table, Hash Function, Open Addressing, Chaining, Robin Hood Hashing, Cache, Collision, CS Fundamentals]
 difficulty: intermediate
 toc: true
-mermaid: true
+
 math: true
 image: /assets/img/og/cs.png
 tldr:
@@ -185,16 +185,7 @@ buckets:
 
 To find "Slime" in bucket 2: traverse the list in bucket 2, comparing keys.
 
-```mermaid
-graph LR
-    B0["[0]"] --> N0["Orc:30"] --> NULL0["∅"]
-    B1["[1]"] --> NULL1["∅"]
-    B2["[2]"] --> N2["Goblin:10"] --> N3["Slime:5"] --> NULL2["∅"]
-    B3["[3]"] --> N4["Dragon:100"] --> NULL3["∅"]
-    B4["[4]"] --> NULL4["∅"]
-
-    style N3 fill:#f59f00,color:#fff
-```
+![Separate Chaining — Collision Resolution](/assets/img/post/cs/excalidraw-01-chaining-en.png)
 
 **Time Complexity**:
 
@@ -304,21 +295,7 @@ $$E[\text{probes}] = \frac{1}{2}\left(1 + \frac{1}{(1 - \alpha)^2}\right)$$
 
 However, **not all open addressing schemes are bound by these numbers.** Quadratic probing disperses probes at squared intervals, reducing cluster formation. Robin Hood Hashing reduces variance in probe distances, suppressing worst-case behavior. SwissTable uses SIMD to compare 16 slots at once, reducing probe cost itself. Thanks to these techniques, Rust `HashMap` allows α=0.875, and Go `map` allows 6.5 per bucket (effective α≈0.81). The load factor comparison table below shows these differences.
 
-```mermaid
-graph LR
-    subgraph "Performance Change by Load Factor"
-        A["α=0.5<br/>1.5 probes"] -->|"Good"| B["α=0.7<br/>2.2 probes"]
-        B -->|"Caution"| C["α=0.8<br/>3.0 probes"]
-        C -->|"Danger"| D["α=0.9<br/>5.5 probes"]
-        D -->|"Collapse"| E["α=0.95<br/>10.5 probes"]
-    end
-
-    style A fill:#51cf66,color:#fff
-    style B fill:#ffd43b,color:#000
-    style C fill:#ff922b,color:#fff
-    style D fill:#ff6b6b,color:#fff
-    style E fill:#c92a2a,color:#fff
-```
+![Performance Change by Load Factor (α) in Linear Probing](/assets/img/post/cs/excalidraw-02-load-factor-en.png)
 
 ### Quadratic Probing — Dispersing Clusters
 
@@ -419,19 +396,7 @@ Resizing consists of three steps:
 
 Total **O(n)**. But applying **amortized analysis** as we learned in Part 2, the total resizing cost for n insertions is O(n), so the cost per insertion is **amortized O(1)**.
 
-```mermaid
-graph TD
-    A["Insert n elements"] --> B{"α > threshold?"}
-    B -->|"No"| C["O(1) insertion"]
-    B -->|"Yes"| D["Resize O(n)"]
-    D --> E["Rehash everything into new array"]
-    E --> C
-
-    C --> F["Amortized analysis:<br/>Total cost O(n) / n ops = O(1) per insert"]
-
-    style D fill:#ff6b6b,color:#fff
-    style F fill:#51cf66,color:#fff
-```
+![Hash Table Resizing and Amortized Analysis](/assets/img/post/cs/excalidraw-03-resizing-en.png)
 
 The lesson for game development is the same as Part 2: **if you know the element count in advance, set the initial capacity to prevent resizing entirely.** At 60fps with a 16.67ms frame budget, a hash table resizing spike can cause frame drops.
 

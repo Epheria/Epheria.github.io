@@ -6,7 +6,6 @@ categories: [AI, CS]
 tags: [CS, Computer Science, AI, Vibe Coding, Software Engineering, Fundamentals]
 difficulty: beginner
 toc: true
-mermaid: true
 image: /assets/img/og/cs.png
 tldr:
   - "AI coding tools actually made experienced developers 19% slower (METR 2025), and junior developers using AI assistance scored 17% lower on comprehension (Anthropic 2026)"
@@ -110,16 +109,7 @@ _Left: developer predictions (AI would be faster), Right: actual observations (A
 
 Developers spent time reviewing, testing, and modifying AI-generated code, only to frequently reject it. The most striking finding: **even after the experiment, they believed they had been faster**. A disconnect between perception and reality.
 
-```mermaid
-graph LR
-    A["AI Code Generation"] --> B["Developer Review"]
-    B --> C{"Accept?"}
-    C -->|"< 44%"| D["Accept → Integrate"]
-    C -->|"> 56%"| E["Reject → Write Manually"]
-    E --> F["Time Wasted"]
-    B --> G["Write Tests"]
-    G --> F
-```
+![AI Code Review Flow](/assets/img/post/cs/excalidraw-04-ai-code-review-en.png)
 
 The paper's conclusion is clear. **For developers who deeply understand their codebase, AI actually increases cognitive load.** AI-generated code is often "plausible but misses context," making verification costs exceed writing costs.
 
@@ -181,18 +171,7 @@ Research on the security quality of AI-generated code is well-established:
 
 The IEEE-ISTAS 2025 paper is particularly noteworthy. It tested 400 code samples over 40 rounds of "asking AI to improve":
 
-```mermaid
-graph TD
-    A["Initial Code Generation"] --> B["Rounds 1-3"]
-    B -->|"Net security improvement 27%"| C["Slight Improvement"]
-    B --> D["Rounds 4-5"]
-    D -->|"Critical vulnerabilities 37.6%↑"| E["Security Deterioration"]
-    D --> F["Complexity 10% increase"]
-    F -->|"Vulnerabilities 14.3%↑"| E
-
-    style E fill:#ff6b6b,color:#fff
-    style C fill:#51cf66,color:#fff
-```
+![The Paradox of Iterative Security](/assets/img/post/cs/excalidraw-05-security-iteration-en.png)
 
 **The paradox of iterative refinement**: The more you ask AI to "make it more secure," the more complex the code becomes, and higher complexity means more vulnerabilities. Security-focused prompts achieved net security improvement only **27% of the time**, and only during the first 1-3 iterations.
 
@@ -280,24 +259,7 @@ Frederick Brooks. Author of **The Mythical Man-Month**. In his 1986 paper "No Si
 
 Brooks divided software complexity into two types:
 
-```mermaid
-graph TB
-    SW["Software Complexity"] --> ACC["Accidental Complexity"]
-    SW --> ESS["Essential Complexity"]
-
-    ACC --> A1["Language Syntax"]
-    ACC --> A2["Build Systems"]
-    ACC --> A3["Boilerplate"]
-    ACC --> A4["Environment Config"]
-
-    ESS --> E1["Business Logic"]
-    ESS --> E2["Concurrency Design"]
-    ESS --> E3["System Architecture"]
-    ESS --> E4["Trade-off Decisions"]
-
-    style ACC fill:#ffd43b,color:#000
-    style ESS fill:#ff6b6b,color:#fff
-```
+![Software Complexity — Brooks's Classification](/assets/img/post/cs/excalidraw-06-software-complexity-en.png)
 
 AI excels at reducing **accidental complexity**. It generates boilerplate, catches syntax errors, and helps with environment configuration. But **essential complexity** — business logic design, concurrency handling, system trade-offs — is not something AI resolves. Forty years later, Brooks' analysis remains valid.
 
@@ -330,19 +292,7 @@ Beyond theory and experiments, how is the market responding?
 | Developer employment ages 22-25 (vs 2022) | **~20% decrease** | Stanford Digital Economy Lab |
 | Entry-level share of total hiring | **7%** | Industry survey 2025 |
 
-```mermaid
-graph LR
-    subgraph "Rising Demand"
-        A["Senior Engineers<br/>(5+ years)"] -->|"Peak demand"| B["Hiring 40%↑"]
-    end
-
-    subgraph "Declining Demand"
-        C["Junior Engineers<br/>(0-2 years)"] -->|"Hiring 60%↓"| D["Only 7% entry-level"]
-    end
-
-    style A fill:#51cf66,color:#fff
-    style C fill:#ff6b6b,color:#fff
-```
+![Developer Job Market Polarization](/assets/img/post/cs/excalidraw-07-job-market-en.png)
 
 The structure is clear. **As AI replaces the simple tasks juniors used to do, the value of seniors who can supervise and set direction is rising.** Google and Meta are hiring **50% fewer new graduates** compared to 2021.
 
@@ -383,31 +333,7 @@ So which areas of CS should you study? Here's the roadmap for this series.
 
 ### CS Roadmap
 
-```mermaid
-graph TD
-    L1["Level 1: Data Structures & Memory"] --> L2["Level 2: Operating Systems & Concurrency"]
-    L2 --> L3["Level 3: Math & Physics Fundamentals"]
-    L3 --> L4["Level 4: Engine Architecture & Game Loop"]
-    L4 --> L5["Level 5: Rendering"]
-    L5 --> L6["Level 6: Networking"]
-    L6 --> L7["Level 7: Advanced Optimization"]
-
-    L1 -.->|"Arrays, lists, hashes, trees<br/>Stack/heap memory, cache locality"| L1
-    L2 -.->|"Processes, threads, synchronization<br/>Race conditions, deadlocks"| L2
-    L3 -.->|"Vectors, matrices, quaternions<br/>Collision detection, interpolation"| L3
-    L4 -.->|"Game loop, ECS<br/>Resource management, serialization"| L4
-    L5 -.->|"Rendering pipeline, shaders<br/>Draw calls, culling"| L5
-    L6 -.->|"TCP/UDP, sync models<br/>Prediction, rollback"| L6
-    L7 -.->|"SIMD, lock-free<br/>Memory pools, DOD"| L7
-
-    style L1 fill:#339af0,color:#fff
-    style L2 fill:#339af0,color:#fff
-    style L3 fill:#339af0,color:#fff
-    style L4 fill:#f59f00,color:#fff
-    style L5 fill:#f59f00,color:#fff
-    style L6 fill:#f59f00,color:#fff
-    style L7 fill:#e03131,color:#fff
-```
+![CS Roadmap — 7 Levels for Game Programmers](/assets/img/post/cs/excalidraw-08-cs-roadmap-en.png)
 
 Key questions for each level:
 
