@@ -4,28 +4,31 @@
 posts:
   - url: "/posts/EvaluatingAgentsMd/"
     title: "AGENTS.md는 정말 도움이 될까? - 코딩 에이전트의 컨텍스트 파일 효과를 검증한 논문 분석 | Sehyup"
-    views: 35
+    views: 37
   - url: "/posts/biological-computing-analysis/"
     title: "뇌세포로 둠을 플레이하다 - 생체 신경 컴퓨팅의 현재와 미래 심층 분석 | Sehyup"
-    views: 25
+    views: 27
   - url: "/posts/CryptoCurrency01/"
     title: "암호화폐 (1) — 화폐의 본질: 우리가 믿는 종이의 정체 | Sehyup"
-    views: 21
+    views: 22
   - url: "/posts/CryptoCurrency02/"
     title: "암호화폐 (2) — 비트코인의 해부학: 블록체인, 채굴, 그리고 디지털 희소성 | Sehyup"
     views: 20
-  - url: "/posts/ClaudeCodeGuide/"
-    title: "Claude Code 완벽 가이드 - 설치부터 고급 활용 전략까지 | Sehyup"
-    views: 18
-  - url: "/posts/AddressableCustomAnalyzer/"
-    title: "Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체 | Sehyup"
+  - url: "/posts/HashTable/"
+    title: "CS 로드맵 (3) — 해시 테이블: O(1) 조회의 조건과 한계 | Sehyup"
+    views: 17
+  - url: "/posts/ArrayAndLinkedList/"
+    title: "CS 로드맵 (1) — 배열과 연결 리스트: 메모리의 지형을 읽다 | Sehyup"
+    views: 14
+  - url: "/posts/ClaudeCodeWindowsInstall/"
+    title: "Windows에서 Claude Code 설치 완전 가이드 — 실전 트러블슈팅 포함 | Sehyup"
     views: 13
-  - url: "/posts/ClaudeOpus46Review/"
-    title: "Claude Opus 4.5 → 4.6 전환기 - 게임 개발자가 체감한 성능, 토큰, 워크플로우의 변화 | Sehyup"
-    views: 10
   - url: "/posts/ClaudeCodeInsights/"
     title: "실전 데이터로 보는 게임 개발자의 AI 활용법 - 2,165 메시지의 기록 | Sehyup"
-    views: 9
+    views: 11
+  - url: "/posts/ClaudeOpus46Review/"
+    title: "Claude Opus 4.5 → 4.6 전환기 - 게임 개발자가 체감한 성능, 토큰, 워크플로우의 변화 | Sehyup"
+    views: 11
   - url: "/posts/llm-for-everyone/"
     title: "비개발자를 위한 LLM 완전 가이드 - 기획자, QA, 마케터가 AI를 업무에 쓰는 법 | Sehyup"
-    views: 9
+    views: 11
