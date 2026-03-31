@@ -853,6 +853,7 @@ public struct ZombieDistanceJob : IJobParallelFor
     [ReadOnly] public NativeArray<float3> Positions;  // 36 KB 연속 메모리
     [ReadOnly] public NativeArray<byte> IsAlive;       // 3 KB 연속 메모리
     [ReadOnly] public NativeArray<float3> GoalPositions;
+    [ReadOnly] public int GoalCount;
 
     [WriteOnly] public NativeArray<float> Distances;
 
