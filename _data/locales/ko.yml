@@ -12,6 +12,7 @@ tabs:
   archives: 아카이브
   about: 정보
   stats: 통계
+  graph: 그래프
   books: 독서
   sideproject: 사이드 프로젝트
 
@@ -96,6 +97,18 @@ stats:
   legend_less: Less
   legend_more: More
 
+graph:
+  page_title: 지식 그래프
+  description: 포스트 간 연결 관계를 시각화합니다. 노드를 클릭하면 해당 포스트로 이동합니다.
+  filter_category: 카테고리
+  filter_edge: 연결 유형
+  search: 검색
+  search_placeholder: 포스트 제목...
+  all: 전체
+  edge_series: 시리즈
+  edge_prerequisite: 선수지식
+  edge_tag: 공통 태그
+
 # blog-i18n 전용 키
 i18n:
   language_label: 언어
@@ -103,6 +116,7 @@ i18n:
   view_original: 원본(한국어) 보기
   popular_posts: 인기 포스트
   series: 시리즈
+  graph: 그래프
   difficulty:
     beginner: 초급
     intermediate: 중급

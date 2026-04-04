@@ -12,6 +12,7 @@ tabs:
   archives: Archives
   about: About
   stats: Stats
+  graph: Graph
   books: Books
   sideproject: Side Projects
 
@@ -100,6 +101,18 @@ stats:
   legend_less: Less
   legend_more: More
 
+graph:
+  page_title: Knowledge Graph
+  description: Visualize connections between posts. Click a node to navigate to the post.
+  filter_category: Category
+  filter_edge: Connection
+  search: Search
+  search_placeholder: Post title...
+  all: All
+  edge_series: Series
+  edge_prerequisite: Prerequisite
+  edge_tag: Shared Tags
+
 # blog-i18n 전용 키
 i18n:
   language_label: Language
@@ -107,6 +120,7 @@ i18n:
   view_original: View original (Korean)
   popular_posts: Popular Posts
   series: Series
+  graph: Graph
   difficulty:
     beginner: Beginner
     intermediate: Intermediate

@@ -1,0 +1,71 @@
+---
+layout: default
+---
+
+{% include lang.html %}
+
+<div id="graph-page" class="px-1">
+  <h1 class="graph-page-title" data-toc-skip>
+    <i class="fas fa-project-diagram"></i>
+    {{ site.data.locales[lang].graph.page_title | default: "Knowledge Graph" }}
+  </h1>
+  <p class="graph-page-desc">
+    {{ site.data.locales[lang].graph.description | default: "Interactive visualization of post connections" }}
+  </p>
+
+  <!-- Controls -->
+  <div class="graph-controls">
+    <div class="graph-filter-group">
+      <label for="graph-category-filter">
+        {{ site.data.locales[lang].graph.filter_category | default: "Category" }}
+      </label>
+      <select id="graph-category-filter">
+        <option value="all">{{ site.data.locales[lang].graph.all | default: "All" }}</option>
+      </select>
+    </div>
+    <div class="graph-filter-group">
+      <label for="graph-edge-filter">
+        {{ site.data.locales[lang].graph.filter_edge | default: "Connection" }}
+      </label>
+      <select id="graph-edge-filter">
+        <option value="all">{{ site.data.locales[lang].graph.all | default: "All" }}</option>
+        <option value="series">{{ site.data.locales[lang].graph.edge_series | default: "Series" }}</option>
+        <option value="prerequisite">{{ site.data.locales[lang].graph.edge_prerequisite | default: "Prerequisite" }}</option>
+        <option value="tag">{{ site.data.locales[lang].graph.edge_tag | default: "Shared Tags" }}</option>
+      </select>
+    </div>
+    <div class="graph-filter-group">
+      <label for="graph-search">
+        {{ site.data.locales[lang].graph.search | default: "Search" }}
+      </label>
+      <input type="text" id="graph-search" placeholder="{{ site.data.locales[lang].graph.search_placeholder | default: 'Post title...' }}">
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="graph-legend">
+    <span class="graph-legend-item">
+      <span class="graph-legend-line legend-series"></span>
+      {{ site.data.locales[lang].graph.edge_series | default: "Series" }}
+    </span>
+    <span class="graph-legend-item">
+      <span class="graph-legend-line legend-prerequisite"></span>
+      {{ site.data.locales[lang].graph.edge_prerequisite | default: "Prerequisite" }}
+    </span>
+    <span class="graph-legend-item">
+      <span class="graph-legend-line legend-tag"></span>
+      {{ site.data.locales[lang].graph.edge_tag | default: "Shared Tags" }}
+    </span>
+  </div>
+
+  <!-- Graph Container -->
+  <div id="graph-container">
+    <svg id="graph-svg"></svg>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="graph-tooltip" class="graph-tooltip"></div>
+</div>
+
+{% include graph/graph-data.html %}
+{% include graph/graph-view.html %}

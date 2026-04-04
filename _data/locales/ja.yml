@@ -12,6 +12,7 @@ tabs:
   archives: アーカイブ
   about: プロフィール
   stats: 統計
+  graph: グラフ
   books: 読書
   sideproject: サイドプロジェクト
 
@@ -96,6 +97,18 @@ stats:
   legend_less: Less
   legend_more: More
 
+graph:
+  page_title: ナレッジグラフ
+  description: 記事間のつながりを可視化します。ノードをクリックすると記事に移動します。
+  filter_category: カテゴリー
+  filter_edge: 接続タイプ
+  search: 検索
+  search_placeholder: 記事タイトル...
+  all: すべて
+  edge_series: シリーズ
+  edge_prerequisite: 前提知識
+  edge_tag: 共通タグ
+
 # blog-i18n 전용 키
 i18n:
   language_label: 言語
@@ -103,6 +116,7 @@ i18n:
   view_original: 原文（韓国語）を見る
   popular_posts: 人気記事
   series: シリーズ
+  graph: グラフ
   difficulty:
     beginner: 初級
     intermediate: 中級

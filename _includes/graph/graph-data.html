@@ -1,0 +1,104 @@
+<!-- Graph Data: Liquid로 포스트 노드/에지 JSON 생성 -->
+<script>
+(function() {
+  // ===== NODES =====
+  var nodes = [
+    {% for post in site.posts %}
+      {% unless post.lang %}
+    {
+      "id": {{ post.url | jsonify }},
+      "title": {{ post.title | jsonify }},
+      "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
+      "cat0": {{ post.categories[0] | default: "" | jsonify }},
+      "cat1": {{ post.categories[1] | default: "" | jsonify }},
+      "tags": {{ post.tags | jsonify }},
+      "difficulty": {{ post.difficulty | default: "" | jsonify }},
+      "prerequisites": {{ post.prerequisites | default: "" | jsonify }}
+    },
+      {% endunless %}
+    {% endfor %}
+  ];
+
+  // ===== EDGES =====
+  var edges = [];
+
+  // 1) Series edges: 같은 categories[0]|categories[1] 포스트를 날짜순으로 연결
+  var seriesMap = {};
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+    if (n.cat1) {
+      var key = n.cat0 + "|" + n.cat1;
+      if (!seriesMap[key]) seriesMap[key] = [];
+      seriesMap[key].push(n);
+    }
+  }
+  Object.keys(seriesMap).forEach(function(key) {
+    var group = seriesMap[key].sort(function(a, b) {
+      return a.date.localeCompare(b.date);
+    });
+    for (var i = 0; i < group.length - 1; i++) {
+      edges.push({
+        source: group[i].id,
+        target: group[i + 1].id,
+        type: "series"
+      });
+    }
+  });
+
+  // 2) Prerequisite edges
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+    if (n.prerequisites && Array.isArray(n.prerequisites)) {
+      for (var j = 0; j < n.prerequisites.length; j++) {
+        var prereqUrl = n.prerequisites[j];
+        // URL 정규화: 끝에 / 보장
+        if (prereqUrl && prereqUrl.charAt(prereqUrl.length - 1) !== '/') {
+          prereqUrl += '/';
+        }
+        edges.push({
+          source: prereqUrl,
+          target: n.id,
+          type: "prerequisite"
+        });
+      }
+    }
+  }
+
+  // 3) Tag-based edges: 공통 태그 3개 이상이면 연결
+  var TAG_THRESHOLD = 3;
+  for (var i = 0; i < nodes.length; i++) {
+    for (var j = i + 1; j < nodes.length; j++) {
+      var a = nodes[i], b = nodes[j];
+      if (!a.tags || !b.tags) continue;
+      // 이미 series나 prerequisite로 연결된 쌍은 건너뛰기
+      var alreadyLinked = edges.some(function(e) {
+        return (e.source === a.id && e.target === b.id) ||
+               (e.source === b.id && e.target === a.id);
+      });
+      if (alreadyLinked) continue;
+
+      var common = 0;
+      for (var k = 0; k < a.tags.length; k++) {
+        if (b.tags.indexOf(a.tags[k]) >= 0) common++;
+      }
+      if (common >= TAG_THRESHOLD) {
+        edges.push({
+          source: a.id,
+          target: b.id,
+          type: "tag",
+          weight: common
+        });
+      }
+    }
+  }
+
+  // 존재하지 않는 노드를 참조하는 에지 제거
+  var nodeIds = {};
+  for (var i = 0; i < nodes.length; i++) nodeIds[nodes[i].id] = true;
+  edges = edges.filter(function(e) {
+    return nodeIds[e.source] && nodeIds[e.target];
+  });
+
+  window.__graphData = { nodes: nodes, edges: edges };
+})();
+</script>

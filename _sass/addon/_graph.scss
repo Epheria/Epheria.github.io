@@ -1,0 +1,223 @@
+// ===== Knowledge Graph View Styles =====
+
+#graph-page {
+  max-width: 1200px;
+}
+
+.graph-page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--main-border-color, #e1e4e8);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.3rem;
+    color: var(--link-color, #0366d6);
+  }
+}
+
+.graph-page-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted-color, #6c757d);
+  margin-bottom: 1.2rem;
+}
+
+// --- Controls ---
+.graph-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-end;
+}
+
+.graph-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted-color, #6c757d);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  select,
+  input[type="text"] {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+    border: 1px solid var(--main-border-color, #e1e4e8);
+    border-radius: 0.4rem;
+    background: var(--card-bg, var(--main-bg));
+    color: var(--text-color, inherit);
+    outline: none;
+    min-width: 130px;
+
+    &:focus {
+      border-color: var(--link-color, #0366d6);
+      box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.15);
+    }
+  }
+
+  input[type="text"] {
+    min-width: 180px;
+  }
+}
+
+// --- Legend ---
+.graph-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted-color, #6c757d);
+}
+
+.graph-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.graph-legend-line {
+  display: inline-block;
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+
+  &.legend-series {
+    background: #4A90D9;
+  }
+  &.legend-prerequisite {
+    background: #E67E22;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #E67E22 0,
+      #E67E22 6px,
+      transparent 6px,
+      transparent 9px
+    );
+    background-color: transparent;
+  }
+  &.legend-tag {
+    background: #95A5A6;
+  }
+}
+
+// --- Graph Container ---
+#graph-container {
+  border: 1px solid var(--main-border-color, #e1e4e8);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--card-bg, var(--main-bg));
+  position: relative;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+#graph-svg {
+  display: block;
+  width: 100%;
+}
+
+// --- Nodes ---
+.graph-node {
+  cursor: pointer;
+
+  circle {
+    transition: opacity 0.15s;
+  }
+
+  &:hover circle {
+    filter: brightness(1.2);
+    stroke-width: 2.5;
+  }
+}
+
+// --- Tooltip ---
+.graph-tooltip {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  padding: 0.6rem 0.8rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--main-border-color, #e1e4e8);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 300px;
+  pointer-events: none;
+  color: var(--text-color, inherit);
+
+  strong {
+    font-size: 0.88rem;
+    color: var(--link-color, #0366d6);
+  }
+
+  .tt-cat {
+    color: var(--text-muted-color, #6c757d);
+    font-size: 0.78rem;
+  }
+
+  .tt-date {
+    color: var(--text-muted-color, #6c757d);
+    font-size: 0.75rem;
+  }
+
+  .tt-tags {
+    font-size: 0.73rem;
+    color: var(--text-muted-color, #6c757d);
+    font-style: italic;
+  }
+}
+
+// --- Dark Mode ---
+[data-mode="dark"],
+.dark {
+  #graph-container {
+    background: #161b22;
+  }
+
+  .graph-tooltip {
+    background: #1c2128;
+    border-color: #30363d;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .graph-node circle {
+    stroke: #30363d;
+  }
+}
+
+// --- Responsive ---
+@media (max-width: 768px) {
+  .graph-controls {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .graph-filter-group {
+    width: 100%;
+
+    select,
+    input[type="text"] {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+
+  #graph-container {
+    border-radius: 0.5rem;
+  }
+}
