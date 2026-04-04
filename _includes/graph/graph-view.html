@@ -1,11 +1,16 @@
 <!-- D3.js Force-Directed Graph Rendering -->
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
   var data = window.__graphData;
-  if (!data) return;
+  if (!data || !data.nodes.length) {
+    console.warn('[Graph] No data available');
+    document.getElementById('graph-container').innerHTML =
+      '<p style="text-align:center;padding:3rem;color:#999;">No graph data</p>';
+    return;
+  }
 
   // ===== 카테고리 색상 팔레트 =====
   var CATEGORY_COLORS = {
@@ -23,7 +28,9 @@
     'TheQuesting': '#FF7043',
     'Survivor':    '#26A69A',
     'Investment':  '#42A5F5',
-    'Pobos':       '#78909C'
+    'Pobos':       '#78909C',
+    'CS':          '#00ACC1',
+    'ProjectAliveRevive': '#FF8A65'
   };
   var DEFAULT_COLOR = '#7f8c8d';
 
@@ -40,11 +47,12 @@
 
   // ===== SVG 초기화 =====
   var container = document.getElementById('graph-container');
-  var svg = d3.select('#graph-svg');
-  var width = container.clientWidth;
+  var width = container.clientWidth || 800;
   var height = Math.max(600, window.innerHeight - 320);
 
-  svg.attr('width', width).attr('height', height);
+  var svg = d3.select('#graph-svg')
+    .attr('width', width)
+    .attr('height', height);
 
   // ===== 줌/패닝 =====
   var g = svg.append('g');
@@ -111,10 +119,10 @@
 
   node.append('circle')
     .attr('r', function(d) {
-      // 연결이 많을수록 큰 노드
       var linkCount = edges.filter(function(e) {
-        return (e.source === d || e.source === d.id || e.source.id === d.id) ||
-               (e.target === d || e.target === d.id || e.target.id === d.id);
+        var src = e.source.id !== undefined ? e.source.id : e.source;
+        var tgt = e.target.id !== undefined ? e.target.id : e.target;
+        return src === d.id || tgt === d.id;
       }).length;
       return Math.min(4 + linkCount * 1.2, 14);
     })
@@ -220,7 +228,6 @@
     var edgeVal = document.getElementById('graph-edge-filter').value;
     var searchVal = document.getElementById('graph-search').value.toLowerCase().trim();
 
-    // 노드 필터
     var visibleNodes = {};
     nodes.forEach(function(n) {
       var catMatch = (catVal === 'all' || n.cat0 === catVal);
@@ -228,7 +235,6 @@
       visibleNodes[n.id] = catMatch && searchMatch;
     });
 
-    // 에지 필터 (타입 + 양쪽 노드 visible)
     link.attr('display', function(d) {
       var src = d.source.id || d.source;
       var tgt = d.target.id || d.target;
@@ -236,7 +242,6 @@
       return (edgeMatch && visibleNodes[src] && visibleNodes[tgt]) ? null : 'none';
     });
 
-    // 검색 모드: 검색어가 있으면 매칭 안 되는 노드는 연결된 노드라도 희미하게
     if (searchVal) {
       node.select('circle').attr('opacity', function(n) {
         return visibleNodes[n.id] ? 1 : 0.1;
@@ -259,7 +264,7 @@
 
   // ===== 리사이즈 =====
   window.addEventListener('resize', function() {
-    width = container.clientWidth;
+    width = container.clientWidth || 800;
     height = Math.max(600, window.innerHeight - 320);
     svg.attr('width', width).attr('height', height);
     simulation.force('center', d3.forceCenter(width / 2, height / 2));
@@ -280,5 +285,7 @@
     svg.transition().duration(500)
       .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
   });
-})();
+
+  console.log('[Graph] Rendered', nodes.length, 'nodes,', edges.length, 'edges');
+});
 </script>

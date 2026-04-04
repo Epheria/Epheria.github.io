@@ -1,23 +1,27 @@
 <!-- Graph Data: Liquid로 포스트 노드/에지 JSON 생성 -->
+{% assign default_lang = site.default_lang | default: site.lang | default: "ko" %}
 <script>
 (function() {
   // ===== NODES =====
   var nodes = [
     {% for post in site.posts %}
-      {% unless post.lang %}
+      {% assign post_lang = post.lang | default: default_lang %}
+      {% if post_lang == default_lang %}
     {
       "id": {{ post.url | jsonify }},
       "title": {{ post.title | jsonify }},
       "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
       "cat0": {{ post.categories[0] | default: "" | jsonify }},
       "cat1": {{ post.categories[1] | default: "" | jsonify }},
-      "tags": {{ post.tags | jsonify }},
+      "tags": {{ post.tags | default: "" | jsonify }},
       "difficulty": {{ post.difficulty | default: "" | jsonify }},
       "prerequisites": {{ post.prerequisites | default: "" | jsonify }}
     },
-      {% endunless %}
+      {% endif %}
     {% endfor %}
   ];
+
+  console.log('[Graph] nodes:', nodes.length);
 
   // ===== EDGES =====
   var edges = [];
@@ -51,7 +55,6 @@
     if (n.prerequisites && Array.isArray(n.prerequisites)) {
       for (var j = 0; j < n.prerequisites.length; j++) {
         var prereqUrl = n.prerequisites[j];
-        // URL 정규화: 끝에 / 보장
         if (prereqUrl && prereqUrl.charAt(prereqUrl.length - 1) !== '/') {
           prereqUrl += '/';
         }
@@ -66,16 +69,19 @@
 
   // 3) Tag-based edges: 공통 태그 3개 이상이면 연결
   var TAG_THRESHOLD = 3;
+  var nodeEdgeMap = {};
+  edges.forEach(function(e) {
+    var key1 = e.source + '|' + e.target;
+    var key2 = e.target + '|' + e.source;
+    nodeEdgeMap[key1] = true;
+    nodeEdgeMap[key2] = true;
+  });
+
   for (var i = 0; i < nodes.length; i++) {
     for (var j = i + 1; j < nodes.length; j++) {
       var a = nodes[i], b = nodes[j];
-      if (!a.tags || !b.tags) continue;
-      // 이미 series나 prerequisite로 연결된 쌍은 건너뛰기
-      var alreadyLinked = edges.some(function(e) {
-        return (e.source === a.id && e.target === b.id) ||
-               (e.source === b.id && e.target === a.id);
-      });
-      if (alreadyLinked) continue;
+      if (!a.tags || !a.tags.length || !b.tags || !b.tags.length) continue;
+      if (nodeEdgeMap[a.id + '|' + b.id]) continue;
 
       var common = 0;
       for (var k = 0; k < a.tags.length; k++) {
@@ -88,6 +94,8 @@
           type: "tag",
           weight: common
         });
+        nodeEdgeMap[a.id + '|' + b.id] = true;
+        nodeEdgeMap[b.id + '|' + a.id] = true;
       }
     }
   }
@@ -99,6 +107,7 @@
     return nodeIds[e.source] && nodeIds[e.target];
   });
 
+  console.log('[Graph] edges:', edges.length);
   window.__graphData = { nodes: nodes, edges: edges };
 })();
 </script>

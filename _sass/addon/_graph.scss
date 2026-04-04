@@ -119,6 +119,7 @@
   background: var(--card-bg, var(--main-bg));
   position: relative;
   cursor: grab;
+  min-height: 600px;
 
   &:active {
     cursor: grabbing;
