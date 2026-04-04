@@ -1,291 +1,317 @@
-<!-- D3.js Force-Directed Graph Rendering -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<!-- D3.js Force-Directed Graph: 동적 로딩으로 compress 레이아웃 우회 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  'use strict';
-
-  var data = window.__graphData;
-  if (!data || !data.nodes.length) {
-    console.warn('[Graph] No data available');
+(function() {
+  var script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js';
+  script.onload = initGraph;
+  script.onerror = function() {
     document.getElementById('graph-container').innerHTML =
-      '<p style="text-align:center;padding:3rem;color:#999;">No graph data</p>';
-    return;
-  }
-
-  // ===== 카테고리 색상 팔레트 =====
-  var CATEGORY_COLORS = {
-    'Unity':       '#4A90D9',
-    'Unreal':      '#E74C3C',
-    'AI':          '#9B59B6',
-    'Common':      '#2ECC71',
-    'Csharp':      '#1ABC9C',
-    'ETC':         '#95A5A6',
-    'Language':    '#E67E22',
-    'Python':      '#F1C40F',
-    'ML':          '#8E44AD',
-    'Mathematics': '#3498DB',
-    'Toyverse':    '#E91E63',
-    'TheQuesting': '#FF7043',
-    'Survivor':    '#26A69A',
-    'Investment':  '#42A5F5',
-    'Pobos':       '#78909C',
-    'CS':          '#00ACC1',
-    'ProjectAliveRevive': '#FF8A65'
+      '<p style="text-align:center;padding:3rem;color:#888;">D3.js 로드 실패</p>';
   };
-  var DEFAULT_COLOR = '#7f8c8d';
+  document.head.appendChild(script);
 
-  function getColor(cat) {
-    return CATEGORY_COLORS[cat] || DEFAULT_COLOR;
-  }
+  function initGraph() {
+    var data = window.__graphData;
+    if (!data || !data.nodes.length) {
+      document.getElementById('graph-container').innerHTML =
+        '<p style="text-align:center;padding:3rem;color:#888;">그래프 데이터 없음</p>';
+      return;
+    }
 
-  // ===== 에지 스타일 =====
-  var EDGE_STYLES = {
-    series:       { color: '#4A90D9', width: 2, opacity: 0.6, dash: '' },
-    prerequisite: { color: '#E67E22', width: 2, opacity: 0.7, dash: '6,3' },
-    tag:          { color: '#95A5A6', width: 1, opacity: 0.3, dash: '' }
-  };
+    // ===== 카테고리 → 색상 (마젠타 기본, 일부 그린/옐로) =====
+    var CATEGORY_COLORS = {
+      'Unity':       '#e84393',
+      'Unreal':      '#e84393',
+      'AI':          '#00b894',
+      'Common':      '#e84393',
+      'Csharp':      '#e17055',
+      'ETC':         '#a29bfe',
+      'Language':    '#fdcb6e',
+      'Python':      '#00b894',
+      'ML':          '#00b894',
+      'Mathematics': '#74b9ff',
+      'Toyverse':    '#fd79a8',
+      'TheQuesting': '#e17055',
+      'Survivor':    '#00cec9',
+      'CS':          '#00b894',
+      'ProjectAliveRevive': '#fdcb6e'
+    };
+    var DEFAULT_COLOR = '#e84393';
 
-  // ===== SVG 초기화 =====
-  var container = document.getElementById('graph-container');
-  var width = container.clientWidth || 800;
-  var height = Math.max(600, window.innerHeight - 320);
+    function getColor(cat) { return CATEGORY_COLORS[cat] || DEFAULT_COLOR; }
 
-  var svg = d3.select('#graph-svg')
-    .attr('width', width)
-    .attr('height', height);
+    // ===== SVG 초기화 =====
+    var container = document.getElementById('graph-container');
+    var width = container.clientWidth || 900;
+    var height = Math.max(650, window.innerHeight - 280);
 
-  // ===== 줌/패닝 =====
-  var g = svg.append('g');
-  var zoom = d3.zoom()
-    .scaleExtent([0.1, 5])
-    .on('zoom', function(event) {
-      g.attr('transform', event.transform);
+    var svg = d3.select('#graph-svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    // ===== 줌/패닝 =====
+    var g = svg.append('g');
+    var zoom = d3.zoom()
+      .scaleExtent([0.15, 4])
+      .on('zoom', function(event) { g.attr('transform', event.transform); });
+    svg.call(zoom);
+
+    // ===== 데이터 복사 =====
+    var nodes = data.nodes.map(function(d) { return Object.assign({}, d); });
+    var edges = data.edges.map(function(d) { return Object.assign({}, d); });
+
+    // 노드별 연결 수 미리 계산
+    var linkCounts = {};
+    edges.forEach(function(e) {
+      linkCounts[e.source] = (linkCounts[e.source] || 0) + 1;
+      linkCounts[e.target] = (linkCounts[e.target] || 0) + 1;
     });
-  svg.call(zoom);
+    nodes.forEach(function(n) { n._links = linkCounts[n.id] || 0; });
 
-  // ===== 시뮬레이션 데이터 준비 =====
-  var nodes = data.nodes.map(function(d) { return Object.assign({}, d); });
-  var edges = data.edges.map(function(d) { return Object.assign({}, d); });
+    // ===== Force Simulation =====
+    var simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(edges).id(function(d) { return d.id; }).distance(80))
+      .force('charge', d3.forceManyBody().strength(-200).distanceMax(500))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collision', d3.forceCollide().radius(function(d) { return getRadius(d) + 8; }))
+      .force('x', d3.forceX(width / 2).strength(0.02))
+      .force('y', d3.forceY(height / 2).strength(0.02));
 
-  // ===== Force Simulation =====
-  var simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(edges).id(function(d) { return d.id; }).distance(function(d) {
-      if (d.type === 'series') return 60;
-      if (d.type === 'prerequisite') return 80;
-      return 120;
-    }))
-    .force('charge', d3.forceManyBody().strength(-150).distanceMax(400))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(12))
-    .force('x', d3.forceX(width / 2).strength(0.03))
-    .force('y', d3.forceY(height / 2).strength(0.03));
+    function getRadius(d) {
+      return Math.min(3 + d._links * 1.5, 18);
+    }
 
-  // ===== 에지 렌더링 =====
-  var linkGroup = g.append('g').attr('class', 'graph-links');
-  var link = linkGroup.selectAll('line')
-    .data(edges)
-    .join('line')
-    .attr('stroke', function(d) { return EDGE_STYLES[d.type].color; })
-    .attr('stroke-width', function(d) { return EDGE_STYLES[d.type].width; })
-    .attr('stroke-opacity', function(d) { return EDGE_STYLES[d.type].opacity; })
-    .attr('stroke-dasharray', function(d) { return EDGE_STYLES[d.type].dash; });
-
-  // ===== 화살표 마커 (prerequisite용) =====
-  svg.append('defs').append('marker')
-    .attr('id', 'arrow-prerequisite')
-    .attr('viewBox', '0 -5 10 10')
-    .attr('refX', 18)
-    .attr('refY', 0)
-    .attr('markerWidth', 6)
-    .attr('markerHeight', 6)
-    .attr('orient', 'auto')
-    .append('path')
-    .attr('d', 'M0,-5L10,0L0,5')
-    .attr('fill', EDGE_STYLES.prerequisite.color);
-
-  link.filter(function(d) { return d.type === 'prerequisite'; })
-    .attr('marker-end', 'url(#arrow-prerequisite)');
-
-  // ===== 노드 렌더링 =====
-  var nodeGroup = g.append('g').attr('class', 'graph-nodes');
-  var node = nodeGroup.selectAll('g')
-    .data(nodes)
-    .join('g')
-    .attr('class', 'graph-node')
-    .call(d3.drag()
-      .on('start', dragstarted)
-      .on('drag', dragged)
-      .on('end', dragended));
-
-  node.append('circle')
-    .attr('r', function(d) {
-      var linkCount = edges.filter(function(e) {
-        var src = e.source.id !== undefined ? e.source.id : e.source;
-        var tgt = e.target.id !== undefined ? e.target.id : e.target;
-        return src === d.id || tgt === d.id;
-      }).length;
-      return Math.min(4 + linkCount * 1.2, 14);
-    })
-    .attr('fill', function(d) { return getColor(d.cat0); })
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 1.5);
-
-  // ===== 툴팁 =====
-  var tooltip = d3.select('#graph-tooltip');
-
-  node.on('mouseover', function(event, d) {
-    tooltip
-      .style('display', 'block')
-      .style('left', (event.pageX + 12) + 'px')
-      .style('top', (event.pageY - 12) + 'px')
-      .html(
-        '<strong>' + d.title + '</strong><br>' +
-        '<span class="tt-cat">' + d.cat0 + (d.cat1 ? ' / ' + d.cat1 : '') + '</span><br>' +
-        '<span class="tt-date">' + d.date + '</span>' +
-        (d.tags && d.tags.length ? '<br><span class="tt-tags">' + d.tags.slice(0, 5).join(', ') + '</span>' : '')
-      );
-
-    // 연결된 노드/에지 하이라이트
-    var connected = {};
-    connected[d.id] = true;
-    link.attr('stroke-opacity', function(l) {
-      var src = l.source.id || l.source;
-      var tgt = l.target.id || l.target;
-      if (src === d.id || tgt === d.id) {
-        connected[src] = true;
-        connected[tgt] = true;
-        return 1;
-      }
-      return 0.05;
-    }).attr('stroke-width', function(l) {
-      var src = l.source.id || l.source;
-      var tgt = l.target.id || l.target;
-      return (src === d.id || tgt === d.id) ? 3 : EDGE_STYLES[l.type].width;
-    });
-
-    node.select('circle').attr('opacity', function(n) {
-      return connected[n.id] ? 1 : 0.15;
-    });
-  })
-  .on('mousemove', function(event) {
-    tooltip
-      .style('left', (event.pageX + 12) + 'px')
-      .style('top', (event.pageY - 12) + 'px');
-  })
-  .on('mouseout', function() {
-    tooltip.style('display', 'none');
-    link.attr('stroke-opacity', function(d) { return EDGE_STYLES[d.type].opacity; })
-        .attr('stroke-width', function(d) { return EDGE_STYLES[d.type].width; });
-    node.select('circle').attr('opacity', 1);
-  })
-  .on('click', function(event, d) {
-    window.location.href = d.id;
-  });
-
-  // ===== 시뮬레이션 tick =====
-  simulation.on('tick', function() {
-    link
-      .attr('x1', function(d) { return d.source.x; })
-      .attr('y1', function(d) { return d.source.y; })
-      .attr('x2', function(d) { return d.target.x; })
-      .attr('y2', function(d) { return d.target.y; });
-
-    node.attr('transform', function(d) {
-      return 'translate(' + d.x + ',' + d.y + ')';
-    });
-  });
-
-  // ===== 드래그 핸들러 =====
-  function dragstarted(event) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    event.subject.fx = event.subject.x;
-    event.subject.fy = event.subject.y;
-  }
-  function dragged(event) {
-    event.subject.fx = event.x;
-    event.subject.fy = event.y;
-  }
-  function dragended(event) {
-    if (!event.active) simulation.alphaTarget(0);
-    event.subject.fx = null;
-    event.subject.fy = null;
-  }
-
-  // ===== 카테고리 필터 드롭다운 채우기 =====
-  var categories = {};
-  nodes.forEach(function(n) { if (n.cat0) categories[n.cat0] = true; });
-  var catSelect = document.getElementById('graph-category-filter');
-  Object.keys(categories).sort().forEach(function(cat) {
-    var opt = document.createElement('option');
-    opt.value = cat;
-    opt.textContent = cat;
-    catSelect.appendChild(opt);
-  });
-
-  // ===== 필터링 로직 =====
-  function applyFilters() {
-    var catVal = catSelect.value;
-    var edgeVal = document.getElementById('graph-edge-filter').value;
-    var searchVal = document.getElementById('graph-search').value.toLowerCase().trim();
-
-    var visibleNodes = {};
-    nodes.forEach(function(n) {
-      var catMatch = (catVal === 'all' || n.cat0 === catVal);
-      var searchMatch = (!searchVal || n.title.toLowerCase().indexOf(searchVal) >= 0);
-      visibleNodes[n.id] = catMatch && searchMatch;
-    });
-
-    link.attr('display', function(d) {
-      var src = d.source.id || d.source;
-      var tgt = d.target.id || d.target;
-      var edgeMatch = (edgeVal === 'all' || d.type === edgeVal);
-      return (edgeMatch && visibleNodes[src] && visibleNodes[tgt]) ? null : 'none';
-    });
-
-    if (searchVal) {
-      node.select('circle').attr('opacity', function(n) {
-        return visibleNodes[n.id] ? 1 : 0.1;
+    // ===== 에지 렌더링 (시안 계열 통일) =====
+    var linkGroup = g.append('g');
+    var link = linkGroup.selectAll('line')
+      .data(edges)
+      .join('line')
+      .attr('stroke', function(d) {
+        if (d.type === 'prerequisite') return '#f39c12';
+        return '#0abde3';
+      })
+      .attr('stroke-width', function(d) {
+        if (d.type === 'series') return 1.2;
+        if (d.type === 'prerequisite') return 1.5;
+        return 0.5;
+      })
+      .attr('stroke-opacity', function(d) {
+        if (d.type === 'series') return 0.35;
+        if (d.type === 'prerequisite') return 0.5;
+        return 0.15;
       });
-    } else {
+
+    // ===== 노드 그룹 =====
+    var nodeGroup = g.append('g');
+    var node = nodeGroup.selectAll('g')
+      .data(nodes)
+      .join('g')
+      .attr('class', 'graph-node')
+      .call(d3.drag()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended));
+
+    // 노드 원
+    node.append('circle')
+      .attr('r', function(d) { return getRadius(d); })
+      .attr('fill', function(d) { return getColor(d.cat0); })
+      .attr('stroke', 'none');
+
+    // 노드 라벨 (연결 2개 이상 또는 시리즈 첫 포스트)
+    node.append('text')
+      .text(function(d) {
+        var maxLen = d._links >= 4 ? 20 : 14;
+        var t = d.title.length > maxLen ? d.title.substring(0, maxLen) + '..' : d.title;
+        return t;
+      })
+      .attr('dx', function(d) { return getRadius(d) + 4; })
+      .attr('dy', '0.35em')
+      .attr('class', 'graph-label')
+      .style('font-size', function(d) {
+        if (d._links >= 6) return '11px';
+        if (d._links >= 3) return '10px';
+        return '9px';
+      })
+      .style('opacity', function(d) {
+        if (d._links >= 3) return 0.9;
+        if (d._links >= 1) return 0.6;
+        return 0;
+      });
+
+    // ===== 툴팁 =====
+    var tooltip = d3.select('#graph-tooltip');
+
+    node.on('mouseover', function(event, d) {
+      // 라벨 강조
+      d3.select(this).select('text').style('opacity', 1).style('font-size', '12px');
+      d3.select(this).select('circle').attr('stroke', '#fff').attr('stroke-width', 2);
+
+      tooltip
+        .style('display', 'block')
+        .style('left', (event.pageX + 14) + 'px')
+        .style('top', (event.pageY - 14) + 'px')
+        .html(
+          '<strong>' + d.title + '</strong><br>' +
+          '<span class="tt-cat">' + d.cat0 + (d.cat1 ? ' / ' + d.cat1 : '') + '</span><br>' +
+          '<span class="tt-date">' + d.date + '</span>' +
+          (d.tags && d.tags.length ? '<br><span class="tt-tags">' + d.tags.slice(0, 5).join(', ') + '</span>' : '')
+        );
+
+      // 연결 하이라이트
+      var connected = {};
+      connected[d.id] = true;
+      link.attr('stroke-opacity', function(l) {
+        var src = l.source.id || l.source;
+        var tgt = l.target.id || l.target;
+        if (src === d.id || tgt === d.id) {
+          connected[src] = true;
+          connected[tgt] = true;
+          return 0.9;
+        }
+        return 0.03;
+      }).attr('stroke-width', function(l) {
+        var src = l.source.id || l.source;
+        var tgt = l.target.id || l.target;
+        return (src === d.id || tgt === d.id) ? 2.5 : 0.3;
+      });
+
       node.select('circle').attr('opacity', function(n) {
-        return (catVal === 'all' || n.cat0 === catVal) ? 1 : 0.1;
+        return connected[n.id] ? 1 : 0.1;
+      });
+      node.select('text').style('opacity', function(n) {
+        return connected[n.id] ? 1 : 0;
+      });
+    })
+    .on('mousemove', function(event) {
+      tooltip.style('left', (event.pageX + 14) + 'px').style('top', (event.pageY - 14) + 'px');
+    })
+    .on('mouseout', function() {
+      tooltip.style('display', 'none');
+      d3.select(this).select('circle').attr('stroke', 'none');
+      d3.select(this).select('text')
+        .style('font-size', function(d) {
+          if (d._links >= 6) return '11px';
+          if (d._links >= 3) return '10px';
+          return '9px';
+        })
+        .style('opacity', function(d) {
+          if (d._links >= 3) return 0.9;
+          if (d._links >= 1) return 0.6;
+          return 0;
+        });
+
+      link.attr('stroke-opacity', function(d) {
+        if (d.type === 'series') return 0.35;
+        if (d.type === 'prerequisite') return 0.5;
+        return 0.15;
+      }).attr('stroke-width', function(d) {
+        if (d.type === 'series') return 1.2;
+        if (d.type === 'prerequisite') return 1.5;
+        return 0.5;
+      });
+      node.select('circle').attr('opacity', 1);
+    })
+    .on('click', function(event, d) {
+      window.location.href = d.id;
+    });
+
+    // ===== Tick =====
+    simulation.on('tick', function() {
+      link
+        .attr('x1', function(d) { return d.source.x; })
+        .attr('y1', function(d) { return d.source.y; })
+        .attr('x2', function(d) { return d.target.x; })
+        .attr('y2', function(d) { return d.target.y; });
+      node.attr('transform', function(d) {
+        return 'translate(' + d.x + ',' + d.y + ')';
+      });
+    });
+
+    // ===== 드래그 =====
+    function dragstarted(event) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+    function dragged(event) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+    function dragended(event) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
+    // ===== 카테고리 필터 =====
+    var categories = {};
+    nodes.forEach(function(n) { if (n.cat0) categories[n.cat0] = true; });
+    var catSelect = document.getElementById('graph-category-filter');
+    if (catSelect) {
+      Object.keys(categories).sort().forEach(function(cat) {
+        var opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        catSelect.appendChild(opt);
+      });
+      catSelect.addEventListener('change', applyFilters);
+    }
+
+    var edgeFilter = document.getElementById('graph-edge-filter');
+    if (edgeFilter) edgeFilter.addEventListener('change', applyFilters);
+
+    var searchInput = document.getElementById('graph-search');
+    var searchTimer;
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(applyFilters, 200);
       });
     }
+
+    function applyFilters() {
+      var catVal = catSelect ? catSelect.value : 'all';
+      var edgeVal = edgeFilter ? edgeFilter.value : 'all';
+      var searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      var visibleNodes = {};
+      nodes.forEach(function(n) {
+        var catMatch = (catVal === 'all' || n.cat0 === catVal);
+        var searchMatch = (!searchVal || n.title.toLowerCase().indexOf(searchVal) >= 0);
+        visibleNodes[n.id] = catMatch && searchMatch;
+      });
+
+      link.attr('display', function(d) {
+        var src = d.source.id || d.source;
+        var tgt = d.target.id || d.target;
+        var edgeMatch = (edgeVal === 'all' || d.type === edgeVal);
+        return (edgeMatch && visibleNodes[src] && visibleNodes[tgt]) ? null : 'none';
+      });
+
+      node.select('circle').attr('opacity', function(n) { return visibleNodes[n.id] ? 1 : 0.08; });
+      node.select('text').style('opacity', function(n) { return visibleNodes[n.id] ? 0.9 : 0; });
+    }
+
+    // ===== 리사이즈 =====
+    window.addEventListener('resize', function() {
+      width = container.clientWidth || 900;
+      height = Math.max(650, window.innerHeight - 280);
+      svg.attr('width', width).attr('height', height);
+      simulation.force('center', d3.forceCenter(width / 2, height / 2));
+      simulation.alpha(0.3).restart();
+    });
+
+    // 초기 fit
+    simulation.on('end', function() {
+      var bounds = g.node().getBBox();
+      if (bounds.width === 0) return;
+      var s = Math.min(width / (bounds.width + 100), height / (bounds.height + 100), 1.2);
+      var tx = (width - bounds.width * s) / 2 - bounds.x * s;
+      var ty = (height - bounds.height * s) / 2 - bounds.y * s;
+      svg.transition().duration(600)
+        .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s));
+    });
   }
-
-  catSelect.addEventListener('change', applyFilters);
-  document.getElementById('graph-edge-filter').addEventListener('change', applyFilters);
-
-  var searchTimer;
-  document.getElementById('graph-search').addEventListener('input', function() {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(applyFilters, 200);
-  });
-
-  // ===== 리사이즈 =====
-  window.addEventListener('resize', function() {
-    width = container.clientWidth || 800;
-    height = Math.max(600, window.innerHeight - 320);
-    svg.attr('width', width).attr('height', height);
-    simulation.force('center', d3.forceCenter(width / 2, height / 2));
-    simulation.alpha(0.3).restart();
-  });
-
-  // 초기 줌: 전체 그래프가 보이도록
-  simulation.on('end', function() {
-    var bounds = g.node().getBBox();
-    if (bounds.width === 0 || bounds.height === 0) return;
-    var scale = Math.min(
-      width / (bounds.width + 80),
-      height / (bounds.height + 80),
-      1.5
-    );
-    var tx = (width - bounds.width * scale) / 2 - bounds.x * scale;
-    var ty = (height - bounds.height * scale) / 2 - bounds.y * scale;
-    svg.transition().duration(500)
-      .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
-  });
-
-  console.log('[Graph] Rendered', nodes.length, 'nodes,', edges.length, 'edges');
-});
+})();
 </script>
