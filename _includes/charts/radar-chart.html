@@ -1,0 +1,110 @@
+{% comment %}
+  Radar Chart — 레이더/스파이더 차트 (최대 4개 데이터셋)
+  Requires: chart: true in front matter
+
+  Parameters:
+    id              (required) — 고유 canvas ID
+    title           (optional) — 차트 제목
+    labels          (required) — 쉼표로 구분된 축 라벨
+    dataset1_name   (required) — 데이터셋 1 이름
+    dataset1_data   (required) — 데이터셋 1 값 (쉼표 구분)
+    dataset1_color  (optional) — 데이터셋 1 rgba 색상
+    dataset2_name ~ dataset4_name (optional) — 추가 데이터셋
+    max_value       (optional) — 축 최대값 (기본: 5)
+
+  Usage:
+    {% include charts/radar-chart.html
+       id="algo" title="알고리즘 비교"
+       labels="메모리,CPU,확장성,난이도,유연성"
+       dataset1_name="A*" dataset1_data="3,4,2,3,4" dataset1_color="rgba(52,152,219,0.5)"
+       dataset2_name="Flow Field" dataset2_data="4,2,5,4,3" dataset2_color="rgba(46,204,113,0.5)"
+    %}
+{% endcomment %}
+
+{%- assign rc_labels = include.labels | split: "," -%}
+{%- assign rc_d1 = include.dataset1_data | split: "," -%}
+{%- assign rc_max = include.max_value | default: "5" -%}
+
+{%- assign default_radar_colors = "rgba(52,152,219,0.4)|rgba(231,76,60,0.4)|rgba(46,204,113,0.4)|rgba(155,89,182,0.4)" | split: "|" -%}
+{%- assign default_radar_borders = "#3498db|#e74c3c|#2ecc71|#9b59b6" | split: "|" -%}
+
+<div class="chart-wrapper">
+  {%- if include.title -%}
+    <div class="chart-title">{{ include.title }}</div>
+  {%- endif -%}
+  <canvas id="{{ include.id }}" class="chart-canvas" height="280"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+(function() {
+  function makeRadarDS(name, data, bgColor, borderColor) {
+    return {
+      label: name,
+      data: data,
+      backgroundColor: bgColor,
+      borderColor: borderColor,
+      borderWidth: 2,
+      pointBackgroundColor: borderColor,
+      pointBorderColor: '#fff',
+      pointRadius: 3
+    };
+  }
+
+  var datasets = [];
+  datasets.push(makeRadarDS(
+    '{{ include.dataset1_name }}',
+    [{% for d in rc_d1 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset1_color | default: default_radar_colors[0] }}',
+    '{{ include.dataset1_border | default: default_radar_borders[0] }}'
+  ));
+
+  {%- if include.dataset2_name -%}
+  datasets.push(makeRadarDS(
+    '{{ include.dataset2_name }}',
+    [{% assign rc_d2 = include.dataset2_data | split: "," %}{% for d in rc_d2 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset2_color | default: default_radar_colors[1] }}',
+    '{{ include.dataset2_border | default: default_radar_borders[1] }}'
+  ));
+  {%- endif -%}
+
+  {%- if include.dataset3_name -%}
+  datasets.push(makeRadarDS(
+    '{{ include.dataset3_name }}',
+    [{% assign rc_d3 = include.dataset3_data | split: "," %}{% for d in rc_d3 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset3_color | default: default_radar_colors[2] }}',
+    '{{ include.dataset3_border | default: default_radar_borders[2] }}'
+  ));
+  {%- endif -%}
+
+  {%- if include.dataset4_name -%}
+  datasets.push(makeRadarDS(
+    '{{ include.dataset4_name }}',
+    [{% assign rc_d4 = include.dataset4_data | split: "," %}{% for d in rc_d4 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset4_color | default: default_radar_colors[3] }}',
+    '{{ include.dataset4_border | default: default_radar_borders[3] }}'
+  ));
+  {%- endif -%}
+
+  window.chartConfigs.push({
+    id: '{{ include.id }}',
+    type: 'radar',
+    data: {
+      labels: [{% for l in rc_labels %}'{{ l | strip }}'{% unless forloop.last %},{% endunless %}{% endfor %}],
+      datasets: datasets
+    },
+    options: {
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: {{ rc_max }},
+          ticks: { stepSize: 1 }
+        }
+      }
+    }
+  });
+})();
+</script>

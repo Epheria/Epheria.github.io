@@ -1,0 +1,112 @@
+{% comment %}
+  Line Chart — 라인 차트 (최대 4개 데이터셋)
+  Requires: chart: true in front matter
+
+  Parameters:
+    id              (required) — 고유 canvas ID
+    title           (optional) — 차트 제목
+    labels          (required) — 쉼표로 구분된 X축 라벨
+    dataset1_name   (required) — 데이터셋 1 이름
+    dataset1_data   (required) — 데이터셋 1 값 (쉼표 구분)
+    dataset1_color  (optional) — 데이터셋 1 색상
+    dataset2_name ~ dataset4_name (optional) — 추가 데이터셋
+    x_label         (optional) — X축 라벨
+    y_label         (optional) — Y축 라벨
+    fill            (optional) — "true"이면 영역 채움
+
+  Usage:
+    {% include charts/line-chart.html
+       id="trend" title="프레임 타임"
+       labels="1K,2K,5K,10K"
+       dataset1_name="Baseline" dataset1_data="3.2,5.1,14.2,38.5" dataset1_color="#e74c3c"
+       dataset2_name="Optimized" dataset2_data="2.8,3.5,5.1,5.2" dataset2_color="#27ae60"
+       x_label="에이전트 수" y_label="ms"
+    %}
+{% endcomment %}
+
+{%- assign lc_labels = include.labels | split: "," -%}
+{%- assign lc_d1 = include.dataset1_data | split: "," -%}
+{%- assign lc_fill = include.fill | default: "false" -%}
+
+{%- assign default_line_colors = "#3498db|#e74c3c|#2ecc71|#9b59b6" | split: "|" -%}
+
+<div class="chart-wrapper">
+  {%- if include.title -%}
+    <div class="chart-title">{{ include.title }}</div>
+  {%- endif -%}
+  <canvas id="{{ include.id }}" class="chart-canvas" height="240"></canvas>
+</div>
+
+<script>
+window.chartConfigs = window.chartConfigs || [];
+(function() {
+  var fill = {{ lc_fill }};
+  function makeDataset(name, data, color) {
+    return {
+      label: name,
+      data: data,
+      borderColor: color,
+      backgroundColor: fill ? color.replace(')', ',0.15)').replace('rgb(', 'rgba(') : 'transparent',
+      tension: 0.3,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      borderWidth: 2,
+      fill: fill
+    };
+  }
+
+  var datasets = [];
+  datasets.push(makeDataset(
+    '{{ include.dataset1_name }}',
+    [{% for d in lc_d1 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset1_color | default: default_line_colors[0] }}'
+  ));
+
+  {%- if include.dataset2_name -%}
+  datasets.push(makeDataset(
+    '{{ include.dataset2_name }}',
+    [{% assign lc_d2 = include.dataset2_data | split: "," %}{% for d in lc_d2 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset2_color | default: default_line_colors[1] }}'
+  ));
+  {%- endif -%}
+
+  {%- if include.dataset3_name -%}
+  datasets.push(makeDataset(
+    '{{ include.dataset3_name }}',
+    [{% assign lc_d3 = include.dataset3_data | split: "," %}{% for d in lc_d3 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset3_color | default: default_line_colors[2] }}'
+  ));
+  {%- endif -%}
+
+  {%- if include.dataset4_name -%}
+  datasets.push(makeDataset(
+    '{{ include.dataset4_name }}',
+    [{% assign lc_d4 = include.dataset4_data | split: "," %}{% for d in lc_d4 %}{{ d | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    '{{ include.dataset4_color | default: default_line_colors[3] }}'
+  ));
+  {%- endif -%}
+
+  window.chartConfigs.push({
+    id: '{{ include.id }}',
+    type: 'line',
+    data: {
+      labels: [{% for l in lc_labels %}'{{ l | strip }}'{% unless forloop.last %},{% endunless %}{% endfor %}],
+      datasets: datasets
+    },
+    options: {
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        x: {
+          {% if include.x_label %}title: { display: true, text: '{{ include.x_label }}' }{% endif %}
+        },
+        y: {
+          beginAtZero: true{% if include.y_label %},
+          title: { display: true, text: '{{ include.y_label }}' }{% endif %}
+        }
+      }
+    }
+  });
+})();
+</script>

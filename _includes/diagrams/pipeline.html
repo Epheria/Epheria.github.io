@@ -1,0 +1,56 @@
+{% comment %}
+  Pipeline Diagram — 선형 파이프라인 (A → B → C)
+
+  Parameters:
+    steps        (required) — 쉼표로 구분된 단계 이름
+    descriptions (optional) — 파이프(|)로 구분된 각 단계 설명 (HTML 허용)
+    colors       (optional) — 쉼표로 구분된 배경색
+    direction    (optional) — "horizontal" (기본) 또는 "vertical"
+
+  Usage:
+    {% include diagrams/pipeline.html
+       steps="Cost Field,Integration Field,Flow Field"
+       descriptions="각 셀의 이동 비용|목적지까지의 누적 비용|각 셀의 이동 방향 벡터"
+       colors="#e8d5b7,#b7d5e8,#b7e8c4"
+    %}
+{% endcomment %}
+
+{%- assign p_steps = include.steps | split: "," -%}
+{%- if include.descriptions -%}
+  {%- assign p_descs = include.descriptions | split: "|" -%}
+{%- endif -%}
+{%- if include.colors -%}
+  {%- assign p_colors = include.colors | split: "," -%}
+{%- endif -%}
+{%- assign p_dir = include.direction | default: "horizontal" -%}
+
+{%- assign default_palette = "#e3f2fd,#bbdefb,#90caf9,#64b5f6,#42a5f5,#1e88e5,#1565c0" | split: "," -%}
+
+<div class="diagram-container">
+  <div class="diagram-pipeline {% if p_dir == 'vertical' %}diagram-vertical{% endif %}">
+    {%- for step in p_steps -%}
+      {%- assign step_name = step | strip -%}
+      {%- if p_colors and p_colors[forloop.index0] -%}
+        {%- assign step_color = p_colors[forloop.index0] | strip -%}
+      {%- else -%}
+        {%- assign palette_idx = forloop.index0 | modulo: 7 -%}
+        {%- assign step_color = default_palette[palette_idx] -%}
+      {%- endif -%}
+
+      <div class="pipeline-step" style="--step-color: {{ step_color }}; background-color: {{ step_color }}">
+        <div class="pipeline-step-label">{{ step_name }}</div>
+        {%- if p_descs and p_descs[forloop.index0] -%}
+          <div class="pipeline-step-desc">{{ p_descs[forloop.index0] | strip }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- unless forloop.last -%}
+        <div class="pipeline-arrow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14M13 5l6 7-6 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>

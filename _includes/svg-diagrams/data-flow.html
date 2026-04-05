@@ -1,0 +1,154 @@
+{% comment %}
+  Data Flow Diagram — 좌→우 데이터 흐름 다이어그램
+
+  Parameters:
+    nodes        (required) — 쉼표로 구분된 노드 이름
+    connections  (required) — 쉼표로 구분된 연결 (예: "0>3,1>3,2>4,3>4")
+    node_colors  (optional) — 쉼표로 구분된 노드 배경색
+    node_width   (optional) — 노드 너비 (기본: 120)
+
+  Usage:
+    {% include svg-diagrams/data-flow.html
+       nodes="텍스처,셰이더,모델,머티리얼,렌더링"
+       connections="0>3,1>3,2>4,3>4"
+       node_colors="#ffd43b,#ffd43b,#ffd43b,#51cf66,#339af0"
+    %}
+{% endcomment %}
+
+{%- assign df_nodes = include.nodes | split: "," -%}
+{%- assign df_conns = include.connections | split: "," -%}
+{%- if include.node_colors -%}
+  {%- assign df_colors = include.node_colors | split: "," -%}
+{%- endif -%}
+{%- assign df_count = df_nodes | size -%}
+{%- assign df_nw = include.node_width | default: 120 | plus: 0 -%}
+{%- assign df_nh = 40 -%}
+
+{%- assign default_flow_colors = "#e3f2fd,#bbdefb,#c8e6c9,#fff9c4,#f8bbd0,#d1c4e9,#b2ebf2" | split: "," -%}
+
+{%- comment %}
+  연결 기반으로 각 노드의 depth(열)를 결정한다.
+  Liquid에서 동적 배열 갱신이 어려우므로, 간단히 의존성 열 수를 추정:
+  - 어떤 노드가 타겟으로만 등장 → 뒷열
+  - 소스로만 등장 → 앞열
+  여기서는 사용자의 노드 순서를 기반으로 열을 자동 배치한다.
+  최대 depth를 계산하기 위해 연결을 분석한다.
+{% endcomment -%}
+
+{%- comment %} 간단한 접근: 노드를 열로 분배 (최대 3열) {% endcomment -%}
+{%- assign max_col = 0 -%}
+{%- assign pad = 25 -%}
+{%- assign col_gap = 80 -%}
+{%- assign row_gap = 20 -%}
+
+{%- comment %}
+  연결 정보로 열 할당: 소스가 없는 노드 = col 0, 나머지는 최대 소스 col + 1
+  Liquid 한계로 간단히 처리: 3열 이하로 가정하고, 연결의 src/tgt 인덱스 차이로 열 배치
+{% endcomment -%}
+
+{%- comment %} 노드별 열 계산을 위해 JavaScript 사용 {% endcomment -%}
+
+<div class="svg-diagram" id="df-{{ include.nodes | slugify }}">
+  <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data Flow Diagram">
+    <defs>
+      <marker id="df-arrow-{{ include.nodes | slugify }}" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,4 L0,8 Z" class="svg-flow-arrow"/>
+      </marker>
+    </defs>
+  </svg>
+</div>
+
+<script>
+(function() {
+  var nodes = [{% for n in df_nodes %}'{{ n | strip }}'{% unless forloop.last %},{% endunless %}{% endfor %}];
+  var conns = [{% for c in df_conns %}{% assign parts = c | strip | split: ">" %}[{{ parts[0] }},{{ parts[1] }}]{% unless forloop.last %},{% endunless %}{% endfor %}];
+  var colors = [{% if df_colors %}{% for c in df_colors %}'{{ c | strip }}'{% unless forloop.last %},{% endunless %}{% endfor %}{% else %}{% for n in df_nodes %}'{{ default_flow_colors[forloop.index0] | default: "#e3f2fd" }}'{% unless forloop.last %},{% endunless %}{% endfor %}{% endif %}];
+
+  var n = nodes.length;
+  var nw = {{ df_nw }}, nh = {{ df_nh }}, pad = 25, colGap = 80, rowGap = 16;
+
+  /* Compute column (depth) for each node via topological order */
+  var col = new Array(n).fill(0);
+  conns.forEach(function(c) {
+    col[c[1]] = Math.max(col[c[1]], col[c[0]] + 1);
+  });
+  /* Multiple passes for transitive deps */
+  for (var pass = 0; pass < n; pass++) {
+    conns.forEach(function(c) {
+      col[c[1]] = Math.max(col[c[1]], col[c[0]] + 1);
+    });
+  }
+
+  var maxCol = Math.max.apply(null, col);
+
+  /* Group nodes by column */
+  var columns = {};
+  for (var i = 0; i < n; i++) {
+    if (!columns[col[i]]) columns[col[i]] = [];
+    columns[col[i]].push(i);
+  }
+
+  var maxRows = 0;
+  for (var c = 0; c <= maxCol; c++) {
+    if (columns[c] && columns[c].length > maxRows) maxRows = columns[c].length;
+  }
+
+  var svgW = (maxCol + 1) * nw + maxCol * colGap + pad * 2;
+  var svgH = maxRows * nh + (maxRows - 1) * rowGap + pad * 2;
+
+  /* Compute positions */
+  var pos = new Array(n);
+  for (var c = 0; c <= maxCol; c++) {
+    if (!columns[c]) continue;
+    var count = columns[c].length;
+    var totalH = count * nh + (count - 1) * rowGap;
+    var startY = (svgH - totalH) / 2;
+    columns[c].forEach(function(nodeIdx, rowIdx) {
+      pos[nodeIdx] = {
+        x: pad + c * (nw + colGap),
+        y: startY + rowIdx * (nh + rowGap)
+      };
+    });
+  }
+
+  var container = document.getElementById('df-{{ include.nodes | slugify }}');
+  var svg = container.querySelector('svg');
+  svg.setAttribute('viewBox', '0 0 ' + svgW + ' ' + svgH);
+  var markerId = 'df-arrow-{{ include.nodes | slugify }}';
+
+  /* Draw connections */
+  conns.forEach(function(c) {
+    var s = pos[c[0]], t = pos[c[1]];
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('class', 'svg-flow-line');
+    line.setAttribute('x1', s.x + nw);
+    line.setAttribute('y1', s.y + nh / 2);
+    line.setAttribute('x2', t.x);
+    line.setAttribute('y2', t.y + nh / 2);
+    line.setAttribute('marker-end', 'url(#' + markerId + ')');
+    svg.appendChild(line);
+  });
+
+  /* Draw nodes */
+  for (var i = 0; i < n; i++) {
+    var p = pos[i];
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('class', 'svg-flow-node');
+    rect.setAttribute('x', p.x);
+    rect.setAttribute('y', p.y);
+    rect.setAttribute('width', nw);
+    rect.setAttribute('height', nh);
+    rect.setAttribute('fill', colors[i] || '#e3f2fd');
+    rect.setAttribute('rx', '10');
+    rect.setAttribute('ry', '10');
+    svg.appendChild(rect);
+
+    var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('class', 'svg-flow-label');
+    text.setAttribute('x', p.x + nw / 2);
+    text.setAttribute('y', p.y + nh / 2);
+    text.textContent = nodes[i];
+    svg.appendChild(text);
+  }
+})();
+</script>

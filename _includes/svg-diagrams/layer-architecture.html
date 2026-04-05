@@ -1,0 +1,69 @@
+{% comment %}
+  Layer Architecture — 적층 레이어 아키텍처 다이어그램
+
+  Parameters:
+    layers       (required) — 쉼표로 구분된 레이어 이름 (위→아래)
+    descriptions (optional) — 파이프(|)로 구분된 각 레이어 설명
+    colors       (optional) — 쉼표로 구분된 배경색
+    width        (optional) — SVG 너비 (기본: 560)
+
+  Usage:
+    {% include svg-diagrams/layer-architecture.html
+       layers="Application,Service,Data,Hardware"
+       descriptions="게임 로직, UI|ECS, Job System|NativeArray, Burst|CPU Cache, SIMD"
+       colors="#e3f2fd,#bbdefb,#90caf9,#64b5f6"
+    %}
+{% endcomment %}
+
+{%- assign la_layers = include.layers | split: "," -%}
+{%- if include.descriptions -%}
+  {%- assign la_descs = include.descriptions | split: "|" -%}
+{%- endif -%}
+{%- if include.colors -%}
+  {%- assign la_colors = include.colors | split: "," -%}
+{%- endif -%}
+{%- assign la_width = include.width | default: 560 -%}
+{%- assign la_count = la_layers | size -%}
+
+{%- assign default_layer_colors = "#e3f2fd,#bbdefb,#90caf9,#64b5f6,#42a5f5,#1e88e5,#1565c0" | split: "," -%}
+
+{%- comment %} 각 레이어 높이 50px, 간격 6px, 패딩 20px {% endcomment -%}
+{%- assign layer_h = 50 -%}
+{%- assign layer_gap = 6 -%}
+{%- assign pad = 20 -%}
+{%- assign rect_w = la_width | minus: 40 -%}
+
+{%- assign total_h = la_count | times: layer_h | plus: pad | plus: pad -%}
+{%- assign gap_total = la_count | minus: 1 | times: layer_gap -%}
+{%- assign total_h = total_h | plus: gap_total -%}
+
+<div class="svg-diagram">
+  <svg viewBox="0 0 {{ la_width }} {{ total_h }}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Layer Architecture Diagram">
+    {%- for layer in la_layers -%}
+      {%- assign layer_name = layer | strip -%}
+      {%- assign idx = forloop.index0 -%}
+      {%- assign y = idx | times: layer_h | plus: pad -%}
+      {%- assign gap_offset = idx | times: layer_gap -%}
+      {%- assign y = y | plus: gap_offset -%}
+
+      {%- if la_colors and la_colors[idx] -%}
+        {%- assign fill_color = la_colors[idx] | strip -%}
+      {%- else -%}
+        {%- assign palette_idx = idx | modulo: 7 -%}
+        {%- assign fill_color = default_layer_colors[palette_idx] -%}
+      {%- endif -%}
+
+      <rect class="svg-layer-rect" x="{{ pad }}" y="{{ y }}" width="{{ rect_w }}" height="{{ layer_h }}" fill="{{ fill_color }}" rx="6" ry="6"/>
+
+      {%- if la_descs and la_descs[idx] -%}
+        {%- assign text_y = y | plus: 18 -%}
+        {%- assign desc_y = y | plus: 36 -%}
+        <text class="svg-layer-text" x="{{ la_width | divided_by: 2 }}" y="{{ text_y }}" text-anchor="middle">{{ layer_name }}</text>
+        <text class="svg-layer-desc" x="{{ la_width | divided_by: 2 }}" y="{{ desc_y }}" text-anchor="middle">{{ la_descs[idx] | strip }}</text>
+      {%- else -%}
+        {%- assign text_y = y | plus: 28 -%}
+        <text class="svg-layer-text" x="{{ la_width | divided_by: 2 }}" y="{{ text_y }}" text-anchor="middle">{{ layer_name }}</text>
+      {%- endif -%}
+    {%- endfor -%}
+  </svg>
+</div>

@@ -1,0 +1,146 @@
+/* ============================================
+   SVG Architecture Diagram Components
+   - layer-architecture, component-diagram, data-flow
+   ============================================ */
+
+.svg-diagram {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: var(--card-bg, #fff);
+  border: 1px solid var(--card-border-color, rgba(0, 0, 0, 0.125));
+  border-radius: 0.5rem;
+  text-align: center;
+  overflow-x: auto;
+
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+/* --- Layer Architecture --- */
+.svg-layer-rect {
+  stroke: rgba(0, 0, 0, 0.15);
+  stroke-width: 1;
+  rx: 6;
+  ry: 6;
+}
+
+.svg-layer-text {
+  font-size: 14px;
+  font-weight: 700;
+  fill: #333;
+}
+
+.svg-layer-desc {
+  font-size: 11px;
+  fill: #666;
+}
+
+/* --- Component Diagram --- */
+.svg-comp-box {
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 1.5;
+  rx: 8;
+  ry: 8;
+}
+
+.svg-comp-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: #333;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.svg-conn-line {
+  stroke: #6c757d;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.svg-arrow-head {
+  fill: #6c757d;
+}
+
+/* --- Data Flow --- */
+.svg-flow-node {
+  stroke: rgba(0, 0, 0, 0.15);
+  stroke-width: 1.5;
+  rx: 10;
+  ry: 10;
+}
+
+.svg-flow-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: #333;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.svg-flow-line {
+  stroke: #6c757d;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.svg-flow-arrow {
+  fill: #6c757d;
+}
+
+/* ======================
+   Dark Mode
+   ====================== */
+[data-mode="dark"] {
+  .svg-diagram {
+    background-color: var(--card-bg, #1e1e2e);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .svg-layer-rect {
+    stroke: rgba(255, 255, 255, 0.15);
+  }
+
+  .svg-layer-text {
+    fill: #e0e0e0;
+  }
+
+  .svg-layer-desc {
+    fill: #a0a0a0;
+  }
+
+  .svg-comp-box {
+    stroke: rgba(255, 255, 255, 0.2);
+  }
+
+  .svg-comp-label {
+    fill: #e0e0e0;
+  }
+
+  .svg-conn-line {
+    stroke: #8a90a0;
+  }
+
+  .svg-arrow-head {
+    fill: #8a90a0;
+  }
+
+  .svg-flow-node {
+    stroke: rgba(255, 255, 255, 0.15);
+  }
+
+  .svg-flow-label {
+    fill: #e0e0e0;
+  }
+
+  .svg-flow-line {
+    stroke: #8a90a0;
+  }
+
+  .svg-flow-arrow {
+    fill: #8a90a0;
+  }
+}

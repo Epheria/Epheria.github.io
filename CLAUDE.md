@@ -140,6 +140,32 @@ toc_sticky: true
 - `_data/popular-posts.yml` — 인기 포스트 순위 목록
 - `_data/recommended-posts.yml` — 카테고리별 추천 포스트 (수동 관리)
 
+### 시각화 컴포넌트 (`/diagram` 스킬)
+
+포스트 본문에 `{% include %}` 태그로 삽입하는 재사용 가능한 시각화 컴포넌트. 상세 API는 `/diagram` 스킬 참조.
+
+#### HTML 다이어그램 (front matter 불필요)
+- `_includes/diagrams/pipeline.html` — 선형 파이프라인 (A → B → C)
+- `_includes/diagrams/decision-tree.html` — Yes/No 분기 의사결정 트리 (최대 2단계)
+- `_includes/diagrams/comparison.html` — 좌우 비교 레이아웃
+
+#### Chart.js 템플릿 (`chart: true` front matter 필요)
+- `_includes/charts/bar-comparison.html` — Before/After 바 비교
+- `_includes/charts/grouped-bar.html` — 그룹 바 차트 (최대 4 데이터셋)
+- `_includes/charts/line-chart.html` — 라인 차트
+- `_includes/charts/radar-chart.html` — 레이더 차트
+
+#### SVG 아키텍처 다이어그램 (front matter 불필요)
+- `_includes/svg-diagrams/layer-architecture.html` — 적층 레이어 구조
+- `_includes/svg-diagrams/component-diagram.html` — 박스 + 화살표 컴포넌트 관계
+- `_includes/svg-diagrams/data-flow.html` — 좌→우 데이터 흐름 (DAG)
+
+#### 사용 지침
+- **새 포스트 작성 시**: 다이어그램이 필요하면 Mermaid보다 HTML 컴포넌트 우선 사용
+- **Mermaid 유지**: 복잡한 그래프, 시퀀스 다이어그램, 간트 차트 등 전용 타입은 Mermaid 유지
+- **다국어**: 모든 텍스트가 파라미터이므로 ko/en/ja 각 파일에서 해당 언어로 전달
+- **구분자**: 1차 `,`(쉼표), 2차 `|`(파이프)
+
 ### SCSS 추가 파일 (`_sass/addon/`)
 모두 `assets/css/jekyll-theme-chirpy.scss`에서 import됨:
 - `_series-nav.scss` — 시리즈 네비게이션 스타일
@@ -147,6 +173,8 @@ toc_sticky: true
 - `_popular-posts.scss` — 인기 포스트 위젯 스타일
 - `_post-meta.scss` — 난이도 배지 / 선수지식 스타일
 - `_chart.scss` — 차트 컴포넌트 스타일
+- `_diagrams.scss` — HTML 다이어그램 스타일 (pipeline, decision-tree, comparison)
+- `_svg-diagrams.scss` — SVG 아키텍처 다이어그램 스타일
 - `_code-compare.scss` — 코드 비교 레이아웃 스타일
 - `_tldr.scss` — TL;DR 박스 스타일
 

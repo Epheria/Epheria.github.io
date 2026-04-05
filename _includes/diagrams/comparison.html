@@ -1,0 +1,62 @@
+{% comment %}
+  Comparison Layout — 좌우 비교 다이어그램
+
+  Parameters:
+    left_title   (required) — 왼쪽 열 제목
+    left_items   (required) — 쉼표로 구분된 항목들
+    left_color   (optional) — 왼쪽 헤더 색상 (기본: #e74c3c)
+    right_title  (required) — 오른쪽 열 제목
+    right_items  (required) — 쉼표로 구분된 항목들
+    right_color  (optional) — 오른쪽 헤더 색상 (기본: #27ae60)
+    caption      (optional) — 하단 캡션
+
+  Usage:
+    {% include diagrams/comparison.html
+       left_title="AoS"
+       left_items="pos 12B ✓,vel 12B ✗,spd 4B ✗"
+       left_color="#FF9800"
+       right_title="SoA"
+       right_items="pos[0] 12B ✓,pos[1] 12B ✓,pos[2] 12B ✓"
+       right_color="#4CAF50"
+       caption="캐시 활용률 비교"
+    %}
+{% endcomment %}
+
+{%- assign c_left_items = include.left_items | split: "," -%}
+{%- assign c_right_items = include.right_items | split: "," -%}
+{%- assign c_left_color = include.left_color | default: "#e74c3c" -%}
+{%- assign c_right_color = include.right_color | default: "#27ae60" -%}
+
+<div class="diagram-container">
+  <div class="diagram-comparison">
+
+    <!-- Left Column -->
+    <div class="comparison-column">
+      <div class="comparison-header" style="background-color: {{ c_left_color }}">
+        {{ include.left_title }}
+      </div>
+      <div class="comparison-items">
+        {%- for item in c_left_items -%}
+          <span class="comparison-item">{{ item | strip }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="comparison-column">
+      <div class="comparison-header" style="background-color: {{ c_right_color }}">
+        {{ include.right_title }}
+      </div>
+      <div class="comparison-items">
+        {%- for item in c_right_items -%}
+          <span class="comparison-item">{{ item | strip }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if include.caption -%}
+      <div class="comparison-caption">{{ include.caption }}</div>
+    {%- endif -%}
+
+  </div>
+</div>

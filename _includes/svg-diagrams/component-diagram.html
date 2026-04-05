@@ -1,0 +1,121 @@
+{% comment %}
+  Component Diagram — 박스 + 화살표 컴포넌트 다이어그램
+
+  Parameters:
+    boxes       (required) — 쉼표로 구분된 컴포넌트 이름
+    connections (required) — 쉼표로 구분된 연결 (예: "0>1,1>2")
+    colors      (optional) — 쉼표로 구분된 박스 배경색
+    cols        (optional) — 열 수 (기본: 3)
+
+  Usage:
+    {% include svg-diagrams/component-diagram.html
+       boxes="Manager,CostField,IntField,FlowField,AgentSystem"
+       connections="0>1,1>2,2>3,0>4,3>4"
+    %}
+{% endcomment %}
+
+{%- assign cd_boxes = include.boxes | split: "," -%}
+{%- assign cd_conns = include.connections | split: "," -%}
+{%- if include.colors -%}
+  {%- assign cd_colors = include.colors | split: "," -%}
+{%- endif -%}
+{%- assign cd_cols = include.cols | default: 3 | plus: 0 -%}
+{%- assign cd_count = cd_boxes | size -%}
+
+{%- assign default_comp_colors = "#e3f2fd,#bbdefb,#c8e6c9,#fff9c4,#f8bbd0,#d1c4e9,#b2ebf2" | split: "," -%}
+
+{%- comment %} 레이아웃 상수 {% endcomment -%}
+{%- assign box_w = 130 -%}
+{%- assign box_h = 44 -%}
+{%- assign gap_x = 60 -%}
+{%- assign gap_y = 60 -%}
+{%- assign pad = 30 -%}
+
+{%- assign svg_w = cd_cols | times: box_w | plus: pad | plus: pad -%}
+{%- assign col_gaps = cd_cols | minus: 1 | times: gap_x -%}
+{%- assign svg_w = svg_w | plus: col_gaps -%}
+
+{%- assign row_count = cd_count | divided_by: cd_cols -%}
+{%- assign remainder = cd_count | modulo: cd_cols -%}
+{%- if remainder > 0 -%}{%- assign row_count = row_count | plus: 1 -%}{%- endif -%}
+{%- assign row_gaps = row_count | minus: 1 | times: gap_y -%}
+{%- assign svg_h = row_count | times: box_h | plus: pad | plus: pad | plus: row_gaps -%}
+
+<div class="svg-diagram">
+  <svg viewBox="0 0 {{ svg_w }} {{ svg_h }}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Component Diagram">
+    <defs>
+      <marker id="cd-arrow-{{ include.boxes | slugify }}" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,4 L0,8 Z" class="svg-arrow-head"/>
+      </marker>
+    </defs>
+
+    {%- comment %} Draw connections first (behind boxes) {% endcomment -%}
+    {%- for conn in cd_conns -%}
+      {%- assign conn_parts = conn | strip | split: ">" -%}
+      {%- assign src = conn_parts[0] | plus: 0 -%}
+      {%- assign tgt = conn_parts[1] | plus: 0 -%}
+
+      {%- assign src_col = src | modulo: cd_cols -%}
+      {%- assign src_row = src | divided_by: cd_cols -%}
+      {%- assign src_cx = src_col | times: box_w | plus: pad -%}
+      {%- assign src_col_gap = src_col | times: gap_x -%}
+      {%- assign src_cx = src_cx | plus: src_col_gap | plus: box_w | divided_by: 2 -%}
+      {%- comment %} Recalculate properly {% endcomment -%}
+      {%- assign src_x = src_col | times: box_w | plus: src_col | times: gap_x | plus: pad -%}
+      {%- assign src_cx = src_x | plus: box_w | divided_by: 2 -%}
+      {%- assign src_cy = src_row | times: box_h | plus: src_row | times: gap_y | plus: pad | plus: box_h | divided_by: 2 -%}
+
+      {%- assign tgt_col = tgt | modulo: cd_cols -%}
+      {%- assign tgt_row = tgt | divided_by: cd_cols -%}
+      {%- assign tgt_x = tgt_col | times: box_w | plus: tgt_col | times: gap_x | plus: pad -%}
+      {%- assign tgt_cx = tgt_x | plus: box_w | divided_by: 2 -%}
+      {%- assign tgt_cy = tgt_row | times: box_h | plus: tgt_row | times: gap_y | plus: pad | plus: box_h | divided_by: 2 -%}
+
+      {%- comment %} Determine edge points based on relative position {% endcomment -%}
+      {%- if src_row == tgt_row -%}
+        {%- comment %} Same row: connect right edge to left edge {% endcomment -%}
+        {%- if src_col < tgt_col -%}
+          {%- assign x1 = src_x | plus: box_w -%}
+          {%- assign x2 = tgt_x -%}
+        {%- else -%}
+          {%- assign x1 = src_x -%}
+          {%- assign x2 = tgt_x | plus: box_w -%}
+        {%- endif -%}
+        {%- assign y1 = src_cy -%}
+        {%- assign y2 = tgt_cy -%}
+      {%- else -%}
+        {%- comment %} Different row: connect bottom to top {% endcomment -%}
+        {%- assign x1 = src_cx -%}
+        {%- assign x2 = tgt_cx -%}
+        {%- assign y1_base = src_row | times: box_h | plus: src_row | times: gap_y | plus: pad -%}
+        {%- assign y1 = y1_base | plus: box_h -%}
+        {%- assign y2 = tgt_row | times: box_h | plus: tgt_row | times: gap_y | plus: pad -%}
+      {%- endif -%}
+
+      <line class="svg-conn-line" x1="{{ x1 }}" y1="{{ y1 }}" x2="{{ x2 }}" y2="{{ y2 }}" marker-end="url(#cd-arrow-{{ include.boxes | slugify }})"/>
+    {%- endfor -%}
+
+    {%- comment %} Draw boxes {% endcomment -%}
+    {%- for box in cd_boxes -%}
+      {%- assign box_name = box | strip -%}
+      {%- assign idx = forloop.index0 -%}
+      {%- assign col = idx | modulo: cd_cols -%}
+      {%- assign row = idx | divided_by: cd_cols -%}
+
+      {%- assign bx = col | times: box_w | plus: col | times: gap_x | plus: pad -%}
+      {%- assign by = row | times: box_h | plus: row | times: gap_y | plus: pad -%}
+
+      {%- if cd_colors and cd_colors[idx] -%}
+        {%- assign fill = cd_colors[idx] | strip -%}
+      {%- else -%}
+        {%- assign palette_idx = idx | modulo: 7 -%}
+        {%- assign fill = default_comp_colors[palette_idx] -%}
+      {%- endif -%}
+
+      <rect class="svg-comp-box" x="{{ bx }}" y="{{ by }}" width="{{ box_w }}" height="{{ box_h }}" fill="{{ fill }}" rx="8" ry="8"/>
+      {%- assign label_x = bx | plus: box_w | divided_by: 2 -%}
+      {%- assign label_y = by | plus: box_h | divided_by: 2 -%}
+      <text class="svg-comp-label" x="{{ label_x }}" y="{{ label_y }}">{{ box_name }}</text>
+    {%- endfor -%}
+  </svg>
+</div>

@@ -8,6 +8,7 @@ toc_sticky: true
 math: true
 use_math: true
 mermaid: true
+chart: true
 difficulty: advanced
 prerequisites:
   - /posts/NativeContainerDeepDive/
@@ -42,6 +43,12 @@ GC는 C# 프로그래머에게 편의를 제공하지만, 게임 개발에서는
 
 ## Part 1: Unity의 GC는 무엇이 다른가
 
+{% include svg-diagrams/layer-architecture.html
+   layers="C# 코드 (Managed 영역),Managed Heap — Boehm GC,Unmanaged Heap — Native Memory,OS / Hardware"
+   descriptions="class · string · 배열 · LINQ · 코루틴|Mark-Sweep · 비세대적 · 비이동 · 보수적 마킹|NativeArray · Burst · Job System · malloc|물리 메모리 · 가상 메모리 · 캐시 계층"
+   colors="#ffcdd2,#ef9a9a,#a5d6a7,#81c784"
+%}
+
 ### 1.1 .NET GC vs Unity GC
 
 많은 개발자가 **".NET의 세대별 GC"**를 기준으로 Unity의 GC를 이해하려 한다. 하지만 Unity의 GC는 **완전히 다른 구현체**다.
@@ -58,6 +65,16 @@ GC는 C# 프로그래머에게 편의를 제공하지만, 게임 개발에서는
 > Unity 공식 문서: *"Unity uses the Boehm-Demers-Weiser garbage collector. It's a non-generational, non-compacting garbage collector."*
 
 이 차이가 게임 성능에 미치는 영향을 하나씩 분석한다.
+
+{% include diagrams/comparison.html
+   left_title=".NET GC (CoreCLR)"
+   left_items="세대별 수집 (Gen0/1/2),Compaction으로 단편화 해결,정확한(Precise) 마킹,백그라운드 GC (Concurrent),Gen0 수집 ~0.1ms"
+   left_color="#4CAF50"
+   right_title="Unity Boehm GC"
+   right_items="비세대적 — 전체 힙 스캔,Non-Compacting — 단편화 누적,보수적(Conservative) 마킹,메인 스레드 차단 (Stop-the-World),비용 ∝ 전체 힙 크기"
+   right_color="#f44336"
+   caption=".NET 서버 개발의 GC 지식이 Unity에 그대로 적용되지 않는 이유"
+%}
 
 ### 1.2 Boehm GC 아키텍처
 
@@ -272,6 +289,12 @@ $$T_{GC} \approx \alpha \times N_{alive} + \beta \times N_{dead}$$
 ---
 
 ## Part 2: GC.Alloc 발생 패턴 총정리
+
+{% include svg-diagrams/data-flow.html
+   nodes="Boxing,클로저 캡처,String 연결,LINQ,params 배열,코루틴 yield,GC Pressure 누적,Frame Spike!"
+   connections="0>6,1>6,2>6,3>6,4>6,5>6,6>7"
+   node_colors="#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#fff9c4,#ef5350"
+%}
 
 GC의 비용을 줄이려면 managed 힙 할당(GC.Alloc)을 줄여야 한다. 문제는 **할당이 명시적이지 않은 경우가 많다**는 것이다.
 
@@ -681,6 +704,15 @@ void ProcessFrame()
 | Burst 호환 | 불가 | 불가 | **가능** |
 | 수명 | 함수 스코프 | Return까지 | Dispose까지 |
 | 최적 용도 | 작은 임시 버퍼 | 중간 크기 임시 배열 | Job/Burst 데이터 |
+
+{% include charts/radar-chart.html
+   id="memoryCompare" title="메모리 할당 전략 비교"
+   labels="GC 영향 없음,대용량 지원,Job 호환,Burst 호환,사용 편의성"
+   dataset1_name="stackalloc" dataset1_data="5,1,1,1,4" dataset1_color="rgba(255,152,0,0.4)"
+   dataset2_name="ArrayPool" dataset2_data="3,4,1,1,5" dataset2_color="rgba(33,150,243,0.4)"
+   dataset3_name="NativeArray" dataset3_data="5,5,5,5,2" dataset3_color="rgba(76,175,80,0.4)"
+   max_value="5"
+%}
 
 ### 3.3 오브젝트 풀링
 
