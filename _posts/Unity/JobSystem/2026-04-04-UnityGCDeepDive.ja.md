@@ -9,6 +9,7 @@ toc_sticky: true
 math: true
 use_math: true
 mermaid: true
+chart: true
 difficulty: advanced
 prerequisites:
   - /posts/NativeContainerDeepDive/
@@ -43,6 +44,12 @@ GCはC#プログラマに便利さを提供するが、ゲーム開発では**60
 
 ## Part 1: UnityのGCは何が違うのか
 
+{% include svg-diagrams/layer-architecture.html
+   layers="C#コード（Managed領域）,Managed Heap — Boehm GC,Unmanaged Heap — Nativeメモリ,OS / Hardware"
+   descriptions="class · string · 配列 · LINQ · コルーチン|Mark-Sweep · 非世代的 · 非移動 · 保守的マーキング|NativeArray · Burst · Job System · malloc|物理メモリ · 仮想メモリ · キャッシュ階層"
+   colors="#ffcdd2,#ef9a9a,#a5d6a7,#81c784"
+%}
+
 ### 1.1 .NET GC vs Unity GC
 
 多くの開発者が**「.NETの世代別GC」**を基準にUnityのGCを理解しようとする。しかしUnityのGCは**完全に異なる実装体**だ。
@@ -59,6 +66,16 @@ GCはC#プログラマに便利さを提供するが、ゲーム開発では**60
 > Unity公式ドキュメント：*"Unity uses the Boehm-Demers-Weiser garbage collector. It's a non-generational, non-compacting garbage collector."*
 
 この違いがゲーム性能に与える影響を一つずつ分析する。
+
+{% include diagrams/comparison.html
+   left_title=".NET GC (CoreCLR)"
+   left_items="世代別収集（Gen0/1/2）,Compactionで断片化解消,正確な（Precise）マーキング,バックグラウンドGC（Concurrent）,Gen0収集 ~0.1ms"
+   left_color="#4CAF50"
+   right_title="Unity Boehm GC"
+   right_items="非世代的 — 全ヒープスキャン,Non-Compacting — 断片化蓄積,保守的（Conservative）マーキング,メインスレッドブロック（Stop-the-World）,コスト ∝ 全ヒープサイズ"
+   right_color="#f44336"
+   caption=".NETサーバー開発のGC知識がUnityにそのまま適用されない理由"
+%}
 
 ### 1.2 Boehm GCアーキテクチャ
 
@@ -273,6 +290,12 @@ $$T_{GC} \approx \alpha \times N_{alive} + \beta \times N_{dead}$$
 ---
 
 ## Part 2: GC.Alloc発生パターン総整理
+
+{% include svg-diagrams/data-flow.html
+   nodes="Boxing,クロージャ,String連結,LINQ,params配列,コルーチンyield,GC Pressure蓄積,Frame Spike!"
+   connections="0>6,1>6,2>6,3>6,4>6,5>6,6>7"
+   node_colors="#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#fff9c4,#ef5350"
+%}
 
 GCのコストを減らすにはmanagedヒープ割り当て（GC.Alloc）を減らす必要がある。問題は**割り当てが明示的でない場合が多い**ことだ。
 
@@ -683,6 +706,15 @@ void ProcessFrame()
 | 寿命 | 関数スコープ | Returnまで | Disposeまで |
 | 最適用途 | 小さな一時バッファ | 中サイズ一時配列 | Job/Burstデータ |
 
+{% include charts/radar-chart.html
+   id="memoryCompareJa" title="メモリ割り当て戦略比較"
+   labels="GC影響なし,大容量対応,Job互換,Burst互換,使いやすさ"
+   dataset1_name="stackalloc" dataset1_data="5,1,1,1,4" dataset1_color="rgba(255,152,0,0.4)"
+   dataset2_name="ArrayPool" dataset2_data="3,4,1,1,5" dataset2_color="rgba(33,150,243,0.4)"
+   dataset3_name="NativeArray" dataset3_data="5,5,5,5,2" dataset3_color="rgba(76,175,80,0.4)"
+   max_value="5"
+%}
+
 ### 3.3 オブジェクトプーリング
 
 参照型オブジェクト（class）を毎回new/GCせずに**プールから借りて使い返却**するパターン。
@@ -755,6 +787,18 @@ struct DamageEvent
 | 用途 | データ伝達、計算中間値 | 複雑な状態、多態性 |
 
 > 64バイト基準は**コピーコスト**のためだ。structは値コピーされるので大きすぎるとコピーコストがヒープ割り当てコストより大きくなりうる。一般的にキャッシュラインサイズ（64B）以下なら安全だ。
+
+{% include diagrams/decision-tree.html
+   question="参照共有または継承が必要か？"
+   yes_label="はい"
+   no_label="いいえ"
+   yes_result="classを使用"
+   no_question="サイズが64バイト以下か？"
+   no_yes_result="structを使用 — Zero Allocation"
+   no_yes_highlight="success"
+   no_no_result="classを使用（コピーコスト > ヒープ割り当て）"
+   no_no_highlight="warning"
+%}
 
 ### 3.5 ジェネリックでBoxing除去
 
@@ -1023,6 +1067,14 @@ IEnumerator LoadScene(string sceneName)
 | モバイル（ミッドレンジ） | 30 | 33.3ms | < 0.5 KB |
 | VR | 90 | 11.1ms | **0 bytes** |
 | 競技ゲーム | 144+ | 6.9ms | **0 bytes** |
+
+{% include charts/bar-comparison.html
+   id="gcBudgetJa" title="プラットフォーム別推奨GC.Alloc/フレーム"
+   labels="PC (60fps),モバイル (30fps),VR (90fps),競技ゲーム (144+fps)"
+   data="1024,512,1,1"
+   colors="rgba(33,150,243,0.7),rgba(255,152,0,0.7),rgba(244,67,54,0.7),rgba(244,67,54,0.7)"
+   unit="bytes"
+%}
 
 **VRと競技ゲームではUpdate()内のGC.Allocが文字通り0でなければならない。**
 

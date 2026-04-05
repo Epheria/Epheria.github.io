@@ -787,6 +787,16 @@ struct DamageEvent
 
 > 64 bytes 기준은 **복사 비용** 때문이다. struct는 값 복사되므로 너무 크면 복사 비용이 힙 할당 비용보다 커질 수 있다. 일반적으로 캐시 라인 크기(64B) 이하면 안전하다.
 
+{% include diagrams/decision-tree.html
+   question="참조 공유 또는 상속이 필요한가?"
+   yes_result="class 사용"
+   no_question="크기가 64 bytes 이하인가?"
+   no_yes_result="struct 사용 — Zero Allocation"
+   no_yes_highlight="success"
+   no_no_result="class 사용 (복사 비용 > 힙 할당)"
+   no_no_highlight="warning"
+%}
+
 ### 3.5 제네릭으로 Boxing 제거
 
 ```csharp
@@ -1054,6 +1064,14 @@ IEnumerator LoadScene(string sceneName)
 | 모바일 (미드레인지) | 30 | 33.3ms | < 0.5 KB |
 | VR | 90 | 11.1ms | **0 bytes** |
 | 경쟁 게임 | 144+ | 6.9ms | **0 bytes** |
+
+{% include charts/bar-comparison.html
+   id="gcBudget" title="플랫폼별 권장 GC.Alloc / 프레임"
+   labels="PC (60fps),모바일 (30fps),VR (90fps),경쟁 게임 (144+fps)"
+   data="1024,512,1,1"
+   colors="rgba(33,150,243,0.7),rgba(255,152,0,0.7),rgba(244,67,54,0.7),rgba(244,67,54,0.7)"
+   unit="bytes"
+%}
 
 **VR과 경쟁 게임에서는 Update() 내 GC.Alloc이 문자 그대로 0이어야 한다.**
 

@@ -9,6 +9,7 @@ toc_sticky: true
 math: true
 use_math: true
 mermaid: true
+chart: true
 difficulty: advanced
 prerequisites:
   - /posts/NativeContainerDeepDive/
@@ -41,6 +42,12 @@ In this post, we cover:
 
 ## Part 1: What Makes Unity's GC Different
 
+{% include svg-diagrams/layer-architecture.html
+   layers="C# Code (Managed),Managed Heap — Boehm GC,Unmanaged Heap — Native Memory,OS / Hardware"
+   descriptions="class · string · arrays · LINQ · coroutines|Mark-Sweep · non-generational · non-compacting · conservative|NativeArray · Burst · Job System · malloc|Physical memory · Virtual memory · Cache hierarchy"
+   colors="#ffcdd2,#ef9a9a,#a5d6a7,#81c784"
+%}
+
 ### 1.1 .NET GC vs Unity GC
 
 Many developers try to understand Unity's GC based on **".NET's generational GC"**. But Unity's GC is a **completely different implementation**.
@@ -57,6 +64,16 @@ Many developers try to understand Unity's GC based on **".NET's generational GC"
 > Unity official documentation: *"Unity uses the Boehm-Demers-Weiser garbage collector. It's a non-generational, non-compacting garbage collector."*
 
 Let's analyze the impact of these differences on game performance one by one.
+
+{% include diagrams/comparison.html
+   left_title=".NET GC (CoreCLR)"
+   left_items="Generational collection (Gen0/1/2),Compaction eliminates fragmentation,Precise marking,Background GC (Concurrent),Gen0 collection ~0.1ms"
+   left_color="#4CAF50"
+   right_title="Unity Boehm GC"
+   right_items="Non-generational — full heap scan,Non-Compacting — fragmentation accumulates,Conservative marking,Main thread blocking (Stop-the-World),Cost ∝ total heap size"
+   right_color="#f44336"
+   caption="Why .NET server GC knowledge doesn't directly apply to Unity"
+%}
 
 ### 1.2 Boehm GC Architecture
 
@@ -271,6 +288,12 @@ This is fundamentally different from .NET's generational GC. .NET GC only promot
 ---
 
 ## Part 2: Comprehensive Guide to GC.Alloc Patterns
+
+{% include svg-diagrams/data-flow.html
+   nodes="Boxing,Closure Capture,String Concat,LINQ,params Array,Coroutine yield,GC Pressure,Frame Spike!"
+   connections="0>6,1>6,2>6,3>6,4>6,5>6,6>7"
+   node_colors="#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#fff9c4,#ef5350"
+%}
 
 To reduce GC cost, we need to reduce managed heap allocations (GC.Alloc). The problem is that **allocations are often not explicit**.
 
@@ -681,6 +704,15 @@ void ProcessFrame()
 | Lifetime | Function scope | Until Return | Until Dispose |
 | Best for | Small temp buffers | Medium temp arrays | Job/Burst data |
 
+{% include charts/radar-chart.html
+   id="memoryCompareEn" title="Memory Allocation Strategy Comparison"
+   labels="No GC Impact,Large Size Support,Job Compatible,Burst Compatible,Ease of Use"
+   dataset1_name="stackalloc" dataset1_data="5,1,1,1,4" dataset1_color="rgba(255,152,0,0.4)"
+   dataset2_name="ArrayPool" dataset2_data="3,4,1,1,5" dataset2_color="rgba(33,150,243,0.4)"
+   dataset3_name="NativeArray" dataset3_data="5,5,5,5,2" dataset3_color="rgba(76,175,80,0.4)"
+   max_value="5"
+%}
+
 ### 3.3 Object Pooling
 
 A pattern of **borrowing and returning** reference type objects (class) from a **pool** instead of new/GC every time.
@@ -753,6 +785,16 @@ struct DamageEvent
 | Use case | Data transfer, intermediate values | Complex state, polymorphism |
 
 > The 64-byte criterion is due to **copy cost**. Structs are value-copied, so if too large, copy cost can exceed heap allocation cost. Generally, anything at or below cache line size (64B) is safe.
+
+{% include diagrams/decision-tree.html
+   question="Need reference sharing or inheritance?"
+   yes_result="Use class"
+   no_question="Size ≤ 64 bytes?"
+   no_yes_result="Use struct — Zero Allocation"
+   no_yes_highlight="success"
+   no_no_result="Use class (copy cost > heap alloc cost)"
+   no_no_highlight="warning"
+%}
 
 ### 3.5 Eliminating Boxing with Generics
 
@@ -1021,6 +1063,14 @@ IEnumerator LoadScene(string sceneName)
 | Mobile (Mid-range) | 30 | 33.3ms | < 0.5 KB |
 | VR | 90 | 11.1ms | **0 bytes** |
 | Competitive games | 144+ | 6.9ms | **0 bytes** |
+
+{% include charts/bar-comparison.html
+   id="gcBudgetEn" title="Recommended GC.Alloc per Frame by Platform"
+   labels="PC (60fps),Mobile (30fps),VR (90fps),Competitive (144+fps)"
+   data="1024,512,1,1"
+   colors="rgba(33,150,243,0.7),rgba(255,152,0,0.7),rgba(244,67,54,0.7),rgba(244,67,54,0.7)"
+   unit="bytes"
+%}
 
 **In VR and competitive games, GC.Alloc within Update() must be literally 0.**
 
