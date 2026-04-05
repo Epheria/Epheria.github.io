@@ -1,9 +1,12 @@
 <script>
 (function() {
+  {% assign _gl = site.active_lang | default: site.default_lang %}
+  {% if _gl != site.default_lang %}{% assign _gp = "/" | append: _gl %}{% else %}{% assign _gp = "" %}{% endif %}
   var nodes = [
     {% for post in site.posts %}
     {
       "id": {{ post.url | jsonify }},
+      "href": {{ _gp | append: post.url | jsonify }},
       "title": {{ post.title | jsonify }},
       "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
       "cat0": {{ post.categories[0] | default: "" | jsonify }},

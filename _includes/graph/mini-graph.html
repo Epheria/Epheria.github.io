@@ -1,9 +1,11 @@
 {% if page.categories.size > 0 %}
+{% assign _gl = site.active_lang | default: site.default_lang %}
+{% if _gl != site.default_lang %}{% assign _gp = "/" | append: _gl %}{% else %}{% assign _gp = "" %}{% endif %}
 <div class="mini-graph-wrapper" id="mini-graph-panel">
   <div class="mini-graph-title">
     <i class="fas fa-project-diagram"></i>
     <span>{{ site.data.locales[lang].graph.page_title | default: "Graph" }}</span>
-    <a href="{{ '/graph/' | relative_url }}" class="mini-graph-expand" title="Open full graph">
+    <a href="{{ _gp | append: '/graph/' }}" class="mini-graph-expand" title="Open full graph">
       <i class="fas fa-external-link-alt"></i>
     </a>
   </div>
@@ -25,7 +27,7 @@
       {% if post.url != page.url and post.categories.size >= 2 %}
         {% assign pk = post.categories[0] | append: "|" | append: post.categories[1] %}
         {% if pk == series_key %}
-  neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | jsonify }}, type: "series" };
+  neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, href: {{ _gp | append: post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | jsonify }}, type: "series" };
         {% endif %}
       {% endif %}
     {% endfor %}
@@ -35,7 +37,7 @@
     {% for prereq in page.prerequisites %}
       {% for post in site.posts %}
         {% if post.url == prereq %}
-  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
+  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, href: {{ _gp | append: post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
         {% endif %}
       {% endfor %}
     {% endfor %}
@@ -46,7 +48,7 @@
       {% if post.prerequisites %}
         {% for prereq in post.prerequisites %}
           {% if prereq == page.url %}
-  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
+  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, href: {{ _gp | append: post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
           {% endif %}
         {% endfor %}
       {% endif %}
@@ -121,7 +123,7 @@
 
     node.filter(function(d) { return !d.current; })
       .style('cursor', 'pointer')
-      .on('click', function(ev, d) { window.location.href = d.id; });
+      .on('click', function(ev, d) { window.location.href = d.href || d.id; });
 
     sim.on('tick', function() {
       linkSel.attr('x1', function(d) { return d.source.x; }).attr('y1', function(d) { return d.source.y; })

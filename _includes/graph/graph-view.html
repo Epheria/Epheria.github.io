@@ -156,7 +156,7 @@
           .attr('stroke-width', function(d) { if (d.type === 'series') return 1.2; if (d.type === 'prerequisite') return 1.5; return 0.5; });
       node.select('circle').attr('opacity', 1);
     })
-    .on('click', function(event, d) { window.location.href = d.id; });
+    .on('click', function(event, d) { window.location.href = d.href || d.id; });
 
     simulation.on('tick', function() {
       link.attr('x1', function(d) { return d.source.x; }).attr('y1', function(d) { return d.source.y; })
