@@ -13,7 +13,6 @@ layout: default
     {{ site.data.locales[lang].graph.description | default: "Interactive visualization of post connections" }}
   </p>
 
-  <!-- Controls -->
   <div class="graph-controls">
     <div class="graph-filter-group">
       <label for="graph-category-filter">
@@ -42,7 +41,6 @@ layout: default
     </div>
   </div>
 
-  <!-- Legend -->
   <div class="graph-legend">
     <span class="graph-legend-item">
       <span class="graph-legend-line legend-series"></span>
@@ -58,12 +56,18 @@ layout: default
     </span>
   </div>
 
-  <!-- Graph Container -->
   <div id="graph-container">
     <svg id="graph-svg"></svg>
+    <div id="graph-toolbar">
+      <button id="graph-zoom-in" title="Zoom In"><i class="fas fa-plus"></i></button>
+      <button id="graph-zoom-out" title="Zoom Out"><i class="fas fa-minus"></i></button>
+      <button id="graph-fit" title="Fit to View"><i class="fas fa-expand"></i></button>
+      <button id="graph-reset" title="Reset"><i class="fas fa-undo"></i></button>
+      <button id="graph-fullscreen" title="Fullscreen"><i class="fas fa-expand-arrows-alt"></i></button>
+    </div>
+    <div id="graph-info"></div>
   </div>
 
-  <!-- Tooltip -->
   <div id="graph-tooltip" class="graph-tooltip"></div>
 </div>
 

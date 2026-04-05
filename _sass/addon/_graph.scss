@@ -179,6 +179,114 @@
   }
 }
 
+// --- Toolbar ---
+#graph-toolbar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+
+  button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #313244;
+    border-radius: 6px;
+    background: rgba(30, 30, 46, 0.85);
+    color: #cdd6f4;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    backdrop-filter: blur(4px);
+    transition: background 0.15s, border-color 0.15s;
+
+    &:hover {
+      background: rgba(49, 50, 68, 0.95);
+      border-color: #0abde3;
+      color: #0abde3;
+    }
+  }
+}
+
+// --- Info badge ---
+#graph-info {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-size: 0.72rem;
+  color: #585b70;
+  pointer-events: none;
+  z-index: 10;
+}
+
+// --- Fullscreen ---
+#graph-container:fullscreen {
+  border-radius: 0;
+  border: none;
+
+  #graph-svg {
+    min-height: 100vh;
+  }
+}
+
+// --- Mini Graph (post pages) ---
+.mini-graph-wrapper {
+  border: 1px solid #2a2a3e;
+  border-radius: 0.6rem;
+  background: #181825;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  .mini-graph-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a6adc8;
+    padding: 0.5rem 0.7rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    i { color: #0abde3; font-size: 0.7rem; }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    cursor: grab;
+    &:active { cursor: grabbing; }
+  }
+
+  .mini-graph-node {
+    cursor: pointer;
+    circle { transition: opacity 0.15s; }
+    &:hover circle {
+      filter: brightness(1.3);
+      stroke: #fff;
+      stroke-width: 2;
+    }
+  }
+
+  .mini-graph-label {
+    fill: #cdd6f4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 9px;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  .mini-graph-current {
+    circle {
+      stroke: #fdcb6e;
+      stroke-width: 2.5;
+    }
+  }
+}
+
 // --- Responsive ---
 @media (max-width: 768px) {
   .graph-controls {

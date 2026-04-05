@@ -1,0 +1,133 @@
+{% assign default_lang = site.default_lang | default: site.lang | default: "ko" %}
+{% assign current_lang = page.lang | default: default_lang %}
+{% if current_lang == default_lang %}
+<div class="mini-graph-wrapper">
+  <div class="mini-graph-title">
+    <i class="fas fa-project-diagram"></i>
+    <span>{{ site.data.locales[lang].graph.page_title | default: "Graph" }}</span>
+  </div>
+  <svg id="mini-graph-svg" width="100%" height="220"></svg>
+</div>
+
+<script>
+(function() {
+  var currentUrl = {{ page.url | jsonify }};
+  var currentTitle = {{ page.title | jsonify }};
+  var currentCat0 = {{ page.categories[0] | default: "" | jsonify }};
+  var currentCat1 = {{ page.categories[1] | default: "" | jsonify }};
+  var currentTags = {{ page.tags | default: "" | jsonify }};
+
+  var neighbors = {};
+
+  {% if page.categories.size >= 2 %}
+    {% assign series_key = page.categories[0] | append: "|" | append: page.categories[1] %}
+    {% for post in site.posts %}
+      {% assign post_lang = post.lang | default: default_lang %}
+      {% if post_lang == default_lang and post.url != page.url and post.categories.size >= 2 %}
+        {% assign pk = post.categories[0] | append: "|" | append: post.categories[1] %}
+        {% if pk == series_key %}
+  neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | jsonify }}, type: "series" };
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if page.prerequisites %}
+    {% for prereq in page.prerequisites %}
+      {% for post in site.posts %}
+        {% assign post_lang = post.lang | default: default_lang %}
+        {% if post_lang == default_lang and post.url == prereq %}
+  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+
+  {% for post in site.posts %}
+    {% assign post_lang = post.lang | default: default_lang %}
+    {% if post_lang == default_lang and post.url != page.url %}
+      {% if post.prerequisites %}
+        {% for prereq in post.prerequisites %}
+          {% if prereq == page.url %}
+  if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  var neighborList = Object.values(neighbors);
+  if (neighborList.length === 0) {
+    document.querySelector('.mini-graph-wrapper').style.display = 'none';
+    return;
+  }
+
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js';
+  s.onload = renderMini;
+  document.head.appendChild(s);
+
+  function renderMini() {
+    var COLORS = {
+      'Unity': '#e84393', 'Unreal': '#e84393', 'AI': '#00b894',
+      'Common': '#e84393', 'Csharp': '#e17055', 'ETC': '#a29bfe',
+      'Language': '#fdcb6e', 'Python': '#00b894', 'ML': '#00b894',
+      'Mathematics': '#74b9ff', 'CS': '#00b894'
+    };
+    function gc(c) { return COLORS[c] || '#e84393'; }
+
+    var svgEl = document.getElementById('mini-graph-svg');
+    var w = svgEl.clientWidth || 280;
+    var h = 220;
+
+    var nodes = [{ id: currentUrl, title: currentTitle, cat0: currentCat0, current: true }];
+    var edges = [];
+    neighborList.forEach(function(n) {
+      nodes.push(n);
+      edges.push({ source: currentUrl, target: n.id, type: n.type });
+    });
+
+    var svg = d3.select('#mini-graph-svg').attr('width', w).attr('height', h);
+    var g = svg.append('g');
+    var zoom = d3.zoom().scaleExtent([0.5, 3])
+      .on('zoom', function(ev) { g.attr('transform', ev.transform); });
+    svg.call(zoom);
+
+    var sim = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(edges).id(function(d) { return d.id; }).distance(55))
+      .force('charge', d3.forceManyBody().strength(-120))
+      .force('center', d3.forceCenter(w / 2, h / 2))
+      .force('collision', d3.forceCollide().radius(16));
+
+    var link = g.append('g').selectAll('line').data(edges).join('line')
+      .attr('stroke', function(d) { return d.type === 'prerequisite' ? '#f39c12' : '#0abde3'; })
+      .attr('stroke-width', 1.2)
+      .attr('stroke-opacity', 0.5);
+
+    var node = g.append('g').selectAll('g').data(nodes).join('g')
+      .attr('class', function(d) { return 'mini-graph-node' + (d.current ? ' mini-graph-current' : ''); });
+
+    node.append('circle')
+      .attr('r', function(d) { return d.current ? 8 : 5; })
+      .attr('fill', function(d) { return d.current ? '#fdcb6e' : gc(d.cat0); });
+
+    node.append('text')
+      .text(function(d) { return d.title.length > 16 ? d.title.substring(0, 16) + '..' : d.title; })
+      .attr('dx', function(d) { return (d.current ? 11 : 8); })
+      .attr('dy', '0.35em')
+      .attr('class', 'mini-graph-label')
+      .style('opacity', function(d) { return d.current ? 1 : 0.8; });
+
+    node.filter(function(d) { return !d.current; })
+      .style('cursor', 'pointer')
+      .on('click', function(ev, d) { window.location.href = d.id; });
+
+    sim.on('tick', function() {
+      link.attr('x1', function(d) { return d.source.x; }).attr('y1', function(d) { return d.source.y; })
+          .attr('x2', function(d) { return d.target.x; }).attr('y2', function(d) { return d.target.y; });
+      node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+    });
+  }
+})();
+</script>
+{% endif %}

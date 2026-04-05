@@ -52,13 +52,11 @@
     }
   }
 
-  /* Tag-based edges */
-  var TAG_THRESHOLD = 3;
+  /* Tag-based edges (threshold 3) */
   var nodeEdgeMap = {};
-  edges.forEach(function(e) {
-    nodeEdgeMap[e.source + '|' + e.target] = true;
-    nodeEdgeMap[e.target + '|' + e.source] = true;
-  });
+  function markEdge(a, b) { nodeEdgeMap[a + '|' + b] = true; nodeEdgeMap[b + '|' + a] = true; }
+  edges.forEach(function(e) { markEdge(e.source, e.target); });
+
   for (var i = 0; i < nodes.length; i++) {
     for (var j = i + 1; j < nodes.length; j++) {
       var a = nodes[i], b = nodes[j];
@@ -68,10 +66,9 @@
       for (var k = 0; k < a.tags.length; k++) {
         if (b.tags.indexOf(a.tags[k]) >= 0) common++;
       }
-      if (common >= TAG_THRESHOLD) {
+      if (common >= 3) {
         edges.push({ source: a.id, target: b.id, type: "tag", weight: common });
-        nodeEdgeMap[a.id + '|' + b.id] = true;
-        nodeEdgeMap[b.id + '|' + a.id] = true;
+        markEdge(a.id, b.id);
       }
     }
   }
@@ -80,6 +77,58 @@
   var nodeIds = {};
   for (var i = 0; i < nodes.length; i++) nodeIds[nodes[i].id] = true;
   edges = edges.filter(function(e) { return nodeIds[e.source] && nodeIds[e.target]; });
+
+  /* === Isolated node rescue === */
+  var connectedSet = {};
+  edges.forEach(function(e) { connectedSet[e.source] = true; connectedSet[e.target] = true; });
+
+  /* A: Lower threshold to 2 for isolated nodes */
+  var isolated = nodes.filter(function(n) { return !connectedSet[n.id]; });
+  for (var i = 0; i < isolated.length; i++) {
+    var a = isolated[i];
+    if (!a.tags || !a.tags.length) continue;
+    for (var j = 0; j < nodes.length; j++) {
+      var b = nodes[j];
+      if (a.id === b.id || !b.tags || !b.tags.length) continue;
+      if (nodeEdgeMap[a.id + '|' + b.id]) continue;
+      var common = 0;
+      for (var k = 0; k < a.tags.length; k++) {
+        if (b.tags.indexOf(a.tags[k]) >= 0) common++;
+      }
+      if (common >= 2) {
+        edges.push({ source: a.id, target: b.id, type: "tag", weight: common });
+        markEdge(a.id, b.id);
+        connectedSet[a.id] = true;
+        connectedSet[b.id] = true;
+        break;
+      }
+    }
+  }
+
+  /* C: Nearest neighbor for still-isolated nodes */
+  isolated = nodes.filter(function(n) { return !connectedSet[n.id]; });
+  for (var i = 0; i < isolated.length; i++) {
+    var a = isolated[i];
+    var bestId = null, bestScore = 0;
+    for (var j = 0; j < nodes.length; j++) {
+      var b = nodes[j];
+      if (a.id === b.id) continue;
+      var score = 0;
+      /* tag overlap */
+      if (a.tags && a.tags.length && b.tags && b.tags.length) {
+        for (var k = 0; k < a.tags.length; k++) {
+          if (b.tags.indexOf(a.tags[k]) >= 0) score += 2;
+        }
+      }
+      /* same top category */
+      if (a.cat0 && a.cat0 === b.cat0) score += 1;
+      if (score > bestScore) { bestScore = score; bestId = b.id; }
+    }
+    if (bestId) {
+      edges.push({ source: a.id, target: bestId, type: "tag", weight: 1 });
+      markEdge(a.id, bestId);
+    }
+  }
 
   window.__graphData = { nodes: nodes, edges: edges };
 })();
