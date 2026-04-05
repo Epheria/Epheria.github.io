@@ -233,25 +233,35 @@
   }
 }
 
-// --- Mini Graph (post pages) ---
+// --- Mini Graph (panel sidebar) ---
 .mini-graph-wrapper {
   border: 1px solid #2a2a3e;
   border-radius: 0.6rem;
   background: #181825;
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   position: relative;
 
   .mini-graph-title {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: #a6adc8;
-    padding: 0.5rem 0.7rem 0;
+    padding: 0.45rem 0.6rem 0;
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
 
-    i { color: #0abde3; font-size: 0.7rem; }
+    i { color: #0abde3; font-size: 0.65rem; }
+  }
+
+  .mini-graph-expand {
+    margin-left: auto;
+    color: #585b70;
+    font-size: 0.6rem;
+    text-decoration: none;
+    transition: color 0.15s;
+
+    &:hover { color: #0abde3; }
   }
 
   svg {
@@ -274,7 +284,6 @@
   .mini-graph-label {
     fill: #cdd6f4;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 9px;
     pointer-events: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
@@ -282,7 +291,7 @@
   .mini-graph-current {
     circle {
       stroke: #fdcb6e;
-      stroke-width: 2.5;
+      stroke-width: 2;
     }
   }
 }
