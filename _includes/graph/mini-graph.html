@@ -1,6 +1,4 @@
-{% assign default_lang = site.default_lang | default: site.lang | default: "ko" %}
-{% assign current_lang = page.lang | default: default_lang %}
-{% if current_lang == default_lang and page.categories.size > 0 %}
+{% if page.categories.size > 0 %}
 <div class="mini-graph-wrapper" id="mini-graph-panel">
   <div class="mini-graph-title">
     <i class="fas fa-project-diagram"></i>
@@ -24,8 +22,7 @@
   {% if page.categories.size >= 2 %}
     {% assign series_key = page.categories[0] | append: "|" | append: page.categories[1] %}
     {% for post in site.posts %}
-      {% assign post_lang = post.lang | default: default_lang %}
-      {% if post_lang == default_lang and post.url != page.url and post.categories.size >= 2 %}
+      {% if post.url != page.url and post.categories.size >= 2 %}
         {% assign pk = post.categories[0] | append: "|" | append: post.categories[1] %}
         {% if pk == series_key %}
   neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | jsonify }}, type: "series" };
@@ -37,8 +34,7 @@
   {% if page.prerequisites %}
     {% for prereq in page.prerequisites %}
       {% for post in site.posts %}
-        {% assign post_lang = post.lang | default: default_lang %}
-        {% if post_lang == default_lang and post.url == prereq %}
+        {% if post.url == prereq %}
   if (!neighbors[{{ post.url | jsonify }}]) neighbors[{{ post.url | jsonify }}] = { id: {{ post.url | jsonify }}, title: {{ post.title | jsonify }}, cat0: {{ post.categories[0] | default: "" | jsonify }}, type: "prerequisite" };
         {% endif %}
       {% endfor %}
@@ -46,8 +42,7 @@
   {% endif %}
 
   {% for post in site.posts %}
-    {% assign post_lang = post.lang | default: default_lang %}
-    {% if post_lang == default_lang and post.url != page.url %}
+    {% if post.url != page.url %}
       {% if post.prerequisites %}
         {% for prereq in post.prerequisites %}
           {% if prereq == page.url %}

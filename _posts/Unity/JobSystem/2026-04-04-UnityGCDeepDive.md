@@ -43,11 +43,42 @@ GC는 C# 프로그래머에게 편의를 제공하지만, 게임 개발에서는
 
 ## Part 1: Unity의 GC는 무엇이 다른가
 
-{% include svg-diagrams/layer-architecture.html
-   layers="C# 코드 (Managed 영역),Managed Heap — Boehm GC,Unmanaged Heap — Native Memory,OS / Hardware"
-   descriptions="class · string · 배열 · LINQ · 코루틴|Mark-Sweep · 비세대적 · 비이동 · 보수적 마킹|NativeArray · Burst · Job System · malloc|물리 메모리 · 가상 메모리 · 캐시 계층"
-   colors="#ffcdd2,#ef9a9a,#a5d6a7,#81c784"
-%}
+<div class="gc-arch" style="margin:2rem 0;overflow-x:auto;">
+<svg viewBox="0 0 700 410" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:0 auto;display:block;font-family:system-ui,-apple-system,sans-serif;">
+  <defs>
+    <filter id="gca-sh"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+    <marker id="gca-arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L10,5 L0,9Z" class="gca-af"/></marker>
+    <linearGradient id="gca-g0" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ffcdd2"/><stop offset="100%" stop-color="#ef9a9a"/></linearGradient>
+    <linearGradient id="gca-g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef9a9a"/><stop offset="100%" stop-color="#e57373"/></linearGradient>
+    <linearGradient id="gca-g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8e6c9"/><stop offset="100%" stop-color="#a5d6a7"/></linearGradient>
+    <linearGradient id="gca-g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a5d6a7"/><stop offset="100%" stop-color="#81c784"/></linearGradient>
+  </defs>
+  <path d="M68,15 L68,192 M68,15 L80,15 M68,192 L80,192" fill="none" stroke-width="2.5" class="gca-bm"/>
+  <text x="48" y="104" text-anchor="middle" font-size="12" font-weight="700" class="gca-tm" transform="rotate(-90,48,104)">Managed</text>
+  <path d="M68,218 L68,395 M68,218 L80,218 M68,395 L80,395" fill="none" stroke-width="2.5" class="gca-bu"/>
+  <text x="48" y="307" text-anchor="middle" font-size="12" font-weight="700" class="gca-tu" transform="rotate(-90,48,307)">Unmanaged</text>
+  <rect x="90" y="10" width="570" height="82" rx="12" fill="url(#gca-g0)" filter="url(#gca-sh)"/>
+  <text x="375" y="38" text-anchor="middle" font-size="15" font-weight="700" fill="#b71c1c">C# 코드 (Managed 영역)</text>
+  <text x="375" y="62" text-anchor="middle" font-size="12" fill="#c62828" opacity=".85">class · string · 배열 · LINQ · 코루틴</text>
+  <line x1="375" y1="92" x2="375" y2="110" stroke-width="2" class="gca-al" marker-end="url(#gca-arr)"/>
+  <rect x="90" y="110" width="570" height="82" rx="12" fill="url(#gca-g1)" filter="url(#gca-sh)"/>
+  <text x="375" y="138" text-anchor="middle" font-size="15" font-weight="700" fill="#b71c1c">Managed Heap — Boehm GC</text>
+  <text x="375" y="162" text-anchor="middle" font-size="12" fill="#c62828" opacity=".85">Mark-Sweep · 비세대적 · 비이동 · 보수적 마킹</text>
+  <line x1="375" y1="192" x2="375" y2="218" stroke-width="2" class="gca-al" marker-end="url(#gca-arr)"/>
+  <rect x="90" y="218" width="570" height="82" rx="12" fill="url(#gca-g2)" filter="url(#gca-sh)"/>
+  <text x="375" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#1b5e20">Unmanaged Heap — Native Memory</text>
+  <text x="375" y="270" text-anchor="middle" font-size="12" fill="#2e7d32" opacity=".85">NativeArray · Burst · Job System · malloc</text>
+  <line x1="375" y1="300" x2="375" y2="318" stroke-width="2" class="gca-al" marker-end="url(#gca-arr)"/>
+  <rect x="90" y="318" width="570" height="82" rx="12" fill="url(#gca-g3)" filter="url(#gca-sh)"/>
+  <text x="375" y="346" text-anchor="middle" font-size="15" font-weight="700" fill="#1b5e20">OS / Hardware</text>
+  <text x="375" y="370" text-anchor="middle" font-size="12" fill="#2e7d32" opacity=".85">물리 메모리 · 가상 메모리 · 캐시 계층</text>
+</svg>
+</div>
+<style>
+.gca-bm{stroke:#e57373}.gca-bu{stroke:#66bb6a}.gca-tm{fill:#e57373}.gca-tu{fill:#66bb6a}.gca-al{stroke:#9e9e9e}.gca-af{fill:#9e9e9e}
+[data-mode="dark"] .gc-arch rect{opacity:.82}[data-mode="dark"] .gca-bm{stroke:#ef9a9a}[data-mode="dark"] .gca-bu{stroke:#a5d6a7}[data-mode="dark"] .gca-tm{fill:#ef9a9a}[data-mode="dark"] .gca-tu{fill:#a5d6a7}[data-mode="dark"] .gca-al{stroke:#757575}[data-mode="dark"] .gca-af{fill:#757575}
+@media(max-width:768px){.gc-arch svg{min-width:520px}}
+</style>
 
 ### 1.1 .NET GC vs Unity GC
 
@@ -66,15 +97,50 @@ GC는 C# 프로그래머에게 편의를 제공하지만, 게임 개발에서는
 
 이 차이가 게임 성능에 미치는 영향을 하나씩 분석한다.
 
-{% include diagrams/comparison.html
-   left_title=".NET GC (CoreCLR)"
-   left_items="세대별 수집 (Gen0/1/2),Compaction으로 단편화 해결,정확한(Precise) 마킹,백그라운드 GC (Concurrent),Gen0 수집 ~0.1ms"
-   left_color="#4CAF50"
-   right_title="Unity Boehm GC"
-   right_items="비세대적 — 전체 힙 스캔,Non-Compacting — 단편화 누적,보수적(Conservative) 마킹,메인 스레드 차단 (Stop-the-World),비용 ∝ 전체 힙 크기"
-   right_color="#f44336"
-   caption=".NET 서버 개발의 GC 지식이 Unity에 그대로 적용되지 않는 이유"
-%}
+<div class="gc-cmp" style="margin:2rem 0;overflow-x:auto;">
+  <div class="gc-cmp-grid">
+    <div class="gc-cmp-left">
+      <div class="gc-cmp-badge" style="background:#4CAF50">.NET GC (CoreCLR)</div>
+      <ul class="gc-cmp-list">
+        <li><span class="gc-cmp-ok">&#10003;</span> 세대별 수집 (Gen0/1/2)</li>
+        <li><span class="gc-cmp-ok">&#10003;</span> Compaction으로 단편화 해결</li>
+        <li><span class="gc-cmp-ok">&#10003;</span> 정확한(Precise) 마킹</li>
+        <li><span class="gc-cmp-ok">&#10003;</span> 백그라운드 GC (Concurrent)</li>
+        <li><span class="gc-cmp-ok">&#10003;</span> Gen0 수집 ~0.1ms</li>
+      </ul>
+    </div>
+    <div class="gc-cmp-mid"><span class="gc-cmp-vs">VS</span></div>
+    <div class="gc-cmp-right">
+      <div class="gc-cmp-badge" style="background:#f44336">Unity Boehm GC</div>
+      <ul class="gc-cmp-list">
+        <li><span class="gc-cmp-no">&#10007;</span> 비세대적 — 전체 힙 스캔</li>
+        <li><span class="gc-cmp-no">&#10007;</span> Non-Compacting — 단편화 누적</li>
+        <li><span class="gc-cmp-no">&#10007;</span> 보수적(Conservative) 마킹</li>
+        <li><span class="gc-cmp-no">&#10007;</span> 메인 스레드 차단 (Stop-the-World)</li>
+        <li><span class="gc-cmp-no">&#10007;</span> 비용 ∝ 전체 힙 크기</li>
+      </ul>
+    </div>
+  </div>
+  <p class="gc-cmp-cap">.NET 서버 개발의 GC 지식이 Unity에 그대로 적용되지 않는 이유</p>
+</div>
+<style>
+.gc-cmp-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;max-width:740px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.gc-cmp-left{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);padding:1.25rem 1.5rem}
+.gc-cmp-right{background:linear-gradient(135deg,#ffebee,#ffcdd2);padding:1.25rem 1.5rem}
+.gc-cmp-mid{display:flex;align-items:center;justify-content:center;padding:0 .5rem;background:linear-gradient(180deg,#e8f5e9,#f5f5f5 50%,#ffebee)}
+.gc-cmp-vs{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#555,#333);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.gc-cmp-badge{text-align:center;border-radius:20px;padding:5px 16px;font-size:14px;font-weight:700;color:#fff;margin-bottom:.75rem}
+.gc-cmp-list{list-style:none;padding:0;margin:0;font-size:13.5px;line-height:2.1}
+.gc-cmp-ok{color:#2e7d32;font-weight:700;margin-right:8px}.gc-cmp-no{color:#c62828;font-weight:700;margin-right:8px}
+.gc-cmp-cap{text-align:center;margin-top:.75rem;font-size:12.5px;color:var(--text-muted-color,#6c757d);font-style:italic}
+[data-mode="dark"] .gc-cmp-left{background:linear-gradient(135deg,#1a3320,#263e2a)}
+[data-mode="dark"] .gc-cmp-right{background:linear-gradient(135deg,#3b1a1a,#4a2525)}
+[data-mode="dark"] .gc-cmp-mid{background:linear-gradient(180deg,#1a3320,#252528 50%,#3b1a1a)}
+[data-mode="dark"] .gc-cmp-list{color:#ddd}
+[data-mode="dark"] .gc-cmp-ok{color:#81c784}[data-mode="dark"] .gc-cmp-no{color:#ef9a9a}
+[data-mode="dark"] .gc-cmp-grid{box-shadow:0 2px 12px rgba(0,0,0,.3)}
+@media(max-width:768px){.gc-cmp-grid{grid-template-columns:1fr!important}.gc-cmp-mid{padding:.5rem 0}}
+</style>
 
 ### 1.2 Boehm GC 아키텍처
 
@@ -290,11 +356,53 @@ $$T_{GC} \approx \alpha \times N_{alive} + \beta \times N_{dead}$$
 
 ## Part 2: GC.Alloc 발생 패턴 총정리
 
-{% include svg-diagrams/data-flow.html
-   nodes="Boxing,클로저 캡처,String 연결,LINQ,params 배열,코루틴 yield,GC Pressure 누적,Frame Spike!"
-   connections="0>6,1>6,2>6,3>6,4>6,5>6,6>7"
-   node_colors="#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#ffcdd2,#fff9c4,#ef5350"
-%}
+<div class="gc-flow" style="margin:2rem 0;overflow-x:auto;">
+<svg viewBox="0 0 780 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;margin:0 auto;display:block;font-family:system-ui,-apple-system,sans-serif;">
+  <defs>
+    <filter id="gcf-sh"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+    <marker id="gcf-arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L10,5 L0,9Z" class="gcf-af"/></marker>
+    <linearGradient id="gcf-wg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fff9c4"/><stop offset="100%" stop-color="#fff176"/></linearGradient>
+    <linearGradient id="gcf-dg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef5350"/><stop offset="100%" stop-color="#c62828"/></linearGradient>
+    <radialGradient id="gcf-pulse"><stop offset="0%" stop-color="#ff5252" stop-opacity="0.3"/><stop offset="100%" stop-color="#ff5252" stop-opacity="0"/></radialGradient>
+  </defs>
+  <g filter="url(#gcf-sh)">
+    <rect class="gcf-src" x="20" y="5" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="29" text-anchor="middle" font-size="13" font-weight="600">Boxing</text>
+    <rect class="gcf-src" x="20" y="53" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="77" text-anchor="middle" font-size="13" font-weight="600">클로저 캡처</text>
+    <rect class="gcf-src" x="20" y="101" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="125" text-anchor="middle" font-size="13" font-weight="600">String 연결</text>
+    <rect class="gcf-src" x="20" y="149" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="173" text-anchor="middle" font-size="13" font-weight="600">LINQ</text>
+    <rect class="gcf-src" x="20" y="197" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="221" text-anchor="middle" font-size="13" font-weight="600">params 배열</text>
+    <rect class="gcf-src" x="20" y="245" width="148" height="38" rx="8"/><text class="gcf-stx" x="94" y="269" text-anchor="middle" font-size="13" font-weight="600">코루틴 yield</text>
+  </g>
+  <g fill="none" stroke-width="1.8" class="gcf-lines" marker-end="url(#gcf-arr)">
+    <path d="M168,24 C275,24 305,148 375,148"/>
+    <path d="M168,72 C265,72 310,148 375,148"/>
+    <path d="M168,120 C255,120 320,148 375,148"/>
+    <path d="M168,168 C255,168 320,148 375,148"/>
+    <path d="M168,216 C265,216 310,148 375,148"/>
+    <path d="M168,264 C275,264 305,148 375,148"/>
+  </g>
+  <rect class="gcf-warn" x="375" y="112" width="175" height="72" rx="14" fill="url(#gcf-wg)" filter="url(#gcf-sh)" stroke="#fbc02d" stroke-width="2"/>
+  <text x="462" y="143" text-anchor="middle" font-size="14" font-weight="700" class="gcf-wtx">GC Pressure</text>
+  <text x="462" y="165" text-anchor="middle" font-size="12" class="gcf-wtx2">누적</text>
+  <line x1="550" y1="148" x2="615" y2="148" stroke-width="2.5" class="gcf-dl" marker-end="url(#gcf-arr)"/>
+  <circle cx="695" cy="148" r="42" fill="url(#gcf-pulse)">
+    <animate attributeName="r" values="35;48;35" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <rect x="615" y="114" width="160" height="68" rx="14" fill="url(#gcf-dg)" filter="url(#gcf-sh)"/>
+  <text x="695" y="144" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">Frame Spike!</text>
+  <text x="695" y="165" text-anchor="middle" font-size="11" fill="#ffcdd2">&#9889; 프레임 드롭</text>
+</svg>
+</div>
+<style>
+.gcf-src{fill:#ffcdd2}.gcf-stx{fill:#c62828}.gcf-lines{stroke:#ef9a9a}.gcf-af{fill:#ef9a9a}.gcf-dl{stroke:#ef5350}
+.gcf-wtx{fill:#f57f17}.gcf-wtx2{fill:#f9a825}
+[data-mode="dark"] .gcf-src{fill:#5c2a2a}[data-mode="dark"] .gcf-stx{fill:#ef9a9a}
+[data-mode="dark"] .gcf-lines{stroke:#e57373}[data-mode="dark"] .gcf-af{fill:#e57373}
+[data-mode="dark"] .gcf-warn{opacity:.85}[data-mode="dark"] .gcf-wtx{fill:#fdd835}[data-mode="dark"] .gcf-wtx2{fill:#ffee58}
+[data-mode="dark"] .gcf-dl{stroke:#ef5350}
+@media(max-width:768px){.gc-flow svg{min-width:600px}}
+</style>
 
 GC의 비용을 줄이려면 managed 힙 할당(GC.Alloc)을 줄여야 한다. 문제는 **할당이 명시적이지 않은 경우가 많다**는 것이다.
 
@@ -705,14 +813,31 @@ void ProcessFrame()
 | 수명 | 함수 스코프 | Return까지 | Dispose까지 |
 | 최적 용도 | 작은 임시 버퍼 | 중간 크기 임시 배열 | Job/Burst 데이터 |
 
-{% include charts/radar-chart.html
-   id="memoryCompare" title="메모리 할당 전략 비교"
-   labels="GC 영향 없음,대용량 지원,Job 호환,Burst 호환,사용 편의성"
-   dataset1_name="stackalloc" dataset1_data="5,1,1,1,4" dataset1_color="rgba(255,152,0,0.4)"
-   dataset2_name="ArrayPool" dataset2_data="3,4,1,1,5" dataset2_color="rgba(33,150,243,0.4)"
-   dataset3_name="NativeArray" dataset3_data="5,5,5,5,2" dataset3_color="rgba(76,175,80,0.4)"
-   max_value="5"
-%}
+<div class="chart-wrapper">
+  <div class="chart-title">메모리 할당 전략 비교</div>
+  <canvas id="memoryCompare" class="chart-canvas" height="280"></canvas>
+</div>
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'memoryCompare',
+  type: 'radar',
+  data: {
+    labels: ['GC 영향 없음', '대용량 지원', 'Job 호환', 'Burst 호환', '사용 편의성'],
+    datasets: [
+      {label:'stackalloc',data:[5,1,1,1,4],backgroundColor:'rgba(255,152,0,0.2)',borderColor:'rgba(255,152,0,0.8)',pointBackgroundColor:'rgb(255,152,0)',borderWidth:2,pointRadius:4},
+      {label:'ArrayPool',data:[3,4,1,1,5],backgroundColor:'rgba(33,150,243,0.2)',borderColor:'rgba(33,150,243,0.8)',pointBackgroundColor:'rgb(33,150,243)',borderWidth:2,pointRadius:4},
+      {label:'NativeArray',data:[5,5,5,5,2],backgroundColor:'rgba(76,175,80,0.2)',borderColor:'rgba(76,175,80,0.8)',pointBackgroundColor:'rgb(76,175,80)',borderWidth:2,pointRadius:4}
+    ]
+  },
+  options: {
+    scales: {r: {beginAtZero:true,max:5,ticks:{stepSize:1,display:false},pointLabels:{font:{size:12}},grid:{color:'rgba(128,128,128,0.15)'},angleLines:{color:'rgba(128,128,128,0.15)'}}},
+    plugins: {legend:{position:'bottom',labels:{padding:16,usePointStyle:true,pointStyleWidth:10}}},
+    responsive: true,
+    maintainAspectRatio: true
+  }
+});
+</script>
 
 ### 3.3 오브젝트 풀링
 
@@ -787,15 +912,45 @@ struct DamageEvent
 
 > 64 bytes 기준은 **복사 비용** 때문이다. struct는 값 복사되므로 너무 크면 복사 비용이 힙 할당 비용보다 커질 수 있다. 일반적으로 캐시 라인 크기(64B) 이하면 안전하다.
 
-{% include diagrams/decision-tree.html
-   question="참조 공유 또는 상속이 필요한가?"
-   yes_result="class 사용"
-   no_question="크기가 64 bytes 이하인가?"
-   no_yes_result="struct 사용 — Zero Allocation"
-   no_yes_highlight="success"
-   no_no_result="class 사용 (복사 비용 > 힙 할당)"
-   no_no_highlight="warning"
-%}
+<div class="gc-tree" style="margin:2rem 0;overflow-x:auto;">
+<svg viewBox="0 0 780 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;margin:0 auto;display:block;font-family:system-ui,-apple-system,sans-serif;">
+  <defs>
+    <filter id="gct-sh"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+    <marker id="gct-arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L10,5 L0,9Z" class="gct-af"/></marker>
+  </defs>
+  <rect x="185" y="10" width="330" height="50" rx="25" class="gct-q" filter="url(#gct-sh)"/>
+  <text x="350" y="40" text-anchor="middle" font-size="13" font-weight="700" class="gct-qt">참조 공유 또는 상속이 필요한가?</text>
+  <path d="M268,60 L268,90 L150,90 L150,120" fill="none" stroke="#4CAF50" stroke-width="2" marker-end="url(#gct-arr)"/>
+  <rect x="198" y="76" width="42" height="20" rx="4" fill="#4CAF50"/><text x="219" y="90" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Yes</text>
+  <path d="M432,60 L432,90 L520,90 L520,120" fill="none" stroke="#f44336" stroke-width="2" marker-end="url(#gct-arr)"/>
+  <rect x="460" y="76" width="34" height="20" rx="4" fill="#f44336"/><text x="477" y="90" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">No</text>
+  <rect x="50" y="120" width="200" height="50" rx="10" class="gct-rb" filter="url(#gct-sh)"/>
+  <text x="150" y="150" text-anchor="middle" font-size="13" font-weight="600" class="gct-rbt">class 사용</text>
+  <rect x="355" y="120" width="330" height="50" rx="25" class="gct-q" filter="url(#gct-sh)"/>
+  <text x="520" y="150" text-anchor="middle" font-size="13" font-weight="700" class="gct-qt">크기가 64 bytes 이하인가?</text>
+  <path d="M438,170 L438,203 L390,203 L390,230" fill="none" stroke="#4CAF50" stroke-width="2" marker-end="url(#gct-arr)"/>
+  <rect x="408" y="189" width="42" height="20" rx="4" fill="#4CAF50"/><text x="429" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Yes</text>
+  <path d="M602,170 L602,203 L650,203 L650,230" fill="none" stroke="#f44336" stroke-width="2" marker-end="url(#gct-arr)"/>
+  <rect x="618" y="189" width="34" height="20" rx="4" fill="#f44336"/><text x="635" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">No</text>
+  <rect x="270" y="230" width="240" height="56" rx="10" class="gct-rg" filter="url(#gct-sh)"/>
+  <text x="390" y="254" text-anchor="middle" font-size="13" font-weight="700" class="gct-rgt">struct 사용</text>
+  <text x="390" y="274" text-anchor="middle" font-size="11" class="gct-rgt2">Zero Allocation</text>
+  <rect x="530" y="230" width="240" height="56" rx="10" class="gct-ry" filter="url(#gct-sh)"/>
+  <text x="650" y="254" text-anchor="middle" font-size="13" font-weight="600" class="gct-ryt">class 사용</text>
+  <text x="650" y="274" text-anchor="middle" font-size="11" class="gct-ryt2">복사 비용 &gt; 힙 할당</text>
+</svg>
+</div>
+<style>
+.gct-q{fill:#f5f5f5;stroke:#bdbdbd;stroke-width:1.5}.gct-qt{fill:#333}.gct-af{fill:#9e9e9e}
+.gct-rb{fill:#e3f2fd;stroke:#1976d2;stroke-width:2}.gct-rbt{fill:#1565c0}
+.gct-rg{fill:#e8f5e9;stroke:#4CAF50;stroke-width:2.5}.gct-rgt{fill:#2e7d32}.gct-rgt2{fill:#388e3c}
+.gct-ry{fill:#fff8e1;stroke:#ff9800;stroke-width:2}.gct-ryt{fill:#e65100}.gct-ryt2{fill:#f57c00}
+[data-mode="dark"] .gct-q{fill:#2a2a2e;stroke:#616161}[data-mode="dark"] .gct-qt{fill:#e0e0e0}
+[data-mode="dark"] .gct-rb{fill:#1a2a3a;stroke:#42a5f5}[data-mode="dark"] .gct-rbt{fill:#90caf9}
+[data-mode="dark"] .gct-rg{fill:#1a3320;stroke:#66bb6a}[data-mode="dark"] .gct-rgt{fill:#a5d6a7}[data-mode="dark"] .gct-rgt2{fill:#81c784}
+[data-mode="dark"] .gct-ry{fill:#3a2e10;stroke:#ffa726}[data-mode="dark"] .gct-ryt{fill:#ffcc80}[data-mode="dark"] .gct-ryt2{fill:#ffb74d}
+@media(max-width:768px){.gc-tree svg{min-width:600px}}
+</style>
 
 ### 3.5 제네릭으로 Boxing 제거
 
@@ -1065,13 +1220,40 @@ IEnumerator LoadScene(string sceneName)
 | VR | 90 | 11.1ms | **0 bytes** |
 | 경쟁 게임 | 144+ | 6.9ms | **0 bytes** |
 
-{% include charts/bar-comparison.html
-   id="gcBudget" title="플랫폼별 권장 GC.Alloc / 프레임"
-   labels="PC (60fps),모바일 (30fps),VR (90fps),경쟁 게임 (144+fps)"
-   data="1024,512,1,1"
-   colors="rgba(33,150,243,0.7),rgba(255,152,0,0.7),rgba(244,67,54,0.7),rgba(244,67,54,0.7)"
-   unit="bytes"
-%}
+<div class="chart-wrapper">
+  <div class="chart-title">플랫폼별 권장 GC.Alloc / 프레임</div>
+  <canvas id="gcBudget" class="chart-canvas" height="240"></canvas>
+</div>
+<script>
+window.chartConfigs = window.chartConfigs || [];
+window.chartConfigs.push({
+  id: 'gcBudget',
+  type: 'bar',
+  data: {
+    labels: ['PC (60fps)', '모바일 (30fps)', 'VR (90fps)', '경쟁 게임 (144+fps)'],
+    datasets: [{
+      label: 'GC.Alloc',
+      data: [1024, 512, 1, 1],
+      backgroundColor: ['rgba(33,150,243,0.7)','rgba(255,152,0,0.7)','rgba(244,67,54,0.7)','rgba(244,67,54,0.7)'],
+      borderColor: ['rgb(33,150,243)','rgb(255,152,0)','rgb(244,67,54)','rgb(244,67,54)'],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    scales: {
+      y: {beginAtZero:true,title:{display:true,text:'bytes'},grid:{color:'rgba(128,128,128,0.1)'}},
+      x: {grid:{display:false}}
+    },
+    plugins: {
+      legend: {display:false},
+      tooltip: {callbacks:{label:function(ctx){return ctx.parsed.y + ' bytes'}}}
+    },
+    responsive: true,
+    maintainAspectRatio: true
+  }
+});
+</script>
 
 **VR과 경쟁 게임에서는 Update() 내 GC.Alloc이 문자 그대로 0이어야 한다.**
 

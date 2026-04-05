@@ -1,10 +1,7 @@
-{% assign default_lang = site.default_lang | default: site.lang | default: "ko" %}
 <script>
 (function() {
   var nodes = [
     {% for post in site.posts %}
-      {% assign post_lang = post.lang | default: default_lang %}
-      {% if post_lang == default_lang %}
     {
       "id": {{ post.url | jsonify }},
       "title": {{ post.title | jsonify }},
@@ -15,7 +12,6 @@
       "difficulty": {{ post.difficulty | default: "" | jsonify }},
       "prerequisites": {{ post.prerequisites | default: "" | jsonify }}
     },
-      {% endif %}
     {% endfor %}
   ];
 
