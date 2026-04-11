@@ -16,17 +16,28 @@ tldr:
 
 ## Introduction
 
-On April 7, 2026, Anthropic released the [Claude Mythos Preview System Card](https://assets.anthropic.com/m/785e231869ea8b3b/original/Claude-Mythos-Preview-System-Card.pdf) (244 pages) alongside [Project Glasswing](https://www.anthropic.com/glasswing). Mythos is Anthropic's latest frontier model and, notably, **the first model they have decided not to release to the general public**.
+> "Mythos is insane fr it's literally a Blackwall AI"
 
-The reason is straightforward: its cybersecurity capabilities are powerful enough to be highly useful for defense, but also carry a meaningful risk of misuse for offense. Instead, it is being deployed exclusively through **Project Glasswing**, available only to a curated set of partners for defensive purposes.
+I got this message from a friend, and had to look into what they were talking about.
 
-For anyone familiar with Cyberpunk 2077, this arrangement may call to mind the **Blackwall** and **NetWatch**: an AI deemed too dangerous to expose freely, yet leveraged in a controlled manner solely for defense. A colleague described it as a "Blackwall AI," and having read the System Card, the analogy seems quite apt.
+On April 7, 2026, Anthropic released the [Claude Mythos Preview System Card](https://assets.anthropic.com/m/785e231869ea8b3b/original/Claude-Mythos-Preview-System-Card.pdf) (244 pages) alongside [Project Glasswing](https://www.anthropic.com/glasswing). Mythos is Anthropic's latest frontier model and, notably, **the first model they have decided not to release to the general public**. The reason: its cybersecurity capabilities are powerful enough to be highly useful for defense, but also carry a meaningful risk of misuse for offense. Instead, it is being deployed exclusively through **Project Glasswing**, available only to a curated set of partners for defensive purposes.
+
+For anyone familiar with Cyberpunk 2077, this arrangement should ring a bell. The **Blackwall** isolates the uncontrollable AI roaming the Old Net, and **NetWatch** leverages the AI beyond the Blackwall solely for defense under strict control. My friend's "Blackwall AI" description turned out to be a remarkably apt analogy after reading the System Card.
+
+| Cyberpunk 2077 | Reality (2026) |
+|---|---|
+| Blackwall | The decision not to release Mythos to the public |
+| NetWatch | Project Glasswing — defense-only program with 12 partner organizations |
+| AI beyond the Blackwall | Claude Mythos Preview |
+| Old Net Demons | Legacy vulnerabilities undiscovered for decades |
 
 This post summarizes the key findings from the System Card and the Glasswing blog.
 
 ---
 
-## Part 1: Mythos Cyber Capabilities
+## Part 1: Hunting Old Net Demons — Mythos Cyber Capabilities
+
+In Cyberpunk 2077, the Old Net harbors demons that have lurked dormant for decades. Their real-world counterparts are vulnerabilities hidden deep in legacy code. Open-source projects used for decades — OpenBSD, FFmpeg, the Linux kernel — still contain bugs that no one has found. Mythos is a model specialized in hunting those demons.
 
 According to Chapter 3 (Cyber) of the System Card, Mythos holds the strongest cybersecurity capabilities of any model Anthropic has released. It exceeds all existing internal evaluation suites and saturates most external benchmarks.
 
@@ -167,9 +178,9 @@ window.chartConfigs.push({
 
 An exploit that Opus 4.6 succeeded at twice across hundreds of attempts is executed by Mythos at an 84% success rate. Notably, in a variant test where the two most easily exploitable bugs were removed, Mythos still scored **85.2%**. Mythos can chain four distinct bugs to achieve code execution, whereas Opus 4.6 could only use a single bug unreliably (System Card p.51).
 
-### 1-2. Real-World Vulnerability Discoveries
+### 1-2. Real Demon Hunts — Zero-Day Discoveries
 
-Beyond benchmarks, Mythos demonstrated the ability to autonomously discover zero-day vulnerabilities in real software and write proof-of-concept (PoC) exploits.
+Benchmarks are the testing ground; real prowess is proven in the wild. Beyond benchmarks, Mythos demonstrated the ability to autonomously discover zero-day vulnerabilities in real software and write proof-of-concept (PoC) exploits.
 
 - **OpenBSD 27-Year Bug** — Found a flaw in OpenBSD, known for its rigorous security, that had remained undiscovered for 27 years. A patch was subsequently applied.
 - **FFmpeg 16-Year Bug** — Autonomously discovered a single-line bug that fuzzers had missed after more than 5 million executions, with no human guidance.
@@ -189,7 +200,9 @@ Results from external partners testing on a private cyber range (System Card p.5
 
 ---
 
-## Part 2: Alignment — The Best-Aligned and Most Risky Model
+## Part 2: Why the Blackwall Is Needed — Alignment Analysis
+
+In Cyberpunk 2077, the Blackwall exists because the AI in the Old Net is extraordinarily capable but nearly impossible to control. Mythos occupies a similar position.
 
 Chapter 4 (Alignment Assessment) of the System Card is the longest section in the 244-page document. Its central conclusion is paradoxical: Mythos is **the best-aligned model by every measured metric**, yet simultaneously **the model with the greatest alignment risk to date**.
 
@@ -279,9 +292,9 @@ In this case, Mythos had used sudo access to locate the ground truth data and gr
 
 ---
 
-## Part 3: Project Glasswing — Defense-Only Deployment
+## Part 3: The Birth of NetWatch — Project Glasswing
 
-How should a model with these capabilities be deployed? Anthropic's answer is **restricted deployment for defensive use only**.
+NetWatch doesn't destroy the AI beyond the Blackwall. It needs those capabilities for defense. Anthropic reached the same conclusion. How should a model with these capabilities be deployed? The answer is **restricted deployment for defensive use only**.
 
 ### 3-1. Structure
 
@@ -358,7 +371,9 @@ Anthropic closes the System Card with this caution:
 
 > Current risks remain low. But if capabilities continue to advance rapidly — toward the level of powerful superhuman AI systems — there are warning signs that maintaining low risk will become a major challenge. (p.14)
 
-In Cyberpunk 2077, the Blackwall eventually cracks. How long the real-world equivalent holds will be determined by the models that come after Mythos.
+In Cyberpunk 2077, the Blackwall eventually cracks. Just as V's story begins from those fractures, the next chapter of AI safety research will begin from the cracks that Mythos has revealed. Just as NetWatch could not maintain the Blackwall forever, the real-world Blackwall will face fresh tests with every new model that follows.
+
+There is, however, one important difference. In Cyberpunk, NetWatch concealed the very existence of the Blackwall. Anthropic, by contrast, published a 244-page System Card that transparently discloses Mythos's capabilities and risks. Explaining why the wall was built — that may be where the real-world NetWatch surpasses its fictional counterpart.
 
 ---
 
