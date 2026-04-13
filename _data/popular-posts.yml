@@ -4,31 +4,31 @@
 posts:
   - url: "/posts/ClaudeCodeWindowsInstall/"
     title: "Windows에서 Claude Code 설치 완전 가이드 — 실전 트러블슈팅 포함 | Sehyup"
-    views: 41
+    views: 58
   - url: "/posts/UnityGCDeepDive/"
     title: "Unity GC 완전 정복 — Boehm GC 구조부터 Zero-Allocation 패턴까지 | Sehyup"
-    views: 22
-  - url: "/posts/llm-for-everyone/"
-    title: "비개발자를 위한 LLM 완전 가이드 - 기획자, QA, 마케터가 AI를 업무에 쓰는 법 | Sehyup"
-    views: 19
+    views: 24
   - url: "/posts/HashTable/"
     title: "CS 로드맵 (3) — 해시 테이블: O(1) 조회의 조건과 한계 | Sehyup"
     views: 17
+  - url: "/posts/llm-for-everyone/"
+    title: "비개발자를 위한 LLM 완전 가이드 - 기획자, QA, 마케터가 AI를 업무에 쓰는 법 | Sehyup"
+    views: 10
   - url: "/posts/ArrayAndLinkedList/"
     title: "CS 로드맵 (1) — 배열과 연결 리스트: 메모리의 지형을 읽다 | Sehyup"
-    views: 15
+    views: 9
   - url: "/posts/ClaudeCodeInsights/"
     title: "실전 데이터로 보는 게임 개발자의 AI 활용법 - 2,165 메시지의 기록 | Sehyup"
-    views: 10
+    views: 9
+  - url: "/posts/AddressableCustomAnalyzer/"
+    title: "Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체 | Sehyup"
+    views: 8
+  - url: "/posts/EvaluatingAgentsMd/"
+    title: "AGENTS.md는 정말 도움이 될까? - 코딩 에이전트의 컨텍스트 파일 효과를 검증한 논문 분석 | Sehyup"
+    views: 7
   - url: "/posts/GeminiCLIForGamePlanners/"
     title: "게임 기획자를 위한 Gemini CLI 완전 활용 가이드 — 사양서부터 밸런싱까지 | Sehyup"
-    views: 10
-  - url: "/posts/WhyCSMatters/"
-    title: "CS 로드맵 (0) — AI 시대, CS 지식은 왜 더 중요해졌는가 | Sehyup"
-    views: 10
-  - url: "/posts/FibonacciGoldenRatio/"
-    title: "피보나치 수열과 황금비 — 자연, 음악, 그리고 게임 사운드트랙의 숨겨진 수학 | Sehyup"
-    views: 9
-  - url: "/posts/CsharpLspVsMcp/"
-    title: "C# LSP vs JetBrains MCP — 토큰 효율성 분석 리포트 | Sehyup"
-    views: 8
+    views: 6
+  - url: "/posts/NativeContainerDeepDive/"
+    title: "NativeContainer 심화 — 컨테이너 생태계부터 커스텀 컨테이너 제작까지 | Sehyup"
+    views: 6
