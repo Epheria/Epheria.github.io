@@ -5,6 +5,7 @@ categories: [Unity, JobSystem]
 tags: [native container, native list, native hashmap, allocator, atomic safety handle, custom container, memory, unity, dots, performance]
 toc: true
 toc_sticky: true
+image: /assets/img/og/jobsystem.png
 math: true
 use_math: true
 mermaid: true

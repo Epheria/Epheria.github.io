@@ -5,6 +5,7 @@ categories: [Unity, JobSystem]
 tags: [gc, garbage collection, boehm, incremental gc, gc alloc, zero allocation, stackalloc, span, array pool, memory, profiler, optimization, unity]
 toc: true
 toc_sticky: true
+image: /assets/img/og/jobsystem.png
 math: true
 use_math: true
 mermaid: true

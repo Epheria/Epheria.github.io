@@ -6,11 +6,14 @@ categories: [Unity, JobSystem]
 tags: [gc, garbage collection, boehm, incremental gc, gc alloc, zero allocation, stackalloc, span, array pool, memory, profiler, optimization, unity]
 toc: true
 toc_sticky: true
+image: /assets/img/og/jobsystem.png
 math: true
 use_math: true
 mermaid: true
 chart: true
 difficulty: advanced
+prerequisites:
+  - /posts/NativeContainerDeepDive/
 tldr:
   - Unityは.NETの世代別GCではなくBoehm-Demers-Weiser GCを使用しており、非世代的（non-generational）+ 非移動（non-compacting）構造のためヒープ断片化が蓄積し、収集コストがヒープ全体に比例する
   - GC.Allocはboxing、クロージャキャプチャ、string連結、LINQ、params配列、コルーチンなど「見えない場所」で発生し、ProfilerのGC.Allocマーカーで正確に追跡できる

@@ -6,6 +6,7 @@ categories: [Unity, JobSystem]
 tags: [unity, job system, burst compiler, dots, native array, parallel, performance, optimization]
 toc: true
 toc_sticky: true
+image: /assets/img/og/jobsystem.png
 math: true
 use_math: true
 mermaid: true

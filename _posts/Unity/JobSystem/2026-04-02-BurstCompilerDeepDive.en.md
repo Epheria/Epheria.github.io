@@ -6,6 +6,7 @@ categories: [Unity, JobSystem]
 tags: [burst, llvm, simd, assembly, auto-vectorization, optimization, compiler, unity]
 toc: true
 toc_sticky: true
+image: /assets/img/og/jobsystem.png
 math: true
 use_math: true
 mermaid: true
