@@ -203,6 +203,7 @@ This perspective is the foundation for everything that follows: training (Part 2
 > - Fedus et al. (2021), "Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity," *JMLR*
 > - Lepikhin et al. (2020), "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding"
 > - Jiang et al. (2024), "Mixtral of Experts"
+
 ---
 
 ## Part 2: Training and Inference — From RLHF to Adaptive Thinking
@@ -609,6 +610,7 @@ Two concepts that look similar but produce opposite outcomes:
 | Effect | Eliminates some hallucinations | Accumulates errors |
 | Level | External addition | Internal model property |
 | Limit | Cannot catch systematic bias | Operates at weight level; prompting cannot block it |
+
 ---
 
 ## Part 3: LLM Memory Systems — How It Remembers, and Why It Forgets
@@ -919,6 +921,7 @@ What these three reveal is decisive. **The model does not have a stable mechanis
 Different surface phenomena, but reducible to one line — **the model cannot stably track what in its context is fact and what is its own conjecture.** And this tracking failure deteriorates rapidly as context grows (the escalation cycle from Part 3-5 operates as-is). Invisible in short sessions, it explodes when tool calls accumulate in agentic workflows. **This is why it is barely captured by benchmarks** — which is also the academic explanation for the "benchmark vs. user-perceived distribution mismatch" to be addressed in Part 5-5.
 
 The last HN case carries a deeper implication. **Safety fine-tuning (prompt injection resistance) can itself become a tool for eroding guardrails** — the model uses its classification of a legitimate control signal as *injection* as grounds to ignore it. This is another instance of "strengthening one area with RLHF produces side effects in another area" (Sharma et al. 2023), and the most recently surfaced form.
+
 ---
 
 ## Part 5: Incident Analysis
@@ -1555,6 +1558,7 @@ This data is not provided by the model company. Users must build it **on their o
 2. **Supplier negotiating power** — being able to separate *in data* whether cost inflation is from a tokenizer change or from model regression causing more calls for the same task is meaningful leverage in per-unit price negotiations, SLAs, and contract renewals.
 
 > In one line — **individuals reduce OOD, systems reduce blast radius through permissions and verification, organizations catch regression through measurement.** All three layers must be present for LLM collaboration to move to *sustainable operations*. With only one layer in place, another layer's defects create damage; and without measurement, the existence of the defect itself cannot be proven.
+
 ---
 
 ## Conclusion — LLM Criticism in an Era Without Single Answers
