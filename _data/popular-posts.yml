@@ -4,31 +4,31 @@
 posts:
   - url: "/posts/ClaudeCodeWindowsInstall/"
     title: "Windows에서 Claude Code 설치 완전 가이드 — 실전 트러블슈팅 포함 | Sehyup"
-    views: 64
+    views: 53
   - url: "/posts/UnityGCDeepDive/"
     title: "Unity GC 완전 정복 — Boehm GC 구조부터 Zero-Allocation 패턴까지 | Sehyup"
-    views: 25
-  - url: "/posts/llm-for-everyone/"
-    title: "비개발자를 위한 LLM 완전 가이드 - 기획자, QA, 마케터가 AI를 업무에 쓰는 법 | Sehyup"
-    views: 9
-  - url: "/posts/AddressableCustomAnalyzer/"
-    title: "Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체 | Sehyup"
-    views: 8
-  - url: "/posts/ClaudeCodeInsights/"
-    title: "실전 데이터로 보는 게임 개발자의 AI 활용법 - 2,165 메시지의 기록 | Sehyup"
-    views: 7
+    views: 32
   - url: "/posts/FlowFieldOptimization3Kto10K/"
     title: "Flow Field 최적화 - 3,000에서 10,000 에이전트로 스케일링하기 | Sehyup"
-    views: 6
-  - url: "/posts/NativeContainerDeepDive/"
-    title: "NativeContainer 심화 — 컨테이너 생태계부터 커스텀 컨테이너 제작까지 | Sehyup"
-    views: 6
-  - url: "/posts/EvaluatingAgentsMd/"
-    title: "AGENTS.md는 정말 도움이 될까? - 코딩 에이전트의 컨텍스트 파일 효과를 검증한 논문 분석 | Sehyup"
-    views: 5
-  - url: "/posts/UnityJobSystemBurst/"
-    title: "Unity C# Job System + Burst Compiler 완전 정복 - 원리부터 실전 파이프라인까지 | Sehyup"
-    views: 5
+    views: 10
   - url: "/posts/claude-mythos-blackwall/"
     title: "Claude Mythos Preview 분석 — 사이버 능력, Alignment 리스크, Project Glasswing | Sehyup"
-    views: 5
+    views: 9
+  - url: "/posts/NativeContainerDeepDive/"
+    title: "NativeContainer 심화 — 컨테이너 생태계부터 커스텀 컨테이너 제작까지 | Sehyup"
+    views: 8
+  - url: "/posts/AddressableCustomAnalyzer/"
+    title: "Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체 | Sehyup"
+    views: 7
+  - url: "/posts/UnityJobSystemBurst/"
+    title: "Unity C# Job System + Burst Compiler 완전 정복 - 원리부터 실전 파이프라인까지 | Sehyup"
+    views: 7
+  - url: "/posts/ClaudeCodeInsights/"
+    title: "실전 데이터로 보는 게임 개발자의 AI 활용법 - 2,165 메시지의 기록 | Sehyup"
+    views: 6
+  - url: "/posts/MemoryManagement/"
+    title: "CS 로드맵 (6) — 메모리 관리: 스택과 힙, GC, 그리고 프레임을 잡아먹는 것들 | Sehyup"
+    views: 6
+  - url: "/posts/BurstCompilerDeepDive/"
+    title: "Burst Compiler 내부 동작 심화 - LLVM 파이프라인부터 어셈블리 읽기까지 | Sehyup"
+    views: 4
