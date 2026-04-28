@@ -1,6 +1,6 @@
 ---
 title: 값 타입 vs 참조 타입 — 스택·힙과 Boxing의 숨은 비용
-date: 2026-04-29 09:00:00 +0900
+date: 2026-04-28 09:00:00 +0900
 categories: [Csharp, memory]
 tags: [csharp, dotnet, memory, value-type, boxing, performance, gc, il2cpp]
 toc: true

@@ -1,7 +1,7 @@
 ---
 title: Value Types vs Reference Types — Stack, Heap, and the Hidden Cost of Boxing
 lang: en
-date: 2026-04-29 09:00:00 +0900
+date: 2026-04-28 09:00:00 +0900
 categories: [Csharp, memory]
 tags: [csharp, dotnet, memory, value-type, boxing, performance, gc, il2cpp]
 toc: true

@@ -1,7 +1,7 @@
 ---
 title: 値型 vs 参照型 — スタック・ヒープと Boxing の隠れたコスト
 lang: ja
-date: 2026-04-29 09:00:00 +0900
+date: 2026-04-28 09:00:00 +0900
 categories: [Csharp, memory]
 tags: [csharp, dotnet, memory, value-type, boxing, performance, gc, il2cpp]
 toc: true
