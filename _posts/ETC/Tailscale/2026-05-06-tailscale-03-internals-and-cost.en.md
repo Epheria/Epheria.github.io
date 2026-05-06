@@ -1,7 +1,7 @@
 ---
 title: "Tailscale Series Part 3 — Internals, Cost, and Limits (DERP·MagicDNS·hole punching·a $7-per-year retrospective)"
 lang: en
-date: 2026-05-09 18:00:00 +0900
+date: 2026-05-06 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, nat-traversal, hole-punching, derp, magicdns, stun, ice, infrastructure]
 toc: true

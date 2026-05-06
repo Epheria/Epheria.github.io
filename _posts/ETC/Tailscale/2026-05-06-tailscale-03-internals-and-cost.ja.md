@@ -1,7 +1,7 @@
 ---
 title: "Tailscaleシリーズ第3編 — 動作原理とコスト・限界 (DERP・MagicDNS・hole punching・年1,100円振り返り)"
 lang: ja
-date: 2026-05-09 18:00:00 +0900
+date: 2026-05-06 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, nat-traversal, hole-punching, derp, magicdns, stun, ice, infrastructure]
 toc: true

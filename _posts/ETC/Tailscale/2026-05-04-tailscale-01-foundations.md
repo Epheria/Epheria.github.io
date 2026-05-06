@@ -1,6 +1,6 @@
 ---
 title: "Tailscale 시리즈 1편 — 창고 노트북으로 만든 한국 IP 우회 인프라 (동기·실측·구조)"
-date: 2026-05-07 18:00:00 +0900
+date: 2026-05-04 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, network, vpn, wireguard, mesh-vpn, p2p, exit-node, infrastructure]
 toc: true

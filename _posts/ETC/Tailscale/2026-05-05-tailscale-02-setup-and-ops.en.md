@@ -1,7 +1,7 @@
 ---
 title: "Tailscale Series Part 2 — Family Home Setup, Unattended Operation, and Security (What to Finish in One Visit)"
 lang: en
-date: 2026-05-08 18:00:00 +0900
+date: 2026-05-05 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, exit-node, windows, openssh, powershell, schtasks, security, infrastructure]
 toc: true

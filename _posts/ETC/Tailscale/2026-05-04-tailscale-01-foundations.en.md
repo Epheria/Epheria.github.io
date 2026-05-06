@@ -1,7 +1,7 @@
 ---
 title: "Tailscale Series Part 1 — A Korean-IP Bypass Built on a Garage Laptop (Motivation, Measurements, Architecture)"
 lang: en
-date: 2026-05-07 18:00:00 +0900
+date: 2026-05-04 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, network, vpn, wireguard, mesh-vpn, p2p, exit-node, infrastructure]
 toc: true

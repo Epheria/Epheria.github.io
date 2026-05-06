@@ -1,7 +1,7 @@
 ---
 title: "Tailscaleシリーズ第2回 — 実家セットアップ・無人運用・セキュリティ（一度の訪問で済ませること）"
 lang: ja
-date: 2026-05-08 18:00:00 +0900
+date: 2026-05-05 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, exit-node, windows, openssh, powershell, schtasks, security, infrastructure]
 toc: true

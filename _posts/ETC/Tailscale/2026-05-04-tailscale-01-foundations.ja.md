@@ -1,7 +1,7 @@
 ---
 title: "Tailscale シリーズ 第1回 — 押し入れのノートPCで作る韓国IP経由インフラ（動機・実測・構造）"
 lang: ja
-date: 2026-05-07 18:00:00 +0900
+date: 2026-05-04 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, network, vpn, wireguard, mesh-vpn, p2p, exit-node, infrastructure]
 toc: true

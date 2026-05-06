@@ -1,6 +1,6 @@
 ---
 title: "Tailscale 시리즈 2편 — 본가 셋업·무인 운영·보안 (1회 방문에서 끝낼 일들)"
-date: 2026-05-08 18:00:00 +0900
+date: 2026-05-05 18:00:00 +0900
 categories: [ETC, Tailscale]
 tags: [tailscale, exit-node, windows, openssh, powershell, schtasks, security, infrastructure]
 toc: true
