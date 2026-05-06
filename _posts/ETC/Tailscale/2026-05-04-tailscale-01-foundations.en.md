@@ -118,7 +118,7 @@ The tailnet currently has three nodes bound together: one exit node in Busan, tw
     <div class="mt-side">
       <div class="mt-tag">Japan (Clients)</div>
       <div class="mt-node mt-japan">
-        <div class="mt-name">jp1461npcl</div>
+        <div class="mt-name">fukuoka-mac</div>
         <div class="mt-os">macOS 26.1</div>
         <div class="mt-spec">Main laptop</div>
         <div class="mt-loc">Fukuoka home</div>
@@ -153,7 +153,7 @@ The tailnet currently has three nodes bound together: one exit node in Busan, tw
 | Node | Role | OS | Location | Connection mode |
 |---|---|---|---|---|
 | samsung-home-laptop | Exit node (Korean-IP egress) | Windows 11 Home | Busan family home | direct |
-| jp1461npcl | Main client | macOS 26.1 | Fukuoka home | direct |
+| fukuoka-mac | Main client | macOS 26.1 | Fukuoka home | direct |
 | fukuoka-home-pc | Additional client | Windows 11 | Fukuoka home | direct |
 
 All three nodes run **direct P2P** — they communicate directly without DERP relay. The mechanism that lets a direct path succeed even through two layers of home NAT is called hole punching, and Part 3 of the series covers it in depth.
@@ -177,50 +177,22 @@ All three nodes run **direct P2P** — they communicate directly without DERP re
 
 ## Measurements
 
-### DERP latency — 28 regions, measured from the Busan laptop
+### DERP latency — measured from the Busan laptop
 
-Here are the RTTs to all 28 regional DERP servers, as measured by `tailscale netcheck`. Tokyo is overwhelmingly the closest at 28ms, and all four East Asian regions are within 100ms.
+Here are the RTTs to a curated 8 regional DERP servers, as measured by `tailscale netcheck`. Tokyo is overwhelmingly the closest at 28ms, and all four East Asian regions are within 100ms.
 
-<div class="chart-wrapper">
-  <div class="chart-title">DERP latency (ms, Busan laptop → each region)</div>
-  <canvas id="derpLatency" class="chart-canvas" height="380"></canvas>
-</div>
-<script>
-window.chartConfigs = window.chartConfigs || [];
-window.chartConfigs.push({
-  id: 'derpLatency',
-  type: 'bar',
-  data: {
-    labels: ['Tokyo','Hong Kong','Singapore','Bengaluru','San Francisco','Seattle','Los Angeles','Denver','Chicago','Dallas','Toronto','New York','Honolulu','Miami','Ashburn','Sydney','London','Paris','Frankfurt','Amsterdam','Madrid','Warsaw','Nuremberg','Helsinki','Dubai','São Paulo','Nairobi','Johannesburg'],
-    datasets: [{
-      label: 'RTT (ms)',
-      data: [29,61.3,73.9,99.7,126.7,129.5,132.2,139.7,158.3,161.4,164.5,173.4,175.7,189.6,189.7,198.8,238.3,254.5,256.2,260.6,262.8,274.2,277.6,294,344.8,352,385.4,389.4],
-      backgroundColor: function(ctx){
-        var v = ctx.parsed && ctx.parsed.x !== undefined ? ctx.parsed.x : 0;
-        if (v < 60)  return 'rgba(76,175,80,0.85)';
-        if (v < 150) return 'rgba(255,193,7,0.8)';
-        if (v < 250) return 'rgba(255,152,0,0.75)';
-        return 'rgba(244,67,54,0.7)';
-      },
-      borderWidth: 0,
-      borderRadius: 4
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    scales: {
-      x: {beginAtZero:true,title:{display:true,text:'RTT (ms)'},grid:{color:'rgba(128,128,128,0.12)'}},
-      y: {grid:{display:false},ticks:{font:{size:11}}}
-    },
-    plugins: {
-      legend: {display:false},
-      tooltip: {callbacks:{label:function(ctx){return ctx.parsed.x + ' ms'}}}
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  }
-});
-</script>
+| Region | RTT (Busan → DERP) | Continent |
+|---|---|---|
+| **Tokyo** | **28ms** | East Asia (in use) |
+| Hong Kong | 61ms | East Asia |
+| Singapore | 74ms | Southeast Asia |
+| Bengaluru | 100ms | South Asia |
+| San Francisco | 127ms | North America (West) |
+| Ashburn | 190ms | North America (East) |
+| Sydney | 199ms | Oceania |
+| London | 238ms | Europe |
+
+If you need the full 28-region measurements, run `tailscale netcheck` on your own host.
 
 What 28ms to Tokyo means: even if hole punching fails and traffic falls back to DERP relay, the Busan↔Fukuoka RTT over a free public relay network still sits at the best-case range for the same regional cluster. **The fact that this global DERP infrastructure is provided for free** is, as we'll see later, a major axis of the cost model.
 

@@ -117,7 +117,7 @@ Tailnet에는 현재 세 개의 노드가 묶여있습니다. 부산의 exit nod
     <div class="mt-side">
       <div class="mt-tag">일본 (클라이언트)</div>
       <div class="mt-node mt-japan">
-        <div class="mt-name">jp1461npcl</div>
+        <div class="mt-name">fukuoka-mac</div>
         <div class="mt-os">macOS 26.1</div>
         <div class="mt-spec">메인 노트북</div>
         <div class="mt-loc">후쿠오카 자택</div>
@@ -152,7 +152,7 @@ Tailnet에는 현재 세 개의 노드가 묶여있습니다. 부산의 exit nod
 | 노드 | 역할 | OS | 위치 | 연결 모드 |
 |---|---|---|---|---|
 | samsung-home-laptop | Exit Node (한국 IP 출구) | Windows 11 Home | 부산 본가 | direct |
-| jp1461npcl | 메인 클라이언트 | macOS 26.1 | 후쿠오카 자택 | direct |
+| fukuoka-mac | 메인 클라이언트 | macOS 26.1 | 후쿠오카 자택 | direct |
 | fukuoka-home-pc | 추가 클라이언트 | Windows 11 | 후쿠오카 자택 | direct |
 
 세 노드 모두 **direct P2P** — DERP 중계 없이 직접 통신합니다. 가정 NAT 두 겹을 통과하면서도 직통이 성립하는 메커니즘은 hole punching이라 부르며, 본 시리즈 3편에서 자세히 다룹니다.
@@ -176,50 +176,22 @@ Tailnet에는 현재 세 개의 노드가 묶여있습니다. 부산의 exit nod
 
 ## 실측 데이터
 
-### DERP latency — 부산 노트북 기준 28개 리전
+### DERP latency — 부산 노트북 기준
 
-`tailscale netcheck`가 측정한 28개 리전 DERP 서버까지의 RTT입니다. 도쿄가 28ms로 압도적으로 가깝고, 동아시아 4개 리전이 모두 100ms 이내입니다.
+`tailscale netcheck`가 측정한 DERP 서버까지의 RTT 핵심 8개 리전입니다. 도쿄가 28ms로 압도적으로 가깝고, 동아시아 4개 리전이 모두 100ms 이내입니다.
 
-<div class="chart-wrapper">
-  <div class="chart-title">DERP latency (ms, 부산 노트북 → 각 리전)</div>
-  <canvas id="derpLatency" class="chart-canvas" height="380"></canvas>
-</div>
-<script>
-window.chartConfigs = window.chartConfigs || [];
-window.chartConfigs.push({
-  id: 'derpLatency',
-  type: 'bar',
-  data: {
-    labels: ['Tokyo','Hong Kong','Singapore','Bengaluru','San Francisco','Seattle','Los Angeles','Denver','Chicago','Dallas','Toronto','New York','Honolulu','Miami','Ashburn','Sydney','London','Paris','Frankfurt','Amsterdam','Madrid','Warsaw','Nuremberg','Helsinki','Dubai','São Paulo','Nairobi','Johannesburg'],
-    datasets: [{
-      label: 'RTT (ms)',
-      data: [29,61.3,73.9,99.7,126.7,129.5,132.2,139.7,158.3,161.4,164.5,173.4,175.7,189.6,189.7,198.8,238.3,254.5,256.2,260.6,262.8,274.2,277.6,294,344.8,352,385.4,389.4],
-      backgroundColor: function(ctx){
-        var v = ctx.parsed && ctx.parsed.x !== undefined ? ctx.parsed.x : 0;
-        if (v < 60)  return 'rgba(76,175,80,0.85)';
-        if (v < 150) return 'rgba(255,193,7,0.8)';
-        if (v < 250) return 'rgba(255,152,0,0.75)';
-        return 'rgba(244,67,54,0.7)';
-      },
-      borderWidth: 0,
-      borderRadius: 4
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    scales: {
-      x: {beginAtZero:true,title:{display:true,text:'RTT (ms)'},grid:{color:'rgba(128,128,128,0.12)'}},
-      y: {grid:{display:false},ticks:{font:{size:11}}}
-    },
-    plugins: {
-      legend: {display:false},
-      tooltip: {callbacks:{label:function(ctx){return ctx.parsed.x + ' ms'}}}
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  }
-});
-</script>
+| 리전 | RTT (부산 → DERP) | 대륙 |
+|---|---|---|
+| **Tokyo** | **28ms** | 동아시아 (사용 중) |
+| Hong Kong | 61ms | 동아시아 |
+| Singapore | 74ms | 동남아 |
+| Bengaluru | 100ms | 남아시아 |
+| San Francisco | 127ms | 북미 서부 |
+| Ashburn | 190ms | 북미 동부 |
+| Sydney | 199ms | 오세아니아 |
+| London | 238ms | 유럽 |
+
+전체 28개 리전 측정값이 필요하면 `tailscale netcheck` 한 줄로 직접 측정 가능합니다.
 
 도쿄 28ms가 의미하는 것: hole punching이 실패해 DERP 중계로 떨어져도, 부산↔후쿠오카 RTT는 무료 공용 중계망 위에서 여전히 동일 대륙권 best-case 수준에 있습니다. **무료로 제공되는 글로벌 DERP 인프라**가 비용 모델의 큰 축이라는 점을 미리 짚어둡니다.
 

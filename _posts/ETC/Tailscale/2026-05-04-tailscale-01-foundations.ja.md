@@ -118,7 +118,7 @@ Tailnet には現在3つのノードが束ねられています。釜山の exit
     <div class="mt-side">
       <div class="mt-tag">日本 (クライアント)</div>
       <div class="mt-node mt-japan">
-        <div class="mt-name">jp1461npcl</div>
+        <div class="mt-name">fukuoka-mac</div>
         <div class="mt-os">macOS 26.1</div>
         <div class="mt-spec">メインノートPC</div>
         <div class="mt-loc">福岡自宅</div>
@@ -153,7 +153,7 @@ Tailnet には現在3つのノードが束ねられています。釜山の exit
 | ノード | 役割 | OS | 場所 | 接続モード |
 |---|---|---|---|---|
 | samsung-home-laptop | Exit Node（韓国IP出口） | Windows 11 Home | 釜山実家 | direct |
-| jp1461npcl | メインクライアント | macOS 26.1 | 福岡自宅 | direct |
+| fukuoka-mac | メインクライアント | macOS 26.1 | 福岡自宅 | direct |
 | fukuoka-home-pc | 追加クライアント | Windows 11 | 福岡自宅 | direct |
 
 3ノードすべてが **direct P2P** — DERP 中継なしで直接通信しています。家庭用 NAT 二重越しでも直通が成立する仕組みは hole punching と呼ばれ、本シリーズ第3回で詳しく扱います。
@@ -177,50 +177,22 @@ Tailnet には現在3つのノードが束ねられています。釜山の exit
 
 ## 実測データ
 
-### DERP latency — 釜山ノートPCを起点とした28リージョン
+### DERP latency — 釜山ノートPCを起点とした計測
 
-`tailscale netcheck` が測定した28リージョンの DERP サーバーまでの RTT です。東京が28msと圧倒的に近く、東アジア4リージョンがすべて100ms以内です。
+`tailscale netcheck` が測定した DERP サーバーまでの RTT、主要8リージョンです。東京が28msと圧倒的に近く、東アジア4リージョンがすべて100ms以内です。
 
-<div class="chart-wrapper">
-  <div class="chart-title">DERP latency (ms、釜山ノートPC → 各リージョン)</div>
-  <canvas id="derpLatency" class="chart-canvas" height="380"></canvas>
-</div>
-<script>
-window.chartConfigs = window.chartConfigs || [];
-window.chartConfigs.push({
-  id: 'derpLatency',
-  type: 'bar',
-  data: {
-    labels: ['Tokyo','Hong Kong','Singapore','Bengaluru','San Francisco','Seattle','Los Angeles','Denver','Chicago','Dallas','Toronto','New York','Honolulu','Miami','Ashburn','Sydney','London','Paris','Frankfurt','Amsterdam','Madrid','Warsaw','Nuremberg','Helsinki','Dubai','São Paulo','Nairobi','Johannesburg'],
-    datasets: [{
-      label: 'RTT (ms)',
-      data: [29,61.3,73.9,99.7,126.7,129.5,132.2,139.7,158.3,161.4,164.5,173.4,175.7,189.6,189.7,198.8,238.3,254.5,256.2,260.6,262.8,274.2,277.6,294,344.8,352,385.4,389.4],
-      backgroundColor: function(ctx){
-        var v = ctx.parsed && ctx.parsed.x !== undefined ? ctx.parsed.x : 0;
-        if (v < 60)  return 'rgba(76,175,80,0.85)';
-        if (v < 150) return 'rgba(255,193,7,0.8)';
-        if (v < 250) return 'rgba(255,152,0,0.75)';
-        return 'rgba(244,67,54,0.7)';
-      },
-      borderWidth: 0,
-      borderRadius: 4
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    scales: {
-      x: {beginAtZero:true,title:{display:true,text:'RTT (ms)'},grid:{color:'rgba(128,128,128,0.12)'}},
-      y: {grid:{display:false},ticks:{font:{size:11}}}
-    },
-    plugins: {
-      legend: {display:false},
-      tooltip: {callbacks:{label:function(ctx){return ctx.parsed.x + ' ms'}}}
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  }
-});
-</script>
+| リージョン | RTT (釜山 → DERP) | 大陸 |
+|---|---|---|
+| **Tokyo** | **28ms** | 東アジア (使用中) |
+| Hong Kong | 61ms | 東アジア |
+| Singapore | 74ms | 東南アジア |
+| Bengaluru | 100ms | 南アジア |
+| San Francisco | 127ms | 北米西部 |
+| Ashburn | 190ms | 北米東部 |
+| Sydney | 199ms | オセアニア |
+| London | 238ms | 欧州 |
+
+全28リージョンの実測値が必要であれば、`tailscale netcheck` 一行で直接測定可能です。
 
 東京28msが意味するもの。hole punching が失敗してDERP中継に落ちても、釜山↔福岡のRTTは無料の公開中継網の上でも依然として同一大陸圏のベストケースに近い水準を保てる、ということです。**無料で提供されるグローバルDERPインフラ** がコストモデルの大きな柱であることを、ここで先に押さえておきます。
 
