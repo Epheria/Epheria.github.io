@@ -1,7 +1,7 @@
 ---
 title: UniRx - MessageBroker 활용 가이드
 date: 2025-09-24 12:21:00 +/-TTTT
-categories: [C#, UniRx]
+categories: [Csharp, UniRx]
 tags: [Unity, Csharp, UniRx, MessageBroker]
 
 difficulty: intermediate

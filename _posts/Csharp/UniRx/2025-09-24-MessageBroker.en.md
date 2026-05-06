@@ -1,7 +1,7 @@
 ---
 title: "UniRx - MessageBroker Guide"
 date: 2025-09-24 12:21:00 +/-TTTT
-categories: [C#, UniRx]
+categories: [Csharp, UniRx]
 tags: [Unity, Csharp, UniRx, MessageBroker]
 lang: en
 difficulty: intermediate

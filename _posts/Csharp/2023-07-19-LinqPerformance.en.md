@@ -1,7 +1,7 @@
 ---
 title: About C# LINQ Performance
 date: 2023-07-19 11:06:00 +/-TTTT
-categories: [C#, C# Study]
+categories: [Csharp, C# Study]
 tags: [csharp, linq]
 difficulty: intermediate
 lang: en
