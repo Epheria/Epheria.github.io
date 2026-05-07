@@ -82,7 +82,7 @@ Below are the five axes that `install.ps1` handles in one shot. They are not ind
       <div class="sa-detail">Restart tailscaled / sshd immediately if they die</div>
     </div>
   </div>
-  <p class="sa-cap">Only with all five axes in place do the "stable for 15+ unattended hours / 0 self-healing triggers" metrics show up.</p>
+  <p class="sa-cap">Only with all five axes in place do the "stable for 15+ unattended hours / 0 self-healing triggers" metrics show up. <strong>Among them, axis 5 (healthcheck) is the decisive one</strong> — axes 1 through 4 are "setup axes" that get the system installed correctly, while axis 5 is the "operations axis" that recovers when something installed correctly later breaks. That's the one tied directly to Part 1's <em>SchTasks Ready 5/5</em> metric.</p>
 </div>
 <style>
 .setup-axes .sa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem}
@@ -616,7 +616,7 @@ Among these, **CVE-2022-41924** was the heaviest incident, but the company moved
 - Periodically check security advisories at [tailscale.com/security-bulletins](https://tailscale.com/security-bulletins)
 - Use the ACL policy above to minimize blast radius in case of an incident
 
-"Free + E2E encrypted + SOC 2 certified" does not mean flawless — that is the reality of day-to-day operations.
+**What matters isn't "no flaws" but "flaws that close quickly."** CVE-2022-41924 went through the cycle of discovery → public security advisory → auto-update recommendation → patch rollout, and the company executed it normally; TS-2025-005's key-rotation advisory followed the same pattern. As long as that cycle stays unbroken — and as long as this series keeps auto-updates enabled, monitors security advisories regularly, and maintains ACL deny-by-default — Tailscale can sit inside the trust model.
 
 ---
 

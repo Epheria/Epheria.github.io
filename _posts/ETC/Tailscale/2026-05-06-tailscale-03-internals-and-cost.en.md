@@ -151,12 +151,12 @@ The five candidates Tailscale tries simultaneously per node are (per the officia
     <div class="cd-card cd-1">
       <div class="cd-num">1</div>
       <div class="cd-name">LAN address</div>
-      <div class="cd-detail">If on the same network, NAT traversal isn't needed at all. Direct communication.</div>
+      <div class="cd-detail">On the same network, direct communication. NAT traversal not needed.</div>
     </div>
     <div class="cd-card cd-2">
       <div class="cd-num">2</div>
       <div class="cd-name">STUN WAN address</div>
-      <div class="cd-detail">The public:port discovered through EIM NAT</div>
+      <div class="cd-detail">public:port discovered via STUN through EIM NAT</div>
     </div>
     <div class="cd-card cd-3">
       <div class="cd-num">3</div>
@@ -166,12 +166,12 @@ The five candidates Tailscale tries simultaneously per node are (per the officia
     <div class="cd-card cd-4">
       <div class="cd-num">4</div>
       <div class="cd-name">NAT64 path</div>
-      <div class="cd-detail">For an IPv6-only environment communicating with an IPv4 peer</div>
+      <div class="cd-detail">IPv6-only environments only</div>
     </div>
     <div class="cd-card cd-5">
       <div class="cd-num">5</div>
       <div class="cd-name">DERP relay</div>
-      <div class="cd-detail">Fallback when all four above fail. Always preselected</div>
+      <div class="cd-detail">Works even when the other four fail. <strong>Always preselected</strong> — communication starts on DERP from the first packet, upgrades the moment a faster path is found. Guaranteed to work even where UDP is blocked.</div>
     </div>
   </div>
   <p class="cd-cap">Tailscale picks the path with the lowest round-trip latency and immediately upgrades whenever a better path is found.</p>
@@ -285,7 +285,7 @@ At 100 packets/second, 2,048 probes = roughly 20 seconds. In practice, Tailscale
 
 > Tailscale's measurement — "half the time we'll get through in under 2 seconds" (How NAT traversal works)
 
-**The harder case — both sides EDM**: the search space multiplies and reaching 99.9% takes roughly 28 minutes (170,000 probes / 100 pkt/s). In that case, things effectively fall back to DERP.
+**The harder case — both sides EDM**: the search space multiplies and reaching 99.9% takes roughly 28 minutes (170,000 probes / 100 pkt/s). When both ends are EDM, things effectively fall back to DERP.
 
 In this series' setup, the Busan KT router is EIM and the Fukuoka home router is also EIM, so the birthday paradox never has to kick in — STUN alone does the job.
 
@@ -425,7 +425,11 @@ That's the complete story of how all the magic in this series' infrastructure ha
 | **MagicDNS** | Resolves short hostnames into tailnet IPs | Yes |
 | **WireGuard** | The data plane for all traffic (Curve25519 + ChaCha20-Poly1305) | Yes |
 
-These eight pieces are **automatically combined inside a single client**. The user only needs the one line `tailscale up` and a single exit-node approval in the admin console.
+These eight pieces work inside a single client at the same time, but they don't all play the same role. **The data plane (WireGuard) is the foundation of every byte of communication**, and the other seven are all tools for solving "where should the WireGuard packets go." Among them, **DERP is the safety net that lets communication start from the very first packet even when everything else fails** — it isn't a separate mode you have to opt into; **every connection starts with DERP at startup**, and the moment a faster path (LAN/STUN/port-map/hole punching) is found, the data plane is upgraded immediately.
+
+One common misconception — "if P2P direct doesn't work, you can't use Tailscale" is wrong. This series got P2P because both routers happen to be EIM, but even when both ends are EDM and the birthday paradox would take 28 minutes, communication still works through the DERP relay (only slower).
+
+From the user's side it's still just the one-line `tailscale up` and a single exit-node approval in the admin console — but eight tools competing and cooperating behind that one line is the picture this series set out to draw.
 
 ---
 
