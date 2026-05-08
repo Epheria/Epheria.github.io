@@ -103,7 +103,7 @@ Tailnet には現在3つのノードが束ねられています。釜山の exit
     <div class="mt-side">
       <div class="mt-tag">韓国 (Exit Node)</div>
       <div class="mt-node mt-busan">
-        <div class="mt-name">samsung-home-laptop</div>
+        <div class="mt-name">home-laptop</div>
         <div class="mt-os">Windows 11 Home</div>
         <div class="mt-spec">i7-8565U · 16GB</div>
         <div class="mt-loc">釜山実家 · KT GiGA 5G</div>
@@ -152,7 +152,7 @@ Tailnet には現在3つのノードが束ねられています。釜山の exit
 
 | ノード | 役割 | OS | 場所 | 接続モード |
 |---|---|---|---|---|
-| samsung-home-laptop | Exit Node（韓国IP出口） | Windows 11 Home | 釜山実家 | direct |
+| home-laptop | Exit Node（韓国IP出口） | Windows 11 Home | 釜山実家 | direct |
 | fukuoka-mac | メインクライアント | macOS 26.1 | 福岡自宅 | direct |
 | fukuoka-home-pc | 追加クライアント | Windows 11 | 福岡自宅 | direct |
 

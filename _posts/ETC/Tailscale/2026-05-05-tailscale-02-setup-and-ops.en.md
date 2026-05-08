@@ -109,7 +109,7 @@ winget install --id tailscale.tailscale --silent `
 & 'C:\Program Files\Tailscale\tailscale.exe' up `
     --advertise-exit-node `
     --ssh `
-    --hostname=samsung-home-laptop
+    --hostname=home-laptop
 ```
 
 What each of the three options means:
@@ -353,9 +353,9 @@ When you want to add a new device — a Fukuoka desktop, a new phone — to the 
 
 ```bash
 # From the Fukuoka Mac
-ssh samsung-home-laptop "Set-Content C:\Users\Sehyup\tailscale-setup\pending-key.txt '<one line of public key>'; schtasks /Run /TN AddSshKey"
+ssh home-laptop "Set-Content C:\Users\Sehyup\tailscale-setup\pending-key.txt '<one line of public key>'; schtasks /Run /TN AddSshKey"
 sleep 5
-ssh samsung-home-laptop "Get-Content C:\Users\Sehyup\tailscale-setup\add-ssh-key.log -Tail 5"
+ssh home-laptop "Get-Content C:\Users\Sehyup\tailscale-setup\add-ssh-key.log -Tail 5"
 ```
 
 Why this one-liner works:
@@ -413,9 +413,9 @@ Three safety nets — **(a) sanity check the key format, (b) prevent duplicate e
 When you want a comprehensive snapshot of the laptop's state from afar:
 
 ```bash
-ssh samsung-home-laptop "schtasks /Run /TN DiagnosticDump"
+ssh home-laptop "schtasks /Run /TN DiagnosticDump"
 sleep 3
-ssh samsung-home-laptop "Get-Content C:\Users\Sehyup\tailscale-setup\dump.txt -Encoding UTF8"
+ssh home-laptop "Get-Content C:\Users\Sehyup\tailscale-setup\dump.txt -Encoding UTF8"
 ```
 
 `DiagnosticDump` bundles the following nine sections into a single file (`tailnet-ops/windows/install/setup-helpers.ps1`).
@@ -549,7 +549,7 @@ Because the router firewall denies the packets, the Busan laptop's sshd has no i
 >
 > ```bash
 > nc -zv <Busan public IP> 22  # timeout or connection refused = expected
-> ssh samsung-home-laptop      # immediate connect via Tailscale 100.64.x.x = expected
+> ssh home-laptop      # immediate connect via Tailscale 100.64.x.x = expected
 > ```
 >
 > Both results need to show up at the same time for the setup to be working as intended — unreachable from the internet, reachable from inside the tailnet.
@@ -625,7 +625,7 @@ Among these, **CVE-2022-41924** was the heaviest incident, but the company moved
 With the five axes applied and the self-healing tasks registered, running `status.ps1` once shows the entire system state on a single screen. We capture this output right before leaving the family home and use it as a baseline for comparison from Fukuoka.
 
 ```bash
-ssh samsung-home-laptop 'powershell -NoProfile -ExecutionPolicy Bypass `
+ssh home-laptop 'powershell -NoProfile -ExecutionPolicy Bypass `
     -File C:\Users\Sehyup\tailscale-setup\status.ps1'
 ```
 
@@ -633,7 +633,7 @@ Expected output (conceptual form):
 
 ```
 === System ===
-ComputerName       : samsung-home-laptop
+ComputerName       : home-laptop
 Uptime             : 0d 0h 5m
 PowerSource        : AC
 
@@ -641,7 +641,7 @@ PowerSource        : AC
 Service            : Running / Automatic
 BackendState       : Running
 ExitNodeAdvertised : True
-TailscaleIP        : 100.64.88.55
+TailscaleIP        : 100.64.x.x
 
 === SSHD ===
 Service            : Running / Automatic
@@ -670,14 +670,14 @@ If all eight sections are healthy, you can leave the family home.
 
 | # | Item | Verification |
 |---|---|---|
-| 1 | Computer name set to `samsung-home-laptop` | `hostname` |
+| 1 | Computer name set to `home-laptop` | `hostname` |
 | 2 | Tailscale node registered in admin console + Exit Node approved + Disable key expiry | Browser |
 | 3 | sshd service Running + Automatic | `Get-Service sshd` |
 | 4 | Firewall: `sshd-tailscale` Enabled / default rule Disabled | `Get-NetFirewallRule "sshd-*"` |
-| 5 | **From a different network**, SSH connects successfully (4G, etc.) | `ssh samsung-home-laptop` |
+| 5 | **From a different network**, SSH connects successfully (4G, etc.) | `ssh home-laptop` |
 | 6 | Capture `status.ps1` baseline with the lid closed | the command above |
 | 7 | `NoAutoRebootWithLoggedOnUsers=1` applied | Check the registry |
-| 8 | **Redundancy**: SSH also works from the Fukuoka desktop | `ssh samsung-home-laptop` (different machine) |
+| 8 | **Redundancy**: SSH also works from the Fukuoka desktop | `ssh home-laptop` (different machine) |
 | 9 | Mac SSH key backed up (1Password / iCloud Keychain) | Check the backup tool |
 | 10 | (Optional) Cap battery charging at 80% in Samsung Settings | Microsoft Store app |
 

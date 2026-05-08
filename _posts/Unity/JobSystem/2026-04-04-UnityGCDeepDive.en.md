@@ -207,24 +207,44 @@ Boehm (Conservative GC):
 
 Therefore, only Gen0 (recent allocations) is frequently inspected, while Gen1/Gen2 (old objects) are inspected rarely. Gen0 collection is very fast — because the target set is small.
 
-```
-.NET Generational GC:
-┌──── Gen0 ────┐ ┌──── Gen1 ────┐ ┌────── Gen2 ──────┐
-│ New objects   │ │ Survived 1x  │ │ Old objects       │
-│ Frequent GC   │ │ Occasional   │ │ Rare collection   │
-│ ~0.1ms        │ │ ~1ms         │ │ ~10ms             │
-└──────────────┘ └──────────────┘ └───────────────────┘
-
-Unity Boehm GC:
-┌──────────────── Entire Heap (single generation) ───────┐
-│ New objects + old objects + everything                   │
-│                                                         │
-│ Scans everything every time                             │
-│ Cost ∝ heap size (number of alive objects)               │
-│                                                         │
-│ GC time increases linearly as heap grows                 │
-└─────────────────────────────────────────────────────────┘
-```
+<div class="gc-gen" style="margin:2rem 0;overflow-x:auto;">
+  <div class="gc-gen-section gc-gen-net">
+    <div class="gc-gen-title">.NET Generational GC</div>
+    <div class="gc-gen-grid">
+      <div class="gc-gen-card gc-gen-c0"><div class="gc-gen-name">Gen0</div><div class="gc-gen-desc">New objects · Frequent</div><div class="gc-gen-time">~0.1ms</div></div>
+      <div class="gc-gen-card gc-gen-c1"><div class="gc-gen-name">Gen1</div><div class="gc-gen-desc">Survived 1× · Occasional</div><div class="gc-gen-time">~1ms</div></div>
+      <div class="gc-gen-card gc-gen-c2"><div class="gc-gen-name">Gen2</div><div class="gc-gen-desc">Old objects · Rare</div><div class="gc-gen-time">~10ms</div></div>
+    </div>
+  </div>
+  <div class="gc-gen-vs">VS</div>
+  <div class="gc-gen-section gc-gen-unity">
+    <div class="gc-gen-title">Unity Boehm GC</div>
+    <div class="gc-gen-mono"><div class="gc-gen-name">Entire heap (single generation)</div><div class="gc-gen-desc">New objects + old objects + everything — scanned every time<br>Cost ∝ heap size · GC time grows linearly with heap</div></div>
+  </div>
+</div>
+<style>
+.gc-gen-section{padding:1rem 1.25rem;border-radius:12px}
+.gc-gen-net{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.gc-gen-unity{background:linear-gradient(135deg,#ffebee,#ffcdd2)}
+.gc-gen-title{font-weight:700;font-size:14px;color:#37474f;margin-bottom:.75rem;text-align:center}
+.gc-gen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.gc-gen-card,.gc-gen-mono{background:#fff;border-radius:8px;padding:.85rem;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.gc-gen-c0{border-top:3px solid #66bb6a}.gc-gen-c1{border-top:3px solid #ffa726}.gc-gen-c2{border-top:3px solid #ef5350}
+.gc-gen-mono{border-top:3px solid #d32f2f}
+.gc-gen-name{font-weight:700;font-size:14px;color:#212121}
+.gc-gen-desc{font-size:11.5px;color:#546e7a;margin:.4rem 0;line-height:1.6}
+.gc-gen-time{font-family:monospace;font-size:13px;font-weight:700;color:#1976d2}
+.gc-gen-vs{text-align:center;font-weight:900;font-size:13px;color:#757575;letter-spacing:2px;margin:.5rem 0}
+[data-mode="dark"] .gc-gen-net{background:linear-gradient(135deg,#1a3320,#263e2a)}
+[data-mode="dark"] .gc-gen-unity{background:linear-gradient(135deg,#3b1a1a,#4a2525)}
+[data-mode="dark"] .gc-gen-title{color:#cfd8dc}
+[data-mode="dark"] .gc-gen-card,[data-mode="dark"] .gc-gen-mono{background:#263238}
+[data-mode="dark"] .gc-gen-name{color:#eceff1}
+[data-mode="dark"] .gc-gen-desc{color:#b0bec5}
+[data-mode="dark"] .gc-gen-time{color:#64b5f6}
+[data-mode="dark"] .gc-gen-vs{color:#9e9e9e}
+@media(max-width:768px){.gc-gen-grid{grid-template-columns:1fr}}
+</style>
 
 **Key point**: Unity's GC incurs a cost **proportional to the total number of alive objects** every time. If there are 100MB of alive objects on the managed heap, even collecting 1KB of garbage requires scanning the entire 100MB.
 
@@ -236,25 +256,42 @@ This is why the advice to "minimize managed allocations" is **far more important
 
 Boehm GC **does not compact**. When objects are freed, holes remain in their place, and new allocations must find appropriately-sized holes to fill.
 
-```
-Fragmentation developing over time:
-
-Initial state (clean):
-┌──────────────────────────────────────────┐
-│ [A][B][C][D][E][F][G][H]    free space   │
-└──────────────────────────────────────────┘
-
-After some objects freed:
-┌──────────────────────────────────────────┐
-│ [A][ ][C][ ][ ][F][ ][H]    free space   │
-└──────────────────────────────────────────┘
-      ↑     ↑  ↑     ↑
-      holes (fragmentation)
-
-New allocation attempt: large array (size of 3 holes combined) needed
-→ No contiguous space! → Heap expansion needed
-→ Total free space is sufficient, but allocation fails
-```
+<div class="gc-frag" style="margin:2rem 0;overflow-x:auto;">
+  <div class="gc-frag-row">
+    <div class="gc-frag-head"><span class="gc-frag-step">1</span>Initial state — 8 objects allocated, 4 cells free</div>
+    <div class="gc-frag-strip"><span class="gc-frag-cell used">A</span><span class="gc-frag-cell used">B</span><span class="gc-frag-cell used">C</span><span class="gc-frag-cell used">D</span><span class="gc-frag-cell used">E</span><span class="gc-frag-cell used">F</span><span class="gc-frag-cell used">G</span><span class="gc-frag-cell used">H</span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span></div>
+  </div>
+  <div class="gc-frag-row">
+    <div class="gc-frag-head"><span class="gc-frag-step">2</span>After freeing B/D/E/G — scattered holes (fragmentation)</div>
+    <div class="gc-frag-strip"><span class="gc-frag-cell used">A</span><span class="gc-frag-cell hole"></span><span class="gc-frag-cell used">C</span><span class="gc-frag-cell hole"></span><span class="gc-frag-cell hole"></span><span class="gc-frag-cell used">F</span><span class="gc-frag-cell hole"></span><span class="gc-frag-cell used">H</span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span><span class="gc-frag-cell free"></span></div>
+  </div>
+  <div class="gc-frag-fail"><span class="gc-frag-step danger">3</span><strong>Allocate 5 contiguous cells</strong> — total 8 free (4 holes + 4 tail), but <span class="gc-frag-bad">longest contiguous run is only 4 cells</span> → allocation fails, heap expands (Unity does not return memory to the OS)</div>
+  <div class="gc-frag-legend"><span class="gc-frag-cell used sm">used</span><span class="gc-frag-cell hole sm"></span>freed hole<span class="gc-frag-cell free sm"></span>unused</div>
+</div>
+<style>
+.gc-frag-row{display:grid;grid-template-columns:280px 1fr;align-items:center;gap:1rem;margin-bottom:.6rem}
+.gc-frag-head{font-size:12.5px;color:#37474f;display:flex;align-items:center;gap:.5rem}
+.gc-frag-step{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#42a5f5;color:#fff;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.gc-frag-step.danger{background:#ef5350}
+.gc-frag-strip{display:flex;gap:2px;background:#f5f5f5;border-radius:6px;padding:4px;border:1px solid #e0e0e0}
+.gc-frag-cell{flex:1;text-align:center;font-family:monospace;font-size:12px;font-weight:700;padding:.55rem 0;border-radius:3px;min-width:18px}
+.gc-frag-cell.used{background:#42a5f5;color:#fff}
+.gc-frag-cell.hole{background:repeating-linear-gradient(45deg,#ffe0b2,#ffe0b2 4px,#fff5e0 4px,#fff5e0 8px);border:1px dashed #ff9800}
+.gc-frag-cell.free{background:#eceff1}
+.gc-frag-cell.sm{flex:none;display:inline-block;padding:.15rem .5rem;font-size:10.5px;margin:0 .35rem 0 .75rem;min-width:34px}
+.gc-frag-fail{display:flex;align-items:flex-start;gap:.5rem;background:#fff3e0;border-left:3px solid #ef5350;padding:.7rem .9rem;border-radius:6px;font-size:12.5px;color:#5d4037;margin-top:.6rem;line-height:1.6}
+.gc-frag-bad{color:#c62828;font-weight:600}
+.gc-frag-legend{font-size:11px;color:#90a4ae;text-align:right;margin-top:.4rem}
+[data-mode="dark"] .gc-frag-head{color:#cfd8dc}
+[data-mode="dark"] .gc-frag-strip{background:#263238;border-color:#37474f}
+[data-mode="dark"] .gc-frag-cell.used{background:#1976d2}
+[data-mode="dark"] .gc-frag-cell.hole{background:repeating-linear-gradient(45deg,#5d4037,#5d4037 4px,#3e2723 4px,#3e2723 8px);border-color:#a1887f}
+[data-mode="dark"] .gc-frag-cell.free{background:#37474f}
+[data-mode="dark"] .gc-frag-fail{background:#3e2723;color:#ffccbc;border-left-color:#ef9a9a}
+[data-mode="dark"] .gc-frag-bad{color:#ef9a9a}
+[data-mode="dark"] .gc-frag-legend{color:#78909c}
+@media(max-width:768px){.gc-frag-row{grid-template-columns:1fr;gap:.3rem}.gc-frag-legend{text-align:left}}
+</style>
 
 **Real-world impact:**
 - Fragmentation accumulates the longer a game runs
@@ -266,21 +303,47 @@ New allocation attempt: large array (size of 3 holes combined) needed
 
 From Unity 2019.1, the **Incremental GC** option was added.
 
-```
-Normal GC (Stop-the-World):
-┌── Frame ──┐
-│ Update     │ ████████ GC (5ms) ████████ │ Render │
-│            │         ↑ stops here        │        │
-└────────────┴─────────────────────────────┴────────┘
-Total frame time: 16.6ms + 5ms = 21.6ms → Frame drop!
-
-Incremental GC:
-┌── Frame 1 ──┐ ┌── Frame 2 ──┐ ┌── Frame 3 ──┐
-│ Update │ GC 1ms │ │ Update │ GC 1ms │ │ Update │ GC 1ms │
-│        │ (partial) │ │     │ (partial) │ │     │ (partial) │
-└────────┴──────────┘ └──────┴──────────┘ └──────┴──────────┘
-Distributed 1ms per frame → No frame drops
-```
+<div class="gc-tl" style="margin:2rem 0;overflow-x:auto;">
+  <div class="gc-tl-block">
+    <div class="gc-tl-head"><span class="gc-tl-tag bad">Normal GC · Stop-the-World</span><span class="gc-tl-total">Total 21.6ms · <strong>frame drop</strong></span></div>
+    <div class="gc-tl-track">
+      <span class="gc-tl-seg upd" style="width:30%">Update<br><small>~5ms</small></span>
+      <span class="gc-tl-seg gc-big" style="width:40%">GC 5ms<br><small>↑ main thread halted</small></span>
+      <span class="gc-tl-seg rnd" style="width:30%">Render<br><small>~5ms</small></span>
+    </div>
+  </div>
+  <div class="gc-tl-block">
+    <div class="gc-tl-head"><span class="gc-tl-tag good">Incremental GC · Distributed</span><span class="gc-tl-total">16.6ms per frame · <strong>no drops</strong></span></div>
+    <div class="gc-tl-multi">
+      <div class="gc-tl-mini"><span class="gc-tl-label">Frame 1</span><div class="gc-tl-track-mini"><span class="gc-tl-seg upd" style="width:80%">Update</span><span class="gc-tl-seg gc-mini" style="width:20%">GC 1ms</span></div></div>
+      <div class="gc-tl-mini"><span class="gc-tl-label">Frame 2</span><div class="gc-tl-track-mini"><span class="gc-tl-seg upd" style="width:80%">Update</span><span class="gc-tl-seg gc-mini" style="width:20%">GC 1ms</span></div></div>
+      <div class="gc-tl-mini"><span class="gc-tl-label">Frame 3</span><div class="gc-tl-track-mini"><span class="gc-tl-seg upd" style="width:80%">Update</span><span class="gc-tl-seg gc-mini" style="width:20%">GC 1ms</span></div></div>
+    </div>
+  </div>
+</div>
+<style>
+.gc-tl-block{margin-bottom:1.25rem}
+.gc-tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.5rem}
+.gc-tl-tag{display:inline-block;padding:.25rem .7rem;border-radius:14px;font-size:11.5px;font-weight:700;color:#fff}
+.gc-tl-tag.bad{background:#d32f2f}.gc-tl-tag.good{background:#388e3c}
+.gc-tl-total{font-size:12px;color:#546e7a}
+.gc-tl-track{display:flex;height:60px;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.gc-tl-seg{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;text-align:center;line-height:1.3}
+.gc-tl-seg small{font-size:10.5px;font-weight:400;opacity:.9;margin-top:2px}
+.gc-tl-seg.upd{background:linear-gradient(135deg,#42a5f5,#1976d2)}
+.gc-tl-seg.rnd{background:linear-gradient(135deg,#7e57c2,#5e35b1)}
+.gc-tl-seg.gc-big{background:repeating-linear-gradient(45deg,#d32f2f,#d32f2f 8px,#b71c1c 8px,#b71c1c 16px);border-left:2px solid #fff;border-right:2px solid #fff}
+.gc-tl-seg.gc-mini{background:linear-gradient(135deg,#66bb6a,#43a047)}
+.gc-tl-multi{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.gc-tl-mini{display:flex;flex-direction:column;gap:.2rem}
+.gc-tl-label{font-size:11px;color:#90a4ae;text-align:center}
+.gc-tl-track-mini{display:flex;height:38px;border-radius:5px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.gc-tl-track-mini .gc-tl-seg{font-size:11.5px}
+[data-mode="dark"] .gc-tl-total{color:#b0bec5}
+[data-mode="dark"] .gc-tl-label{color:#78909c}
+[data-mode="dark"] .gc-tl-seg.gc-big{border-color:#1b1b1b}
+@media(max-width:768px){.gc-tl-multi{grid-template-columns:1fr}.gc-tl-track{height:54px}}
+</style>
 
 #### How to Enable
 
@@ -323,16 +386,47 @@ However, a **write barrier** is needed. While marking is in progress, if the pro
 
 #### Limitations of Incremental GC
 
-```
-⚠️ What Incremental GC solves:
-✅ Mitigates frame drops by distributing GC spikes
-
-⚠️ What Incremental GC does NOT solve:
-❌ Total cost of GC (just spreads the same work across frames)
-❌ Heap fragmentation (still non-compacting)
-❌ Scan cost proportional to heap size
-❌ Cost of managed allocations themselves
-```
+<div class="gc-inc" style="margin:2rem 0;">
+  <div class="gc-inc-grid">
+    <div class="gc-inc-side good">
+      <div class="gc-inc-head"><span class="gc-inc-icon">✓</span>What it solves</div>
+      <ul class="gc-inc-list">
+        <li>Distributes GC spikes to <strong>mitigate frame drops</strong></li>
+      </ul>
+    </div>
+    <div class="gc-inc-side bad">
+      <div class="gc-inc-head"><span class="gc-inc-icon">✗</span>What it does <em>not</em> solve</div>
+      <ul class="gc-inc-list">
+        <li><strong>Total GC cost</strong> (same work, just spread across frames)</li>
+        <li><strong>Heap fragmentation</strong> (still non-compacting)</li>
+        <li><strong>Scan cost</strong> proportional to heap size</li>
+        <li>Cost of <strong>managed allocations</strong> themselves</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<style>
+.gc-inc-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem}
+.gc-inc-side{padding:1rem 1.25rem;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.gc-inc-side.good{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-left:4px solid #43a047}
+.gc-inc-side.bad{background:linear-gradient(135deg,#ffebee,#ffcdd2);border-left:4px solid #d32f2f}
+.gc-inc-head{font-weight:700;font-size:13.5px;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.gc-inc-side.good .gc-inc-head{color:#1b5e20}
+.gc-inc-side.bad .gc-inc-head{color:#b71c1c}
+.gc-inc-icon{display:inline-flex;width:22px;height:22px;border-radius:50%;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:900}
+.gc-inc-side.good .gc-inc-icon{background:#43a047}
+.gc-inc-side.bad .gc-inc-icon{background:#d32f2f}
+.gc-inc-list{list-style:none;padding:0;margin:0;font-size:12.5px;line-height:1.7;color:#37474f}
+.gc-inc-list li{padding:.2rem 0 .2rem .8rem;border-left:2px solid rgba(0,0,0,.08);margin-bottom:.2rem}
+.gc-inc-list li em{font-style:normal;background:rgba(211,47,47,.15);padding:0 .2rem;border-radius:3px}
+[data-mode="dark"] .gc-inc-side.good{background:linear-gradient(135deg,#1a3320,#263e2a)}
+[data-mode="dark"] .gc-inc-side.bad{background:linear-gradient(135deg,#3b1a1a,#4a2525)}
+[data-mode="dark"] .gc-inc-side.good .gc-inc-head{color:#a5d6a7}
+[data-mode="dark"] .gc-inc-side.bad .gc-inc-head{color:#ef9a9a}
+[data-mode="dark"] .gc-inc-list{color:#cfd8dc}
+[data-mode="dark"] .gc-inc-list li{border-left-color:rgba(255,255,255,.1)}
+@media(max-width:768px){.gc-inc-grid{grid-template-columns:1fr}}
+</style>
 
 **Incremental GC is a "painkiller", not a "cure".** The fundamental solution is to reduce managed allocations themselves.
 

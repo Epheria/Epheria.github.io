@@ -102,7 +102,7 @@ Tailnet에는 현재 세 개의 노드가 묶여있습니다. 부산의 exit nod
     <div class="mt-side">
       <div class="mt-tag">한국 (Exit Node)</div>
       <div class="mt-node mt-busan">
-        <div class="mt-name">samsung-home-laptop</div>
+        <div class="mt-name">home-laptop</div>
         <div class="mt-os">Windows 11 Home</div>
         <div class="mt-spec">i7-8565U · 16GB</div>
         <div class="mt-loc">부산 본가 · KT GiGA 5G</div>
@@ -151,7 +151,7 @@ Tailnet에는 현재 세 개의 노드가 묶여있습니다. 부산의 exit nod
 
 | 노드 | 역할 | OS | 위치 | 연결 모드 |
 |---|---|---|---|---|
-| samsung-home-laptop | Exit Node (한국 IP 출구) | Windows 11 Home | 부산 본가 | direct |
+| home-laptop | Exit Node (한국 IP 출구) | Windows 11 Home | 부산 본가 | direct |
 | fukuoka-mac | 메인 클라이언트 | macOS 26.1 | 후쿠오카 자택 | direct |
 | fukuoka-home-pc | 추가 클라이언트 | Windows 11 | 후쿠오카 자택 | direct |
 

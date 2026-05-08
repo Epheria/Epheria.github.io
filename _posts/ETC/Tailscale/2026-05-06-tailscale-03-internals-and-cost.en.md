@@ -351,7 +351,7 @@ The difference is the **data plane** — WebRTC uses SRTP (for media), Tailscale
 
 ## MagicDNS — why short hostnames work
 
-The reason this series can reach the Busan laptop with the single line `ssh samsung-home-laptop` is MagicDNS. It's the feature that **automatically maps short hostnames of tailnet nodes to 100.64.x.x**.
+The reason this series can reach the Busan laptop with the single line `ssh home-laptop` is MagicDNS. It's the feature that **automatically maps short hostnames of tailnet nodes to 100.64.x.x**.
 
 How it works:
 
@@ -368,7 +368,7 @@ How it works:
       <div class="md-num">2</div>
       <div class="md-body">
         <strong>Tailnet domain queries are handled locally</strong><br>
-        Queries like <code>samsung-home-laptop</code> or <code>samsung-home-laptop.tailba1ca3.ts.net</code> are answered by the client using the mapping table fetched from the control plane — it returns <code>100.64.88.55</code>.
+        Queries like <code>home-laptop</code> or <code>home-laptop.tailnet-xxxx.ts.net</code> are answered by the client using the mapping table fetched from the control plane — it returns <code>100.64.x.x</code>.
       </div>
     </div>
     <div class="md-step">
@@ -382,7 +382,7 @@ How it works:
       <div class="md-num">4</div>
       <div class="md-body">
         <strong>Search domain auto-appended</strong><br>
-        When you type a short name like <code>ssh samsung-home-laptop</code>, the OS automatically appends <code>.tailba1ca3.ts.net</code> to the query — that's why short names reach their target.
+        When you type a short name like <code>ssh home-laptop</code>, the OS automatically appends <code>.tailnet-xxxx.ts.net</code> to the query — that's why short names reach their target.
       </div>
     </div>
   </div>
@@ -398,7 +398,7 @@ How it works:
 [data-mode="dark"] .magic-dns .md-body code{background:rgba(255,255,255,.1);color:#e3f2fd}
 </style>
 
-The crux is the split-horizon DNS model where **the Tailscale client hijacks the OS DNS but lets ordinary traffic flow through**. The user can type `ssh samsung-home-laptop` with no extra setup, and at the same time normal web browsing isn't affected.
+The crux is the split-horizon DNS model where **the Tailscale client hijacks the OS DNS but lets ordinary traffic flow through**. The user can type `ssh home-laptop` with no extra setup, and at the same time normal web browsing isn't affected.
 
 > ### Hold on — let's pause here for a sec
 >

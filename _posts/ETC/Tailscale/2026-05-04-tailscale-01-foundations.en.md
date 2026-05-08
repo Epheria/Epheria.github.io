@@ -103,7 +103,7 @@ The tailnet currently has three nodes bound together: one exit node in Busan, tw
     <div class="mt-side">
       <div class="mt-tag">Korea (Exit Node)</div>
       <div class="mt-node mt-busan">
-        <div class="mt-name">samsung-home-laptop</div>
+        <div class="mt-name">home-laptop</div>
         <div class="mt-os">Windows 11 Home</div>
         <div class="mt-spec">i7-8565U · 16GB</div>
         <div class="mt-loc">Busan family home · KT GiGA 5G</div>
@@ -152,7 +152,7 @@ The tailnet currently has three nodes bound together: one exit node in Busan, tw
 
 | Node | Role | OS | Location | Connection mode |
 |---|---|---|---|---|
-| samsung-home-laptop | Exit node (Korean-IP egress) | Windows 11 Home | Busan family home | direct |
+| home-laptop | Exit node (Korean-IP egress) | Windows 11 Home | Busan family home | direct |
 | fukuoka-mac | Main client | macOS 26.1 | Fukuoka home | direct |
 | fukuoka-home-pc | Additional client | Windows 11 | Fukuoka home | direct |
 
