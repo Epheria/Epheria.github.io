@@ -1,8 +1,5 @@
 #  The contact options.
 
-- type: github
-  icon: "fab fa-github"
-  
 - type: jupyter-book
   icon: "fa-solid fa-book"
   url: 'https://epheria.github.io/study-notes/intro.html'

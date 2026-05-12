@@ -36,5 +36,4 @@ Unity/Unreal 엔진 개발 경험과 개발 과정에서 겪은 이슈들을 정
 
 ## Contact
 
-- **GitHub**: <https://github.com/Epheria>
 - **Email**: <tpguq1104@naver.com>
