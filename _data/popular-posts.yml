@@ -4,31 +4,31 @@
 posts:
   - url: "/posts/ClaudeCodeWindowsInstall/"
     title: "Windows에서 Claude Code 설치 완전 가이드 — 실전 트러블슈팅 포함 | Sehyup"
-    views: 46
+    views: 52
   - url: "/posts/UnityGCDeepDive/"
     title: "Unity GC 완전 정복 — Boehm GC 구조부터 Zero-Allocation 패턴까지 | Sehyup"
-    views: 15
+    views: 16
   - url: "/posts/llm-failure-anatomy/"
     title: "너프된 Claude — Transformer 작동원리부터 잠수함 패치·환각·토큰 폭증까지 | Sehyup"
-    views: 12
+    views: 13
   - url: "/posts/tailscale-01-foundations/"
     title: "Tailscale 시리즈 1편 — 창고 노트북으로 만든 한국 IP 우회 인프라 (동기·실측·구조) | Sehyup"
     views: 12
-  - url: "/posts/claude-mythos-blackwall/"
-    title: "Claude Mythos Preview 분석 — 사이버 능력, Alignment 리스크, Project Glasswing | Sehyup"
-    views: 9
   - url: "/posts/ValueTypeBoxing/"
     title: "값 타입 vs 참조 타입 — 스택·힙과 Boxing의 숨은 비용 | Sehyup"
     views: 8
-  - url: "/posts/AddressableCustomAnalyzer/"
-    title: "Unity Addressable 커스텀 분석 도구 제작기 - 38GB 유령 중복의 정체 | Sehyup"
-    views: 7
+  - url: "/posts/tailscale-03-internals-and-cost/"
+    title: "Tailscale 시리즈 3편 — 작동 원리와 비용·한계 (DERP·MagicDNS·hole punching·연 1만 원 회고) | Sehyup"
+    views: 6
   - url: "/posts/FlowFieldOptimization3Kto10K/"
     title: "Flow Field 최적화 - 3,000에서 10,000 에이전트로 스케일링하기 | Sehyup"
-    views: 6
+    views: 5
+  - url: "/posts/SpanReadOnlySpan/"
+    title: "Span<T>와 ReadOnlySpan<T> — 복사 없이 메모리를 바라보는 법 | Sehyup"
+    views: 5
+  - url: "/posts/claude-mythos-blackwall/"
+    title: "Claude Mythos Preview 분석 — 사이버 능력, Alignment 리스크, Project Glasswing | Sehyup"
+    views: 5
   - url: "/posts/tailscale-02-setup-and-ops/"
     title: "Tailscale 시리즈 2편 — 본가 셋업·무인 운영·보안 (1회 방문에서 끝낼 일들) | Sehyup"
     views: 5
-  - url: "/posts/HeapAndPriorityQueue/"
-    title: "CS 로드맵 (외전) — 힙과 우선순위 큐: 부분 순서의 경제학 | Sehyup"
-    views: 4
