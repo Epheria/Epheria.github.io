@@ -14,7 +14,7 @@ tldr:
   - C# code does not become machine code in one step. It first becomes **IL (Intermediate Language)**, then splits into three paths — JIT, NativeAOT, and IL2CPP — depending on **when that IL is translated** (JIT at runtime / AOT at build time)
   - IL is a register-free **stack machine**. Costs that source hides — boxing, virtual dispatch, string concatenation — show up as instructions, and `if` / `for` flatten into conditional branches
   - To read code as meaning rather than text, you need the compiler's stages (**lexing → syntax tree → semantic model → symbols**). grep sees only raw text that has not even been tokenized. The library that exposes this work is **Roslyn**
-  - The decisive tension is a single question: **"Can new code be created at runtime?"** JIT can; AOT cannot. That is why reflection's dynamic features and Roslyn collide with AOT, and why **Source Generators** (compile-time metaprogramming) step around that collision
+  - The decisive tension is a single question. **"Can new code be created at runtime?"** JIT can; AOT cannot. That is why reflection's dynamic features and Roslyn collide with AOT, and why **Source Generators** (compile-time metaprogramming) step around that collision
 ---
 
 [![Hits](https://hits.sh/epheria.github.io.svg?view=today-total&label=visitors)](https://hits.sh/epheria.github.io/)
@@ -499,7 +499,7 @@ Why use something like that? **Performance.** Serialization is the classic examp
 
 Now Part 1's one line is fully recovered. **AOT has already frozen every IL into machine code at build time, so there is no JIT engine left to accept IL at runtime and translate it.**
 
-So no matter how well `Reflection.Emit` produces IL at runtime, there is nowhere to turn it into machine code and run it. The code breaks. This is a constraint **shared** by IL2CPP and NativeAOT (both are AOT). The root cause of "things that break under AOT," tabulated in [Foundation Part 3](/posts/DotnetRuntimeVariants/), was exactly this one line.
+So no matter how well `Reflection.Emit` produces IL at runtime, there is nowhere to turn it into machine code and run it. The code breaks. This is a constraint **shared** by IL2CPP and NativeAOT (both are AOT). The root cause of "things that break under AOT," tabulated in [Foundation episode 3](/posts/DotnetRuntimeVariants/), was exactly this one line.
 
 One more thing breaks in chain. AOT deployments usually come with **trimming** (removing unused code to shrink the binary), and reflection that **looks up members by string** — like `type.GetMethod("UpdateFloor")` — cannot be analyzed statically. The trimmer decides the method is unused and deletes it; when reflection looks for it at runtime, it fails.
 
