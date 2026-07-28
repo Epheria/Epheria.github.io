@@ -219,55 +219,65 @@ tldr:
 - `difficulty`는 초급(`beginner`)/중급(`intermediate`)/고급(`advanced`) 중 하나
 - `prerequisites`에는 포스트 URL 경로(`/posts/{slug}/` 형식)를 사용
 
-## 포스트 현황 (2026-02-24 기준)
+## 포스트 현황 (2026-07-28 기준)
 
-### 카테고리별 포스트 수
+수치는 `_posts/` 실측값이다. 파일명 날짜 접두사가 있는 `.md`만 집계하며, 월·일이 0으로 패딩되지 않은 파일(`2024-6-12-...`)도 포함한다.
 
-| 카테고리 | 포스트 수 | 하위 카테고리 |
-|----------|----------|--------------|
-| Unity | 70 | addressable, animator, build, buildError, cinemachine, googleSheets, light, localization, naninovel, Netcode, optimization, Plugins, RenderTexture, Shader |
-| Unreal | 32 | Cpp, Mac, Study |
-| ETC | 18 | — |
-| Common | 15 | — |
+### 카테고리별 포스트 수 (ko 원본)
+
+| 카테고리 | ko | 하위 카테고리 |
+|----------|----|--------------|
+| Unity | 42 | JobSystem, Netcode, Plugins, RenderTexture, Shader, addressable, animator, build, buildError, cinemachine, googleSheets, light, localization, optimization |
+| Mathematics | 36 | Linear Algebra (33, Chapter1~6 중첩), Mathematical Thinking (2), Set Theory (1) |
+| AI | 21 | Claude, Gemini, LLM, Swift |
+| CS | 12 | — |
+| ETC | 12 | Tailscale |
 | Language | 12 | Japanese |
-| Python | 10 | Linear Algebra, numpy, Python Language |
-| ML | 8 | — |
-| Csharp | 7 | DataStructure, UniRx |
-| AI | 5 | Claude, LLM |
-| Toyverse | 4 | — |
-| TheQuesting | 3 | — |
-| Mathematics | 2 | Linear Algebra, Mathematical Thinking, Set Theory |
-| Survivor | 1 | — |
-| **합계** | **187** | |
+| Csharp | 10 | DataStructure, Thread, UniRx, foundation, internals, memory |
+| Unreal | 10 | Cpp, Mac, Study |
+| Python | 9 | numpy |
+| ML | 7 | — |
+| Common | 5 | — |
+| ProjectAliveRevive | 2 | FlowField |
+| Survivor | 2 | — |
+| Toyverse | 2 | — |
+| TheQuesting | 1 | — |
+| **합계** | **183** | |
 
-빈 카테고리 (예정): Investment, Pobos
+`Mathematics`는 `Linear Algebra` 아래에 `Chapter1`~`Chapter6`이 한 단계 더 중첩되어 있어, 3단 디렉토리 구조를 갖는 유일한 카테고리다.
 
 ### 다국어 번역 진척도
 
-jekyll-polyglot 플러그인으로 다국어 지원. 지원 언어: `ko`(기본), `en`, `ja`.
+jekyll-polyglot으로 다국어 지원. 지원 언어: `ko`(기본), `en`, `ja`. 중국어는 없다.
 
-- **전체 기본 포스트 (ko)**: 147개
-- **영어 번역 (`.en.md`)**: 37개 (25.2%)
-- **일본어 번역 (`.ja.md`)**: 37개 (25.2%)
-- **중국어 번역**: 없음
+- **ko 원본**: 183개
+- **번역 완료 (ko 기준)**: 119개 (65.0%) — en/ja가 항상 쌍으로 존재
+- **`.en.md` 파일**: 121개 / **`.ja.md` 파일**: 121개 (각각 고아 번역본 2개 포함)
 
-#### 카테고리별 번역 현황
-
-| 카테고리 | 기본(ko) | EN | JA | 번역률 |
-|----------|---------|-----|-----|--------|
-| Unity | 70 | 16 | 16 | 22.9% |
-| Unreal | 32 | 7 | 7 | 21.9% |
-| ETC | 18 | 5 | 5 | 27.8% |
-| Common | 15 | 5 | 5 | 33.3% |
-| Csharp | 7 | 2 | 2 | 28.6% |
-| AI | 5 | 0 | 0 | 0% |
-| Toyverse | 4 | 1 | 1 | 25.0% |
-| TheQuesting | 3 | 1 | 1 | 33.3% |
+| 카테고리 | ko | EN | JA | 번역률 |
+|----------|----|----|----|--------|
+| Unity | 42 | 38 | 38 | 90.5% |
+| Mathematics | 36 | 2 | 2 | 5.6% |
+| AI | 21 | 21 | 21 | 100% |
+| CS | 12 | 12 | 12 | 100% |
+| ETC | 12 | 11 | 11 | 91.7% |
 | Language | 12 | 0 | 0 | 0% |
-| Python | 10 | 0 | 0 | 0% |
-| ML | 8 | 0 | 0 | 0% |
-| Mathematics | 2 | 0 | 0 | 0% |
-| Survivor | 1 | 0 | 0 | 0% |
-| **합계** | **187** | **37** | **37** | **25.2%** |
+| Csharp | 10 | 10 | 10 | 100% |
+| Unreal | 10 | 12 | 12 | 100% (고아 2개 별도) |
+| Python | 9 | 6 | 6 | 66.7% |
+| ML | 7 | 0 | 0 | 0% |
+| Common | 5 | 5 | 5 | 100% |
+| ProjectAliveRevive | 2 | 2 | 2 | 100% |
+| Survivor | 2 | 0 | 0 | 0% |
+| Toyverse | 2 | 1 | 1 | 50% |
+| TheQuesting | 1 | 1 | 1 | 100% |
+| **합계** | **183** | **121** | **121** | **65.0%** |
 
-미번역 카테고리: AI, Language, Python, ML, Mathematics, Survivor
+미번역 카테고리: Language, ML, Survivor. 번역 잔여량이 가장 많은 곳은 `Mathematics`(34편 미번역)이고, 그다음이 `Unity`(4편)다.
+
+### 정리가 필요한 항목
+
+- **고아 번역본 4개**: `_posts/Unreal/Cpp/2026-02-20-CppForUnreal06`, `07`의 `.en.md`/`.ja.md`가 ko 원본 없이 존재한다. 현재 en/ja 사이트에만 노출된다
+- **빈 디렉토리**: `_posts/en/`, `_posts/ja/` (내용 없음, 삭제 대상)
+- **비포스트 파일**: `_posts/Unity/optimization/메모용.md` (날짜 접두사 없어 Jekyll이 포스트로 처리하지 않음)
+- **미커밋 초안 2개**: `_posts/ETC/2026-04-08-UnityCLIArchitecture.md`, `_posts/Survivor/2026-04-07-SurvivorPortfolio.md` (위 집계에 포함됨)
