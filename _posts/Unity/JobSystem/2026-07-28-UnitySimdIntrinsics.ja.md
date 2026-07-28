@@ -680,6 +680,8 @@ SIMDは最適化のはしごの最後の段に近いです。適用を検討す�
 
 ポインタ追跡（pointer chasing）がベクトル化と相容れない理由は明確です。次に読むアドレスが**いま読んでいる値の中に入っている**からです。ロードが完了しなければ次のロードのアドレスが決まらないためメモリアクセスが直列に縛られ、ハードウェアプリフェッチャは次のアドレスを予測できず、ベクトルロードが要求する「連続した128bit」は最初から存在しません。Part 4でスカラー合算が遅かった理由は浮動小数点加算のレイテンシに縛られたことでしたが、ポインタ追跡は同じ直列依存が**メモリレイテンシ**（キャッシュミス時に数百サイクル）に掛かった形です。ここにSIMDを載せても意味がありません。ボトルネックが演算ではないからです。
 
+同じ罠がデータ構造の外でも同じ姿で現れます。正規表現エンジンのDFA実行が代表例で、核心が`state = table[state][byte]`の一行なので、**次に読むテーブルのアドレスがいま読んだ値の中に入っています。** ポインタ追跡と構造が同じなら結果も同じで、grepやripgrepのような検索ツールはオートマトン自体をベクトル化する代わりに、**SIMDプリフィルタ + スカラー検証**へ役割を分けます。候補位置を選び出すスキャンは`memchr`（SSE2/AVX2/NEON）やTeddyのようなSIMDアルゴリズムが担当し、絞り込まれた少数の候補だけが遅いステートマシンへ渡されます。ベクトル化の可否をコードの種類ではなく**アクセスが直列か**が決めるという原則は、ゲームの外でもそのまま貫かれます。
+
 解法はSIMDではなく**線形化**です。ポインタを配列インデックスに置き換え、ノードを連続した配列（アリーナ）に収める変換であり、RendelloがHNで共有した経験 - ヒープに散らばったポインタベースのツリーを線形配列構造に変えてキャッシュ効率を上げた事例 - がまさにこれです。
 
 ```csharp
@@ -720,6 +722,7 @@ Rendelloの「データ表現は教条ではなくアクセスパターンに結
 | 実測の利得 (M4 Pro, .NET 10) | float 100万の合算が3.6倍、一致カウントが2.7倍 - 倍率はスカラー側のボトルネックが決める |
 | Unityでの経路 | Burstが唯一の信頼できる経路。自動ベクトル化 → Unity.Mathematics float4 → Burst Intrinsics v128の順で降りるが、降りる前にBurst Inspectorで確認 |
 | ツリー・グラフ構造 | ポインタ追跡はメモリレイテンシに直列で縛られベクトル化不可 → インデックス配列への線形化が先行。さらにベクトル幅が分岐数を決める（Unity PhysicsのBVHは4-way + `FourTransposedAabbs`） |
+| ステートマシン（ゲーム外の事例） | DFAの`state = table[state][byte]`も同じ直列依存 → grepやripgrepはオートマトンではなくスキャンだけをベクトル化（SIMDプリフィルタ + スカラー検証） |
 
 ## シリーズリンク
 
@@ -762,6 +765,11 @@ Rendelloの「データ表現は教条ではなくアクセスパターンに結
 
 - RendelloのData-Oriented Design関連 Hacker News コメント — <https://hn.algolia.com/?query=Data-Oriented%20Design%20author%3ARendello&sort=byPopularity&type=all>
 - Richard Fabian, *Data-Oriented Design* — <https://www.dataorienteddesign.com/dodbook/>
+
+### ゲーム外のSIMD - テキスト検索
+
+- ripgrepのSIMD高速化に関する議論（memchr・Teddyプリフィルタ） — <https://github.com/BurntSushi/ripgrep/discussions/1822>
+- Teddy 多パターンマッチングアルゴリズム（Hyperscan由来） — <https://github.com/jneem/teddy>
 
 ### コミュニティ・議論
 

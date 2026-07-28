@@ -680,6 +680,8 @@ Condition 1 above ("is the data laid out in SoA form?") actually hides a harder 
 
 The reason pointer chasing is the natural enemy of vectorization is specific. The address you read next **lives inside the value you are reading right now.** A load has to complete before the address of the next load is known, so memory accesses become serialized, the hardware prefetcher cannot predict where to go next, and the contiguous 128 bits a vector load demands never exist in the first place. In Part 4 the scalar sum was slow because it was bound to the latency of floating-point addition; pointer chasing is that same serial dependency, except bound to **memory latency** — hundreds of cycles on a cache miss. Layering SIMD on top accomplishes nothing, because compute was never the bottleneck.
 
+The same trap shows up outside data structures in exactly the same shape. Running a regex engine's DFA is the classic case: the core of it is the single line `state = table[state][byte]`, which means **the table address you read next lives inside the value you just read.** Same structure as pointer chasing, same outcome — so search tools like grep and ripgrep don't vectorize the automaton itself. They split the work into a **SIMD prefilter plus scalar verification**. SIMD algorithms such as `memchr` (SSE2/AVX2/NEON) or Teddy handle the scan that picks out candidate positions, and only the small set of survivors is handed to the slow state machine. The principle that vectorizability is decided by **whether the access is serial** rather than by what kind of code it is holds just as firmly outside of games.
+
 The fix is not SIMD but **linearization**: replace pointers with array indices and put the nodes in one contiguous arena. This is exactly what Rendello described on HN — taking a pointer-based tree scattered across the heap and turning it into a linearized array structure to raise cache efficiency.
 
 ```csharp
@@ -720,6 +722,7 @@ Finally, the most practical single line of advice in the original article, trans
 | Measured gain (M4 Pro, .NET 10) | 3.6x on summing 1M floats, 2.7x on match counting — the ratio is set by what the scalar side is bound on |
 | The path in Unity | Burst is the only trustworthy path. Descend in order from auto-vectorization to Unity.Mathematics float4 to Burst Intrinsics v128, and check with Burst Inspector before each step down |
 | Trees and graphs | Pointer chasing is serialized on memory latency and cannot be vectorized → linearizing into index arrays comes first. Beyond that, the vector width sets the branching factor (Unity Physics' BVH is 4-way with `FourTransposedAabbs`) |
+| State machines (outside games) | A DFA's `state = table[state][byte]` carries the same serial dependency → grep and ripgrep vectorize only the scan, not the automaton (SIMD prefilter + scalar verification) |
 
 ## Series Links
 
@@ -762,6 +765,11 @@ Finally, the most practical single line of advice in the original article, trans
 
 - Rendello's Hacker News comments on Data-Oriented Design — <https://hn.algolia.com/?query=Data-Oriented%20Design%20author%3ARendello&sort=byPopularity&type=all>
 - Richard Fabian, *Data-Oriented Design* — <https://www.dataorienteddesign.com/dodbook/>
+
+### SIMD Outside Games — Text Search
+
+- Discussion of ripgrep's SIMD acceleration (memchr and Teddy prefilters) — <https://github.com/BurntSushi/ripgrep/discussions/1822>
+- Teddy multi-pattern matching algorithm (derived from Hyperscan) — <https://github.com/jneem/teddy>
 
 ### Community · Discussion
 

@@ -679,6 +679,8 @@ SIMD는 최적화 사다리의 마지막 칸에 가깝습니다. 적용을 검�
 
 포인터 추적(pointer chasing)이 벡터화와 상극인 이유는 분명합니다. 다음에 읽을 주소가 **지금 읽고 있는 값 안에 들어 있기** 때문입니다. 로드가 완료되어야 다음 로드의 주소가 정해지므로 메모리 접근이 직렬로 묶이고, 하드웨어 프리페처는 다음 주소를 예측할 수 없으며, 벡터 로드가 요구하는 "연속된 128bit"는 처음부터 존재하지 않습니다. Part 4에서 스칼라 합산이 느렸던 이유가 부동소수점 덧셈의 지연시간에 묶인 것이었는데, 포인터 추적은 같은 직렬 의존성이 **메모리 지연시간**(캐시 미스 시 수백 사이클)에 걸린 형태입니다. 여기에 SIMD를 얹는 것은 의미가 없습니다. 병목이 연산이 아니니까요.
 
+같은 함정이 자료구조 밖에서도 똑같은 모습으로 나타납니다. 정규식 엔진의 DFA 실행이 대표적인데, 핵심이 `state = table[state][byte]` 한 줄이라 **다음에 읽을 테이블 주소가 방금 읽은 값 안에 들어 있습니다.** 포인터 추적과 구조가 같으니 결과도 같아서, grep·ripgrep 같은 검색 도구는 오토마톤 자체를 벡터화하는 대신 **SIMD 프리필터 + 스칼라 검증**으로 역할을 나눕니다. 후보 위치를 골라내는 스캔은 `memchr`(SSE2/AVX2/NEON)이나 Teddy 같은 SIMD 알고리즘이 담당하고, 걸러진 소수의 후보만 느린 상태 기계로 넘어갑니다. 벡터화 가능 여부를 코드의 종류가 아니라 **접근이 직렬인가**가 정한다는 원칙은 게임 밖에서도 그대로 관철됩니다.
+
 해법은 SIMD가 아니라 **선형화**입니다. 포인터를 배열 인덱스로 바꾸고 노드를 연속 배열(아레나)에 담는 변환이고, Rendello가 HN에서 공유한 경험 — 힙에 흩어진 포인터 기반 트리를 선형 배열 구조로 바꿔 캐시 효율을 올린 사례 — 이 정확히 이것입니다.
 
 ```csharp
@@ -719,6 +721,7 @@ Rendello의 "데이터 표현은 교조가 아니라 접근 패턴에 묶여야 
 | 실측 이득 (M4 Pro, .NET 10) | float 100만 합산 3.6배, 일치 카운트 2.7배 — 배율은 스칼라 쪽 병목이 결정 |
 | Unity에서의 경로 | Burst가 유일한 신뢰 경로. 자동 벡터화 → Unity.Mathematics float4 → Burst Intrinsics v128 순으로 내려가되, 내려가기 전에 Burst Inspector로 확인 |
 | 트리·그래프 자료구조 | 포인터 추적은 메모리 지연에 직렬로 묶여 벡터화 불가 → 인덱스 배열 선형화가 선행. 나아가 벡터 폭이 분기 계수를 정함 (Unity Physics BVH = 4-way + `FourTransposedAabbs`) |
+| 상태 기계 (게임 밖 사례) | DFA의 `state = table[state][byte]`도 같은 직렬 의존 → grep·ripgrep은 오토마톤 대신 스캔만 벡터화 (SIMD 프리필터 + 스칼라 검증) |
 
 ## 시리즈 연결
 
@@ -761,6 +764,11 @@ Rendello의 "데이터 표현은 교조가 아니라 접근 패턴에 묶여야 
 
 - Rendello의 Data-Oriented Design 관련 HN 댓글 모음 — <https://hn.algolia.com/?query=Data-Oriented%20Design%20author%3ARendello&sort=byPopularity&type=all>
 - Richard Fabian, *Data-Oriented Design* — <https://www.dataorienteddesign.com/dodbook/>
+
+### 게임 밖의 SIMD — 텍스트 검색
+
+- ripgrep의 SIMD 가속 논의 (memchr · Teddy 프리필터) — <https://github.com/BurntSushi/ripgrep/discussions/1822>
+- Teddy 다중 패턴 매칭 알고리즘 (Hyperscan 유래) — <https://github.com/jneem/teddy>
 
 ### 커뮤니티 · 토론
 
