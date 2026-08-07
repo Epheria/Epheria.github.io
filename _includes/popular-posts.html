@@ -10,15 +10,23 @@
   <ol class="popular-posts-list content list-unstyled ps-0 pb-1 ms-1 mt-2">
     {% for item in popular limit: 10 %}
       {% assign display_url = item.url %}
-      {% assign display_title = item.title %}
-      {% if current_lang != default_lang %}
-        {% assign base_slug = item.url | split: '/posts/' | last | replace: '/', '' %}
+      {%- comment -%}
+        item.title은 GA의 pageTitle이라 " | Sehyup" 접미사가 붙어 있고, 제목을 고친
+        포스트는 옛 제목이 남는다. 기본 언어에서도 site.posts를 조회해 실제 제목을 쓴다.
+        조회에 실패하는 경우(삭제된 포스트 등)만 GA 제목으로 되돌아간다.
+      {%- endcomment -%}
+      {% assign ga_title_suffix = ' | ' | append: site.title %}
+      {% assign display_title = item.title | remove: ga_title_suffix %}
+      {% assign base_slug = item.url | split: '/posts/' | last | replace: '/', '' %}
+      {% if current_lang == default_lang %}
+        {% assign target_slug = base_slug %}
+      {% else %}
         {% assign target_slug = base_slug | append: '.' | append: current_lang %}
-        {% assign matched_posts = site.posts | where: 'slug', target_slug %}
-        {% if matched_posts.size > 0 %}
-          {% assign display_url = matched_posts[0].url %}
-          {% assign display_title = matched_posts[0].title %}
-        {% endif %}
+      {% endif %}
+      {% assign matched_posts = site.posts | where: 'slug', target_slug %}
+      {% if matched_posts.size > 0 %}
+        {% assign display_url = matched_posts[0].url %}
+        {% assign display_title = matched_posts[0].title %}
       {% endif %}
       <li class="popular-post-item lh-lg">
         <a href="{{ display_url }}" title="{{ display_title | escape }}">

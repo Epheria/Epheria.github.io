@@ -53,20 +53,32 @@ def get_recent_post_slugs(posts_dir="_posts", months=6):
         # 번역 파일(.en.md, .ja.md) 제외
         if re.search(r'\.(en|ja)\.md$', filename):
             continue
-        # 파일명 패턴: YYYY-MM-DD-slug.md
-        match = re.match(r'(\d{4}-\d{2}-\d{2})-(.+)\.md$', filename)
+        # 파일명 패턴: YYYY-M-D-slug.md
+        # 월/일 zero-padding은 선택이다. 2026-2-13-llm-guide.md 처럼
+        # 한 자리로 쓴 파일이 실제로 존재하므로 \d{2} 로 고정하면 안 된다.
+        match = re.match(r'(\d{4})-(\d{1,2})-(\d{1,2})-(.+)\.md$', filename)
         if not match:
             continue
-        post_date = datetime.strptime(match.group(1), "%Y-%m-%d")
+        try:
+            post_date = datetime(
+                int(match.group(1)), int(match.group(2)), int(match.group(3))
+            )
+        except ValueError:
+            continue
         if post_date >= cutoff:
-            slug = match.group(2)
+            slug = match.group(4)
             slugs.add(slug)
 
     return slugs
 
 
-def fetch_popular_pages(client, property_id, days=30, limit=50):
-    """지난 N일간 페이지뷰 기준 상위 페이지 조회"""
+def fetch_popular_pages(client, property_id, days=30, limit=1000):
+    """지난 N일간 페이지뷰 기준 상위 페이지 조회
+
+    limit은 필터링 이전에 GA 쪽에서 잘리는 값이다. 응답 행에는 en/ja 미러,
+    오래된 포스트, 탭·아카이브 페이지가 전부 섞여 있어서 이 값이 작으면
+    조건을 통과하는 최근 ko 포스트가 몇 개 남지 않는다. GA4 기본값은 10000.
+    """
     request = RunReportRequest(
         property=f"properties/{property_id}",
         dimensions=[
@@ -88,61 +100,72 @@ def fetch_popular_pages(client, property_id, days=30, limit=50):
     return client.run_report(request)
 
 
-def is_post_path(path):
-    """Jekyll 포스트 경로인지 판별 (카테고리/slug/ 패턴)"""
-    # 포스트 URL 패턴: /카테고리/슬러그/ 혹은 /posts/슬러그/
-    # 홈, /archives/, /categories/ 등 탭 페이지는 제외
-    excluded = ["/", "/archives/", "/categories/", "/tags/", "/about/",
-                "/stats/", "/books/", "/sideproject/", "/404"]
-    if path in excluded:
-        return False
-    # 포스트는 보통 2단계 이상 경로
-    parts = [p for p in path.split("/") if p]
-    return len(parts) >= 2
+# ko 포스트 URL만 매칭한다. permalink가 /posts/:title/ 이라 정확히 두 세그먼트이고,
+# polyglot이 붙이는 /en/posts/..., /ja/posts/... 는 세그먼트가 하나 더 많아 자동 제외된다.
+# 탭(/:title/), 아카이브(/categories/:name/), 홈(/)도 여기서 함께 걸러진다.
+POST_PATH_RE = re.compile(r"^/posts/([^/]+)/?$")
 
 
-def build_popular_posts(response, recent_slugs=None):
-    """GA 응답에서 포스트 데이터 추출 (최근 포스트만 필터링)"""
-    posts = []
+def extract_post_slug(path):
+    """ko 포스트 경로면 slug를, 아니면 None을 반환"""
+    match = POST_PATH_RE.match(path)
+    return match.group(1) if match else None
+
+
+def build_popular_posts(response, recent_slugs=None, top_n=10):
+    """GA 응답에서 포스트 데이터 추출 (경로·최근성 필터 후 URL 기준 합산)"""
+    aggregated = {}
+    path_matched = 0
+
     for row in response.rows:
         path = row.dimension_values[0].value
         title = row.dimension_values[1].value
         views = int(row.metric_values[0].value)
 
-        if not is_post_path(path):
+        slug = extract_post_slug(path)
+        if slug is None:
+            continue
+        path_matched += 1
+
+        if recent_slugs is not None and slug not in recent_slugs:
             continue
 
         # 경로 정규화 (trailing slash 보장)
-        if not path.endswith("/"):
-            path += "/"
+        url = f"/posts/{slug}/"
+        entry = aggregated.get(url)
+        if entry is None:
+            aggregated[url] = {
+                "url": url,
+                "title": title,
+                "views": views,
+                "_top_row_views": views,
+            }
+        else:
+            # GA는 (pagePath, pageTitle) 조합으로 그룹화하므로 제목을 고친 포스트는
+            # 옛 제목·새 제목 두 행으로 쪼개진다. 조회수는 합치고 제목은 조회수가
+            # 가장 많은 행의 것을 쓴다.
+            entry["views"] += views
+            if views > entry["_top_row_views"]:
+                entry["_top_row_views"] = views
+                entry["title"] = title
 
-        # 최근 포스트 필터링: URL의 마지막 segment가 slug
-        if recent_slugs is not None:
-            parts = [p for p in path.split("/") if p]
-            slug = parts[-1] if parts else ""
-            if slug not in recent_slugs:
-                continue
+    # 합산으로 GA의 정렬이 깨지므로 다시 내림차순 정렬한다.
+    posts = sorted(aggregated.values(), key=lambda p: p["views"], reverse=True)
+    for post in posts:
+        post.pop("_top_row_views", None)
 
-        posts.append({
-            "url": path,
-            "title": title,
-            "views": views,
-        })
+    print(f"  GA 전체 행 {response.row_count}개 중 {len(response.rows)}개 수신")
+    print(f"  ko 포스트 경로 {path_matched}개 → 최근성 통과 {len(posts)}개")
 
-        if len(posts) >= 10:
-            break
+    posts = posts[:top_n]
+    if posts:
+        print(f"  상위 {len(posts)}개 선정 (최저 조회수 {posts[-1]['views']})")
 
     return posts
 
 
 def write_yaml(posts, output_path="_data/popular-posts.yml"):
     """YAML 파일로 저장"""
-    data = {
-        "# 이 파일은 GitHub Actions(update-popular-posts.yml)에 의해 자동 생성됩니다.": None,
-        "# 수동 수정 시 다음 자동 실행 시 덮어씌워집니다.": None,
-        "posts": posts,
-    }
-
     os.makedirs(os.path.dirname(output_path) if os.path.dirname(output_path) else ".", exist_ok=True)
 
     # 주석을 포함한 YAML 수동 작성
@@ -151,10 +174,11 @@ def write_yaml(posts, output_path="_data/popular-posts.yml"):
         f.write("# 수동 수정 시 다음 자동 실행 시 덮어씌워집니다.\n\n")
         f.write("posts:\n")
         for post in posts:
-            f.write(f"  - url: \"{post['url']}\"\n")
-            # 제목의 특수문자 이스케이프
-            safe_title = post["title"].replace('"', '\\"')
-            f.write(f"    title: \"{safe_title}\"\n")
+            # JSON 문자열 리터럴은 YAML의 double-quoted scalar와 문법이 호환된다.
+            # 직접 큰따옴표만 치환하면 제목에 백슬래시가 섞였을 때 YAML이 깨지고
+            # 사이트 빌드 전체가 실패한다.
+            f.write(f"  - url: {json.dumps(post['url'], ensure_ascii=False)}\n")
+            f.write(f"    title: {json.dumps(post['title'], ensure_ascii=False)}\n")
             f.write(f"    views: {post['views']}\n")
 
     print(f"✅ {len(posts)}개 인기 포스트를 {output_path}에 저장했습니다.")

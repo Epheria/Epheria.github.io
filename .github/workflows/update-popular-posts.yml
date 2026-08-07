@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # pages-deploy.yml을 workflow_dispatch로 호출하기 위해 필요
 
 jobs:
   update-popular-posts:
@@ -32,9 +33,25 @@ jobs:
         run: python scripts/fetch_popular_posts.py
 
       - name: Commit updated popular posts data
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add _data/popular-posts.yml
-          git diff --staged --quiet || git commit -m "chore: update popular posts data [skip ci]"
-          git push
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "변경 없음 — 배포를 건너뜁니다."
+          else
+            git commit -m "chore: update popular posts data"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 기본 GITHUB_TOKEN으로 push한 커밋은 on:push 워크플로를 트리거하지 않는다.
+      # 그래서 데이터만 갱신되고 사이트는 재배포되지 않는 상태가 계속됐다.
+      # 배포를 명시적으로 호출해 데이터 커밋이 실제 사이트에 반영되게 한다.
+      - name: Trigger site deployment
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages-deploy.yml --ref main
