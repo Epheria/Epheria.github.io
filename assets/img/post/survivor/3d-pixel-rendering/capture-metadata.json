@@ -1,0 +1,44 @@
+{
+  "captured_on": "2026-10-06",
+  "project": "ProjectSurvivorRevive",
+  "rendering_commit": "5bd1a11e7",
+  "unity": "6000.3.11f1",
+  "urp": "17.3.0",
+  "environment_attribution": "Critter 3D Pixel Art Environment terrain, rocks, trees, water and Toon stone structures; Synty POLYGON Apocalypse URP/Lit buildings in overview and classification captures; project camera and rendering modifications applied",
+  "composition": "Synty environment overview and volumetric-OFF classification retained; detail comparisons restored from earlier Toon stone captures; source scenes and assets not saved or overwritten",
+  "capture_method": "unity-cli-ep screenshot --view composite; final Game view, not a replacement render of the world camera",
+  "output_resolution": [1920, 1080],
+  "internal_rt_resolution": [640, 360],
+  "camera_euler_degrees": [30, 78, 0],
+  "time_scale": 0,
+  "performance_benchmark": false,
+  "capture_sets": {
+    "synty_environment": {
+      "game_camera_orthographic_size": 24,
+      "follow_transform_position": [57.9, 41.3, 95.2],
+      "snapped_pixel_camera_position": [57.96456, 41.28588, 95.1985],
+      "frozen_game_time_seconds": 40.36304,
+      "volumetric_enabled": false,
+      "camera_post_processing_enabled": false,
+      "raw_capture_directory": "ProjectSurvivorRevive/output/blog-3d-pixel-synty-2026-10-06"
+    },
+    "stone_detail": {
+      "game_camera_orthographic_size": 20,
+      "frozen_game_time_seconds": 101.2306,
+      "volumetric_enabled": true,
+      "material": "Critter Toon",
+      "native_material_outlines_retained": true,
+      "raw_capture_directory": "ProjectSurvivorRevive/output/blog-3d-pixel-2026-10-06"
+    }
+  },
+  "images": {
+    "environment-overview.png": {"capture_set": "synty_environment", "upscale_mode": "Sharp", "raw_view_zoom": 1, "pixel_look_edges": true},
+    "edges-off.png": {"capture_set": "stone_detail", "upscale_mode": "Sharp", "raw_view_zoom": 1, "pixel_look_edges": false, "unit_toon": true},
+    "edges-on.png": {"capture_set": "stone_detail", "upscale_mode": "Sharp", "raw_view_zoom": 1, "pixel_look_edges": true, "unit_toon": true},
+    "edge-classification.png": {"capture_set": "synty_environment", "upscale_mode": "Sharp", "raw_view_zoom": 1, "debug_view": 2, "volumetric_enabled": false, "red": "environment outline", "green": "crease highlight", "unit_rim_visible": false},
+    "upscale-legacy.png": {"capture_set": "stone_detail", "upscale_mode": "Legacy", "raw_view_zoom": 0.8, "pixel_look_edges": true},
+    "upscale-sharp.png": {"capture_set": "stone_detail", "upscale_mode": "Sharp", "raw_view_zoom": 0.8, "pixel_look_edges": true},
+    "edges-comparison.png": {"capture_set": "stone_detail", "left": "edges-off.png", "right": "edges-on.png", "crop_xywh": [100, 80, 620, 500], "scale": 1},
+    "upscale-comparison.png": {"capture_set": "stone_detail", "left": "upscale-legacy.png", "right": "upscale-sharp.png", "crop_xywh": [350, 200, 400, 280], "scale": 2, "scale_filter": "nearest"}
+  }
+}
