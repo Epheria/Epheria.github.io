@@ -4,28 +4,22 @@
 posts:
   - url: "/posts/Jev/"
     title: "Jev 심층 분석 - Transformer와의 차이, 병렬 결정, 그리고 속도의 원리 | Sehyup"
-    views: 20
+    views: 27
   - url: "/posts/UnitySimdIntrinsics/"
     title: "SIMD 이해하기 — 벡터 레지스터 원리부터 Unity Burst Intrinsics까지 | Sehyup"
-    views: 14
-  - url: "/posts/DotnetRuntimeVariants/"
-    title: "CLR · Mono · IL2CPP · NativeAOT — 런타임 갈래 비교 | Sehyup"
-    views: 7
-  - url: "/posts/llm-failure-anatomy/"
-    title: "너프된 Claude — Transformer 작동원리부터 잠수함 패치·환각·토큰 폭증까지 | Sehyup"
-    views: 7
+    views: 18
+  - url: "/posts/tailscale-01-foundations/"
+    title: "Tailscale 시리즈 1편 — 창고 노트북으로 만든 한국 IP 우회 인프라 (동기·실측·구조) | Sehyup"
+    views: 6
   - url: "/posts/3DPixelRendering/"
     title: "3D 픽셀 렌더링의 정수 - 픽셀 격자, 실루엣, 그리고 움직임 | Sehyup"
     views: 4
-  - url: "/posts/ValueTypeBoxing/"
-    title: "값 타입 vs 참조 타입 — 스택·힙과 Boxing의 숨은 비용 | Sehyup"
-    views: 4
-  - url: "/posts/tailscale-01-foundations/"
-    title: "Tailscale 시리즈 1편 — 창고 노트북으로 만든 한국 IP 우회 인프라 (동기·실측·구조) | Sehyup"
-    views: 4
   - url: "/posts/CSharpUnderTheHood/"
     title: "C#은 어떻게 실행되고, 어떻게 자기 자신을 읽는가 | Sehyup"
-    views: 3
+    views: 4
   - url: "/posts/SpanReadOnlySpan/"
     title: "Span<T>와 ReadOnlySpan<T> — 복사 없이 메모리를 바라보는 법 | Sehyup"
-    views: 3
+    views: 4
+  - url: "/posts/tailscale-03-internals-and-cost/"
+    title: "Tailscale 시리즈 3편 — 작동 원리와 비용·한계 (DERP·MagicDNS·hole punching·연 1만 원 회고) | Sehyup"
+    views: 2
